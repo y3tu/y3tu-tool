@@ -12,6 +12,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.streaming.SXSSFCell;
 import org.apache.poi.xssf.streaming.SXSSFRow;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
@@ -389,8 +390,16 @@ public class ExcelUtils {
     }
 
     /**
-     * 检查生成excel的必须参数是否存在
+     * 创建多级表头
      */
+    private static void createHeader(String[][] header, Sheet sheet, int index, CellStyle cellStyle){
+
+    }
+
+
+        /**
+         * 检查生成excel的必须参数是否存在
+         */
     private void requireBuilderParams() {
         if (mClass == null) {
             throw new IllegalArgumentException("请先使用ExcelUtils.Builder(Class<?>)构造器初始化参数。");
