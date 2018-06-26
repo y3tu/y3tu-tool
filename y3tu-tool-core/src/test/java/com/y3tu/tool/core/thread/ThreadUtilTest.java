@@ -17,7 +17,8 @@ public class ThreadUtilTest {
     @Test
     public void excAsync() throws InterruptedException {
         try {
-            GeneralThreadPool generalThreadPool = ThreadUtil.createThreadPool();
+            GeneralThreadPool generalThreadPool =  ThreadUtil.createThreadPool(20,20,1,6000);
+
 
             for (int i = 0; i < 100; i++) {
 
