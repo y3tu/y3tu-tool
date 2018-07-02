@@ -30,6 +30,7 @@
         <commons-beanutils-version>1.9.3</commons-beanutils-version>
         <jasypt-version>1.18</jasypt-version>
         <hibernate-validator-version>5.4.1.Final</hibernate-validator-version>
+        <fastJson-version>1.2.31</fastJson-version>
     </properties>
 
     <dependencies>
@@ -91,6 +92,13 @@
             <groupId>com.github.ulisesbocchio</groupId>
             <artifactId>jasypt-spring-boot-starter</artifactId>
             <version>${jasypt-version}</version>
+        </dependency>
+
+        <!-- fastJson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastJson-version}</version>
         </dependency>
 
         <!--数据校验 start-->
