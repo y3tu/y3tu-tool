@@ -94,4 +94,12 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
         return count;
     }
 
+    /**
+     * 系统打印字符串
+     * @param str
+     */
+    public static void out(String str){
+        System.out.println(str);
+    }
+
 }
