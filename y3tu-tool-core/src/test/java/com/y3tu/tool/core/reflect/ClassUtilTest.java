@@ -1,9 +1,7 @@
 package com.y3tu.tool.core.reflect;
 
-import com.y3tu.tool.core.base.RuntimeUtil;
+import com.y3tu.tool.core.util.RuntimeUtil;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * @author y3tu

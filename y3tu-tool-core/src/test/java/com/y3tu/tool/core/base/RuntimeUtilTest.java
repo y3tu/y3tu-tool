@@ -1,8 +1,7 @@
 package com.y3tu.tool.core.base;
 
+import com.y3tu.tool.core.util.RuntimeUtil;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class RuntimeUtilTest {
 

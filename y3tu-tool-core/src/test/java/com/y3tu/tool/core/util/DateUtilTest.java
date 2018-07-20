@@ -18,4 +18,9 @@ public class DateUtilTest {
         String weekDay = DateUtil.getDateToWeek(new Date());
         Assert.assertEquals("星期日", weekDay);
     }
+
+    @Test
+    public void getCurrentStringDate() {
+        System.out.println(DateUtil.getCurrentStringDate());
+    }
 }

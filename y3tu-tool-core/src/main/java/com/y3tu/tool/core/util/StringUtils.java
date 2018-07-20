@@ -1,10 +1,12 @@
 package com.y3tu.tool.core.util;
 
+import com.y3tu.tool.core.text.StrFormatter;
+
 /**
  * @author y3tu
  * @date 2018/2/27
  */
-public class StringUtils extends org.apache.commons.lang3.StringUtils{
+public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
     /**
      * 判断字符是否为空
@@ -50,7 +52,27 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
     }
 
     /**
+     * 是否包含空字符串
+     *
+     * @param strs 字符串列表
+     * @return 是否包含空字符串
+     */
+    public static boolean hasBlank(CharSequence... strs) {
+        if (strs.length==0) {
+            return true;
+        }
+
+        for (CharSequence str : strs) {
+            if (isBlank(str)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * 对象为空
+     *
      * @param obj
      * @return true：空；false：非空
      */
@@ -95,10 +117,34 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
     }
 
     /**
+     * 格式化文本, {} 表示占位符<br>
+     * 此方法只是简单将占位符 {} 按照顺序替换为参数<br>
+     * 如果想输出 {} 使用 \\转义 { 即可，如果想输出 {} 之前的 \ 使用双转义符 \\\\ 即可<br>
+     * 例：<br>
+     * 通常使用：format("this is {} for {}", "a", "b") =》 this is a for b<br>
+     * 转义{}： format("this is \\{} for {}", "a", "b") =》 this is \{} for a<br>
+     * 转义\： format("this is \\\\{} for {}", "a", "b") =》 this is \a for b<br>
+     *
+     * @param template 文本模板，被替换的部分用 {} 表示
+     * @param params   参数值
+     * @return 格式化后的文本
+     */
+    public static String format(CharSequence template, Object... params) {
+        if (null == template) {
+            return null;
+        }
+        if (isBlank(template) || params.length == 0) {
+            return template.toString();
+        }
+        return StrFormatter.format(template.toString(), params);
+    }
+
+    /**
      * 系统打印字符串
+     *
      * @param str
      */
-    public static void out(String str){
+    public static void out(String str) {
         System.out.println(str);
     }
 

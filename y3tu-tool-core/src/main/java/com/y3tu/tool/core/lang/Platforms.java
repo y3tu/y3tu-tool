@@ -1,4 +1,4 @@
-package com.y3tu.tool.core.base;
+package com.y3tu.tool.core.lang;
 
 import org.apache.commons.lang3.SystemUtils;
 
