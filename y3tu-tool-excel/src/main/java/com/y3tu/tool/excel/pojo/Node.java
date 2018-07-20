@@ -1,4 +1,4 @@
-package com.y3tu.tool.core.excel.pojo;
+package com.y3tu.tool.excel.pojo;
 
 import lombok.Data;
 

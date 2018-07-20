@@ -25,8 +25,6 @@
         <commons-net-version>3.4</commons-net-version>
         <commons-lang3-version>3.7</commons-lang3-version>
         <jsch-version>0.1.38</jsch-version>
-        <poi-version>3.13</poi-version>
-        <javacsv-version>2.0</javacsv-version>
         <commons-beanutils-version>1.9.3</commons-beanutils-version>
         <jasypt-version>1.18</jasypt-version>
         <hibernate-validator-version>5.4.1.Final</hibernate-validator-version>
@@ -63,29 +61,6 @@
             <version>${jsch-version}</version>
         </dependency>
 
-        <!-- poi -->
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>${poi-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-scratchpad</artifactId>
-            <version>${poi-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>${poi-version}</version>
-        </dependency>
-
-        <!-- csv -->
-        <dependency>
-            <groupId>net.sourceforge.javacsv</groupId>
-            <artifactId>javacsv</artifactId>
-            <version>${javacsv-version}</version>
-        </dependency>
 
         <!-- Jasypt加密  给配置文件加密-->
         <dependency>
