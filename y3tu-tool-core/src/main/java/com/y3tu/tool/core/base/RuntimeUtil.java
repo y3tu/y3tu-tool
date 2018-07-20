@@ -8,8 +8,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 运行时工具类
+ *
+ * @author
  */
 public class RuntimeUtil {
+
     private static AtomicInteger shutdownHookThreadIndex = new AtomicInteger(0);
 
     /**
@@ -17,7 +20,6 @@ public class RuntimeUtil {
      * 当失败时返回-1
      */
     public static int getPid() {
-
         //format: "pid@hostname"
         String jvmName = ManagementFactory.getRuntimeMXBean().getName();
         String[] split = jvmName.split("@");
