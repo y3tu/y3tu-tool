@@ -5,12 +5,13 @@
     <parent>
         <artifactId>y3tu-tool</artifactId>
         <groupId>com.y3tu</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.y3tu</groupId>
     <artifactId>y3tu-tool-excel</artifactId>
+    <version>1.0</version>
 
     <properties>
         <poi-version>3.13</poi-version>
@@ -23,7 +24,7 @@
         <dependency>
             <groupId>com.y3tu</groupId>
             <artifactId>y3tu-tool-core</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
 
         <dependency>

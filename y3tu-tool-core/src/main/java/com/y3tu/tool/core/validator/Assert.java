@@ -9,13 +9,13 @@ import com.y3tu.tool.core.util.StringUtils;
  */
 public abstract class Assert {
 
-    public static void isBlank(String str, String message) {
+    public static void isBlank(String str, String message) throws ValidatorException {
         if (StringUtils.isBlank(str)) {
             throw new ValidatorException(message);
         }
     }
 
-    public static void isNull(Object object, String message) {
+    public static void isNull(Object object, String message) throws ValidatorException {
         if (object == null) {
             throw new ValidatorException(message);
         }

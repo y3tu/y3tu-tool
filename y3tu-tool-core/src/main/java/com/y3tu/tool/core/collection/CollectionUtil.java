@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * 集合相关工具类，包括数组
- * @author
+ * @author y3tu
  */
 public class CollectionUtil {
 

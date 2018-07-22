@@ -5,7 +5,7 @@
 
     <groupId>com.y3tu</groupId>
     <artifactId>y3tu-tool-core</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <name>y3tu-tool-core</name>
@@ -14,7 +14,7 @@
     <parent>
         <groupId>com.y3tu</groupId>
         <artifactId>y3tu-tool</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
 
     <properties>
