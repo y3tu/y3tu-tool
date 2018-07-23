@@ -5,9 +5,9 @@ Java工具类,把平时工作学习中用的技术进行汇总，已供后续项
 
     ```
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter</artifactId>
-      <version>${spring-boot-version}</version>
+      <groupId>com.y3tu</groupId>
+      <artifactId>y3tu-tool-core</artifactId>
+      <version>1.0</version>
     </dependency>
     ```
 ## Thanks 感谢
