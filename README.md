@@ -1,15 +1,14 @@
 # y3tu-tool
 Java工具类,把平时工作学习中用的技术进行汇总，已供后续项目使用
 
-#使用
+## 使用
 
-    ```
     <dependency>
       <groupId>com.y3tu</groupId>
       <artifactId>y3tu-tool-core</artifactId>
       <version>1.0</version>
     </dependency>
-    ```
+    
 ## Thanks 感谢
 
 部分代码参考以下优秀的开源项目：
