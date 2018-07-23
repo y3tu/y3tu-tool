@@ -2,7 +2,7 @@ package com.y3tu.tool.core.thread;
 
 import com.y3tu.tool.core.exception.ThreadException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.Assert;
+import org.apache.commons.lang3.Validate;
 
 import java.util.concurrent.*;
 
@@ -143,7 +143,7 @@ public class ThreadPoolFactory {
      * @throws ThreadException
      */
     private static void checkThreadPoolName(String name) throws ThreadException {
-        Assert.notNull(name, "线程名字不能为空");
+        Validate.notNull(name, "线程名字不能为空");
         if (tpHash.containsKey(name)) {
             new ThreadException("非法的线程名字");
         }
@@ -165,7 +165,7 @@ public class ThreadPoolFactory {
      * @return GeneralThreadPool 线程池
      */
     public static GeneralThreadPool getThreadPoolByName(String name) {
-        Assert.notNull(name, "线程名字不能为空");
+        Validate.notNull(name, "线程名字不能为空");
         if (tpHash.containsKey(name)) {
             return tpHash.get(name);
         } else {
