@@ -1,6 +1,6 @@
 package com.y3tu.tool.core.thread;
 
-import com.y3tu.tool.core.util.StringUtils;
+import com.y3tu.tool.core.text.StringUtils;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;

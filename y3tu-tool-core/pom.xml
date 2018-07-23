@@ -21,6 +21,7 @@
         <commons-io-version>2.5</commons-io-version>
         <commons-net-version>3.4</commons-net-version>
         <commons-lang3-version>3.7</commons-lang3-version>
+        <guava.version>20.0</guava.version>
         <jsch-version>0.1.38</jsch-version>
         <commons-beanutils-version>1.9.3</commons-beanutils-version>
         <jasypt-version>1.18</jasypt-version>
@@ -31,9 +32,9 @@
     <dependencies>
         <!--common工具类-->
         <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>${commons-io-version}</version>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

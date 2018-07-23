@@ -1,8 +1,6 @@
 package com.y3tu.tool.core.text;
 
 
-import com.y3tu.tool.core.util.StringUtils;
-
 /**
  * 字符串格式化工具
  *

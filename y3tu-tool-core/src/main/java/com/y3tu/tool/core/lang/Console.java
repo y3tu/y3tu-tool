@@ -1,6 +1,6 @@
 package com.y3tu.tool.core.lang;
 
-import com.y3tu.tool.core.util.StringUtils;
+import com.y3tu.tool.core.text.StringUtils;
 
 import static java.lang.System.out;
 

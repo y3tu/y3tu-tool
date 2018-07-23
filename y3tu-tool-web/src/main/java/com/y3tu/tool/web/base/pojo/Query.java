@@ -1,7 +1,7 @@
 package com.y3tu.tool.web.base.pojo;
 
 
-import com.y3tu.tool.core.util.StringUtils;
+import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.web.xss.SqlFilter;
 
 import java.util.LinkedHashMap;

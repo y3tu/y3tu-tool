@@ -1,4 +1,4 @@
-package com.y3tu.tool.core.util;
+package com.y3tu.tool.core.text;
 
 /**
  * 常用sql语句封装类

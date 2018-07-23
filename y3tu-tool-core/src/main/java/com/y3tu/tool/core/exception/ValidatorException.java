@@ -1,6 +1,6 @@
 package com.y3tu.tool.core.exception;
 
-import com.y3tu.tool.core.util.StringUtils;
+import com.y3tu.tool.core.text.StringUtils;
 
 /**
  * 校验异常

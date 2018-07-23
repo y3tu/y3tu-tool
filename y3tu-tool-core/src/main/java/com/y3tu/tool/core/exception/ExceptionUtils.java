@@ -1,5 +1,7 @@
 package com.y3tu.tool.core.exception;
 
+import com.y3tu.tool.core.text.StringUtils;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -10,6 +12,18 @@ import java.io.StringWriter;
  */
 public class ExceptionUtils {
 
+    /**
+     * 获得完整消息，包括异常名
+     *
+     * @param e 异常
+     * @return 完整消息
+     */
+    public static String getMessage(Throwable e) {
+        if(null == e) {
+            return "";
+        }
+        return StringUtils.format("{}: {}", e.getClass().getSimpleName(), e.getMessage());
+    }
 
     /**
      * 将ErrorStack转化为String.

@@ -1,109 +1,183 @@
 package com.y3tu.tool.core.collection;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Ordering;
+import com.y3tu.tool.core.lang.type.Pair;
+
 
 /**
- * 集合相关工具类，包括数组
- * @author y3tu
+ * 通用Collection的工具集
+ * 
+ * 1. 集合是否为空，取得集合中首个及最后一个元素，判断集合是否完全相等
+ * 
+ * 2. 集合的最大最小值，及Top N, Bottom N
+ * 
+ * 关于List, Map, Queue, Set的特殊工具集，另见特定的Util.
+ * 
+ * 另JDK中缺少ComparableComparator和NullComparator，直到JDK8才补上。
+ * 因此平时请使用guava的Ordering.natural(),fluentable的API更好用，可以链式设置nullFirst，nullLast,reverse
+ * 
+ * @see com.google.common.collect.Ordering
  */
 public class CollectionUtil {
 
-    // ----------------------------------------------------------------------------------------------- new HashSet
-    /**
-     * 新建一个HashSet
-     *
-     * @param <T> 集合元素类型
-     * @param ts 元素数组
-     * @return HashSet对象
-     */
-    @SafeVarargs
-    public static <T> HashSet<T> newHashSet(T... ts) {
-        return newHashSet(false, ts);
-    }
+	/**
+	 * 判断是否为空.
+	 */
+	public static boolean isEmpty(Collection<?> collection) {
+		return (collection == null) || collection.isEmpty();
+	}
 
-    /**
-     * 新建一个HashSet
-     *
-     * @param <T> 集合元素类型
-     * @param isSorted 是否有序，有序返回 {@link LinkedHashSet}，否则返回 {@link HashSet}
-     * @param ts 元素数组
-     * @return HashSet对象
-     */
-    @SafeVarargs
-    public static <T> HashSet<T> newHashSet(boolean isSorted, T... ts) {
-        if (null == ts) {
-            return isSorted ? new LinkedHashSet<T>() : new HashSet<T>();
-        }
-        int initialCapacity = Math.max((int) (ts.length / .75f) + 1, 16);
-        HashSet<T> set = isSorted ? new LinkedHashSet<T>(initialCapacity) : new HashSet<T>(initialCapacity);
-        for (T t : ts) {
-            set.add(t);
-        }
-        return set;
-    }
+	/**
+	 * 判断是否不为空.
+	 */
+	public static boolean isNotEmpty(Collection<?> collection) {
+		return (collection != null) && !(collection.isEmpty());
+	}
 
-    /**
-     * 新建一个HashSet
-     *
-     * @param <T> 集合元素类型
-     * @param collection 集合
-     * @return HashSet对象
-     */
-    public static <T> HashSet<T> newHashSet(Collection<T> collection) {
-        return newHashSet(false, collection);
-    }
+	/**
+	 * 取得Collection的第一个元素，如果collection为空返回null.
+	 */
+	public static <T> T getFirst(Collection<T> collection) {
+		if (isEmpty(collection)) {
+			return null;
+		}
+		if (collection instanceof List) {
+			return ((List<T>) collection).get(0);
+		}
+		return collection.iterator().next();
+	}
 
-    /**
-     * 新建一个HashSet
-     *
-     * @param <T> 集合元素类型
-     * @param isSorted 是否有序，有序返回 {@link LinkedHashSet}，否则返回{@link HashSet}
-     * @param collection 集合，用于初始化Set
-     * @return HashSet对象
-     */
-    public static <T> HashSet<T> newHashSet(boolean isSorted, Collection<T> collection) {
-        return isSorted ? new LinkedHashSet<T>(collection) : new HashSet<T>(collection);
-    }
+	/**
+	 * 获取Collection的最后一个元素，如果collection为空返回null.
+	 */
+	public static <T> T getLast(Collection<T> collection) {
+		if (isEmpty(collection)) {
+			return null;
+		}
 
-    /**
-     * 新建一个HashSet
-     *
-     * @param <T> 集合元素类型
-     * @param isSorted 是否有序，有序返回 {@link LinkedHashSet}，否则返回{@link HashSet}
-     * @param iter {@link Iterator}
-     * @return HashSet对象
-     * @since 3.0.8
-     */
-    public static <T> HashSet<T> newHashSet(boolean isSorted, Iterator<T> iter) {
-        if (null == iter) {
-            return newHashSet(isSorted, (T[]) null);
-        }
-        final HashSet<T> set = isSorted ? new LinkedHashSet<T>() : new HashSet<T>();
-        while (iter.hasNext()) {
-            set.add(iter.next());
-        }
-        return set;
-    }
+		// 当类型List时，直接取得最后一个元素.
+		if (collection instanceof List) {
+			List<T> list = (List<T>) collection;
+			return list.get(list.size() - 1);
+		}
 
-    /**
-     * 新建一个HashSet
-     *
-     * @param <T> 集合元素类型
-     * @param isSorted 是否有序，有序返回 {@link LinkedHashSet}，否则返回{@link HashSet}
-     * @param enumration {@link Enumeration}
-     * @return HashSet对象
-     * @since 3.0.8
-     */
-    public static <T> HashSet<T> newHashSet(boolean isSorted, Enumeration<T> enumration) {
-        if (null == enumration) {
-            return newHashSet(isSorted, (T[]) null);
-        }
-        final HashSet<T> set = isSorted ? new LinkedHashSet<T>() : new HashSet<T>();
-        while (enumration.hasMoreElements()) {
-            set.add(enumration.nextElement());
-        }
-        return set;
-    }
+		return Iterators.getLast(collection.iterator());
+	}
 
-    // ----------------------------------------------------------------------------------------------- List
+	/**
+	 * 两个集合中的所有元素按顺序相等.
+	 */
+	public static boolean elementsEqual(Iterable<?> iterable1, Iterable<?> iterable2) {
+		return Iterables.elementsEqual(iterable1, iterable2);
+	}
+
+	///////////// 求最大最小值，及Top N, Bottom N//////////
+	/**
+	 * 返回无序集合中的最小值，使用元素默认排序
+	 */
+	public static <T extends Object & Comparable<? super T>> T min(Collection<? extends T> coll) {
+		return Collections.min(coll);
+	}
+
+	/**
+	 * 返回无序集合中的最小值
+	 */
+	public static <T> T min(Collection<? extends T> coll, Comparator<? super T> comp) {
+		return Collections.min(coll, comp);
+	}
+
+	/**
+	 * 返回无序集合中的最大值，使用元素默认排序
+	 */
+	public static <T extends Object & Comparable<? super T>> T max(Collection<? extends T> coll) {
+		return Collections.max(coll);
+	}
+
+	/**
+	 * 返回无序集合中的最大值
+	 */
+	public static <T> T max(Collection<? extends T> coll, Comparator<? super T> comp) {
+		return Collections.max(coll, comp);
+	}
+
+	/**
+	 * 同时返回无序集合中的最小值和最大值，使用元素默认排序
+	 * 
+	 * 在返回的Pair中，第一个为最小值，第二个为最大值
+	 */
+	public static <T extends Object & Comparable<? super T>> Pair<T, T> minAndMax(Collection<? extends T> coll) {
+		Iterator<? extends T> i = coll.iterator();
+		T minCandidate = i.next();
+		T maxCandidate = minCandidate;
+
+		while (i.hasNext()) {
+			T next = i.next();
+			if (next.compareTo(minCandidate) < 0) {
+				minCandidate = next;
+			} else if (next.compareTo(maxCandidate) > 0) {
+				maxCandidate = next;
+			}
+		}
+		return Pair.of(minCandidate, maxCandidate);
+	}
+
+	/**
+	 * 返回无序集合中的最小值和最大值
+	 * 
+	 * 在返回的Pair中，第一个为最小值，第二个为最大值
+	 */
+	public static <T> Pair<T, T> minAndMax(Collection<? extends T> coll, Comparator<? super T> comp) {
+
+		Iterator<? extends T> i = coll.iterator();
+		T minCandidate = i.next();
+		T maxCandidate = minCandidate;
+
+		while (i.hasNext()) {
+			T next = i.next();
+			if (comp.compare(next, minCandidate) < 0) {
+				minCandidate = next;
+			} else if (comp.compare(next, maxCandidate) > 0) {
+				maxCandidate = next;
+			}
+		}
+
+		return Pair.of(minCandidate, maxCandidate);
+	}
+
+	/**
+	 * 返回Iterable中最大的N个对象, back by guava.
+	 */
+	public static <T extends Comparable<?>> List<T> topN(Iterable<T> coll, int n) {
+		return Ordering.natural().greatestOf(coll, n);
+	}
+
+	/**
+	 * 返回Iterable中最大的N个对象, back by guava.
+	 */
+	public static <T> List<T> topN(Iterable<T> coll, int n, Comparator<? super T> comp) {
+		return Ordering.from(comp).greatestOf(coll, n);
+	}
+
+	/**
+	 * 返回Iterable中最小的N个对象, back by guava.
+	 */
+	public static <T extends Comparable<?>> List<T> bottomN(Iterable<T> coll, int n) {
+		return Ordering.natural().leastOf(coll, n);
+	}
+
+	/**
+	 * 返回Iterable中最小的N个对象, back by guava.
+	 */
+	public static <T> List<T> bottomN(Iterable<T> coll, int n, Comparator<? super T> comp) {
+		return Ordering.from(comp).leastOf(coll, n);
+	}
+
 }

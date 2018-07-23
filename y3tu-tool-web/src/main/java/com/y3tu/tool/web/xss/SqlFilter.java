@@ -1,8 +1,8 @@
 package com.y3tu.tool.web.xss;
 
 
-import com.y3tu.tool.core.exception.RException;
-import com.y3tu.tool.core.util.StringUtils;
+import com.y3tu.tool.core.text.StringUtils;
+import com.y3tu.tool.web.exception.RException;
 
 /**
  * @author y3tu

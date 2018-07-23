@@ -16,8 +16,8 @@
 
 package com.y3tu.tool.web.xss;
 
-import com.y3tu.tool.core.util.StringUtils;
-import org.apache.commons.io.IOUtils;
+import com.y3tu.tool.core.io.IOUtil;
+import com.y3tu.tool.core.text.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
@@ -55,7 +55,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         }
 
         //为空，直接返回
-        String json = IOUtils.toString(super.getInputStream(), "utf-8");
+        String json = IOUtil.toString(super.getInputStream());
         if (StringUtils.isBlank(json)) {
             return super.getInputStream();
         }

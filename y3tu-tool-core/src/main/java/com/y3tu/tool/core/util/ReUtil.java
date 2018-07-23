@@ -1,15 +1,14 @@
 package com.y3tu.tool.core.util;
 
-import com.y3tu.tool.core.collection.CollectionUtil;
+import com.y3tu.tool.core.collection.SetUtil;
 import com.y3tu.tool.core.lang.PatternPool;
+import com.y3tu.tool.core.text.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,7 +27,7 @@ public class ReUtil {
 	public final static String RE_CHINESES = RE_CHINESE + "+";
 
 	/** 正则中需要被转义的关键字 */
-	public final static Set<Character> RE_KEYS = CollectionUtil.newHashSet(new Character[] { '$', '(', ')', '*', '+', '.', '[', ']', '?', '\\', '^', '{', '}', '|' });
+	public final static Set<Character> RE_KEYS = SetUtil.newHashSet(new Character[] { '$', '(', ')', '*', '+', '.', '[', ']', '?', '\\', '^', '{', '}', '|' });
 
 	/**
 	 * 获得匹配的字符串，获得正则中分组0的内容

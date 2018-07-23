@@ -1,6 +1,6 @@
 package com.y3tu.tool.core.util;
 
-import com.y3tu.tool.core.util.StringUtils;
+import com.y3tu.tool.core.text.StringUtils;
 
 import java.lang.management.ManagementFactory;
 import java.util.List;

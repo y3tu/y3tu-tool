@@ -2,7 +2,7 @@ package com.y3tu.tool.core.lang;
 
 import com.y3tu.tool.core.exception.ValidatorException;
 import com.y3tu.tool.core.util.ReUtil;
-import com.y3tu.tool.core.util.StringUtils;
+import com.y3tu.tool.core.text.StringUtils;
 
 import java.net.MalformedURLException;
 import java.util.regex.Pattern;
