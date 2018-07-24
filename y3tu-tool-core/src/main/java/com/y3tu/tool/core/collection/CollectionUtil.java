@@ -1,15 +1,13 @@
 package com.y3tu.tool.core.collection;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.lang.reflect.Type;
+import java.util.*;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Ordering;
 import com.y3tu.tool.core.lang.type.Pair;
+import com.y3tu.tool.core.reflect.TypeUtil;
 
 
 /**
@@ -178,6 +176,57 @@ public class CollectionUtil {
 	 */
 	public static <T> List<T> bottomN(Iterable<T> coll, int n, Comparator<? super T> comp) {
 		return Ordering.from(comp).leastOf(coll, n);
+	}
+
+	/**
+	 * 将指定对象全部加入到集合中<br>
+	 * 提供的对象如果为集合类型，会自动转换为目标元素类型<br>
+	 *
+	 * @param <T> 元素类型
+	 * @param collection 被加入的集合
+	 * @param value 对象，可能为Iterator、Iterable、Enumeration、Array，或者与集合元素类型一致
+	 * @param elementType 元素类型，为空时，使用Object类型来接纳所有类型
+	 * @return 被加入集合
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static <T> Collection<T> addAll(Collection<T> collection, Object value, Type elementType) {
+		if (null == collection || null == value) {
+			return collection;
+		}
+		if (null == elementType) {
+			// 元素类型为空时，使用Object类型来接纳所有类型
+			elementType = Object.class;
+		} else {
+			final Class<?> elementRowType = TypeUtil.getClass(elementType);
+			if (elementRowType.isInstance(value) && false == Iterable.class.isAssignableFrom(elementRowType)) {
+				// 其它类型按照单一元素处理
+				collection.add((T) value);
+				return collection;
+			}
+		}
+
+		Iterator iter;
+		if (value instanceof Iterator) {
+			iter = (Iterator) value;
+		} else if (value instanceof Iterable) {
+			iter = ((Iterable) value).iterator();
+		} else if (value instanceof Enumeration) {
+			iter = new EnumerationIter<>((Enumeration) value);
+		} else if (ArrayUtil.isArray(value)) {
+			iter = new ArrayIter<>(value);
+		} else {
+			throw new CollectionException("Unsupport value type [] !", value.getClass());
+		}
+
+		while (iter.hasNext()) {
+			try {
+				collection.add((T) iter.next());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return collection;
 	}
 
 }

@@ -142,4 +142,5 @@ public class IOUtil {
 	public static BufferedReader toBufferedReader(final Reader reader) {
 		return reader instanceof BufferedReader ? (BufferedReader) reader : new BufferedReader(reader);
 	}
+
 }

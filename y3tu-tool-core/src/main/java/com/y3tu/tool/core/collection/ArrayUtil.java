@@ -26,6 +26,19 @@ import com.y3tu.tool.core.annotation.Nullable;
  * Common Lang ArrayUtils的其他函数，如subarray(),reverse(),indexOf(), 请直接调用
  */
 public class ArrayUtil {
+	/**
+	 * 对象是否为数组对象
+	 *
+	 * @param obj 对象
+	 * @return 是否为数组对象，如果为{@code null} 返回false
+	 */
+	public static boolean isArray(Object obj) {
+		if (null == obj) {
+			// throw new NullPointerException("Object check for isArray is null");
+			return false;
+		}
+		return obj.getClass().isArray();
+	}
 
 	/**
 	 * 数组是否为空
