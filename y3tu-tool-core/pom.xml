@@ -18,15 +18,8 @@
     </parent>
 
     <properties>
-        <commons-io-version>2.5</commons-io-version>
-        <commons-net-version>3.4</commons-net-version>
         <commons-lang3-version>3.7</commons-lang3-version>
         <guava.version>20.0</guava.version>
-        <jsch-version>0.1.38</jsch-version>
-        <commons-beanutils-version>1.9.3</commons-beanutils-version>
-        <jasypt-version>1.18</jasypt-version>
-        <hibernate-validator-version>5.4.1.Final</hibernate-validator-version>
-        <fastJson-version>1.2.31</fastJson-version>
     </properties>
 
     <dependencies>
@@ -41,58 +34,6 @@
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang3-version}</version>
         </dependency>
-        <dependency>
-            <groupId>commons-net</groupId>
-            <artifactId>commons-net</artifactId>
-            <version>${commons-net-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>${commons-beanutils-version}</version>
-        </dependency>
-
-        <!--文件处理 shell执行-->
-        <dependency>
-            <groupId>com.jcraft</groupId>
-            <artifactId>jsch</artifactId>
-            <version>${jsch-version}</version>
-        </dependency>
-
-
-        <!-- Jasypt加密  给配置文件加密-->
-        <dependency>
-            <groupId>com.github.ulisesbocchio</groupId>
-            <artifactId>jasypt-spring-boot-starter</artifactId>
-            <version>${jasypt-version}</version>
-        </dependency>
-
-        <!-- fastJson -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${fastJson-version}</version>
-        </dependency>
-
-        <!--数据校验 start-->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>${hibernate-validator-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.el</groupId>
-            <artifactId>javax.el-api</artifactId>
-            <version>2.2.4</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.web</groupId>
-            <artifactId>javax.el</artifactId>
-            <version>2.2.4</version>
-            <scope>test</scope>
-        </dependency>
-        <!--数据校验 end-->
 
     </dependencies>
 

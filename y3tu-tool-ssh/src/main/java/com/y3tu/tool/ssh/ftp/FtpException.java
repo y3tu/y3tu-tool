@@ -1,4 +1,4 @@
-package com.y3tu.tool.core.exception;
+package com.y3tu.tool.ssh.ftp;
 
 /**
  * @author y3tu

@@ -16,6 +16,7 @@
         <module>y3tu-tool-core</module>
         <module>y3tu-tool-web</module>
         <module>y3tu-tool-excel</module>
+        <module>y3tu-tool-ssh</module>
     </modules>
 
     <properties>

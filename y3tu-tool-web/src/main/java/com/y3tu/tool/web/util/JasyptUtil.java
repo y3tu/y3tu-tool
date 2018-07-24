@@ -1,4 +1,4 @@
-package com.y3tu.tool.core.util;
+package com.y3tu.tool.web.util;
 
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;

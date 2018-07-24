@@ -1,4 +1,4 @@
-package com.y3tu.tool.core.ftp;
+package com.y3tu.tool.ssh.ftp;
 
 import com.jcraft.jsch.SftpProgressMonitor;
 import lombok.extern.slf4j.Slf4j;

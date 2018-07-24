@@ -1,4 +1,4 @@
-package com.y3tu.tool.core.pojo;
+package com.y3tu.tool.web.base.pojo;
 
 import com.alibaba.fastjson.JSON;
 import lombok.Data;

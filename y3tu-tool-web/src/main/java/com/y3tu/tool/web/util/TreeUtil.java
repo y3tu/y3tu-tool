@@ -1,6 +1,7 @@
-package com.y3tu.tool.core.util;
+package com.y3tu.tool.web.util;
 
-import com.y3tu.tool.core.pojo.Tree;
+
+import com.y3tu.tool.web.base.pojo.Tree;
 
 import java.util.ArrayList;
 import java.util.HashMap;

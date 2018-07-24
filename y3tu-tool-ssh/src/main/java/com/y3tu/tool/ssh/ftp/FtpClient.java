@@ -1,7 +1,6 @@
-package com.y3tu.tool.core.ftp;
+package com.y3tu.tool.ssh.ftp;
 
 
-import com.y3tu.tool.core.exception.FtpException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;

@@ -1,6 +1,8 @@
 package com.y3tu.tool.core.text;
 
 
+import com.y3tu.tool.core.annotation.Nullable;
+
 /**
  * @author y3tu
  * @date 2018/2/27
@@ -247,4 +249,25 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         }
     }
 
+    /**
+     * 判断字符串是否以字母结尾
+     *
+     * 如果字符串为Null或空，返回false
+     */
+    public static boolean endWith(@Nullable CharSequence s, char c) {
+        if (StringUtils.isEmpty(s)) {
+            return false;
+        }
+        return s.charAt(s.length() - 1) == c;
+    }
+
+    /**
+     * 如果结尾字符为c, 去除掉该字符.
+     */
+    public static String removeEnd(final String s, final char c) {
+        if (endWith(s, c)) {
+            return s.substring(0, s.length() - 1);
+        }
+        return s;
+    }
 }
