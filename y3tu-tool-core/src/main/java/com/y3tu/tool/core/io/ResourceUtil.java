@@ -10,7 +10,7 @@ import java.util.List;
 import com.google.common.io.Resources;
 import com.y3tu.tool.core.collection.ListUtil;
 import com.y3tu.tool.core.reflect.ClassLoaderUtil;
-import com.y3tu.tool.core.text.Charsets;
+import com.y3tu.tool.core.text.CharsetUtil;
 
 
 /**
@@ -72,28 +72,28 @@ public class ResourceUtil {
 	 * 读取文件的每一行，读取规则见本类注释.
 	 */
 	public static String toString(String resourceName) throws IOException {
-		return Resources.toString(Resources.getResource(resourceName), Charsets.UTF_8);
+		return Resources.toString(Resources.getResource(resourceName), CharsetUtil.UTF_8);
 	}
 
 	/**
 	 * 读取文件的每一行，读取规则见本类注释.
 	 */
 	public static String toString(Class<?> contextClass, String resourceName) throws IOException {
-		return Resources.toString(Resources.getResource(contextClass, resourceName), Charsets.UTF_8);
+		return Resources.toString(Resources.getResource(contextClass, resourceName), CharsetUtil.UTF_8);
 	}
 
 	/**
 	 * 读取文件的每一行，读取规则见本类注释.
 	 */
 	public static List<String> toLines(String resourceName) throws IOException {
-		return Resources.readLines(Resources.getResource(resourceName), Charsets.UTF_8);
+		return Resources.readLines(Resources.getResource(resourceName), CharsetUtil.UTF_8);
 	}
 
 	/**
 	 * 读取文件的每一行，读取规则见本类注释.
 	 */
 	public static List<String> toLines(Class<?> contextClass, String resourceName) throws IOException {
-		return Resources.readLines(Resources.getResource(contextClass, resourceName), Charsets.UTF_8);
+		return Resources.readLines(Resources.getResource(contextClass, resourceName), CharsetUtil.UTF_8);
 	}
 
 	///////////// 打开所有同名文件///////

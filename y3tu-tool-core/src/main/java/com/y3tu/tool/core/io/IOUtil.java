@@ -10,7 +10,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.List;
 
-import com.y3tu.tool.core.text.Charsets;
+import com.y3tu.tool.core.text.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,7 +60,7 @@ public class IOUtil {
 	 * 简单读取InputStream到String.
 	 */
 	public static String toString(InputStream input) throws IOException {
-		InputStreamReader reader = new InputStreamReader(input, Charsets.UTF_8);
+		InputStreamReader reader = new InputStreamReader(input, CharsetUtil.UTF_8);
 		return toString(reader);
 	}
 
@@ -77,7 +77,7 @@ public class IOUtil {
 	 * 简单读取Reader的每行内容到List<String>
 	 */
 	public static List<String> toLines(final InputStream input) throws IOException {
-		return CharStreams.readLines(new BufferedReader(new InputStreamReader(input, Charsets.UTF_8)));
+		return CharStreams.readLines(new BufferedReader(new InputStreamReader(input, CharsetUtil.UTF_8)));
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class IOUtil {
 	 * 读取一行数据，比如System.in的用户输入
 	 */
 	public static String readLine(final InputStream input) throws IOException {
-		return new BufferedReader(new InputStreamReader(input, Charsets.UTF_8)).readLine();
+		return new BufferedReader(new InputStreamReader(input, CharsetUtil.UTF_8)).readLine();
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class IOUtil {
 	 */
 	public static void write(final String data, final OutputStream output) throws IOException {
 		if (data != null) {
-			output.write(data.getBytes(Charsets.UTF_8));
+			output.write(data.getBytes(CharsetUtil.UTF_8));
 		}
 	}
 

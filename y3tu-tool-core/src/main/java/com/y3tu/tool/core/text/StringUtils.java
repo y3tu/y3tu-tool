@@ -3,6 +3,8 @@ package com.y3tu.tool.core.text;
 
 import com.y3tu.tool.core.annotation.Nullable;
 
+import java.util.List;
+
 /**
  * @author y3tu
  * @date 2018/2/27
@@ -52,6 +54,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     public static final String HTML_GT = "&gt;";
 
     public static final String EMPTY_JSON = "{}";
+
     /**
      * 判断字符是否为空
      *
@@ -102,7 +105,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @return 是否包含空字符串
      */
     public static boolean hasBlank(CharSequence... strs) {
-        if (strs.length==0) {
+        if (strs.length == 0) {
             return true;
         }
 
@@ -196,7 +199,6 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      *
      * @param str1 要比较的字符串1
      * @param str2 要比较的字符串2
-     *
      * @return 如果两个字符串相同，或者都是<code>null</code>，则返回<code>true</code>
      */
     public static boolean equals(CharSequence str1, CharSequence str2) {
@@ -216,7 +218,6 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      *
      * @param str1 要比较的字符串1
      * @param str2 要比较的字符串2
-     *
      * @return 如果两个字符串相同，或者都是<code>null</code>，则返回<code>true</code>
      */
     public static boolean equalsIgnoreCase(CharSequence str1, CharSequence str2) {
@@ -226,8 +227,8 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     /**
      * 比较两个字符串是否相等。
      *
-     * @param str1 要比较的字符串1
-     * @param str2 要比较的字符串2
+     * @param str1       要比较的字符串1
+     * @param str2       要比较的字符串2
      * @param ignoreCase 是否忽略大小写
      * @return 如果两个字符串相同，或者都是<code>null</code>，则返回<code>true</code>
      * @since 3.2.0
@@ -251,7 +252,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
     /**
      * 判断字符串是否以字母结尾
-     *
+     * <p>
      * 如果字符串为Null或空，返回false
      */
     public static boolean endWith(@Nullable CharSequence s, char c) {
@@ -270,4 +271,37 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         }
         return s;
     }
+
+
+    /**
+     * 忽略大小写去掉指定前缀
+     *
+     * @param str    字符串
+     * @param prefix 前缀
+     * @return 切掉后的字符串，若前缀不是 prefix， 返回原字符串
+     */
+    public static String removePrefixIgnoreCase(CharSequence str, CharSequence prefix) {
+        if (isEmpty(str) || isEmpty(prefix)) {
+            return str.toString();
+        }
+
+        final String str2 = str.toString();
+        if (str2.toLowerCase().startsWith(prefix.toString().toLowerCase())) {
+            // 截取后半段
+            return substring(str2, prefix.length());
+        }
+        return str2;
+    }
+
+    /**
+     * 字符串是否以给定字符开始
+     *
+     * @param str 字符串
+     * @param c 字符
+     * @return 是否开始
+     */
+    public static boolean startWith(CharSequence str, char c) {
+        return c == str.charAt(0);
+    }
+
 }

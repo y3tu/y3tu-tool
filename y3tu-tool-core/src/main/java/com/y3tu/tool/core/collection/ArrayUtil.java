@@ -1,10 +1,7 @@
 package com.y3tu.tool.core.collection;
 
 import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import com.google.common.collect.ObjectArrays;
 import com.google.common.primitives.Doubles;
@@ -333,6 +330,7 @@ public class ArrayUtil {
 		}
 		return result;
 	}
+
 
 
 }
