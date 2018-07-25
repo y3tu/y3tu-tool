@@ -36,6 +36,12 @@
             <version>${commons-net.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.y3tu</groupId>
+            <artifactId>y3tu-tool-core</artifactId>
+            <version>1.0</version>
+        </dependency>
+
     </dependencies>
 
 

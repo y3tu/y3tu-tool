@@ -2,6 +2,7 @@ package com.y3tu.tool.core.text;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.charset.UnsupportedCharsetException;
 
 /**
  * 
@@ -28,6 +29,16 @@ public class CharsetUtil {
 	 */
 	public static Charset defaultCharset() {
 		return Charset.defaultCharset();
+	}
+
+	/**
+	 * 转换为Charset对象
+	 * @param charsetName 字符集，为空则返回默认字符集
+	 * @return Charset
+	 * @throws UnsupportedCharsetException 编码不支持
+	 */
+	public static Charset charset(String charsetName) throws UnsupportedCharsetException {
+		return StringUtils.isBlank(charsetName) ? Charset.defaultCharset() : Charset.forName(charsetName);
 	}
 
 }

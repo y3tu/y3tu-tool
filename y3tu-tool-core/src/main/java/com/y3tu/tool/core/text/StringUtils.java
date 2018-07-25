@@ -3,6 +3,7 @@ package com.y3tu.tool.core.text;
 
 import com.y3tu.tool.core.annotation.Nullable;
 
+import java.nio.charset.Charset;
 import java.util.List;
 
 /**
@@ -302,6 +303,24 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      */
     public static boolean startWith(CharSequence str, char c) {
         return c == str.charAt(0);
+    }
+
+    /**
+     * 编码字符串
+     *
+     * @param str 字符串
+     * @param charset 字符集，如果此字段为空，则解码的结果取决于平台
+     * @return 编码后的字节码
+     */
+    public static byte[] bytes(CharSequence str, Charset charset) {
+        if (str == null) {
+            return null;
+        }
+
+        if (null == charset) {
+            return str.toString().getBytes();
+        }
+        return str.toString().getBytes(charset);
     }
 
 }
