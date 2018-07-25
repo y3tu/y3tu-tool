@@ -59,6 +59,7 @@
             <artifactId>jasypt</artifactId>
             <version>${jasypt-version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.y3tu</groupId>
             <artifactId>y3tu-tool-core</artifactId>
