@@ -1,4 +1,4 @@
-package com.y3tu.tool.core.io;
+package com.y3tu.tool.core.io.resource;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,6 +9,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import com.y3tu.tool.core.io.FileUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 

@@ -323,4 +323,22 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         return str.toString().getBytes(charset);
     }
 
+    /**
+     * 解码字节码
+     *
+     * @param data 字符串
+     * @param charset 字符集，如果此字段为空，则解码的结果取决于平台
+     * @return 解码后的字符串
+     */
+    public static String str(byte[] data, Charset charset) {
+        if (data == null) {
+            return null;
+        }
+
+        if (null == charset) {
+            return new String(data);
+        }
+        return new String(data, charset);
+    }
+
 }

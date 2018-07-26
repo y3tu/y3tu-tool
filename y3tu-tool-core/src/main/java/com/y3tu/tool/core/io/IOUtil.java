@@ -237,5 +237,41 @@ public class IOUtil {
         return reader instanceof BufferedReader ? (BufferedReader) reader : new BufferedReader(reader);
     }
 
+    /**
+     * 获得{@link BufferedReader}<br>
+     * 如果是{@link BufferedReader}强转返回，否则新建。如果提供的Reader为null返回null
+     *
+     * @param reader 普通Reader，如果为null返回null
+     * @return {@link BufferedReader} or null
+     */
+    public static BufferedReader getReader(Reader reader) {
+        if (null == reader) {
+            return null;
+        }
+
+        return (reader instanceof BufferedReader) ? (BufferedReader) reader : new BufferedReader(reader);
+    }
+
+    /**
+     * 获得一个Reader
+     *
+     * @param in 输入流
+     * @param charset 字符集
+     * @return BufferedReader对象
+     */
+    public static BufferedReader getReader(InputStream in, Charset charset) {
+        if (null == in) {
+            return null;
+        }
+
+        InputStreamReader reader = null;
+        if (null == charset) {
+            reader = new InputStreamReader(in);
+        } else {
+            reader = new InputStreamReader(in, charset);
+        }
+
+        return new BufferedReader(reader);
+    }
 
 }
