@@ -21,8 +21,8 @@ public class URLResourceTest {
 		assertThat(FileUtil.toString(file)).isEqualTo("springside.min=1\nspringside.max=10");
 
 		InputStream is = URLResourceUtil.asStream("classpath:application.properties");
-		assertThat(IOUtil.toString(is)).isEqualTo("springside.min=1\nspringside.max=10");
-		IOUtil.closeQuietly(is);
+		assertThat(IOUtil.read(is)).isEqualTo("springside.min=1\nspringside.max=10");
+		IOUtil.close(is);
 
 		try {
 			URLResourceUtil.asFile("classpath:notexist.properties");

@@ -3,6 +3,7 @@ package com.y3tu.tool.core.text;
 
 import com.y3tu.tool.core.annotation.Nullable;
 
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.List;
 
@@ -298,7 +299,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * 字符串是否以给定字符开始
      *
      * @param str 字符串
-     * @param c 字符
+     * @param c   字符
      * @return 是否开始
      */
     public static boolean startWith(CharSequence str, char c) {
@@ -308,7 +309,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     /**
      * 编码字符串
      *
-     * @param str 字符串
+     * @param str     字符串
      * @param charset 字符集，如果此字段为空，则解码的结果取决于平台
      * @return 编码后的字节码
      */
@@ -326,7 +327,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     /**
      * 解码字节码
      *
-     * @param data 字符串
+     * @param data    字符串
      * @param charset 字符集，如果此字段为空，则解码的结果取决于平台
      * @return 解码后的字符串
      */
@@ -340,5 +341,20 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         }
         return new String(data, charset);
     }
+
+    /**
+     * 将编码的byteBuffer数据转换为字符串
+     *
+     * @param data    数据
+     * @param charset 字符集，如果为空使用当前系统字符集
+     * @return 字符串
+     */
+    public static String str(ByteBuffer data, Charset charset) {
+        if (null == charset) {
+            charset = Charset.defaultCharset();
+        }
+        return charset.decode(data).toString();
+    }
+
 
 }

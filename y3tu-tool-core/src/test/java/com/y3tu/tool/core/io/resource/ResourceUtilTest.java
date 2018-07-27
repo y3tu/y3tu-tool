@@ -21,7 +21,7 @@ public class ResourceUtilTest {
     @Test
     public void test() throws IOException {
 
-        //Console.log(ResourceUtil.toString("test/test.txt"));
+        Console.log(ResourceUtil.asUrl("META-INF/MANIFEST.MF"));
        // assertThat(ResourceUtil.toString("test.txt")).contains("ABCDEFG");
         //Console.log(ResourceUtil.toString(ResourceUtilTest.class,"/test/test.txt"));
 
@@ -39,8 +39,8 @@ public class ResourceUtilTest {
 //        assertThat(ResourceUtil.getResourcesQuietly("META-INF/MANIFEST.MF").size()).isGreaterThan(1);
 //
        // ResourceUtil.asUrl("test.txt");
-        Console.log(ResourceUtil.toString("LICENSE-junit.txt"));
-        Console.log(ResourceUtil.getResourcesQuietly("LICENSE-junit.txt"));
+       // Console.log(ResourceUtil.toString("LICENSE-junit.txt"));
+      //  Console.log(ResourceUtil.getResourcesQuietly("LICENSE-junit.txt"));
 //        System.out.println(ResourceUtil.getResourcesQuietly("META-INF/MANIFEST.MF"));
 //
 //        assertThat(ResourceUtil.getResourcesQuietly("META-INF/MANIFEST.MF", ResourceUtilTest.class.getClassLoader()).size())

@@ -245,7 +245,7 @@ public class JschUtil {
 		} catch (JSchException e) {
 			throw new JschRuntimeException(e);
 		} finally {
-			IOUtil.closeQuietly(in);
+			IOUtil.close(in);
 			close(channel);
 		}
 	}

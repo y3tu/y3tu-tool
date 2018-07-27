@@ -423,7 +423,7 @@ public class NetUtil {
         } catch (IOException e) {
             throw new IOException(e);
         } finally {
-            IOUtil.closeQuietly(out);
+            IOUtil.close(out);
         }
     }
 
