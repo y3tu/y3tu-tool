@@ -296,6 +296,26 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
 
     /**
+     * 去掉指定前缀
+     *
+     * @param str    字符串
+     * @param prefix 前缀
+     * @return 切掉后的字符串，若前缀不是 preffix， 返回原字符串
+     */
+    public static String removePrefix(CharSequence str, CharSequence prefix) {
+        if (isEmpty(str) || isEmpty(prefix)) {
+            return str.toString();
+        }
+
+        final String str2 = str.toString();
+        if (str2.startsWith(prefix.toString())) {
+            // 截取后半段
+            return substring(str2, prefix.length());
+        }
+        return str2;
+    }
+
+    /**
      * 字符串是否以给定字符开始
      *
      * @param str 字符串
@@ -354,6 +374,46 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             charset = Charset.defaultCharset();
         }
         return charset.decode(data).toString();
+    }
+
+    /**
+     * 包装指定字符串
+     *
+     * @param str    被包装的字符串
+     * @param prefix 前缀
+     * @param suffix 后缀
+     * @return 包装后的字符串
+     */
+    public static String wrap(CharSequence str, CharSequence prefix, CharSequence suffix) {
+        return nullToEmpty(prefix).concat(nullToEmpty(str)).concat(nullToEmpty(suffix));
+    }
+
+    /**
+     * 当给定字符串为null时，转换为Empty
+     *
+     * @param str 被转换的字符串
+     * @return 转换后的字符串
+     */
+    public static String nullToEmpty(CharSequence str) {
+        return nullToDefault(str, EMPTY);
+    }
+
+    /**
+     * 如果字符串是<code>null</code>，则返回指定默认字符串，否则返回字符串本身。
+     *
+     * <pre>
+     * nullToDefault(null, &quot;default&quot;)  = &quot;default&quot;
+     * nullToDefault(&quot;&quot;, &quot;default&quot;)    = &quot;&quot;
+     * nullToDefault(&quot;  &quot;, &quot;default&quot;)  = &quot;  &quot;
+     * nullToDefault(&quot;bat&quot;, &quot;default&quot;) = &quot;bat&quot;
+     * </pre>
+     *
+     * @param str        要转换的字符串
+     * @param defaultStr 默认字符串
+     * @return 字符串本身或指定的默认字符串
+     */
+    public static String nullToDefault(CharSequence str, String defaultStr) {
+        return (str == null) ? defaultStr : str.toString();
     }
 
 

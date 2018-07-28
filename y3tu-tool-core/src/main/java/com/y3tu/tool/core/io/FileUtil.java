@@ -1,11 +1,6 @@
 package com.y3tu.tool.core.io;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
@@ -15,14 +10,21 @@ import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.regex.Pattern;
 
 import com.y3tu.tool.core.annotation.NotNull;
 import com.y3tu.tool.core.annotation.Nullable;
+import com.y3tu.tool.core.collection.ArrayUtil;
+import com.y3tu.tool.core.lang.Assert;
 import com.y3tu.tool.core.lang.Platforms;
 import com.y3tu.tool.core.text.CharUtil;
 import com.y3tu.tool.core.text.CharsetUtil;
+import com.y3tu.tool.core.text.StringUtils;
 import org.apache.commons.lang3.Validate;
 
 
@@ -67,27 +69,165 @@ public class FileUtil {
         return WINDOWS_SEPARATOR == File.separatorChar;
     }
 
-
-
     /**
-     * 获取标准的绝对路径
+     * 列出目录文件<br>
+     * 给定的绝对路径不能是压缩包中的路径
      *
-     * @param file 文件
-     * @return 绝对路径
+     * @param path 目录绝对路径或者相对路径
+     * @return 文件列表（包含目录）
      */
-    public static String getAbsolutePath(File file) {
-        if (file == null) {
+    public static File[] ls(String path) {
+        if (path == null) {
             return null;
         }
 
-        try {
-            return file.getCanonicalPath();
-        } catch (IOException e) {
-            return file.getAbsolutePath();
+        path = FilePathUtil.getAbsolutePath(path, null);
+
+        File file = new File(path);
+        if (file.isDirectory()) {
+            return file.listFiles();
         }
+        throw new IORuntimeException(StringUtils.format("Path [{}] is not directory!", path));
     }
 
+    /**
+     * 文件是否为空<br>
+     * 目录：里面没有文件时为空 文件：文件大小为0时为空
+     *
+     * @param file 文件
+     * @return 是否为空，当提供非目录时，返回false
+     */
+    public static boolean isEmpty(File file) {
+        if (null == file) {
+            return true;
+        }
 
+        if (file.isDirectory()) {
+            String[] subFiles = file.list();
+            if (ArrayUtil.isEmpty(subFiles)) {
+                return true;
+            }
+        } else if (file.isFile()) {
+            return file.length() <= 0;
+        }
+
+        return false;
+    }
+
+    /**
+     * 递归遍历目录以及子目录中的所有文件<br>
+     * 如果提供file为文件，直接返回过滤结果
+     *
+     * @param file       当前遍历文件或目录
+     * @param fileFilter 文件过滤规则对象，选择要保留的文件，只对文件有效，不过滤目录
+     * @return 文件列表
+     */
+    public static List<File> loopFiles(File file, FileFilter fileFilter) {
+        List<File> fileList = new ArrayList<File>();
+        if (null == file) {
+            return fileList;
+        } else if (false == file.exists()) {
+            return fileList;
+        }
+
+        if (file.isDirectory()) {
+            final File[] subFiles = file.listFiles();
+            if (ArrayUtil.isNotEmpty(subFiles)) {
+                for (File tmp : subFiles) {
+                    fileList.addAll(loopFiles(tmp, fileFilter));
+                }
+            }
+        } else {
+            if (null == fileFilter || fileFilter.accept(file)) {
+                fileList.add(file);
+            }
+        }
+
+        return fileList;
+    }
+
+    /**
+     * 获得指定目录下所有文件<br>
+     * 不会扫描子目录
+     *
+     * @param path 相对ClassPath的目录或者绝对路径目录
+     * @return 文件路径列表（如果是jar中的文件，则给定类似.jar!/xxx/xxx的路径）
+     * @throws IORuntimeException IO异常
+     */
+    public static List<String> listFileNames(String path) throws IORuntimeException {
+        if (path == null) {
+            return null;
+        }
+        List<String> paths = new ArrayList<String>();
+
+        int index = path.lastIndexOf(FileUtil.JAR_PATH_EXT);
+        if (index == -1) {
+            // 普通目录路径
+            File[] files = ls(path);
+            for (File file : files) {
+                if (file.isFile()) {
+                    paths.add(file.getName());
+                }
+            }
+        } else {
+            // jar文件
+            path = FilePathUtil.getAbsolutePath(path);
+            if (false == path.endsWith(String.valueOf(UNIX_SEPARATOR))) {
+                path = path + UNIX_SEPARATOR;
+            }
+            // jar文件中的路径
+            index = index + FileUtil.JAR_FILE_EXT.length();
+            JarFile jarFile = null;
+            try {
+                jarFile = new JarFile(path.substring(0, index));
+                final String subPath = path.substring(index + 2);
+                for (JarEntry entry : Collections.list(jarFile.entries())) {
+                    final String name = entry.getName();
+                    if (name.startsWith(subPath)) {
+                        final String nameSuffix = StringUtils.removePrefix(name, subPath);
+                        if (nameSuffix.contains(String.valueOf(UNIX_SEPARATOR)) == false) {
+                            paths.add(nameSuffix);
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                throw new IORuntimeException(StringUtils.format("Can not read file path of [{}]", path), e);
+            } finally {
+                IOUtil.close(jarFile);
+            }
+        }
+        return paths;
+    }
+
+    /**
+     * 计算目录或文件的总大小<br>
+     * 当给定对象为文件时，直接调用 {@link File#length()}<br>
+     * 当给定对象为目录时，遍历目录下的所有文件和目录，递归计算其大小，求和返回
+     *
+     * @param file 目录或文件
+     * @return 总大小，bytes长度
+     */
+    public static long size(File file) {
+        Assert.notNull(file, "file argument is null !");
+        if (false == file.exists()) {
+            throw new IllegalArgumentException(StringUtils.format("File [{}] not exist !", file.getAbsolutePath()));
+        }
+
+        if (file.isDirectory()) {
+            long size = 0L;
+            File[] subFiles = file.listFiles();
+            if (ArrayUtil.isEmpty(subFiles)) {
+                // empty directory
+                return 0L;
+            }
+            for (int i = 0; i < subFiles.length; i++) {
+                size += size(subFiles[i]);
+            }
+            return size;
+        } else {
+            return file.length();
+        }
+    }
 
     private static FileVisitor<Path> deleteFileVisitor = new SimpleFileVisitor<Path>() {
 

@@ -10,5 +10,7 @@ public class FilePathUtilTest {
     @Test
     public void normalizePath() {
         Console.log(FilePathUtil.normalizePath("/Users/yxy/work"));
+
+        Console.log(FilePathUtil.simplifyPath("/foo/../bar/../baz"));
     }
 }

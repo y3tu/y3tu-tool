@@ -37,7 +37,7 @@ public class ResourceUtil {
      * @return 资源名url
      */
     public static URL asUrl(Class<?> contextClass, String resourceName) {
-        return Resources.getResource(contextClass, resourceName);
+        return (null != contextClass) ? contextClass.getResource(resourceName) : ClassLoaderUtil.getClassLoader().getResource(resourceName);
     }
 
 
