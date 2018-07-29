@@ -19,7 +19,8 @@
 
     <properties>
         <commons-lang3-version>3.7</commons-lang3-version>
-        <guava.version>20.0</guava.version>
+        <commons-io-version>2.6</commons-io-version>
+        <guava-version>20.0</guava-version>
     </properties>
 
     <dependencies>
@@ -27,12 +28,17 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>${guava.version}</version>
+            <version>${guava-version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang3-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io-version}</version>
         </dependency>
 
     </dependencies>

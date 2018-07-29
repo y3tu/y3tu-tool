@@ -1,6 +1,7 @@
 package com.y3tu.tool.core.io;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
@@ -18,13 +19,13 @@ import java.util.jar.JarFile;
 import java.util.regex.Pattern;
 
 import com.y3tu.tool.core.annotation.NotNull;
-import com.y3tu.tool.core.annotation.Nullable;
 import com.y3tu.tool.core.collection.ArrayUtil;
 import com.y3tu.tool.core.lang.Assert;
 import com.y3tu.tool.core.lang.Platforms;
 import com.y3tu.tool.core.text.CharUtil;
 import com.y3tu.tool.core.text.CharsetUtil;
 import com.y3tu.tool.core.text.StringUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.Validate;
 
 
@@ -67,6 +68,167 @@ public class FileUtil {
      */
     public static boolean isWindows() {
         return WINDOWS_SEPARATOR == File.separatorChar;
+    }
+
+    /**
+     * 创建File对象，自动识别相对或绝对路径，相对路径将自动从ClassPath下寻找
+     *
+     * @param path 文件路径
+     * @return File
+     */
+    public static File file(String path) {
+        if (StringUtils.isBlank(path)) {
+            throw new NullPointerException("File path is blank!");
+        }
+        return new File(FilePathUtil.getAbsolutePath(path));
+    }
+
+    /**
+     * 创建File对象
+     *
+     * @param parent 父目录
+     * @param path   文件路径
+     * @return File
+     */
+    public static File file(String parent, String path) {
+        if (StringUtils.isBlank(path)) {
+            throw new NullPointerException("File path is blank!");
+        }
+        return new File(parent, path);
+    }
+
+    /**
+     * 通过多层目录参数创建文件
+     *
+     * @param directory 父目录
+     * @param names     元素名（多层目录名）
+     * @return the file 文件
+     */
+    public static File file(File directory, String... names) {
+        Assert.notNull(directory, "directorydirectory must not be null");
+        if (ArrayUtil.isEmpty(names)) {
+            return directory;
+        }
+        File file = directory;
+        for (String name : names) {
+            if (null != name) {
+                file = new File(file, name);
+            }
+        }
+        return file;
+    }
+
+    /**
+     * 通过多层目录创建文件
+     * <p>
+     * 元素名（多层目录名）
+     *
+     * @return the file 文件
+     */
+    public static File file(String... names) {
+        if (ArrayUtil.isEmpty(names)) {
+            return null;
+        }
+        File file = null;
+        for (String name : names) {
+            if (file == null) {
+                file = new File(name);
+            } else {
+                file = new File(file, name);
+            }
+        }
+        return file;
+    }
+
+    /**
+     * 创建文件及其父目录，如果这个文件存在，直接返回这个文件<br>
+     * 此方法不对File对象类型做判断，如果File不存在，无法判断其类型
+     *
+     * @param fullFilePath 文件的全路径，使用POSIX风格
+     * @return 文件，若路径为null，返回null
+     * @throws IORuntimeException IO异常
+     */
+    public static File touch(String fullFilePath) throws IORuntimeException {
+        if (fullFilePath == null) {
+            return null;
+        }
+        return touch(file(fullFilePath));
+    }
+
+    /**
+     * 创建文件及其父目录，如果这个文件存在，直接返回这个文件<br>
+     * 此方法不对File对象类型做判断，如果File不存在，无法判断其类型
+     *
+     * @param file 文件对象
+     * @return 文件，若路径为null，返回null
+     * @throws IORuntimeException IO异常
+     */
+    public static File touch(File file) throws IORuntimeException {
+        if (null == file) {
+            return null;
+        }
+        if (false == file.exists()) {
+            mkParentDirs(file);
+            try {
+                file.createNewFile();
+            } catch (Exception e) {
+                throw new IORuntimeException(e);
+            }
+        }
+        return file;
+    }
+
+    /**
+     * 创建文件及其父目录，如果这个文件存在，直接返回这个文件<br>
+     * 此方法不对File对象类型做判断，如果File不存在，无法判断其类型
+     *
+     * @param parent 父文件对象
+     * @param path   文件路径
+     * @return File
+     * @throws IORuntimeException IO异常
+     */
+    public static File touch(File parent, String path) throws IORuntimeException {
+        return touch(file(parent, path));
+    }
+
+    /**
+     * 创建文件及其父目录，如果这个文件存在，直接返回这个文件<br>
+     * 此方法不对File对象类型做判断，如果File不存在，无法判断其类型
+     *
+     * @param parent 父文件对象
+     * @param path   文件路径
+     * @return File
+     * @throws IORuntimeException IO异常
+     */
+    public static File touch(String parent, String path) throws IORuntimeException {
+        return touch(file(parent, path));
+    }
+
+    /**
+     * 创建所给文件或目录的父目录
+     *
+     * @param file 文件或目录
+     * @return 父目录
+     */
+    public static File mkParentDirs(File file) {
+        final File parentFile = file.getParentFile();
+        if (null != parentFile && false == parentFile.exists()) {
+            parentFile.mkdirs();
+        }
+        return parentFile;
+    }
+
+    /**
+     * 创建父文件夹，如果存在直接返回此文件夹
+     *
+     * @param path 文件夹路径，使用POSIX格式，无论哪个平台
+     * @return 创建的目录
+     */
+    public static File mkParentDirs(String path) {
+        if (path == null) {
+            return null;
+        }
+        return mkParentDirs(file(path));
     }
 
     /**
@@ -228,6 +390,204 @@ public class FileUtil {
             return file.length();
         }
     }
+
+    /**
+     * 删除文件或者文件夹<br>
+     * 路径如果为相对路径，会转换为ClassPath路径！ 注意：删除文件夹时不会判断文件夹是否为空，如果不空则递归删除子文件或文件夹<br>
+     * 某个文件删除失败会终止删除操作
+     *
+     * @param fullFileOrDirPath 文件或者目录的路径
+     * @return 成功与否
+     * @throws IORuntimeException IO异常
+     */
+    public static boolean del(String fullFileOrDirPath) throws IORuntimeException {
+        return del(file(fullFileOrDirPath));
+    }
+
+    /**
+     * 删除文件或者文件夹<br>
+     * 注意：删除文件夹时不会判断文件夹是否为空，如果不空则递归删除子文件或文件夹<br>
+     * 某个文件删除失败会终止删除操作
+     *
+     * @param file 文件对象
+     * @return 成功与否
+     * @throws IORuntimeException IO异常
+     */
+    public static boolean del(File file) throws IORuntimeException {
+        if (file == null || false == file.exists()) {
+            return false;
+        }
+
+        if (file.isDirectory()) {
+            clean(file);
+        }
+        try {
+            Files.delete(file.toPath());
+        } catch (IOException e) {
+            throw new IORuntimeException(e);
+        }
+        return true;
+    }
+
+    /**
+     * 清空文件夹<br>
+     * 注意：清空文件夹时不会判断文件夹是否为空，如果不空则递归删除子文件或文件夹<br>
+     * 某个文件删除失败会终止删除操作
+     *
+     * @param dirPath 文件夹路径
+     * @return 成功与否
+     * @throws IORuntimeException IO异常
+     */
+    public static boolean clean(String dirPath) throws IORuntimeException {
+        return clean(file(dirPath));
+    }
+
+    /**
+     * 清空文件夹<br>
+     * 注意：清空文件夹时不会判断文件夹是否为空，如果不空则递归删除子文件或文件夹<br>
+     * 某个文件删除失败会终止删除操作
+     *
+     * @param directory 文件夹
+     * @return 成功与否
+     * @throws IORuntimeException IO异常
+     */
+    public static boolean clean(File directory) throws IORuntimeException {
+        if (directory == null || directory.exists() == false || false == directory.isDirectory()) {
+            return true;
+        }
+
+        final File[] files = directory.listFiles();
+        for (File childFile : files) {
+            boolean isOk = del(childFile);
+            if (isOk == false) {
+                // 删除一个出错则本次删除任务失败
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 创建临时文件<br>
+     * 创建后的文件名为 prefix[Randon].suffix From com.jodd.io.FileUtil
+     *
+     * @param prefix    前缀，至少3个字符
+     * @param suffix    后缀，如果null则使用默认.tmp
+     * @param dir       临时文件创建的所在目录
+     * @param isReCreat 是否重新创建文件（删掉原来的，创建新的）
+     * @return 临时文件
+     * @throws IORuntimeException IO异常
+     */
+    public static File createTempFile(String prefix, String suffix, File dir, boolean isReCreat) throws IORuntimeException {
+        int exceptionsCount = 0;
+        while (true) {
+            try {
+                File file = File.createTempFile(prefix, suffix, dir).getCanonicalFile();
+                if (isReCreat) {
+                    file.delete();
+                    file.createNewFile();
+                }
+                return file;
+            } catch (IOException ioex) {
+                // fixes java.io.WinNTFileSystem.createFileExclusively access denied
+                if (++exceptionsCount >= 50) {
+                    throw new IORuntimeException(ioex);
+                }
+            }
+        }
+    }
+
+    /**
+     * 检查两个文件是否是同一个文件<br>
+     * 所谓文件相同，是指File对象是否指向同一个文件或文件夹
+     *
+     * @param file1 文件1
+     * @param file2 文件2
+     * @return 是否相同
+     * @throws IORuntimeException IO异常
+     * @see Files#isSameFile(Path, Path)
+     */
+    public static boolean equals(File file1, File file2) throws IORuntimeException {
+        Assert.notNull(file1);
+        Assert.notNull(file2);
+        if (false == file1.exists() || false == file2.exists()) {
+            // 两个文件都不存在判断其路径是否相同
+            if (false == file1.exists() && false == file2.exists() && pathEquals(file1, file2)) {
+                return true;
+            }
+            // 对于一个存在一个不存在的情况，一定不相同
+            return false;
+        }
+        try {
+            return Files.isSameFile(file1.toPath(), file2.toPath());
+        } catch (IOException e) {
+            throw new IORuntimeException(e);
+        }
+    }
+
+    /**
+     * 比较两个文件内容是否相同<br>
+     * 首先比较长度，长度一致再比较内容<br>
+     * 此方法来自Apache Commons io
+     *
+     * @param file1 文件1
+     * @param file2 文件2
+     * @return 两个文件内容一致返回true，否则false
+     * @throws IORuntimeException IO异常
+     */
+    public static boolean contentEquals(File file1, File file2) throws IORuntimeException {
+        return FileUtil.contentEquals(file1, file2);
+    }
+
+    /**
+     * 比较两个文件内容是否相同<br>
+     * 首先比较长度，长度一致再比较内容，比较内容采用按行读取，每行比较<br>
+     * 此方法来自Apache Commons io
+     *
+     * @param file1   文件1
+     * @param file2   文件2
+     * @param charset 编码，null表示使用平台默认编码 两个文件内容一致返回true，否则false
+     * @throws IOException IO异常
+     */
+    public static boolean contentEqualsIgnoreEOL(File file1, File file2, Charset charset) throws IOException {
+        return FileUtils.contentEqualsIgnoreEOL(file1, file2, charset.name());
+    }
+
+    /**
+     * 文件路径是否相同<br>
+     * 取两个文件的绝对路径比较，在Windows下忽略大小写，在Linux下不忽略。
+     *
+     * @param file1 文件1
+     * @param file2 文件2
+     * @return 文件路径是否相同
+     */
+    public static boolean pathEquals(File file1, File file2) {
+        if (isWindows()) {
+            // Windows环境
+            try {
+                if (StringUtils.equalsIgnoreCase(file1.getCanonicalPath(), file2.getCanonicalPath())) {
+                    return true;
+                }
+            } catch (Exception e) {
+                if (StringUtils.equalsIgnoreCase(file1.getAbsolutePath(), file2.getAbsolutePath())) {
+                    return true;
+                }
+            }
+        } else {
+            // 类Unix环境
+            try {
+                if (StringUtils.equals(file1.getCanonicalPath(), file2.getCanonicalPath())) {
+                    return true;
+                }
+            } catch (Exception e) {
+                if (StringUtils.equals(file1.getAbsolutePath(), file2.getAbsolutePath())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
     private static FileVisitor<Path> deleteFileVisitor = new SimpleFileVisitor<Path>() {
 
@@ -511,71 +871,13 @@ public class FileUtil {
                 throw new IOException("Cannot move directory: " + from + " to a subdirectory of itself: " + to);
             }
             copyDir(from, to);
-            deleteDir(from);
+            del(from);
             if (from.exists()) {
                 throw new IOException("Failed to delete original directory '" + from + "' after copy to '" + to + '\'');
             }
         }
     }
 
-    /**
-     * 创建文件或更新时间戳.
-     *
-     * @see {@link com.google.common.io.Files#touch}
-     */
-    public static void touch(String filePath) throws IOException {
-        touch(new File(filePath));
-    }
-
-    /**
-     * 创建文件或更新时间戳.
-     *
-     * @see {@link com.google.common.io.Files#touch}
-     */
-    public static void touch(File file) throws IOException {
-        com.google.common.io.Files.touch(file);
-    }
-
-    /**
-     * 删除文件.
-     * <p>
-     * 如果文件不存在或者是目录，则不做修改
-     */
-    public static void deleteFile(@Nullable File file) throws IOException {
-        Validate.isTrue(isFileExists(file), "%s is not exist or not a file", file);
-        deleteFile(file.toPath());
-    }
-
-    /**
-     * 删除文件.
-     * <p>
-     * 如果文件不存在或者是目录，则不做修改
-     */
-    public static void deleteFile(@Nullable Path path) throws IOException {
-        Validate.isTrue(isFileExists(path), "%s is not exist or not a file", path);
-
-        Files.delete(path);
-    }
-
-    /**
-     * 删除目录及所有子目录/文件
-     *
-     * @see {@link Files#walkFileTree}
-     */
-    public static void deleteDir(Path dir) throws IOException {
-        Validate.isTrue(isDirExists(dir), "%s is not exist or not a dir", dir);
-
-        // 后序遍历，先删掉子目录中的文件/目录
-        Files.walkFileTree(dir, deleteFileVisitor);
-    }
-
-    /**
-     * 删除目录及所有子目录/文件
-     */
-    public static void deleteDir(File dir) throws IOException {
-        Validate.isTrue(isDirExists(dir), "%s is not exist or not a dir", dir);
-        deleteDir(dir.toPath());
-    }
 
     /**
      * 判断目录是否存在, from Jodd
@@ -682,23 +984,6 @@ public class FileUtil {
         return Files.createTempDirectory(System.currentTimeMillis() + "-");
     }
 
-    /**
-     * 在临时目录创建临时文件，命名为tmp-${random.nextLong()}.tmp
-     *
-     * @see {@link Files#createTempFile}
-     */
-    public static Path createTempFile() throws IOException {
-        return Files.createTempFile("tmp-", ".tmp");
-    }
-
-    /**
-     * 在临时目录创建临时文件，命名为${prefix}${random.nextLong()}${suffix}
-     *
-     * @see {@link Files#createTempFile}
-     */
-    public static Path createTempFile(String prefix, String suffix) throws IOException {
-        return Files.createTempFile(prefix, suffix);
-    }
 
     private static Path getPath(String filePath) {
         return Paths.get(filePath);
