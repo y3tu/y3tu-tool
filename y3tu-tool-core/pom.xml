@@ -21,6 +21,7 @@
         <commons-lang3-version>3.7</commons-lang3-version>
         <commons-io-version>2.6</commons-io-version>
         <guava-version>20.0</guava-version>
+        <commons-beanutils-version>1.9.3</commons-beanutils-version>
     </properties>
 
     <dependencies>
@@ -43,19 +44,8 @@
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
-            <version>1.9.3</version>
+            <version>${commons-beanutils-version}</version>
         </dependency>
-
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
 
 </project>
