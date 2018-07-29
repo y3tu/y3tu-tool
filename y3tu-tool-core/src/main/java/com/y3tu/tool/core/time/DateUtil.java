@@ -808,6 +808,17 @@ public class DateUtil {
     }
 
     /**
+     * 转换时间格式
+     *
+     * @param date   时间
+     * @param format 格式
+     * @return
+     */
+    public static Date toDate(Date date, String format) {
+        return turnStrDateToJavaUtilDate(turnJavaUtilDateToStrDate(date, format), format);
+    }
+
+    /**
      * 格式化CST（ Thu Aug 27 18:05:49 CST 2015 ）格式字符串
      *
      * @param date

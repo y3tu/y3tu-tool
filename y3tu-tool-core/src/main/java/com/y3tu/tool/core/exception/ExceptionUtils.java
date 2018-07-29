@@ -1,5 +1,6 @@
 package com.y3tu.tool.core.exception;
 
+import com.y3tu.tool.core.reflect.ReflectionUtil;
 import com.y3tu.tool.core.text.StringUtils;
 
 import java.io.PrintWriter;
@@ -7,6 +8,7 @@ import java.io.StringWriter;
 
 /**
  * 异常工具类
+ *
  * @author y3tu
  * @date 2018/4/9
  */
@@ -19,7 +21,7 @@ public class ExceptionUtils {
      * @return 完整消息
      */
     public static String getMessage(Throwable e) {
-        if(null == e) {
+        if (null == e) {
             return "";
         }
         return StringUtils.format("{}: {}", e.getClass().getSimpleName(), e.getMessage());
@@ -63,5 +65,21 @@ public class ExceptionUtils {
         } else {
             return new RuntimeException(e);
         }
+    }
+
+    /**
+     * 包装一个异常
+     *
+     * @param throwable     异常
+     * @param wrapThrowable 包装后的异常类
+     * @return 包装后的异常
+     * @since 3.3.0
+     */
+    @SuppressWarnings("unchecked")
+    public static <T extends Throwable> T wrap(Throwable throwable, Class<T> wrapThrowable) {
+        if (wrapThrowable.isInstance(throwable)) {
+            return (T) throwable;
+        }
+        return ReflectionUtil.newInstance(wrapThrowable, throwable);
     }
 }

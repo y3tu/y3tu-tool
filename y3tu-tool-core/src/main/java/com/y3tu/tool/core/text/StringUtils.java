@@ -2,6 +2,7 @@ package com.y3tu.tool.core.text;
 
 
 import com.y3tu.tool.core.annotation.Nullable;
+import com.y3tu.tool.core.collection.ArrayUtil;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -417,4 +418,75 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
 
 
+    /**
+     * 将已有字符串填充为规定长度，如果已有字符串超过这个长度则返回这个字符串<br>
+     * 字符填充于字符串前
+     *
+     * @param str        被填充的字符串
+     * @param filledChar 填充的字符
+     * @param len        填充长度
+     * @return 填充后的字符串
+     * @since 3.1.2
+     */
+    public static String fillBefore(String str, char filledChar, int len) {
+        return fill(str, filledChar, len, true);
+    }
+
+    /**
+     * 将已有字符串填充为规定长度，如果已有字符串超过这个长度则返回这个字符串<br>
+     * 字符填充于字符串后
+     *
+     * @param str        被填充的字符串
+     * @param filledChar 填充的字符
+     * @param len        填充长度
+     * @return 填充后的字符串
+     * @since 3.1.2
+     */
+    public static String fillAfter(String str, char filledChar, int len) {
+        return fill(str, filledChar, len, false);
+    }
+
+    /**
+     * 将已有字符串填充为规定长度，如果已有字符串超过这个长度则返回这个字符串
+     *
+     * @param str        被填充的字符串
+     * @param filledChar 填充的字符
+     * @param len        填充长度
+     * @param isPre      是否填充在前
+     * @return 填充后的字符串
+     * @since 3.1.2
+     */
+    public static String fill(String str, char filledChar, int len, boolean isPre) {
+        final int strLen = str.length();
+        if (strLen > len) {
+            return str;
+        }
+
+        String filledStr = StringUtils.repeat(filledChar, len - strLen);
+        return isPre ? filledStr.concat(str) : str.concat(filledStr);
+    }
+
+    /**
+     * 是否以指定字符串结尾<br>
+     * 如果给定的字符串和开头字符串都为null则返回true，否则任意一个值为null返回false
+     *
+     * @param str 被监测字符串
+     * @param suffix 结尾字符串
+     * @param isIgnoreCase 是否忽略大小写
+     * @return 是否以指定字符串结尾
+     */
+    public static boolean endWith(CharSequence str, CharSequence suffix, boolean isIgnoreCase) {
+        if (null == str || null == suffix) {
+            if (null == str && null == suffix) {
+                return true;
+            }
+            return false;
+        }
+
+        if (isIgnoreCase) {
+            return str.toString().toLowerCase().endsWith(suffix.toString().toLowerCase());
+        } else {
+            return str.toString().endsWith(suffix.toString());
+        }
+    }
 }
