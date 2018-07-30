@@ -315,7 +315,51 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         }
         return str2;
     }
+    /**
+     * 去掉指定后缀
+     *
+     * @param str 字符串
+     * @param suffix 后缀
+     * @return 切掉后的字符串，若后缀不是 suffix， 返回原字符串
+     */
+    public static String removeSuffix(CharSequence str, CharSequence suffix) {
+        if (isEmpty(str) || isEmpty(suffix)) {
+            return str.toString();
+        }
 
+        final String str2 = str.toString();
+        if (str2.endsWith(suffix.toString())) {
+            // 截取前半段
+            return subPre(str2, str2.length() - suffix.length());
+        }
+        return str2;
+    }
+
+
+    /**
+     * 切割指定位置之前部分的字符串
+     *
+     * @param string 字符串
+     * @param toIndex 切割到的位置（不包括）
+     * @return 切割后的剩余的前半部分字符串
+     */
+    public static String subPre(CharSequence string, int toIndex) {
+        return substring(string.toString(), 0, toIndex);
+    }
+
+    /**
+     * 切割指定位置之后部分的字符串
+     *
+     * @param string 字符串
+     * @param fromIndex 切割开始的位置（包括）
+     * @return 切割后后剩余的后半部分字符串
+     */
+    public static String subSuf(CharSequence string, int fromIndex) {
+        if (isEmpty(string)) {
+            return null;
+        }
+        return substring(string.toString(), fromIndex, string.length());
+    }
     /**
      * 字符串是否以给定字符开始
      *

@@ -588,6 +588,122 @@ public class FileUtil {
         return false;
     }
 
+    /**
+     * 获得相对子路径
+     *
+     * 栗子：
+     *
+     * <pre>
+     * dirPath: d:/aaa/bbb    filePath: d:/aaa/bbb/ccc     =》    ccc
+     * dirPath: d:/Aaa/bbb    filePath: d:/aaa/bbb/ccc.txt     =》    ccc.txt
+     * </pre>
+     *
+     * @param rootDir 绝对父路径
+     * @param file 文件
+     * @return 相对子路径
+     */
+    public static String subPath(String rootDir, File file) {
+        try {
+            return subPath(rootDir, file.getCanonicalPath());
+        } catch (IOException e) {
+            throw new IORuntimeException(e);
+        }
+    }
+
+    /**
+     * 获得相对子路径，忽略大小写
+     *
+     * 栗子：
+     *
+     * <pre>
+     * dirPath: d:/aaa/bbb    filePath: d:/aaa/bbb/ccc     =》    ccc
+     * dirPath: d:/Aaa/bbb    filePath: d:/aaa/bbb/ccc.txt     =》    ccc.txt
+     * dirPath: d:/Aaa/bbb    filePath: d:/aaa/bbb/     =》    ""
+     * </pre>
+     *
+     * @param dirPath 父路径
+     * @param filePath 文件路径
+     * @return 相对子路径
+     */
+    public static String subPath(String dirPath, String filePath) {
+        if (StringUtils.isNotEmpty(dirPath) && StringUtils.isNotEmpty(filePath)) {
+
+            dirPath = StringUtils.removeSuffix(FilePathUtil.normalize(dirPath), "/");
+            filePath = FilePathUtil.normalize(filePath);
+
+            final String result = StringUtils.removePrefixIgnoreCase(filePath, dirPath);
+            return StringUtils.removePrefix(result, "/");
+        }
+        return filePath;
+    }
+
+    /**
+     * 获取指定位置的子路径部分，支持负数，例如index为-1表示从后数第一个节点位置
+     *
+     * @param path 路径
+     * @param index 路径节点位置，支持负数（负数从后向前计数）
+     * @return 获取的子路径
+     * @since 3.1.2
+     */
+    public static Path getPathEle(Path path, int index) {
+        return subPath(path, index, index == -1 ? path.getNameCount() : index + 1);
+    }
+
+    /**
+     * 获取指定位置的最后一个子路径部分
+     *
+     * @param path 路径
+     * @return 获取的最后一个子路径
+     * @since 3.1.2
+     */
+    public static Path getLastPathEle(Path path) {
+        return getPathEle(path, path.getNameCount() - 1);
+    }
+
+    /**
+     * 获取指定位置的子路径部分，支持负数，例如起始为-1表示从后数第一个节点位置
+     *
+     * @param path 路径
+     * @param fromIndex 起始路径节点（包括）
+     * @param toIndex 结束路径节点（不包括）
+     * @return 获取的子路径
+     * @since 3.1.2
+     */
+    public static Path subPath(Path path, int fromIndex, int toIndex) {
+        if (null == path) {
+            return null;
+        }
+        final int len = path.getNameCount();
+
+        if (fromIndex < 0) {
+            fromIndex = len + fromIndex;
+            if (fromIndex < 0) {
+                fromIndex = 0;
+            }
+        } else if (fromIndex > len) {
+            fromIndex = len;
+        }
+
+        if (toIndex < 0) {
+            toIndex = len + toIndex;
+            if (toIndex < 0) {
+                toIndex = len;
+            }
+        } else if (toIndex > len) {
+            toIndex = len;
+        }
+
+        if (toIndex < fromIndex) {
+            int tmp = fromIndex;
+            fromIndex = toIndex;
+            toIndex = tmp;
+        }
+
+        if (fromIndex == toIndex) {
+            return null;
+        }
+        return path.subpath(fromIndex, toIndex);
+    }
 
     private static FileVisitor<Path> deleteFileVisitor = new SimpleFileVisitor<Path>() {
 
