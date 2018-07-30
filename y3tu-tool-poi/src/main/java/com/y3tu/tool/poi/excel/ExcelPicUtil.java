@@ -28,7 +28,6 @@ import org.openxmlformats.schemas.drawingml.x2006.spreadsheetDrawing.CTMarker;
  * Excel图片工具类
  *
  * @author looly
- * @since 4.0.7
  */
 public class ExcelPicUtil {
     /**

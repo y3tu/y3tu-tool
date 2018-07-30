@@ -15,7 +15,6 @@ import org.apache.poi.ss.usermodel.Sheet;
  * Excel中的行{@link Row}封装工具类
  *
  * @author looly
- * @since 4.0.7
  */
 public class RowUtil {
     /**
@@ -24,7 +23,6 @@ public class RowUtil {
      * @param sheet    Excel表
      * @param rowIndex 行号
      * @return {@link Row}
-     * @since 4.0.2
      */
     public static Row getOrCreateRow(Sheet sheet, int rowIndex) {
         Row row = sheet.getRow(rowIndex);

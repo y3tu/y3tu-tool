@@ -6,7 +6,6 @@ import java.util.Date;
 
 import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.core.time.DateFormatUtil;
-import com.y3tu.tool.core.time.DateUtil;
 import com.y3tu.tool.poi.excel.StyleSet;
 import com.y3tu.tool.poi.excel.editors.TrimEditor;
 import org.apache.poi.ss.usermodel.Cell;
@@ -143,7 +142,8 @@ public class CellUtil {
         } else if (value instanceof RichTextString) {
             cell.setCellValue((RichTextString) value);
         } else if (value instanceof Number) {
-            if ((value instanceof Double || value instanceof Float) && null != styleSet && null != styleSet.getCellStyleForNumber()) {
+            boolean exist = (value instanceof Double || value instanceof Float) && null != styleSet && null != styleSet.getCellStyleForNumber();
+            if (exist) {
                 cell.setCellStyle(styleSet.getCellStyleForNumber());
             }
             cell.setCellValue(((Number) value).doubleValue());
@@ -158,7 +158,6 @@ public class CellUtil {
      * @param row       Excel表的行
      * @param cellIndex 列号
      * @return {@link Row}
-     * @since 4.0.2
      */
     public static Cell getOrCreateCell(Row row, int cellIndex) {
         Cell cell = row.getCell(cellIndex);
@@ -200,11 +199,15 @@ public class CellUtil {
      * @return 合并后的单元格号
      */
     public static int mergingCells(Sheet sheet, int firstRow, int lastRow, int firstColumn, int lastColumn, CellStyle cellStyle) {
-        final CellRangeAddress cellRangeAddress = new CellRangeAddress(//
-                firstRow, // first row (0-based)
-                lastRow, // last row (0-based)
-                firstColumn, // first column (0-based)
-                lastColumn // last column (0-based)
+        final CellRangeAddress cellRangeAddress = new CellRangeAddress(
+                // first row (0-based)
+                firstRow,
+                // last row (0-based)
+                lastRow,
+                // first column (0-based)
+                firstColumn,
+                // last column (0-based)
+                lastColumn
         );
 
         if (null != cellStyle) {

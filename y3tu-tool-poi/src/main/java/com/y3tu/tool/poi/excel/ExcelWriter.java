@@ -40,7 +40,6 @@ import org.apache.poi.ss.usermodel.Workbook;
  * </pre>
  *
  * @author Looly
- * @since 3.2.0
  */
 public class ExcelWriter extends ExcelBase<ExcelWriter> {
 
@@ -67,8 +66,6 @@ public class ExcelWriter extends ExcelBase<ExcelWriter> {
      * 构造，默认生成xls格式的Excel文件<br>
      * 此构造不传入写出的Excel文件路径，只能调用{@link #flush(OutputStream)}方法写出到流<br>
      * 若写出到文件，还需调用{@link #setDestFile(File)}方法自定义写出的文件，然后调用{@link #flush()}方法写出到文件
-     *
-     * @since 3.2.1
      */
     public ExcelWriter() {
         this(false);
@@ -80,7 +77,6 @@ public class ExcelWriter extends ExcelBase<ExcelWriter> {
      * 若写出到文件，还需调用{@link #setDestFile(File)}方法自定义写出的文件，然后调用{@link #flush()}方法写出到文件
      *
      * @param isXlsx 是否为xlsx格式
-     * @since 3.2.1
      */
     public ExcelWriter(boolean isXlsx) {
         this(WorkbookUtil.createBook(isXlsx), null);
@@ -143,7 +139,6 @@ public class ExcelWriter extends ExcelBase<ExcelWriter> {
      * 若写出到文件，还需调用{@link #setDestFile(File)}方法自定义写出的文件，然后调用{@link #flush()}方法写出到文件
      *
      * @param sheet {@link Sheet}
-     * @since 4.0.6
      */
     public ExcelWriter(Sheet sheet) {
         super(sheet);
@@ -158,7 +153,6 @@ public class ExcelWriter extends ExcelBase<ExcelWriter> {
      *
      * @param columnIndex 第几列，从0计数
      * @return this
-     * @since 4.0.12
      */
     public ExcelWriter autoSizeColumn(int columnIndex) {
         this.sheet.autoSizeColumn(columnIndex);
@@ -172,7 +166,6 @@ public class ExcelWriter extends ExcelBase<ExcelWriter> {
      * @param columnIndex    第几列，从0计数
      * @param useMergedCells 是否适用于合并单元格
      * @return this
-     * @since 3.3.0
      */
     public ExcelWriter autoSizeColumn(int columnIndex, boolean useMergedCells) {
         this.sheet.autoSizeColumn(columnIndex, useMergedCells);
@@ -190,7 +183,6 @@ public class ExcelWriter extends ExcelBase<ExcelWriter> {
      * </pre>
      *
      * @return 样式集
-     * @since 4.0.0
      */
     public StyleSet getStyleSet() {
         return this.styleSet;
@@ -294,7 +286,6 @@ public class ExcelWriter extends ExcelBase<ExcelWriter> {
      * @param columnIndex 列号（从0开始计数，-1表示所有列的默认宽度）
      * @param width       宽度（单位1~256个字符宽度）
      * @return this
-     * @since 4.0.8
      */
     public ExcelWriter setColumnWidth(int columnIndex, int width) {
         if (columnIndex < 0) {
@@ -311,7 +302,6 @@ public class ExcelWriter extends ExcelBase<ExcelWriter> {
      * @param rownum 行号（从0开始计数，-1表示所有行的默认高度）
      * @param height 高度
      * @return this
-     * @since 4.0.8
      */
     public ExcelWriter setRowHeight(int rownum, int height) {
         if (rownum < 0) {
@@ -329,7 +319,6 @@ public class ExcelWriter extends ExcelBase<ExcelWriter> {
      * @param align    对齐方式枚举 {@link Align}
      * @param isFooter 是否为页脚，false表示页眉，true表示页脚
      * @return this
-     * @since 4.1.0
      */
     public ExcelWriter setHeaderOrFooter(String text, Align align, boolean isFooter) {
         final HeaderFooter headerFooter = isFooter ? this.sheet.getFooter() : this.sheet.getHeader();
@@ -382,7 +371,6 @@ public class ExcelWriter extends ExcelBase<ExcelWriter> {
      * @param content          合并单元格后的内容
      * @param isSetHeaderStyle 是否为合并后的单元格设置默认标题样式
      * @return this
-     * @since 4.0.10
      */
     public ExcelWriter merge(int lastColumn, Object content, boolean isSetHeaderStyle) {
         Assert.isFalse(this.isClosed, "ExcelWriter has been closed!");
@@ -406,7 +394,6 @@ public class ExcelWriter extends ExcelBase<ExcelWriter> {
      * @param content          合并单元格后的内容
      * @param isSetHeaderStyle 是否为合并后的单元格设置默认标题样式
      * @return this
-     * @since 4.0.10
      */
     public ExcelWriter merge(int firstRow, int lastRow, int firstColumn, int lastColumn, Object content, boolean isSetHeaderStyle) {
         Assert.isFalse(this.isClosed, "ExcelWriter has been closed!");
@@ -477,7 +464,6 @@ public class ExcelWriter extends ExcelBase<ExcelWriter> {
      * @param data       数据
      * @param comparator 比较器，用于字段名的排序
      * @return this
-     * @since 3.2.3
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
     public <T> ExcelWriter write(Iterable<T> data, Comparator<String> comparator) {
@@ -552,7 +538,6 @@ public class ExcelWriter extends ExcelBase<ExcelWriter> {
      * @param y     Y坐标，从0计数，既行号
      * @param value 值
      * @return this
-     * @since 4.0.2
      */
     public ExcelWriter writeCellValue(int x, int y, Object value) {
         final Cell cell = getOrCreateCell(x, y);
@@ -566,7 +551,6 @@ public class ExcelWriter extends ExcelBase<ExcelWriter> {
      * @param x X坐标，从0计数，既列号
      * @param y Y坐标，从0计数，既行号
      * @return {@link CellStyle}
-     * @since 4.0.9
      * @deprecated 请使用{@link #getOrCreateCellStyle(int, int)}
      */
     @Deprecated
@@ -581,7 +565,6 @@ public class ExcelWriter extends ExcelBase<ExcelWriter> {
      * 创建字体
      *
      * @return 字体
-     * @since 4.1.0
      */
     public Font createFont() {
         return getWorkbook().createFont();
@@ -606,7 +589,6 @@ public class ExcelWriter extends ExcelBase<ExcelWriter> {
      * @param destFile 写出到的文件
      * @return this
      * @throws IORuntimeException IO异常
-     * @since 4.0.6
      */
     public ExcelWriter flush(File destFile) throws IORuntimeException {
         Assert.notNull(destFile, "[destFile] is null, and you must call setDestFile(File) first or call flush(OutputStream).");

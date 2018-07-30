@@ -18,6 +18,7 @@
         <module>y3tu-tool-excel</module>
         <module>y3tu-tool-ssh</module>
         <module>y3tu-tool-poi</module>
+        <module>y3tu-tool-mail</module>
     </modules>
 
     <properties>

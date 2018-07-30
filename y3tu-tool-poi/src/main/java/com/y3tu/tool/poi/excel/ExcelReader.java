@@ -15,9 +15,7 @@ import com.y3tu.tool.core.lang.Assert;
 import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.poi.excel.cell.CellEditor;
 import com.y3tu.tool.poi.excel.cell.CellUtil;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.beanutils.Converter;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.extractor.ExcelExtractor;
 import org.apache.poi.ss.usermodel.Row;
@@ -32,7 +30,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * 读取Excel工作簿
  *
  * @author Looly
- * @since 3.1.0
  */
 public class ExcelReader extends ExcelBase<ExcelReader> {
 
@@ -225,7 +222,6 @@ public class ExcelReader extends ExcelBase<ExcelReader> {
      *
      * @param startRowIndex 起始行（包含，从0开始计数）
      * @return 行的集合，一行使用List表示
-     * @since 4.0.0
      */
     public List<List<Object>> read(int startRowIndex) {
         return read(startRowIndex, Integer.MAX_VALUE);
@@ -242,9 +238,10 @@ public class ExcelReader extends ExcelBase<ExcelReader> {
     public List<List<Object>> read(int startRowIndex, int endRowIndex) {
         checkNotClosed();
         List<List<Object>> resultList = new ArrayList<>();
-
-        startRowIndex = Math.max(startRowIndex, sheet.getFirstRowNum());// 读取起始行（包含）
-        endRowIndex = Math.min(endRowIndex, sheet.getLastRowNum());// 读取结束行（包含）
+        //读取起始行（包含）
+        startRowIndex = Math.max(startRowIndex, sheet.getFirstRowNum());
+        //读取结束行（包含）
+        endRowIndex = Math.min(endRowIndex, sheet.getLastRowNum());
         boolean isFirstLine = true;
         List rowList;
         for (int i = startRowIndex; i <= endRowIndex; i++) {
@@ -294,8 +291,10 @@ public class ExcelReader extends ExcelBase<ExcelReader> {
         } else if (headerRowIndex > lastRowNum) {
             throw new IndexOutOfBoundsException(StringUtils.format("Header row index {} is greater than last row index {}.", headerRowIndex, firstRowNum));
         }
-        startRowIndex = Math.max(startRowIndex, firstRowNum);// 读取起始行（包含）
-        endRowIndex = Math.min(endRowIndex, lastRowNum);// 读取结束行（包含）
+        // 读取起始行（包含）
+        startRowIndex = Math.max(startRowIndex, firstRowNum);
+        // 读取结束行（包含）
+        endRowIndex = Math.min(endRowIndex, lastRowNum);
 
         // 读取header
         List<Object> headerList = readRow(sheet.getRow(headerRowIndex));

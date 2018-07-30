@@ -18,7 +18,6 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
  * Excel工作簿{@link Workbook}相关工具类
  *
  * @author looly
- * @since 4.0.7
  */
 public class WorkbookUtil {
 
@@ -27,7 +26,6 @@ public class WorkbookUtil {
      *
      * @param excelFilePath Excel文件路径，绝对路径或相对于ClassPath路径
      * @return {@link Workbook}
-     * @since 3.1.1
      */
     public static Workbook createBook(String excelFilePath) {
         return createBook(FileUtil.file(excelFilePath), null);
@@ -76,7 +74,6 @@ public class WorkbookUtil {
      * @param password       密码
      * @param closeAfterRead 读取结束是否关闭流
      * @return {@link Workbook}
-     * @since 4.0.3
      */
     public static Workbook createBook(InputStream in, String password, boolean closeAfterRead) {
         try {
@@ -95,14 +92,14 @@ public class WorkbookUtil {
      *
      * @param isXlsx 是否为xlsx格式的Excel
      * @return {@link Workbook}
-     * @since 4.1.0
      */
     public static Workbook createBook(boolean isXlsx) {
         Workbook workbook;
         if (isXlsx) {
             workbook = new org.apache.poi.xssf.usermodel.XSSFWorkbook();
         } else {
-            workbook = new org.apache.poi.hssf.usermodel.HSSFWorkbook();
+            // workbook = new org.apache.poi.hssf.usermodel.HSSFWorkbook();
+            workbook = new org.apache.poi.xssf.usermodel.XSSFWorkbook();
         }
         return workbook;
     }
@@ -113,7 +110,6 @@ public class WorkbookUtil {
      * @param book {@link Workbook}
      * @param out  输出流
      * @throws IORuntimeException IO异常
-     * @since 3.2.0
      */
     public static void writeBook(Workbook book, OutputStream out) throws IORuntimeException {
         try {

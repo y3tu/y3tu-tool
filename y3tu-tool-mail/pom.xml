@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>y3tu-tool</artifactId>
+        <groupId>com.y3tu</groupId>
+        <version>1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.y3tu</groupId>
+    <artifactId>y3tu-tool-mail</artifactId>
+    <version>1.0</version>
+    <name>y3tu-tool-mail</name>
+    <url>邮件工具</url>
+
+    <properties>
+        <mail-version>1.6.1</mail-version>
+    </properties>
+
+    <dependencies>
+        <!-- 邮件 -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>${mail-version}</version>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+
+    </dependencies>
+
+</project>

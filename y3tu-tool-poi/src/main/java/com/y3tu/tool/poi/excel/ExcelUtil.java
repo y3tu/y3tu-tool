@@ -477,7 +477,6 @@ public class ExcelUtil {
      * @param book      工作簿{@link Workbook}
      * @param sheetName 工作表名
      * @return 工作表{@link Sheet}
-     * @since 4.0.2
      */
     public static Sheet getOrCreateSheet(Workbook book, String sheetName) {
         if (null == book) {

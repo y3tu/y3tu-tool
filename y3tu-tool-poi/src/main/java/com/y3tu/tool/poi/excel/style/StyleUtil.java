@@ -16,7 +16,6 @@ import org.apache.poi.ss.usermodel.Workbook;
  * Excel样式工具类
  *
  * @author looly
- * @since 4.0.0
  */
 public class StyleUtil {
 

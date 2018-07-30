@@ -55,9 +55,9 @@ public class StyleSet {
         this.cellStyleForDate.setDataFormat((short) 22);
 
         // 默认数字格式
-        cellStyleForNumber = StyleUtil.cloneCellStyle(workbook, this.cellStyle);
+        this.cellStyleForNumber = StyleUtil.cloneCellStyle(workbook, this.cellStyle);
         // 2表示：0.00
-        cellStyleForNumber.setDataFormat((short) 2);
+        this.cellStyleForNumber.setDataFormat((short) 2);
     }
 
     /**
@@ -102,7 +102,6 @@ public class StyleSet {
      * @param borderSize 边框粗细{@link BorderStyle}枚举
      * @param colorIndex 颜色的short值
      * @return this
-     * @since 4.0.0
      */
     public StyleSet setBorder(BorderStyle borderSize, IndexedColors colorIndex) {
         StyleUtil.setBorder(this.headCellStyle, borderSize, colorIndex);
@@ -118,7 +117,6 @@ public class StyleSet {
      * @param halign 横向位置
      * @param valign 纵向位置
      * @return this
-     * @since 4.0.0
      */
     public StyleSet setAlign(HorizontalAlignment halign, VerticalAlignment valign) {
         StyleUtil.setAlign(this.headCellStyle, halign, valign);
@@ -134,7 +132,6 @@ public class StyleSet {
      * @param backgroundColor 背景色
      * @param withHeadCell    是否也定义头部样式
      * @return this
-     * @since 4.0.0
      */
     public StyleSet setBackgroundColor(IndexedColors backgroundColor, boolean withHeadCell) {
         if (withHeadCell) {
@@ -166,7 +163,6 @@ public class StyleSet {
      * @param font       字体，可以通过{@link StyleUtil#createFont(Workbook, short, short, String)}创建
      * @param ignoreHead 是否跳过头部样式
      * @return this
-     * @since 4.1.0
      */
     public StyleSet setFont(Font font, boolean ignoreHead) {
         if (false == ignoreHead) {
