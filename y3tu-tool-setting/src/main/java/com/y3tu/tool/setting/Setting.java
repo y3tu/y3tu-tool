@@ -14,6 +14,8 @@ import com.y3tu.tool.core.util.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -255,7 +257,7 @@ public class Setting extends LinkedHashMap<String, String> {
             Map<String, String> map = this.getMap(group);
             for (String key : map.keySet()) {
                 if(ReflectionUtil.getField(clazz,key)!=null){
-                    ReflectionUtil.setFieldValue(bean,key,map.get(key));
+                    ReflectionUtil.setFieldValue(bean,key,ConvertUtils.convert(map.get(key),ReflectionUtil.getField(clazz,key).getType()));
                 }
             }
         } catch (Exception e) {

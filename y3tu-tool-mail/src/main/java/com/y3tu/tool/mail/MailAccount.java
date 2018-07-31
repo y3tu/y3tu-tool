@@ -3,6 +3,7 @@ package com.y3tu.tool.mail;
 import com.y3tu.tool.core.text.CharsetUtil;
 import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.setting.Setting;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.nio.charset.Charset;
@@ -16,6 +17,7 @@ import java.util.Properties;
  * @author Luxiaolei
  *
  */
+@Data
 public class MailAccount implements Serializable {
 	private static final long serialVersionUID = -6937313421815719204L;
 

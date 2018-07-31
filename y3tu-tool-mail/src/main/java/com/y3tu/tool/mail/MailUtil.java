@@ -220,6 +220,7 @@ public class MailUtil {
 			result = ArrayUtil.asList(StringUtils.split(addresses, ','));
 		}else {
 			result = new ArrayList<String>();
+			result.add(addresses);
 		}
 		return result;
 	}
