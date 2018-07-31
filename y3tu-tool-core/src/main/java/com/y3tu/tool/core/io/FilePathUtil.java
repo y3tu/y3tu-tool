@@ -13,29 +13,19 @@ import com.y3tu.tool.core.util.URLUtil;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.LinkedList;
 import java.util.List;
 
 
 /**
- * 关于文件路径的工具集. 这个类只适合处理纯字符串的路径，如果是File对象或者Path对象的路径处理，建议直接使用Path类的方法。
- *
- * @see {@link java.nio.file.Path}
+ * 关于文件路径的工具集
  */
 public class FilePathUtil {
-
-    /**
-     * 在Windows环境里，兼容Windows上的路径分割符，将 '/' 转回 '\'
-     */
-    public static String normalizePath(String path) {
-        if (Platforms.FILE_PATH_SEPARATOR_CHAR == Platforms.WINDOWS_FILE_PATH_SEPARATOR_CHAR
-                && StringUtils.indexOf(path, Platforms.LINUX_FILE_PATH_SEPARATOR_CHAR) != -1) {
-            return StringUtils.replaceChars(path, Platforms.LINUX_FILE_PATH_SEPARATOR_CHAR,
-                    Platforms.WINDOWS_FILE_PATH_SEPARATOR_CHAR);
-        }
-        return path;
-
-    }
 
 
     /**
@@ -165,7 +155,7 @@ public class FilePathUtil {
             pathToUse = pathToUse.substring(1);
         }
 
-        List<String> pathList = ArrayUtil.asList(StringUtils.split(pathToUse, StringUtils.C_SLASH));
+        List<String> pathList = ArrayUtil.asList(StringUtils.splitPreserveAllTokens(pathToUse, StringUtils.C_SLASH));
         List<String> pathElements = new LinkedList<String>();
         int tops = 0;
 
@@ -188,6 +178,18 @@ public class FilePathUtil {
         }
 
         return prefix + CollectionUtil.join(pathElements, StringUtils.SLASH);
+    }
+
+    /**
+     * 获取绝对路径，相对于ClassPath的目录<br>
+     * 如果给定就是绝对路径，则返回原路径，原路径把所有\替换为/<br>
+     * 兼容Spring风格的路径表示，例如：classpath:config/example.setting也会被识别后转换
+     *
+     * @param path 相对路径
+     * @return 绝对路径
+     */
+    public static String getAbsolutePath(String path) {
+        return getAbsolutePath(path, null);
     }
 
     /**
@@ -227,17 +229,6 @@ public class FilePathUtil {
         return normalize(classPath.concat(path));
     }
 
-    /**
-     * 获取绝对路径，相对于ClassPath的目录<br>
-     * 如果给定就是绝对路径，则返回原路径，原路径把所有\替换为/<br>
-     * 兼容Spring风格的路径表示，例如：classpath:config/example.setting也会被识别后转换
-     *
-     * @param path 相对路径
-     * @return 绝对路径
-     */
-    public static String getAbsolutePath(String path) {
-        return getAbsolutePath(path, null);
-    }
 
     /**
      * 获取标准的绝对路径
@@ -274,5 +265,194 @@ public class FilePathUtil {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 文件路径是否相同<br>
+     * 取两个文件的绝对路径比较，在Windows下忽略大小写，在Linux下不忽略。
+     *
+     * @param file1 文件1
+     * @param file2 文件2
+     * @return 文件路径是否相同
+     */
+    public static boolean pathEquals(File file1, File file2) {
+        if (FileUtil.isWindows()) {
+            // Windows环境
+            try {
+                if (StringUtils.equalsIgnoreCase(file1.getCanonicalPath(), file2.getCanonicalPath())) {
+                    return true;
+                }
+            } catch (Exception e) {
+                if (StringUtils.equalsIgnoreCase(file1.getAbsolutePath(), file2.getAbsolutePath())) {
+                    return true;
+                }
+            }
+        } else {
+            // 类Unix环境
+            try {
+                if (StringUtils.equals(file1.getCanonicalPath(), file2.getCanonicalPath())) {
+                    return true;
+                }
+            } catch (Exception e) {
+                if (StringUtils.equals(file1.getAbsolutePath(), file2.getAbsolutePath())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 获得最后一个文件路径分隔符的位置
+     *
+     * @param filePath 文件路径
+     * @return 最后一个文件路径分隔符的位置
+     */
+    public static int lastIndexOfSeparator(String filePath) {
+        if (filePath == null) {
+            return -1;
+        }
+        int lastUnixPos = filePath.lastIndexOf(FileUtil.UNIX_SEPARATOR);
+        int lastWindowsPos = filePath.lastIndexOf(FileUtil.WINDOWS_SEPARATOR);
+        return (lastUnixPos >= lastWindowsPos) ? lastUnixPos : lastWindowsPos;
+    }
+
+    /**
+     * 获得相对子路径
+     * <p>
+     * 栗子：
+     *
+     * <pre>
+     * dirPath: d:/aaa/bbb    filePath: d:/aaa/bbb/ccc     =》    ccc
+     * dirPath: d:/Aaa/bbb    filePath: d:/aaa/bbb/ccc.txt     =》    ccc.txt
+     * </pre>
+     *
+     * @param rootDir 绝对父路径
+     * @param file    文件
+     * @return 相对子路径
+     */
+    public static String subPath(String rootDir, File file) {
+        try {
+            return subPath(rootDir, file.getCanonicalPath());
+        } catch (IOException e) {
+            throw new IORuntimeException(e);
+        }
+    }
+
+    /**
+     * 获得相对子路径，忽略大小写
+     * <p>
+     * 栗子：
+     *
+     * <pre>
+     * dirPath: d:/aaa/bbb    filePath: d:/aaa/bbb/ccc     =》    ccc
+     * dirPath: d:/Aaa/bbb    filePath: d:/aaa/bbb/ccc.txt     =》    ccc.txt
+     * dirPath: d:/Aaa/bbb    filePath: d:/aaa/bbb/     =》    ""
+     * </pre>
+     *
+     * @param dirPath  父路径
+     * @param filePath 文件路径
+     * @return 相对子路径
+     */
+    public static String subPath(String dirPath, String filePath) {
+        if (StringUtils.isNotEmpty(dirPath) && StringUtils.isNotEmpty(filePath)) {
+
+            dirPath = StringUtils.removeSuffix(FilePathUtil.normalize(dirPath), "/");
+            filePath = FilePathUtil.normalize(filePath);
+
+            final String result = StringUtils.removePrefixIgnoreCase(filePath, dirPath);
+            return StringUtils.removePrefix(result, "/");
+        }
+        return filePath;
+    }
+
+    /**
+     * 获取指定位置的子路径部分，支持负数，例如index为-1表示从后数第一个节点位置
+     *
+     * @param path  路径
+     * @param index 路径节点位置，支持负数（负数从后向前计数）
+     * @return 获取的子路径
+     */
+    public static Path getPathEle(Path path, int index) {
+        return subPath(path, index, index == -1 ? path.getNameCount() : index + 1);
+    }
+
+    /**
+     * 获取指定位置的最后一个子路径部分
+     *
+     * @param path 路径
+     * @return 获取的最后一个子路径
+     */
+    public static Path getLastPathEle(Path path) {
+        return getPathEle(path, path.getNameCount() - 1);
+    }
+
+    /**
+     * 获取指定位置的子路径部分，支持负数，例如起始为-1表示从后数第一个节点位置
+     *
+     * @param path      路径
+     * @param fromIndex 起始路径节点（包括）
+     * @param toIndex   结束路径节点（不包括）
+     * @return 获取的子路径
+     */
+    public static Path subPath(Path path, int fromIndex, int toIndex) {
+        if (null == path) {
+            return null;
+        }
+        final int len = path.getNameCount();
+
+        if (fromIndex < 0) {
+            fromIndex = len + fromIndex;
+            if (fromIndex < 0) {
+                fromIndex = 0;
+            }
+        } else if (fromIndex > len) {
+            fromIndex = len;
+        }
+
+        if (toIndex < 0) {
+            toIndex = len + toIndex;
+            if (toIndex < 0) {
+                toIndex = len;
+            }
+        } else if (toIndex > len) {
+            toIndex = len;
+        }
+
+        if (toIndex < fromIndex) {
+            int tmp = fromIndex;
+            fromIndex = toIndex;
+            toIndex = tmp;
+        }
+
+        if (fromIndex == toIndex) {
+            return null;
+        }
+        return path.subpath(fromIndex, toIndex);
+    }
+
+    /**
+     * 判断文件路径是否有指定后缀，忽略大小写<br>
+     * 常用语判断扩展名
+     *
+     * @param file   文件或目录
+     * @param suffix 后缀
+     * @return 是否有指定后缀
+     */
+    public static boolean pathEndsWith(File file, String suffix) {
+        return file.getPath().toLowerCase().endsWith(suffix);
+    }
+
+    /**
+     * 获取Web项目下的web root路径
+     *
+     * @return web root路径
+     */
+    public static File getWebRoot() {
+        String classPath = ClassUtil.getClassPath();
+        if (StringUtils.isNotBlank(classPath)) {
+            return FileUtil.file(classPath).getParentFile().getParentFile();
+        }
+        return null;
     }
 }

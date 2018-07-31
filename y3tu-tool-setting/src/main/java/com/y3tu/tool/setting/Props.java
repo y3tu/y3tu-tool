@@ -1,6 +1,9 @@
 package com.y3tu.tool.setting;
 
-import com.y3tu.tool.core.io.IOUtil;
+import com.y3tu.tool.core.io.FilePathUtil;
+import com.y3tu.tool.core.io.FileUtil;
+import com.y3tu.tool.core.io.IORuntimeException;
+import com.y3tu.tool.core.io.IoUtil;
 import com.y3tu.tool.core.io.resource.ResourceUtil;
 import com.y3tu.tool.core.io.watch.SimpleWatcher;
 import com.y3tu.tool.core.io.watch.WatchMonitor;
@@ -11,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -26,6 +31,8 @@ import java.util.Properties;
 @Slf4j
 public class Props extends Properties {
 
+    // ----------------------------------------------------------------------- 私有属性 start
+
     /**
      * 属性文件的URL
      */
@@ -34,7 +41,41 @@ public class Props extends Properties {
     /**
      * properties文件编码
      */
-    private Charset charset = CharsetUtil.ISO_8859_1;
+    private Charset charset = CharsetUtil.CHARSET_ISO_8859_1;
+    // ----------------------------------------------------------------------- 私有属性 end
+
+    /**
+     * 获得Classpath下的Properties文件
+     *
+     * @param resource 资源（相对Classpath的路径）
+     * @return Properties
+     */
+    public static Properties getProp(String resource) {
+        return new Props(resource);
+    }
+
+    /**
+     * 获得Classpath下的Properties文件
+     *
+     * @param resource    资源（相对Classpath的路径）
+     * @param charsetName 字符集
+     * @return Properties
+     */
+    public static Properties getProp(String resource, String charsetName) {
+        return new Props(resource, charsetName);
+    }
+
+    /**
+     * 获得Classpath下的Properties文件
+     *
+     * @param resource 资源（相对Classpath的路径）
+     * @param charset  字符集
+     * @return Properties
+     */
+    public static Properties getProp(String resource, Charset charset) {
+        return new Props(resource, charset);
+    }
+
 
     // ----------------------------------------------------------------------- 构造方法 start
 
@@ -58,6 +99,16 @@ public class Props extends Properties {
     /**
      * 构造，使用相对于Class文件根目录的相对路径
      *
+     * @param path        相对或绝对路径
+     * @param charsetName 字符集
+     */
+    public Props(String path, String charsetName) {
+        this(path, CharsetUtil.charset(charsetName));
+    }
+
+    /**
+     * 构造，使用相对于Class文件根目录的相对路径
+     *
      * @param path    相对或绝对路径
      * @param charset 字符集
      */
@@ -66,7 +117,7 @@ public class Props extends Properties {
         if (null != charset) {
             this.charset = charset;
         }
-        this.load(ResourceUtil.asUrl(path));
+        this.load(ResourceUtil.asUrlByPath(path));
     }
 
     /**
@@ -118,7 +169,7 @@ public class Props extends Properties {
         }
         log.debug("Load properties [{}]", propertiesFileUrl.getPath());
         try {
-            BufferedReader reader = IOUtil.getReader(URLUtil.getReader(this.propertiesFileUrl, charset));
+            BufferedReader reader = IoUtil.getReader(URLUtil.getReader(this.propertiesFileUrl, charset));
             super.load(reader);
         } catch (Exception e) {
             log.error("Load properties error!", e);
@@ -155,9 +206,50 @@ public class Props extends Properties {
                 throw new SettingRuntimeException(e, "Setting auto load not support url: [{}]", this.propertiesFileUrl);
             }
         } else {
-            IOUtil.close(this.watchMonitor);
+            IoUtil.close(this.watchMonitor);
             this.watchMonitor = null;
         }
     }
+
+    // ----------------------------------------------------------------------- Set start
+
+    /**
+     * 设置值，无给定键创建之。设置后未持久化
+     *
+     * @param key   属性键
+     * @param value 属性值
+     */
+    public void setProperty(String key, Object value) {
+        super.setProperty(key, value.toString());
+    }
+
+    /**
+     * 持久化当前设置，会覆盖掉之前的设置
+     *
+     * @param absolutePath 设置文件的绝对路径
+     * @throws IORuntimeException IO异常，可能为文件未找到
+     */
+    public void store(String absolutePath) throws IORuntimeException {
+        Writer writer = null;
+        try {
+            writer = FileUtil.asBufferedWriter(absolutePath, charset);
+            super.store(writer, null);
+        } catch (IOException e) {
+            throw new IORuntimeException(e, "Store properties to [{}] error!", absolutePath);
+        } finally {
+            IoUtil.close(writer);
+        }
+    }
+
+    /**
+     * 存储当前设置，会覆盖掉以前的设置
+     *
+     * @param path  相对路径
+     * @param clazz 相对的类
+     */
+    public void store(String path, Class<?> clazz) {
+        this.store(FilePathUtil.getAbsolutePath(path, clazz));
+    }
+    // ----------------------------------------------------------------------- Set end
 
 }

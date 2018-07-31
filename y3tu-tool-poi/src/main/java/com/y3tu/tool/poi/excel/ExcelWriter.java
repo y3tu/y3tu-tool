@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.y3tu.tool.core.collection.MapUtil;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IORuntimeException;
-import com.y3tu.tool.core.io.IOUtil;
+import com.y3tu.tool.core.io.IoUtil;
 import com.y3tu.tool.core.lang.Assert;
 import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.core.util.BeanUtil;
@@ -599,7 +599,7 @@ public class ExcelWriter extends ExcelBase<ExcelWriter> {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            IOUtil.close(out);
+            IoUtil.close(out);
         }
         return this;
     }

@@ -14,7 +14,7 @@ public class Setting {
     /**
      * 默认字符集
      */
-    public final static Charset DEFAULT_CHARSET = CharsetUtil.UTF_8;
+    public final static Charset DEFAULT_CHARSET = CharsetUtil.CHARSET_UTF_8;
     /**
      * 本设置对象的字符集
      */

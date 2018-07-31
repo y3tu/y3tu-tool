@@ -1,7 +1,7 @@
 package com.y3tu.tool.core.net;
 
 import com.y3tu.tool.core.collection.CollectionUtil;
-import com.y3tu.tool.core.io.IOUtil;
+import com.y3tu.tool.core.io.IoUtil;
 import com.y3tu.tool.core.lang.Validator;
 import com.y3tu.tool.core.text.StringUtils;
 
@@ -423,7 +423,7 @@ public class NetUtil {
         } catch (IOException e) {
             throw new IOException(e);
         } finally {
-            IOUtil.close(out);
+            IoUtil.close(out);
         }
     }
 

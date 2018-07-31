@@ -9,7 +9,7 @@ import java.io.PushbackInputStream;
 
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IORuntimeException;
-import com.y3tu.tool.core.io.IOUtil;
+import com.y3tu.tool.core.io.IoUtil;
 import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.poi.PoiChecker;
 import com.y3tu.tool.poi.excel.sax.Excel03SaxReader;
@@ -62,7 +62,7 @@ public class ExcelUtil {
      * @since 3.2.0
      */
     public static void readBySax(InputStream in, int sheetIndex, RowHandler rowHandler) {
-        in = IOUtil.toMarkSupportStream(in);
+        in = IoUtil.toMarkSupportStream(in);
         if (isXlsx(in)) {
             read07BySax(in, sheetIndex, rowHandler);
         } else {
@@ -442,7 +442,7 @@ public class ExcelUtil {
      * @return 是否为XLS格式的Excel文件（HSSF）
      */
     public static boolean isXls(InputStream in) {
-        final PushbackInputStream pin = IOUtil.toPushbackStream(in, 8);
+        final PushbackInputStream pin = IoUtil.toPushbackStream(in, 8);
         try {
             return FileMagic.valueOf(pin) == FileMagic.OLE2;
         } catch (IOException e) {

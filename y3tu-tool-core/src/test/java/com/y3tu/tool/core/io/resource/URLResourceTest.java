@@ -6,12 +6,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.google.common.io.Files;
 import com.y3tu.tool.core.io.FileUtil;
-import com.y3tu.tool.core.io.IOUtil;
+import com.y3tu.tool.core.io.IoUtil;
 import com.y3tu.tool.core.lang.Console;
-import com.y3tu.tool.core.lang.Platforms;
-import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
 public class URLResourceTest {
@@ -24,8 +21,8 @@ public class URLResourceTest {
         assertThat(FileUtil.toString(file)).isEqualTo("springside.min=1\nspringside.max=10");
 
         InputStream is = URLResourceUtil.asStream("classpath:application.properties");
-        assertThat(IOUtil.read(is)).isEqualTo("springside.min=1\nspringside.max=10");
-        IOUtil.close(is);
+        assertThat(IoUtil.read(is)).isEqualTo("springside.min=1\nspringside.max=10");
+        IoUtil.close(is);
 
         try {
             URLResourceUtil.asFile("classpath:notexist.properties");

@@ -1,9 +1,10 @@
 package com.y3tu.tool.core.io.watch;
 
 import com.y3tu.tool.core.collection.ArrayUtil;
+import com.y3tu.tool.core.io.FilePathUtil;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IORuntimeException;
-import com.y3tu.tool.core.io.IOUtil;
+import com.y3tu.tool.core.io.IoUtil;
 import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.core.util.URLUtil;
 
@@ -304,7 +305,7 @@ public class WatchMonitor extends Thread implements Closeable{
 	public void init() throws WatchException{
 		//获取目录或文件路径
 		if(false ==Files.exists(this.path, LinkOption.NOFOLLOW_LINKS)) {
-			final Path lastPathEle = FileUtil.getLastPathEle(this.path);
+			final Path lastPathEle = FilePathUtil.getLastPathEle(this.path);
 			if(null != lastPathEle) {
 				final String lastPathEleStr = lastPathEle.toString();
 				//带有点表示有扩展名，按照未创建的文件对待。Linux下.d的为目录，排除之
@@ -426,7 +427,7 @@ public class WatchMonitor extends Thread implements Closeable{
 	@Override
 	public void close(){
 		isClosed = true;
-		IOUtil.close(watchService);
+		IoUtil.close(watchService);
 	}
 	
 	//------------------------------------------------------ private method start

@@ -1,16 +1,10 @@
 package com.y3tu.tool.core.io;
 
 import java.io.*;
+import java.net.URI;
+import java.net.URL;
 import java.nio.charset.Charset;
-import java.nio.file.DirectoryStream;
-import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.StandardOpenOption;
-import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +19,7 @@ import com.y3tu.tool.core.lang.Platforms;
 import com.y3tu.tool.core.text.CharUtil;
 import com.y3tu.tool.core.text.CharsetUtil;
 import com.y3tu.tool.core.text.StringUtils;
+import com.y3tu.tool.core.util.URLUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.Validate;
 
@@ -38,11 +33,11 @@ public class FileUtil {
     /**
      * 类Unix路径分隔符
      */
-    private static final char UNIX_SEPARATOR = CharUtil.SLASH;
+    public static final char UNIX_SEPARATOR = CharUtil.SLASH;
     /**
      * Windows路径分隔符
      */
-    private static final char WINDOWS_SEPARATOR = CharUtil.BACKSLASH;
+    public static final char WINDOWS_SEPARATOR = CharUtil.BACKSLASH;
     /**
      * Windows下文件名中的无效字符
      */
@@ -60,6 +55,10 @@ public class FileUtil {
      * 在Jar中的路径jar的扩展名形式
      */
     public static final String JAR_PATH_EXT = ".jar!";
+    /**
+     * 当Path为文件形式时, path会加入一个表示文件的前缀
+     */
+    public static final String PATH_FILE_PRE = URLUtil.FILE_URL_PREFIX;
 
     /**
      * 是否为Windows环境
@@ -138,6 +137,29 @@ public class FileUtil {
             }
         }
         return file;
+    }
+
+    /**
+     * 创建File对象
+     *
+     * @param uri 文件URI
+     * @return File
+     */
+    public static File file(URI uri) {
+        if (uri == null) {
+            throw new NullPointerException("File uri is null!");
+        }
+        return new File(uri);
+    }
+
+    /**
+     * 创建File对象
+     *
+     * @param url 文件URL
+     * @return File
+     */
+    public static File file(URL url) {
+        return new File(URLUtil.toURI(url));
     }
 
     /**
@@ -243,7 +265,7 @@ public class FileUtil {
             return null;
         }
 
-        path = FilePathUtil.getAbsolutePath(path, null);
+        path = FilePathUtil.getAbsolutePath(path);
 
         File file = new File(path);
         if (file.isDirectory()) {
@@ -355,7 +377,7 @@ public class FileUtil {
             } catch (IOException e) {
                 throw new IORuntimeException(StringUtils.format("Can not read file path of [{}]", path), e);
             } finally {
-                IOUtil.close(jarFile);
+                IoUtil.close(jarFile);
             }
         }
         return paths;
@@ -512,7 +534,7 @@ public class FileUtil {
         Assert.notNull(file2);
         if (false == file1.exists() || false == file2.exists()) {
             // 两个文件都不存在判断其路径是否相同
-            if (false == file1.exists() && false == file2.exists() && pathEquals(file1, file2)) {
+            if (false == file1.exists() && false == file2.exists() && FilePathUtil.pathEquals(file1, file2)) {
                 return true;
             }
             // 对于一个存在一个不存在的情况，一定不相同
@@ -553,172 +575,41 @@ public class FileUtil {
         return FileUtils.contentEqualsIgnoreEOL(file1, file2, charset.name());
     }
 
-    /**
-     * 文件路径是否相同<br>
-     * 取两个文件的绝对路径比较，在Windows下忽略大小写，在Linux下不忽略。
-     *
-     * @param file1 文件1
-     * @param file2 文件2
-     * @return 文件路径是否相同
-     */
-    public static boolean pathEquals(File file1, File file2) {
-        if (isWindows()) {
-            // Windows环境
-            try {
-                if (StringUtils.equalsIgnoreCase(file1.getCanonicalPath(), file2.getCanonicalPath())) {
-                    return true;
-                }
-            } catch (Exception e) {
-                if (StringUtils.equalsIgnoreCase(file1.getAbsolutePath(), file2.getAbsolutePath())) {
-                    return true;
-                }
-            }
-        } else {
-            // 类Unix环境
-            try {
-                if (StringUtils.equals(file1.getCanonicalPath(), file2.getCanonicalPath())) {
-                    return true;
-                }
-            } catch (Exception e) {
-                if (StringUtils.equals(file1.getAbsolutePath(), file2.getAbsolutePath())) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
     /**
-     * 获得相对子路径
-     *
-     * 栗子：
+     * 修改文件或目录的文件名，不变更路径，只是简单修改文件名<br>
+     * 重命名有两种模式：<br>
+     * 1、isRetainExt为true时，保留原扩展名：
      *
      * <pre>
-     * dirPath: d:/aaa/bbb    filePath: d:/aaa/bbb/ccc     =》    ccc
-     * dirPath: d:/Aaa/bbb    filePath: d:/aaa/bbb/ccc.txt     =》    ccc.txt
+     * FileUtil.rename(file, "aaa", true) xx/xx.png =》xx/aaa.png
+     * </pre>
+     * <p>
+     * 2、isRetainExt为false时，不保留原扩展名，需要在newName中
+     *
+     * <pre>
+     * FileUtil.rename(file, "aaa.jpg", false) xx/xx.png =》xx/aaa.jpg
      * </pre>
      *
-     * @param rootDir 绝对父路径
-     * @param file 文件
-     * @return 相对子路径
+     * @param file        被修改的文件
+     * @param newName     新的文件名，包括扩展名
+     * @param isRetainExt 是否保留原文件的扩展名，如果保留，则newName不需要加扩展名
+     * @param isOverride  是否覆盖目标文件
+     * @return 目标文件
      */
-    public static String subPath(String rootDir, File file) {
+    public static File rename(File file, String newName, boolean isRetainExt, boolean isOverride) {
+        if (isRetainExt) {
+            newName = newName.concat(".").concat(FileUtil.getFileExtension(file));
+        }
+        final Path path = file.toPath();
+        final CopyOption[] options = isOverride ? new CopyOption[]{StandardCopyOption.REPLACE_EXISTING} : new CopyOption[]{};
         try {
-            return subPath(rootDir, file.getCanonicalPath());
+            return Files.move(path, path.resolveSibling(newName), options).toFile();
         } catch (IOException e) {
             throw new IORuntimeException(e);
         }
     }
 
-    /**
-     * 获得相对子路径，忽略大小写
-     *
-     * 栗子：
-     *
-     * <pre>
-     * dirPath: d:/aaa/bbb    filePath: d:/aaa/bbb/ccc     =》    ccc
-     * dirPath: d:/Aaa/bbb    filePath: d:/aaa/bbb/ccc.txt     =》    ccc.txt
-     * dirPath: d:/Aaa/bbb    filePath: d:/aaa/bbb/     =》    ""
-     * </pre>
-     *
-     * @param dirPath 父路径
-     * @param filePath 文件路径
-     * @return 相对子路径
-     */
-    public static String subPath(String dirPath, String filePath) {
-        if (StringUtils.isNotEmpty(dirPath) && StringUtils.isNotEmpty(filePath)) {
-
-            dirPath = StringUtils.removeSuffix(FilePathUtil.normalize(dirPath), "/");
-            filePath = FilePathUtil.normalize(filePath);
-
-            final String result = StringUtils.removePrefixIgnoreCase(filePath, dirPath);
-            return StringUtils.removePrefix(result, "/");
-        }
-        return filePath;
-    }
-
-    /**
-     * 获取指定位置的子路径部分，支持负数，例如index为-1表示从后数第一个节点位置
-     *
-     * @param path 路径
-     * @param index 路径节点位置，支持负数（负数从后向前计数）
-     * @return 获取的子路径
-     * @since 3.1.2
-     */
-    public static Path getPathEle(Path path, int index) {
-        return subPath(path, index, index == -1 ? path.getNameCount() : index + 1);
-    }
-
-    /**
-     * 获取指定位置的最后一个子路径部分
-     *
-     * @param path 路径
-     * @return 获取的最后一个子路径
-     * @since 3.1.2
-     */
-    public static Path getLastPathEle(Path path) {
-        return getPathEle(path, path.getNameCount() - 1);
-    }
-
-    /**
-     * 获取指定位置的子路径部分，支持负数，例如起始为-1表示从后数第一个节点位置
-     *
-     * @param path 路径
-     * @param fromIndex 起始路径节点（包括）
-     * @param toIndex 结束路径节点（不包括）
-     * @return 获取的子路径
-     * @since 3.1.2
-     */
-    public static Path subPath(Path path, int fromIndex, int toIndex) {
-        if (null == path) {
-            return null;
-        }
-        final int len = path.getNameCount();
-
-        if (fromIndex < 0) {
-            fromIndex = len + fromIndex;
-            if (fromIndex < 0) {
-                fromIndex = 0;
-            }
-        } else if (fromIndex > len) {
-            fromIndex = len;
-        }
-
-        if (toIndex < 0) {
-            toIndex = len + toIndex;
-            if (toIndex < 0) {
-                toIndex = len;
-            }
-        } else if (toIndex > len) {
-            toIndex = len;
-        }
-
-        if (toIndex < fromIndex) {
-            int tmp = fromIndex;
-            fromIndex = toIndex;
-            toIndex = tmp;
-        }
-
-        if (fromIndex == toIndex) {
-            return null;
-        }
-        return path.subpath(fromIndex, toIndex);
-    }
-
-    private static FileVisitor<Path> deleteFileVisitor = new SimpleFileVisitor<Path>() {
-
-        @Override
-        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-            Files.delete(file);
-            return FileVisitResult.CONTINUE;
-        }
-
-        @Override
-        public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-            Files.delete(dir);
-            return FileVisitResult.CONTINUE;
-        }
-    };
 
     //////// 文件读写//////
 
@@ -735,7 +626,7 @@ public class FileUtil {
      * 读取文件到String.
      */
     public static String toString(final File file) throws IOException {
-        return com.google.common.io.Files.toString(file, CharsetUtil.UTF_8);
+        return com.google.common.io.Files.toString(file, CharsetUtil.CHARSET_UTF_8);
     }
 
     /**
@@ -744,7 +635,7 @@ public class FileUtil {
      * @see {@link Files#readAllLines}
      */
     public static List<String> toLines(final File file) throws IOException {
-        return Files.readAllLines(file.toPath(), CharsetUtil.UTF_8);
+        return Files.readAllLines(file.toPath(), CharsetUtil.CHARSET_UTF_8);
     }
 
     /**
@@ -754,7 +645,7 @@ public class FileUtil {
         Validate.notNull(file);
         Validate.notNull(data);
 
-        try (BufferedWriter writer = Files.newBufferedWriter(file.toPath(), CharsetUtil.UTF_8)) {
+        try (BufferedWriter writer = Files.newBufferedWriter(file.toPath(), CharsetUtil.CHARSET_UTF_8)) {
             writer.append(data);
         }
     }
@@ -766,15 +657,17 @@ public class FileUtil {
         Validate.notNull(file);
         Validate.notNull(data);
 
-        try (BufferedWriter writer = Files.newBufferedWriter(file.toPath(), CharsetUtil.UTF_8,
+        try (BufferedWriter writer = Files.newBufferedWriter(file.toPath(), CharsetUtil.CHARSET_UTF_8,
                 StandardOpenOption.APPEND)) {
             writer.append(data);
         }
     }
 
     /**
-     * 打开文件为InputStream.
+     * 获取输入流
      *
+     * @param fileName 文件全路径
+     * @return InputStream对象
      * @see {@link Files#newInputStream}
      */
     public static InputStream asInputStream(String fileName) throws IOException {
@@ -782,8 +675,10 @@ public class FileUtil {
     }
 
     /**
-     * 打开文件为InputStream.
+     * 获取输入流
      *
+     * @param file 文件
+     * @return InputStream对象
      * @see {@link Files#newInputStream}
      */
     public static InputStream asInputStream(File file) throws IOException {
@@ -792,8 +687,10 @@ public class FileUtil {
     }
 
     /**
-     * 打开文件为InputStream.
+     * 获取输入流
      *
+     * @param path 文件路径
+     * @return InputStream对象
      * @see {@link Files#newInputStream}
      */
     public static InputStream asInputStream(Path path) throws IOException {
@@ -802,8 +699,10 @@ public class FileUtil {
     }
 
     /**
-     * 打开文件为OutputStream.
+     * 获取输出流
      *
+     * @param fileName 文件全路径
+     * @return OutputStream对象
      * @see {@link Files#newOutputStream}
      */
     public static OutputStream asOututStream(String fileName) throws IOException {
@@ -811,8 +710,10 @@ public class FileUtil {
     }
 
     /**
-     * 打开文件为OutputStream.
+     * 获取输出流
      *
+     * @param file 文件
+     * @return OutputStream对象
      * @see {@link Files#newOutputStream}
      */
     public static OutputStream asOututStream(File file) throws IOException {
@@ -821,8 +722,10 @@ public class FileUtil {
     }
 
     /**
-     * 打开文件为OutputStream.
+     * 获取输出流
      *
+     * @param path 文件路径
+     * @return OutputStream对象
      * @see {@link Files#newOutputStream}
      */
     public static OutputStream asOututStream(Path path) throws IOException {
@@ -831,38 +734,65 @@ public class FileUtil {
     }
 
     /**
-     * 获取File的BufferedReader.
+     * 获得一个文件读取器
      *
+     * @param fileName 文件全路径
+     * @param charset  字符集
+     * @return BufferedReader对象
      * @see {@link Files#newBufferedReader}
      */
-    public static BufferedReader asBufferedReader(String fileName) throws IOException {
+    public static BufferedReader asBufferedReader(String fileName, Charset charset) throws IOException {
         Validate.notBlank(fileName, "filename is blank");
-        return asBufferedReader(getPath(fileName));
-    }
-
-    public static BufferedReader asBufferedReader(Path path) throws IOException {
-        Validate.notNull(path, "path is null");
-        return Files.newBufferedReader(path, CharsetUtil.UTF_8);
+        return asBufferedReader(getPath(fileName), charset);
     }
 
     /**
-     * 获取File的BufferedWriter.
+     * 获得一个文件读取器
      *
-     * @see {@link Files#newBufferedWriter}
+     * @param path    文件Path
+     * @param charset 字符集
+     * @return BufferedReader对象
+     * @throws IOException
+     * @see {@link Files#newBufferedReader}
      */
-    public static BufferedWriter asBufferedWriter(String fileName) throws IOException {
-        Validate.notBlank(fileName, "filename is blank");
-        return Files.newBufferedWriter(getPath(fileName), CharsetUtil.UTF_8);
+    public static BufferedReader asBufferedReader(Path path, Charset charset) throws IOException {
+        Validate.notNull(path, "path is null");
+        if (charset == null) {
+            charset = CharsetUtil.CHARSET_UTF_8;
+        }
+        return Files.newBufferedReader(path, charset);
     }
 
     /**
-     * 获取File的BufferedWriter.
+     * 获取文件写入器
      *
+     * @param fileName 文件全路径
+     * @param charset  字符集
+     * @return BufferedWriter
      * @see {@link Files#newBufferedWriter}
      */
-    public static BufferedWriter asBufferedWriter(Path path) throws IOException {
+    public static BufferedWriter asBufferedWriter(String fileName, Charset charset) throws IOException {
+        Validate.notBlank(fileName, "filename is blank");
+        if (charset == null) {
+            charset = CharsetUtil.CHARSET_UTF_8;
+        }
+        return Files.newBufferedWriter(getPath(fileName), charset);
+    }
+
+    /**
+     * 获取文件写入器
+     *
+     * @param path    文件路径
+     * @param charset 字符集
+     * @return BufferedWriter
+     * @see {@link Files#newBufferedWriter}
+     */
+    public static BufferedWriter asBufferedWriter(Path path, Charset charset) throws IOException {
         Validate.notNull(path, "path is null");
-        return Files.newBufferedWriter(path, CharsetUtil.UTF_8);
+        if (charset == null) {
+            charset = CharsetUtil.CHARSET_UTF_8;
+        }
+        return Files.newBufferedWriter(path, charset);
     }
 
     ///// 文件操作 /////

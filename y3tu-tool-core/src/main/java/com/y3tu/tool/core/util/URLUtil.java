@@ -3,7 +3,7 @@ package com.y3tu.tool.core.util;
 import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IORuntimeException;
-import com.y3tu.tool.core.io.IOUtil;
+import com.y3tu.tool.core.io.IoUtil;
 import com.y3tu.tool.core.io.resource.ResourceUtil;
 import com.y3tu.tool.core.lang.Assert;
 import com.y3tu.tool.core.reflect.ClassLoaderUtil;
@@ -232,7 +232,7 @@ public class URLUtil {
      * @since 3.1.2
      */
     public static String encode(String url) throws UtilException {
-        return encode(url, CharsetUtil.UTF_8_NAME);
+        return encode(url, CharsetUtil.UTF_8);
     }
 
     /**
@@ -262,7 +262,7 @@ public class URLUtil {
      * @since 3.1.2
      */
     public static String decode(String url) throws UtilException {
-        return decode(url, CharsetUtil.UTF_8_NAME);
+        return decode(url, CharsetUtil.UTF_8);
     }
 
     /**
@@ -424,6 +424,6 @@ public class URLUtil {
      * @since 3.2.1
      */
     public static BufferedReader getReader(URL url, Charset charset) {
-        return IOUtil.getReader(getStream(url), charset);
+        return IoUtil.getReader(getStream(url), charset);
     }
 }

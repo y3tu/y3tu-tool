@@ -50,7 +50,7 @@ public class MailAccount implements Serializable {
 	/** 是否打开调试模式，调试模式会显示与邮件服务器通信过程，默认不开启 */
 	private boolean debug;
 	/** 编码用于编码邮件正文和发送人、收件人等中文 */
-	private Charset charset = CharsetUtil.UTF_8;
+	private Charset charset = CharsetUtil.CHARSET_UTF_8;
 	/** 对于超长参数是否切分为多份，默认为false（国内邮箱附件不支持切分的附件名） */
 	private boolean splitlongparameters;
 
@@ -408,7 +408,7 @@ public class MailAccount implements Serializable {
 		}
 		if (null == this.charset) {
 			// 默认UTF-8编码
-			this.charset = CharsetUtil.UTF_8;
+			this.charset = CharsetUtil.CHARSET_UTF_8;
 		}
 
 		return this;

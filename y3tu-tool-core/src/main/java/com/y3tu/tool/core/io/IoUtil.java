@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author xiaoleilu
  */
 @Slf4j
-public class IOUtil {
+public class IoUtil {
 
     /**
      * 默认缓存大小
@@ -548,7 +548,7 @@ public class IOUtil {
      * @since 3.1.1
      */
     public static void readUtf8Lines(InputStream in, LineHandler lineHandler) throws IORuntimeException {
-        readLines(in, CharsetUtil.UTF_8, lineHandler);
+        readLines(in, CharsetUtil.CHARSET_UTF_8, lineHandler);
     }
 
     /**
@@ -654,7 +654,6 @@ public class IOUtil {
      *
      * @param in 流
      * @return {@link InputStream}
-     * @since 4.0.9
      */
     public static InputStream toMarkSupportStream(InputStream in) {
         if (null == in) {
@@ -820,7 +819,6 @@ public class IOUtil {
      * @param input2 第二个流
      * @return 两个流的内容一致返回true，否则false
      * @throws IORuntimeException IO异常
-     * @since 4.0.6
      */
     public static boolean contentEquals(InputStream input1, InputStream input2) throws IORuntimeException {
         if (false == (input1 instanceof BufferedInputStream)) {
@@ -855,7 +853,6 @@ public class IOUtil {
      * @param input2 第二个reader
      * @return 两个流的内容一致返回true，否则false
      * @throws IORuntimeException IO异常
-     * @since 4.0.6
      */
     public static boolean contentEquals(Reader input1, Reader input2) throws IORuntimeException {
         input1 = getReader(input1);
@@ -886,7 +883,6 @@ public class IOUtil {
      * @param input2 第二个流
      * @return 两个流的内容一致返回true，否则false
      * @throws IORuntimeException IO异常
-     * @since 4.0.6
      */
     public static boolean contentEqualsIgnoreEOL(Reader input1, Reader input2) throws IORuntimeException {
         final BufferedReader br1 = getReader(input1);
@@ -923,7 +919,6 @@ public class IOUtil {
      * @param checksum {@link Checksum}
      * @return Checksum
      * @throws IORuntimeException IO异常
-     * @since 4.0.10
      */
     public static Checksum checksum(InputStream in, Checksum checksum) throws IORuntimeException {
         Assert.notNull(in, "InputStream is null !");
@@ -932,9 +927,9 @@ public class IOUtil {
         }
         try {
             in = new CheckedInputStream(in, checksum);
-            IOUtil.copy(in, new NullOutputStream(), -1, null);
+            IoUtil.copy(in, new NullOutputStream(), -1, null);
         } finally {
-            IOUtil.close(in);
+            IoUtil.close(in);
         }
         return checksum;
     }

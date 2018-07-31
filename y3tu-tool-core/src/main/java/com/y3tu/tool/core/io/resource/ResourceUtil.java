@@ -10,6 +10,9 @@ import java.util.List;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.y3tu.tool.core.collection.ListUtil;
+import com.y3tu.tool.core.io.FilePathUtil;
+import com.y3tu.tool.core.io.FileUtil;
+import com.y3tu.tool.core.io.IORuntimeException;
 import com.y3tu.tool.core.reflect.ClassLoaderUtil;
 
 /**
@@ -27,6 +30,18 @@ public class ResourceUtil {
      */
     public static URL asUrl(String resourceName) {
         return Resources.getResource(resourceName);
+    }
+
+    public static URL asUrlByPath(String path) {
+        try {
+            if (FilePathUtil.isAbsolutePath(path)) {
+                return FileUtil.file(path).toURI().toURL();
+            } else {
+                return Resources.getResource(path);
+            }
+        }catch (Exception e){
+            throw new IORuntimeException(e,"获取配置文件错误");
+        }
     }
 
     /**
@@ -130,4 +145,6 @@ public class ResourceUtil {
             return ListUtil.emptyList();
         }
     }
+
+
 }

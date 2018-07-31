@@ -16,24 +16,17 @@ public class PropsTest {
     public void load() {
         Props props = new Props("test.properties");
         String user = props.getProperty("user");
-        Assert.assertEquals(user, "root");
+        Assert.assertEquals(user, "root1");
 
     }
 
     @Test
     public void load1(){
-        File file = FileUtil.file("D:\\work\\test.properties");
-        try {
-            Console.log(file.getPath());
-            Console.log(FileUtil.toLines(file));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Props props = new Props(file);
+        Props props = new Props("/Users/yxy/work/test.properties");
         props.autoLoad(true);
         String user = props.getProperty("user");
-        Assert.assertEquals(user, "root");
-
+        Assert.assertEquals(user, "root1");
+        props.store("/Users/yxy/work/test.properties");
         while (true){
             try {
                 Thread.sleep(1000);

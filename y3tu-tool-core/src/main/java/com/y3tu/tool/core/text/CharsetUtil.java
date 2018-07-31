@@ -14,13 +14,19 @@ import java.nio.charset.UnsupportedCharsetException;
  */
 public class CharsetUtil {
 
-	public static final Charset UTF_8 = StandardCharsets.UTF_8;
-	public static final Charset US_ASCII = StandardCharsets.US_ASCII;
-	public static final Charset ISO_8859_1 = StandardCharsets.ISO_8859_1;
-	
-	public static final String UTF_8_NAME = StandardCharsets.UTF_8.name();
-	public static final String ASCII_NAME = StandardCharsets.US_ASCII.name();
-	public static final String ISO_8859_1_NAME = StandardCharsets.ISO_8859_1.name();
+	/** ISO-8859-1 */
+	public static final String ISO_8859_1 = "ISO-8859-1";
+	/** UTF-8 */
+	public static final String UTF_8 = "UTF-8";
+	/** GBK */
+	public static final String GBK = "GBK";
+
+	/** ISO-8859-1 */
+	public static final Charset CHARSET_ISO_8859_1 = StandardCharsets.ISO_8859_1;
+	/** UTF-8 */
+	public static final Charset CHARSET_UTF_8 = StandardCharsets.UTF_8;
+	/** GBK */
+	public static final Charset CHARSET_GBK = Charset.forName(GBK);
 
 	/**
 	 * 系统默认字符集编码
