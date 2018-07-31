@@ -372,6 +372,44 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
 
     /**
+     * 给定字符串是否被字符包围
+     *
+     * @param str 字符串
+     * @param prefix 前缀
+     * @param suffix 后缀
+     * @return 是否包围，空串不包围
+     */
+    public static boolean isSurround(CharSequence str, CharSequence prefix, CharSequence suffix) {
+        if (StringUtils.isBlank(str)) {
+            return false;
+        }
+        if (str.length() < (prefix.length() + suffix.length())) {
+            return false;
+        }
+
+        final String str2 = str.toString();
+        return str2.startsWith(prefix.toString()) && str2.endsWith(suffix.toString());
+    }
+
+    /**
+     * 给定字符串是否被字符包围
+     *
+     * @param str 字符串
+     * @param prefix 前缀
+     * @param suffix 后缀
+     * @return 是否包围，空串不包围
+     */
+    public static boolean isSurround(CharSequence str, char prefix, char suffix) {
+        if (StringUtils.isBlank(str)) {
+            return false;
+        }
+        if (str.length() < 2) {
+            return false;
+        }
+
+        return str.charAt(0) == prefix && str.charAt(str.length() - 1) == suffix;
+    }
+    /**
      * 编码字符串
      *
      * @param str     字符串

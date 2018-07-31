@@ -86,7 +86,7 @@ public class MailAccount implements Serializable {
 	 * @param setting 配置文件
 	 */
 	public MailAccount(Setting setting) {
-		setting.toBean(this);
+		setting.toBean(this,"",this.getClass());
 	}
 
 	// -------------------------------------------------------------- Constructor end
