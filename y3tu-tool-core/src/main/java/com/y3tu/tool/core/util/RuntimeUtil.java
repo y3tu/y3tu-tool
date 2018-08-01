@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * 运行时工具类
+ * 系统运行时工具类，用于执行系统命令的工具
  *
- * @author
+ * @author y3tu
  */
 public class RuntimeUtil {
 
