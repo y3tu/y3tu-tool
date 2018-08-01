@@ -239,7 +239,7 @@ public class CellUtil {
         // 判断是否为日期
         if (isDateType(cell, formatIndex)) {
             try {
-                return DateFormatUtil.formatDateToDate(DateFormatUtil.PATTERN_DEFAULT_ON_SECOND, cell.getDateCellValue());
+                return DateFormatUtil.formatDateToDate(DateFormatUtil.PATTERN_YYYY_MM_DD_HH_MM_SS, cell.getDateCellValue());
             } catch (ParseException e) {
                 e.printStackTrace();
             }

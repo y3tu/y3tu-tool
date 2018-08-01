@@ -1,6 +1,7 @@
 package com.y3tu.tool.excel.convert;
 
 
+import com.y3tu.tool.core.time.DateFormatUtil;
 import com.y3tu.tool.core.time.DateUtil;
 
 /**
@@ -16,7 +17,7 @@ public class TimeConvert implements ExportConvert {
             if (val == null) {
                 return "";
             } else {
-                return DateUtil.formatCSTTime(val.toString(), "yyyy-MM-dd HH:mm:ss");
+                return DateFormatUtil.formatStrToStr("yyyy-MM-dd HH:mm:ss",val.toString());
             }
         } catch (Exception e) {
             e.printStackTrace();

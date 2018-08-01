@@ -127,7 +127,7 @@ public class ExcelSaxUtil {
      * @since 4.1.0
      */
     private static Date getDateValue(String value) throws ParseException {
-        return DateFormatUtil.parseDate(value, DateFormatUtil.PATTERN_DEFAULT_ON_SECOND);
+        return DateFormatUtil.parseDate(value, DateFormatUtil.PATTERN_YYYY_MM_DD_HH_MM_SS);
     }
 
     /**

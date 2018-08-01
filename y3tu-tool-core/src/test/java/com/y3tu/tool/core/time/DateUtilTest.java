@@ -18,4 +18,13 @@ public class DateUtilTest {
     public void getDayOfWeek() {
         Console.log(DateUtil.getDayOfWeek(new Date()));
     }
+
+    @Test
+    public void getCurrentDate() {
+        Console.log(DateUtil.getCurrentDateStr(DateFormatUtil.PATTERN_YYYY_MM_DD_HH_MM_SS_EE_ZH));
+    }
+
+    @Test
+    public void getCurrentDateStr() {
+    }
 }

@@ -16,8 +16,13 @@ public class DateFormatUtilTest {
 
     @Test
     public void formatFriendlyTimeSpanByNow() throws ParseException {
-        Date date = DateFormatUtil.DEFAULT_FORMAT.parse("2018-07-23 23:29:59.500");
+        Date date = DateFormatUtil.YYYY_MM_DD_HH_MM_SS_FORMAT.parse("2018-07-23 23:29:59.500");
         Console.log(DateFormatUtil.formatFriendlyTimeSpanByNow(date));
+
+    }
+
+    @Test
+    public void formatDuration(){
 
     }
 }
