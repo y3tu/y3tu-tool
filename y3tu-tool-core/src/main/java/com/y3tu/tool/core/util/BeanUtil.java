@@ -11,8 +11,7 @@ import java.lang.reflect.Method;
  * 把一个拥有对属性进行set和get方法的类，我们就可以称之为JavaBean。
  * </p>
  *
- * @author Looly
- * @since 3.1.2
+ * @author y3tu
  */
 public class BeanUtil {
     /**

@@ -1,24 +1,17 @@
 package com.y3tu.tool.setting;
 
 import com.y3tu.tool.core.collection.ListUtil;
-import com.y3tu.tool.core.collection.MapUtil;
+import com.y3tu.tool.core.convert.ConvertUtil;
+import com.y3tu.tool.core.convert.impl.CharsetConverter;
 import com.y3tu.tool.core.io.IoUtil;
 import com.y3tu.tool.core.io.resource.ResourceUtil;
 import com.y3tu.tool.core.io.watch.SimpleWatcher;
 import com.y3tu.tool.core.io.watch.WatchMonitor;
 import com.y3tu.tool.core.lang.Assert;
-import com.y3tu.tool.core.lang.Console;
 import com.y3tu.tool.core.reflect.ReflectionUtil;
 import com.y3tu.tool.core.text.CharsetUtil;
-import com.y3tu.tool.core.util.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.BeanUtilsBean;
-import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.lang3.ObjectUtils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
@@ -215,6 +208,7 @@ public class Setting extends LinkedHashMap<String, String> {
 
     /**
      * 获取GroupedMap
+     *
      * @return GroupedMap
      * @since 4.0.12
      */
@@ -248,23 +242,28 @@ public class Setting extends LinkedHashMap<String, String> {
      * 将setting中的键值关系映射到对象中，原理是调用对象对应的set方法<br>
      * 只支持基本类型的转换
      *
-     * @param bean Bean 目标对象
+     * @param bean  Bean 目标对象
      * @param group 组
      * @return Bean
      */
-    public void toBean(Object bean,String group,Class clazz) {
+    public void toBean(Object bean, String group, Class clazz) {
         try {
             Map<String, String> map = this.getMap(group);
             for (String key : map.keySet()) {
-                if(ReflectionUtil.getField(clazz,key)!=null){
-                    ReflectionUtil.setFieldValue(bean,key,ConvertUtils.convert(map.get(key),ReflectionUtil.getField(clazz,key).getType()));
+                if (ReflectionUtil.getField(clazz, key) != null) {
+                    Class typeClass = ReflectionUtil.getField(clazz, key).getType();
+
+                    if ("Charset".equals(typeClass.getSimpleName())) {
+                        ConvertUtil.register(new CharsetConverter(), typeClass);
+                    }
+                    ReflectionUtil.setFieldValue(bean, key, ConvertUtil.convert(map.get(key), typeClass));
                 }
             }
+            ConvertUtil.deregister();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
 
 }
