@@ -2,26 +2,28 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>com.y3tu</groupId>
-    <artifactId>y3tu-tool-web</artifactId>
-    <version>1.0</version>
     <packaging>jar</packaging>
-
-    <name>y3tu-tool-web</name>
-    <description>web相关工具类</description>
 
     <parent>
         <groupId>com.y3tu</groupId>
         <artifactId>y3tu-tool</artifactId>
         <version>1.0</version>
     </parent>
+    <groupId>com.y3tu</groupId>
+    <artifactId>y3tu-tool-web</artifactId>
+    <version>${project.parent.version}</version>
+
+    <name>${project.artifactId}</name>
+    <description>web相关工具类</description>
+
 
     <properties>
         <mybatis-plus-version>2.2.0</mybatis-plus-version>
+        <velocity-engine-version>2.0</velocity-engine-version>
         <fastjson-version>1.2.47</fastjson-version>
         <jasypt-version>1.9.2</jasypt-version>
         <spring-boot-version>2.0.1.RELEASE</spring-boot-version>
+        <mysql.version>5.1.38</mysql.version>
     </properties>
 
     <dependencies>
@@ -29,6 +31,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
             <version>${spring-boot-version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -42,18 +45,38 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <version>${spring-boot-version}</version>
+            <scope>provided</scope>
         </dependency>
 
+        <!--mybatis-plus 代码生成器需要的jar start-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>${mybatis-plus-version}</version>
+            <!--<scope>provided</scope>-->
         </dependency>
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity-engine-core</artifactId>
+            <version>${velocity-engine-version}</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
+        <!--end-->
+
+        <!--mysql -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>${fastjson-version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.jasypt</groupId>
             <artifactId>jasypt</artifactId>
@@ -61,15 +84,15 @@
         </dependency>
 
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-            <version>1.1.10</version>
+            <groupId>com.y3tu</groupId>
+            <artifactId>y3tu-tool-core</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.y3tu</groupId>
-            <artifactId>y3tu-tool-core</artifactId>
-            <version>1.0</version>
+            <artifactId>y3tu-tool-setting</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
 
     </dependencies>

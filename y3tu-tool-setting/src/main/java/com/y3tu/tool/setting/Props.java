@@ -1,5 +1,7 @@
 package com.y3tu.tool.setting;
 
+import com.y3tu.tool.core.convert.ConvertUtil;
+import com.y3tu.tool.core.convert.impl.CharsetConverter;
 import com.y3tu.tool.core.io.FilePathUtil;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IORuntimeException;
@@ -8,7 +10,9 @@ import com.y3tu.tool.core.io.resource.ResourceUtil;
 import com.y3tu.tool.core.io.watch.SimpleWatcher;
 import com.y3tu.tool.core.io.watch.WatchMonitor;
 import com.y3tu.tool.core.lang.Assert;
+import com.y3tu.tool.core.reflect.ReflectionUtil;
 import com.y3tu.tool.core.text.CharsetUtil;
+import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.core.util.URLUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,6 +27,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.WatchEvent;
+import java.util.Enumeration;
 import java.util.Properties;
 
 /**
@@ -251,5 +256,24 @@ public class Props extends Properties {
         this.store(FilePathUtil.getAbsolutePath(path, clazz));
     }
     // ----------------------------------------------------------------------- Set end
+
+    /**
+     * 将Properties中的键值关系映射到对象中，原理是调用对象对应的set方法<br>
+     * 复杂类型需要用到ConvertUtil工具转换
+     * @param bean 被映射的对象
+     * @param clazz 被映射对象的class
+     * @return Bean
+     */
+    public void toBean(Object bean, Class clazz) {
+        Enumeration propertyNames = this.propertyNames();
+        while (propertyNames.hasMoreElements()) {
+            String key = (String) propertyNames.nextElement();
+            if (ReflectionUtil.getField(clazz, key) != null) {
+                Class typeClass = ReflectionUtil.getField(clazz, key).getType();
+                ReflectionUtil.setFieldValue(bean, key, ConvertUtil.convert(this.get(key), typeClass));
+            }
+        }
+
+    }
 
 }

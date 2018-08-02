@@ -14,6 +14,7 @@
     <groupId>com.y3tu</groupId>
     <artifactId>y3tu-tool-poi</artifactId>
     <description>对excel,word的操作</description>
+    <version>${project.parent.version}</version>
 
     <properties>
         <!-- versions -->
@@ -26,7 +27,7 @@
         <dependency>
             <groupId>com.y3tu</groupId>
             <artifactId>y3tu-tool-core</artifactId>
-            <version>1.0</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <!-- POI -->
@@ -44,7 +45,7 @@
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
-        
+
     </dependencies>
 
 </project>

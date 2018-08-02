@@ -240,10 +240,11 @@ public class Setting extends LinkedHashMap<String, String> {
 
     /**
      * 将setting中的键值关系映射到对象中，原理是调用对象对应的set方法<br>
-     * 只支持基本类型的转换
+     * 复杂类型需要用到ConvertUtil工具转换
      *
      * @param bean  Bean 目标对象
      * @param group 组
+     * @param clazz 被映射对象的class
      * @return Bean
      */
     public void toBean(Object bean, String group, Class clazz) {

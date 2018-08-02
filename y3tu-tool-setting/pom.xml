@@ -8,9 +8,10 @@
         <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>1.0</version>
+    <packaging>jar</packaging>
+    <version>${project.parent.version}</version>
     <artifactId>y3tu-tool-setting</artifactId>
-    <name>y3tu-tool-setting</name>
+    <name>${project.artifactId}</name>
     <description>配置加强工具</description>
 
     <properties>
@@ -21,7 +22,7 @@
         <dependency>
             <groupId>com.y3tu</groupId>
             <artifactId>y3tu-tool-core</artifactId>
-            <version>1.0</version>
+            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 

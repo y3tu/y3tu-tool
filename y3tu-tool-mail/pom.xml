@@ -2,17 +2,20 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>jar</packaging>
+
     <parent>
         <artifactId>y3tu-tool</artifactId>
         <groupId>com.y3tu</groupId>
         <version>1.0</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
+
 
     <groupId>com.y3tu</groupId>
     <artifactId>y3tu-tool-mail</artifactId>
-    <version>1.0</version>
-    <name>y3tu-tool-mail</name>
+    <version>${project.parent.version}</version>
+    <name>${project.artifactId}</name>
     <url>邮件工具</url>
 
     <properties>
@@ -24,12 +27,12 @@
         <dependency>
             <groupId>com.y3tu</groupId>
             <artifactId>y3tu-tool-core</artifactId>
-            <version>1.0</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.y3tu</groupId>
             <artifactId>y3tu-tool-setting</artifactId>
-            <version>1.0</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <!-- 邮件 -->

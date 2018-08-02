@@ -1,0 +1,20 @@
+package ${cfg.basePackage}.${cfg.moduleName}.service.impl;
+
+import ${cfg.basePackage}.${cfg.moduleName}.entity.${entity};
+import ${cfg.basePackage}.${cfg.moduleName}.dao.${table.mapperName};
+import ${cfg.basePackage}.${cfg.moduleName}.service.${table.serviceName};
+import ${superServiceImplClassPackage};
+import org.springframework.stereotype.Service;
+
+/**
+ * <p>
+ * $!{table.comment} 服务实现类
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Service
+public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}> implements ${table.serviceName} {
+	
+}

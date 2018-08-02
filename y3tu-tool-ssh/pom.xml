@@ -11,8 +11,8 @@
     <packaging>jar</packaging>
     <groupId>com.y3tu</groupId>
     <artifactId>y3tu-tool-ssh</artifactId>
-    <version>1.0</version>
-    <name>y3tu-tool-ssh</name>
+    <version>${project.parent.version}</version>
+    <name>${project.artifactId}</name>
 
     <description>SSH操作，SFTP,FTP文件上传工具</description>
     <properties>
@@ -39,7 +39,7 @@
         <dependency>
             <groupId>com.y3tu</groupId>
             <artifactId>y3tu-tool-core</artifactId>
-            <version>1.0</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
     </dependencies>

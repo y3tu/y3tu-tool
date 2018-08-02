@@ -1,0 +1,16 @@
+package ${cfg.basePackage}.${cfg.moduleName}.service;
+
+import ${cfg.basePackage}.${cfg.moduleName}.entity.${entity};
+import ${superServiceClassPackage};
+
+/**
+ * <p>
+ * $!{table.comment} 服务类
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
+	
+}
