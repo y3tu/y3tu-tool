@@ -117,6 +117,10 @@ public class MpGenerator {
                 dsc.setDbType(DbType.ORACLE);
                 dsc.setDriverName("oracle.jdbc.driver.OracleDriver");
                 break;
+            default:
+                dsc.setDbType(DbType.MYSQL);
+                dsc.setDriverName("com.mysql.jdbc.Driver");
+                break;
         }
         dsc.setUsername(username);
         dsc.setPassword(password);
@@ -158,7 +162,7 @@ public class MpGenerator {
 
         // 包配置
         PackageConfig pc = new PackageConfig();
-        pc.setParent(PARENT_PACKAGE);
+        pc.setParent(basePackage);
         pc.setModuleName(moduleName);
         mpg.setPackageInfo(pc);
 
@@ -236,9 +240,11 @@ public class MpGenerator {
 
     public static void main(String[] args) {
         Props props = new Props("config/generator.properties");
-        Console.log(props.getProperty("password"));
-//        MpGenerator mpGenerator = new MpGenerator();
-//        props.toBean(mpGenerator, MpGenerator.class);
-//        mpGenerator.executeCode();
+        String pwd = props.getProperty("password");
+        pwd = JasyptUtil.decyptPwd("y3tu", pwd);
+        props.setProperty("password", pwd);
+        MpGenerator mpGenerator = new MpGenerator();
+        props.toBean(mpGenerator, MpGenerator.class);
+        mpGenerator.executeCode();
     }
 }
