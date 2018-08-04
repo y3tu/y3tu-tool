@@ -1,8 +1,8 @@
 package com.y3tu.tool.web.base.pojo;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,51 +14,42 @@ import java.util.List;
 @Data
 public class PageInfo {
 
-    public PageInfo() {
-        pageNum = 1;
-        pageSize = 10;
-    }
-
-    public PageInfo(Integer pageSize) {
-        this.pageNum = 1;
-        this.pageSize = pageSize;
-    }
-
-    /**
-     * 当前页数
-     */
-    private int pageNum;
-
-    /**
-     * 每页记录数
-     */
+    private static final long serialVersionUID = 1L;
+    //总记录数
+    private long totalCount;
+    //每页记录数
     private int pageSize;
+    //总页数
+    private long totalPage;
+    //当前页数
+    private int currPage;
+    //列表数据
+    private List<?> list;
 
     /**
-     * 总记录数
+     * 分页
+     * @param list        列表数据
+     * @param totalCount  总记录数
+     * @param pageSize    每页记录数
+     * @param currPage    当前页数
      */
-    private int count;
-
-    /**
-     * 总页数
-     */
-    private int pageCount;
-
-    /**
-     * 结果集
-     */
-    List pojoList = new ArrayList();
-
-
-
-    public int getPageCount() {
-
-        pageCount = count / pageSize;
-        if (count % pageSize > 0) {
-            ++pageCount;
-        }
-        return pageCount;
+    public PageInfo(List<?> list, long totalCount, int pageSize, int currPage) {
+        this.list = list;
+        this.totalCount = totalCount;
+        this.pageSize = pageSize;
+        this.currPage = currPage;
+        this.totalPage = (long) Math.ceil((double)totalCount/pageSize);
     }
 
+    /**
+     * 分页
+     */
+    public PageInfo(Page<?> page) {
+        this.list = page.getRecords();
+        this.totalCount = page.getTotal();
+        this.pageSize = page.getSize();
+        this.currPage = page.getCurrent();
+        this.totalPage = page.getPages();
+    }
 
 }

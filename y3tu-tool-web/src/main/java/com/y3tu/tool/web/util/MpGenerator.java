@@ -178,10 +178,10 @@ public class MpGenerator {
 
         List<FileOutConfig> focList = new ArrayList<FileOutConfig>();
         // 调整 xml 生成目录演示
-        focList.add(new FileOutConfig("/templates/mapper.xml.vm") {
+        focList.add(new FileOutConfig("/y3tu-templates/mapper.xml.vm") {
             @Override
             public String outputFile(TableInfo tableInfo) {
-                return MAIN_PATH + "/resources/mapper/" + moduleName + "/" + tableInfo.getEntityName() + ".xml";
+                return MAIN_PATH + "/resources/mapper/" + moduleName + "/" + tableInfo.getXmlName() + ".xml";
             }
         });
 

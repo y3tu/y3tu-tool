@@ -1,6 +1,7 @@
 package com.y3tu.tool.web.base.pojo;
 
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.web.xss.SqlFilter;
 
@@ -8,59 +9,70 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * 分页查询参数
+ * 处理包装分页查询参数
  *
  * @author y3tu
  * @date 2018/1/16
  */
-public class Query extends LinkedHashMap<String, Object> {
+public class Query<T> extends LinkedHashMap<String, Object> {
     private static final long serialVersionUID = 1L;
-
+    /**
+     * mybatis-plus分页参数
+     */
+    private Page<T> page;
     /**
      * 当前页码
      */
-    private int page;
+    private int currPage = 1;
     /**
-     * 每页条数
+     * 每页条数 默认每页10条
      */
-    private int limit;
+    private int limit = 10;
 
-    public Query(Map<String, Object> params) {
+    public Query(Map<String, Object> params){
         this.putAll(params);
 
         //分页参数
-        this.page = Integer.parseInt(params.get("page").toString());
-        this.limit = Integer.parseInt(params.get("limit").toString());
-        this.put("offset", (page - 1) * limit);
-        this.put("page", page);
+        if(params.get("page") != null){
+            currPage = Integer.parseInt((String)params.get("page"));
+        }
+        if(params.get("limit") != null){
+            limit = Integer.parseInt((String)params.get("limit"));
+        }
+
+        this.put("offset", (currPage - 1) * limit);
+        this.put("page", currPage);
         this.put("limit", limit);
 
         //防止SQL注入（因为sidx、order是通过拼接SQL实现排序的，会有SQL注入风险）
-        String sidx = (String) params.get("sidx");
-        String order = (String) params.get("order");
-        if (StringUtils.isNotBlank(sidx)) {
-            this.put("sidx", SqlFilter.sqlInject(sidx));
+        String sidx = SqlFilter.sqlInject((String)params.get("sidx"));
+        String order = SqlFilter.sqlInject((String)params.get("order"));
+        this.put("sidx", sidx);
+        this.put("order", order);
+
+        //mybatis-plus分页
+        this.page = new Page<>(currPage, limit);
+
+        //排序
+        if(StringUtils.isNotBlank(sidx) && StringUtils.isNotBlank(order)){
+            this.page.setOrderByField(sidx);
+            this.page.setAsc("ASC".equalsIgnoreCase(order));
         }
-        if (StringUtils.isNotBlank(order)) {
-            this.put("order", SqlFilter.sqlInject(order));
-        }
+
     }
 
-    public int getPage() {
+    public Page<T> getPage() {
         return page;
     }
 
-    public void setPage(int page) {
-        this.page = page;
+    public int getCurrPage() {
+        return currPage;
     }
 
     public int getLimit() {
         return limit;
     }
-
-    public void setLimit(int limit) {
-        this.limit = limit;
-    }
 }
+
 
 

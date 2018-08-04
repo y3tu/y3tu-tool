@@ -35,5 +35,9 @@
         ${table.fieldNames}
     </sql>
 
+	<select id="queryPage" resultType="${cfg.basePackage}.${cfg.moduleName}.entity.${table.entityName}">
+		select <include refid="Base_Column_List"/>
+		from ${table.name}
+	</select>
 #end
 </mapper>
