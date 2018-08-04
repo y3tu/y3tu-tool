@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.DbType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
-import com.y3tu.tool.core.lang.Console;
 import com.y3tu.tool.core.lang.Platforms;
 import com.y3tu.tool.setting.Props;
 import lombok.Data;
@@ -186,33 +185,33 @@ public class MpGenerator {
             }
         });
 
-        focList.add(new FileOutConfig("/templates/controller.java.vm") {
+        focList.add(new FileOutConfig("/y3tu-templates/controller.java.vm") {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 return JAVA_PATH + "/" + basePackage.replace(".", "/") + "/" + moduleName + "/controller/" + tableInfo.getControllerName() + ".java";
             }
         });
 
-        focList.add(new FileOutConfig("/templates/entity.java.vm") {
+        focList.add(new FileOutConfig("/y3tu-templates/entity.java.vm") {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 return JAVA_PATH + "/" + basePackage.replace(".", "/") + "/" + moduleName + "/entity/" + tableInfo.getEntityName() + ".java";
             }
         });
 
-        focList.add(new FileOutConfig("/templates/mapper.java.vm") {
+        focList.add(new FileOutConfig("/y3tu-templates/mapper.java.vm") {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 return JAVA_PATH + "/" + basePackage.replace(".", "/") + "/" + moduleName + "/dao/" + tableInfo.getMapperName() + ".java";
             }
         });
-        focList.add(new FileOutConfig("/templates/service.java.vm") {
+        focList.add(new FileOutConfig("/y3tu-templates/service.java.vm") {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 return JAVA_PATH + "/" + basePackage.replace(".", "/") + "/" + moduleName + "/service/" + tableInfo.getServiceName() + ".java";
             }
         });
-        focList.add(new FileOutConfig("/templates/serviceImpl.java.vm") {
+        focList.add(new FileOutConfig("/y3tu-templates/serviceImpl.java.vm") {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 return JAVA_PATH + "/" + basePackage.replace(".", "/") + "/" + moduleName + "/service/impl/" + tableInfo.getServiceImplName() + ".java";

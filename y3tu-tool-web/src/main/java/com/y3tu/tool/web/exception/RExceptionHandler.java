@@ -3,7 +3,6 @@ package com.y3tu.tool.web.exception;
 import com.y3tu.tool.web.base.pojo.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -25,12 +24,6 @@ public class RExceptionHandler {
     public R handleRRException(RException e) {
         log.error(e.getMessage(), e);
         return R.error(e.getMsg());
-    }
-
-    @ExceptionHandler(DuplicateKeyException.class)
-    public R handleDuplicateKeyException(DuplicateKeyException e) {
-        log.error(e.getMessage(), e);
-        return R.error("数据库中已存在该记录");
     }
 
     @ExceptionHandler(GridException.class)
