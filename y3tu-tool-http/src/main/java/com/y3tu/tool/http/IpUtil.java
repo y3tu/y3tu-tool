@@ -2,8 +2,6 @@ package com.y3tu.tool.http;
 
 import com.alibaba.fastjson.JSONObject;
 import com.y3tu.tool.core.text.StringUtils;
-import com.y3tu.tool.http.HttpUtil;
-import com.y3tu.tool.http.Resp;
 import com.y3tu.tool.http.pojo.IpLocate;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,6 +12,7 @@ import java.net.UnknownHostException;
 @Slf4j
 public class IpUtil {
     /**
+     * http://www.mob.com/
      * 你的APPKEY mob官网注册申请即可
      */
     private final static String APPKEY = "2739954e223d8";
