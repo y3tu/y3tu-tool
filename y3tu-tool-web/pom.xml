@@ -20,7 +20,6 @@
     <properties>
         <mybatis-plus-version>2.2.0</mybatis-plus-version>
         <velocity-engine-version>2.0</velocity-engine-version>
-        <fastjson-version>1.2.47</fastjson-version>
         <jasypt-version>1.9.2</jasypt-version>
         <spring-boot-version>2.0.3.RELEASE</spring-boot-version>
         <mysql.version>5.1.38</mysql.version>
@@ -69,12 +68,6 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.version}</version>
             <!--<scope>provided</scope>-->
-        </dependency>
-
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${fastjson-version}</version>
         </dependency>
 
         <dependency>

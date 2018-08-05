@@ -1,6 +1,7 @@
 package com.y3tu.tool.core.net;
 
 import com.y3tu.tool.core.lang.Console;
+import com.y3tu.tool.core.lang.NetUtil;
 import com.y3tu.tool.core.text.ObjectPrintUtil;
 import org.junit.Assert;
 import org.junit.Test;
