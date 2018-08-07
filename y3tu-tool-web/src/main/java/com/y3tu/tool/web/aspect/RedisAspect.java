@@ -7,6 +7,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,8 +20,11 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 @Slf4j
+@ConditionalOnProperty(name = "y3tu-tool.redis.enable",havingValue = "true",matchIfMissing = false)
 public class RedisAspect {
-    //是否开启redis缓存  true开启   false关闭
+    /**
+     *  是否开启redis缓存  true开启   false关闭
+     */
     @Value("${y3tu-tool.redis.open: false}")
     private boolean open;
 

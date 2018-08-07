@@ -1,2 +1,7 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\com.y3tu.tool.web.config.RedisConfig,\
-com.y3tu.tool.web.util.RedisUtils
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.y3tu.tool.web.exception.RExceptionHandler,\
+com.y3tu.tool.web.config.RedisConfig,\
+com.y3tu.tool.web.util.RedisUtils,\
+com.y3tu.tool.web.config.LimitRaterInterceptor,\
+com.y3tu.tool.web.limit.RedisRaterLimiter,\
+com.y3tu.tool.web.lock.RedisDistributedLockTemplate
