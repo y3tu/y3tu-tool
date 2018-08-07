@@ -60,6 +60,11 @@ public class R extends HashMap<String, Object> {
         return r.put("code", FAIL).put("msg", msg);
     }
 
+    public static R error(String code, String msg) {
+        R r = new R();
+        return r.put("code", code).put("msg", msg);
+    }
+
     public static R error() {
         R r = new R();
         return r.put("code", FAIL).put("msg", "服务器内部异常，请联系管理员!");
