@@ -2,6 +2,7 @@ package com.y3tu.tool.core.io;
 
 import com.y3tu.tool.core.collection.ArrayUtil;
 import com.y3tu.tool.core.collection.CollectionUtil;
+import com.y3tu.tool.core.collection.ListUtil;
 import com.y3tu.tool.core.io.resource.ResourceUtil;
 import com.y3tu.tool.core.lang.Platforms;
 
@@ -155,7 +156,7 @@ public class FilePathUtil {
             pathToUse = pathToUse.substring(1);
         }
 
-        List<String> pathList = ArrayUtil.asList(StringUtils.splitPreserveAllTokens(pathToUse, StringUtils.C_SLASH));
+        List<String> pathList = ListUtil.newArrayList(StringUtils.splitPreserveAllTokens(pathToUse, StringUtils.C_SLASH));
         List<String> pathElements = new LinkedList<String>();
         int tops = 0;
 

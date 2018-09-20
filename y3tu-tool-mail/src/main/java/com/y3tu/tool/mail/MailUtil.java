@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.y3tu.tool.core.collection.ArrayUtil;
 import com.y3tu.tool.core.collection.CollectionUtil;
+import com.y3tu.tool.core.collection.ListUtil;
 import com.y3tu.tool.core.text.StringUtils;
 
 /**
@@ -215,9 +216,9 @@ public class MailUtil {
 		
 		List<String> result;
 		if(StringUtils.contains(addresses, ',')) {
-			result = ArrayUtil.asList(StringUtils.split(addresses, ','));
+			result = ListUtil.newArrayList(StringUtils.split(addresses, ','));
 		}else if(StringUtils.contains(addresses, ';')) {
-			result = ArrayUtil.asList(StringUtils.split(addresses, ','));
+			result = ListUtil.newArrayList(StringUtils.split(addresses, ','));
 		}else {
 			result = new ArrayList<String>();
 			result.add(addresses);

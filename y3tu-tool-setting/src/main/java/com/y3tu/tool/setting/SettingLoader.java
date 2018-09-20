@@ -1,6 +1,7 @@
 package com.y3tu.tool.setting;
 
 import com.y3tu.tool.core.collection.ArrayUtil;
+import com.y3tu.tool.core.collection.ListUtil;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IORuntimeException;
 import com.y3tu.tool.core.io.IoUtil;
@@ -208,7 +209,7 @@ public class SettingLoader {
 					value = value.replace(var, varValue);
 				} else {
 					// 跨分组查找
-					final List<String> groupAndKey = ArrayUtil.asList(StringUtils.split(key, CharUtil.DOT));
+					final List<String> groupAndKey = ListUtil.newArrayList(StringUtils.split(key, CharUtil.DOT));
 					if (groupAndKey.size() > 1) {
 						varValue = this.groupedMap.get(groupAndKey.get(0), groupAndKey.get(1));
 						if (null != varValue) {
