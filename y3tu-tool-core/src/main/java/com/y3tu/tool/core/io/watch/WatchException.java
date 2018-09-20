@@ -1,7 +1,7 @@
 package com.y3tu.tool.core.io.watch;
 
 
-import com.y3tu.tool.core.exception.ExceptionUtils;
+import com.y3tu.tool.core.exception.ExceptionUtil;
 import com.y3tu.tool.core.text.StringUtils;
 
 /**
@@ -13,7 +13,7 @@ public class WatchException extends RuntimeException {
 	private static final long serialVersionUID = 8068509879445395353L;
 
 	public WatchException(Throwable e) {
-		super(ExceptionUtils.getMessage(e), e);
+		super(ExceptionUtil.getMessage(e), e);
 	}
 
 	public WatchException(String message) {

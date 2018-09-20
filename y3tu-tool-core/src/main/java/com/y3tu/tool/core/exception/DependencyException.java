@@ -13,7 +13,7 @@ public class DependencyException extends RuntimeException {
     private static final long serialVersionUID = 8247610319171014183L;
 
     public DependencyException(Throwable e) {
-        super(ExceptionUtils.getMessage(e), e);
+        super(ExceptionUtil.getMessage(e), e);
     }
 
     public DependencyException(String message) {

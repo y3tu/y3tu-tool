@@ -11,18 +11,7 @@ import com.y3tu.tool.core.reflect.TypeUtil;
 
 
 /**
- * 通用Collection的工具集
- * <p>
- * 1. 集合是否为空，取得集合中首个及最后一个元素，判断集合是否完全相等
- * <p>
- * 2. 集合的最大最小值，及Top N, Bottom N
- * <p>
- * 关于List, Map, Queue, Set的特殊工具集，另见特定的Util.
- * <p>
- * 另JDK中缺少ComparableComparator和NullComparator，直到JDK8才补上。
- * 因此平时请使用guava的Ordering.natural(),fluentable的API更好用，可以链式设置nullFirst，nullLast,reverse
- *
- * @see com.google.common.collect.Ordering
+ * 集合工具类
  */
 public class CollectionUtil {
 

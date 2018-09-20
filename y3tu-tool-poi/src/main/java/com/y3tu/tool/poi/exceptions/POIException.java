@@ -1,7 +1,7 @@
 package com.y3tu.tool.poi.exceptions;
 
 
-import com.y3tu.tool.core.exception.ExceptionUtils;
+import com.y3tu.tool.core.exception.ExceptionUtil;
 import com.y3tu.tool.core.text.StringUtils;
 
 /**
@@ -13,7 +13,7 @@ public class POIException extends RuntimeException {
     private static final long serialVersionUID = 2711633732613506552L;
 
     public POIException(Throwable e) {
-        super(ExceptionUtils.getMessage(e), e);
+        super(ExceptionUtil.getMessage(e), e);
     }
 
     public POIException(String message) {

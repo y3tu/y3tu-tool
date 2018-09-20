@@ -1,6 +1,6 @@
 package com.y3tu.tool.core.io;
 
-import com.y3tu.tool.core.exception.ExceptionUtils;
+import com.y3tu.tool.core.exception.ExceptionUtil;
 import com.y3tu.tool.core.text.StringUtils;
 
 /**
@@ -12,7 +12,7 @@ public class IORuntimeException extends RuntimeException {
 	private static final long serialVersionUID = 8247610319171014183L;
 
 	public IORuntimeException(Throwable e) {
-		super(ExceptionUtils.getMessage(e), e);
+		super(ExceptionUtil.getMessage(e), e);
 	}
 
 	public IORuntimeException(String message) {
