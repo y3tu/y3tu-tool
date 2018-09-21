@@ -11,7 +11,6 @@ import java.util.Map;
  * {@link Iterable} 和 {@link Iterator} 相关工具类
  *
  * @author Looly
- * @since 3.1.0
  */
 public class IterUtil {
 
@@ -34,6 +33,64 @@ public class IterUtil {
      */
     public static boolean isNotEmpty(Iterator<?> Iterator) {
         return null != Iterator && Iterator.hasNext();
+    }
+
+    /**
+     * 是否包含{@code null}元素
+     *
+     * @param iter 被检查的{@link Iterable}对象，如果为{@code null} 返回false
+     * @return 是否包含{@code null}元素
+     */
+    public static boolean hasNull(Iterable<?> iter) {
+        return hasNull(null == iter ? null : iter.iterator());
+    }
+
+    /**
+     * 是否包含{@code null}元素
+     *
+     * @param iter 被检查的{@link Iterator}对象，如果为{@code null} 返回false
+     * @return 是否包含{@code null}元素
+     */
+    public static boolean hasNull(Iterator<?> iter) {
+        if (null == iter) {
+            return true;
+        }
+        while (iter.hasNext()) {
+            if (null == iter.next()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 是否全部元素为null
+     *
+     * @param iter iter 被检查的{@link Iterable}对象，如果为{@code null} 返回true
+     * @return 是否全部元素为null
+     */
+    public static boolean isAllNull(Iterable<?> iter) {
+        return isAllNull(null == iter ? null : iter.iterator());
+    }
+
+    /**
+     * 是否全部元素为null
+     *
+     * @param iter iter 被检查的{@link Iterator}对象，如果为{@code null} 返回true
+     * @return 是否全部元素为null
+     */
+    public static boolean isAllNull(Iterator<?> iter) {
+        if (null == iter) {
+            return true;
+        }
+
+        while (iter.hasNext()) {
+            if (null != iter.next()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -99,9 +156,9 @@ public class IterUtil {
      * 以键为准，值与键位置需对应。如果键元素数多于值元素，多余部分值用null代替。<br>
      * 如果值多于键，忽略多余的值。
      *
-     * @param <K> 键类型
-     * @param <V> 值类型
-     * @param keys 键列表
+     * @param <K>    键类型
+     * @param <V>    值类型
+     * @param keys   键列表
      * @param values 值列表
      * @return 标题内容Map
      * @since 3.1.0
@@ -121,9 +178,9 @@ public class IterUtil {
      * 以键为准，值与键位置需对应。如果键元素数多于值元素，多余部分值用null代替。<br>
      * 如果值多于键，忽略多余的值。
      *
-     * @param <K> 键类型
-     * @param <V> 值类型
-     * @param keys 键列表
+     * @param <K>    键类型
+     * @param <V>    值类型
+     * @param keys   键列表
      * @param values 值列表
      * @return 标题内容Map
      * @since 3.1.0

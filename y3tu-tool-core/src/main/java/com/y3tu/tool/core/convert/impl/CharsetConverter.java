@@ -1,6 +1,5 @@
 package com.y3tu.tool.core.convert.impl;
 
-import com.y3tu.tool.core.lang.Console;
 import com.y3tu.tool.core.text.CharsetUtil;
 import org.apache.commons.beanutils.Converter;
 

@@ -12,22 +12,30 @@ import com.y3tu.tool.core.reflect.TypeUtil;
 
 /**
  * 集合工具类
+ * @author y3tu
  */
 public class CollectionUtil {
 
     /**
-     * 判断是否为空.
+     * 集合是否为空
+     *
+     * @param collection 集合
+     * @return 是否为空
      */
     public static boolean isEmpty(Collection<?> collection) {
         return (collection == null) || collection.isEmpty();
     }
 
     /**
-     * 判断是否不为空.
+     * 集合是否为非空
+     *
+     * @param collection 集合
+     * @return 是否为非空
      */
     public static boolean isNotEmpty(Collection<?> collection) {
         return (collection != null) && !(collection.isEmpty());
     }
+
 
     /**
      * 取得Collection的第一个元素，如果collection为空返回null.

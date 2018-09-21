@@ -8,11 +8,10 @@ import com.y3tu.tool.core.lang.Editor;
 import com.y3tu.tool.core.lang.Filter;
 import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.core.util.ObjectUtil;
-import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * 数组工具类
- *
+ * @see org.apache.commons.lang3.ArrayUtils 更多数组操作可以参考此工具类
  * @author Looly
  */
 public class ArrayUtil {
@@ -834,4 +833,186 @@ public class ArrayUtil {
     public static <K, V> Map<K, V> zip(K[] keys, V[] values) {
         return zip(keys, values, false);
     }
+
+    /**
+     * 返回数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     *
+     * @param <T> 数组类型
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     */
+    public static <T> int indexOf(T[] array, Object value) {
+        if (null != array) {
+            for (int i = 0; i < array.length; i++) {
+                if (ObjectUtil.equal(value, array[i])) {
+                    return i;
+                }
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 返回数组中指定元素所在最后的位置，未找到返回{@link #INDEX_NOT_FOUND}
+     *
+     * @param <T> 数组类型
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     */
+    public static <T> int lastIndexOf(T[] array, Object value) {
+        if (null != array) {
+            for (int i = array.length - 1; i >= 0; i--) {
+                if (ObjectUtil.equal(value, array[i])) {
+                    return i;
+                }
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 数组中是否包含元素
+     *
+     * @param <T> 数组元素类型
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 是否包含
+     */
+    public static <T> boolean contains(T[] array, T value) {
+        return indexOf(array, value) > INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 获取数组对象中指定index的值，支持负数，例如-1表示倒数第一个值
+     *
+     * @param <T> 数组元素类型
+     * @param array 数组对象
+     * @param index 下标，支持负数
+     * @return 值
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T get(Object array, int index) {
+        if (index < 0) {
+            index += Array.getLength(array);
+        }
+        return (T) Array.get(array, index);
+    }
+
+    /**
+     * 获取数组中指定多个下标元素值，组成新数组
+     *
+     * @param <T> 数组元素类型
+     * @param array 数组
+     * @param indexes 下标列表
+     * @return 结果
+     */
+    public static <T> T[] getAny(Object array, int... indexes) {
+        final T[] result = newArray(indexes.length);
+        for (int i : indexes) {
+            result[i] = get(array, i);
+        }
+        return result;
+    }
+
+    /**
+     * 数组或集合转String
+     *
+     * @param obj 集合或数组对象
+     * @return 数组字符串，与集合转字符串格式相同
+     */
+    public static String toString(Object obj) {
+        if (null == obj) {
+            return null;
+        }
+        if (ArrayUtil.isArray(obj)) {
+            try {
+                return Arrays.deepToString((Object[]) obj);
+            } catch (Exception e) {
+                final String className = obj.getClass().getComponentType().getName();
+                switch (className) {
+                    case "long":
+                        return Arrays.toString((long[]) obj);
+                    case "int":
+                        return Arrays.toString((int[]) obj);
+                    case "short":
+                        return Arrays.toString((short[]) obj);
+                    case "char":
+                        return Arrays.toString((char[]) obj);
+                    case "byte":
+                        return Arrays.toString((byte[]) obj);
+                    case "boolean":
+                        return Arrays.toString((boolean[]) obj);
+                    case "float":
+                        return Arrays.toString((float[]) obj);
+                    case "double":
+                        return Arrays.toString((double[]) obj);
+                    default:
+                        throw new UtilException(e);
+                }
+            }
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 移除数组中对应位置的元素<br>
+     * copy from commons-lang
+     *
+     * @param <T> 数组元素类型
+     *
+     * @param array 数组对象，可以是对象数组，也可以原始类型数组
+     * @param index 位置，如果位置小于0或者大于长度，返回原数组
+     * @return 去掉指定元素后的新数组或原数组
+     * @throws IllegalArgumentException 参数对象不为数组对象
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T[] remove(T[] array, int index) throws IllegalArgumentException {
+        return (T[]) remove((Object) array, index);
+    }
+    /**
+     * 移除数组中对应位置的元素<br>
+     * copy from commons-lang
+     *
+     * @param array 数组对象，可以是对象数组，也可以原始类型数组
+     * @param index 位置，如果位置小于0或者大于长度，返回原数组
+     * @return 去掉指定元素后的新数组或原数组
+     * @throws IllegalArgumentException 参数对象不为数组对象
+     */
+    public static Object remove(Object array, int index) throws IllegalArgumentException {
+        if (null == array) {
+            return array;
+        }
+        int length = length(array);
+        if (index < 0 || index >= length) {
+            return array;
+        }
+
+        final Object result = Array.newInstance(array.getClass().getComponentType(), length - 1);
+        System.arraycopy(array, 0, result, 0, index);
+        if (index < length - 1) {
+            // 后半部分
+            System.arraycopy(array, index + 1, result, index, length - index - 1);
+        }
+
+        return result;
+    }
+
+    /**
+     * 移除数组中指定的元素<br>
+     * 只会移除匹配到的第一个元素 copy from commons-lang
+     *
+     * @param <T> 数组元素类型
+     * @param array 数组对象，可以是对象数组，也可以原始类型数组
+     * @param element 要移除的元素
+     * @return 去掉指定元素后的新数组或原数组
+     * @throws IllegalArgumentException 参数对象不为数组对象
+     * @since 3.0.8
+     */
+    public static <T> T[] removeEle(T[] array, T element) throws IllegalArgumentException {
+        return remove(array, indexOf(array, element));
+    }
+
 }
