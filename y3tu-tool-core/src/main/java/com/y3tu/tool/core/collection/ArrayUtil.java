@@ -4,11 +4,16 @@ import java.lang.reflect.Array;
 import java.util.*;
 
 import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.lang.Editor;
+import com.y3tu.tool.core.lang.Filter;
 import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.core.util.ObjectUtil;
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * 数组工具类
+ *
+ * @author Looly
  */
 public class ArrayUtil {
 
@@ -350,7 +355,8 @@ public class ArrayUtil {
         if (isArray(obj)) {
             final Object result;
             final Class<?> componentType = obj.getClass().getComponentType();
-            if (componentType.isPrimitive()) {// 原始类型
+            if (componentType.isPrimitive()) {
+                // 原始类型
                 int length = Array.getLength(obj);
                 result = Array.newInstance(componentType, length);
                 while (length-- > 0) {
@@ -464,6 +470,40 @@ public class ArrayUtil {
         return insert(array, length(array), newElements);
     }
 
+    /**
+     * 将元素值设置为数组的某个位置，当给定的index大于数组长度，则追加
+     *
+     * @param <T>    数组元素类型
+     * @param buffer 已有数组
+     * @param index  位置，大于长度追加，否则替换
+     * @param value  新值
+     * @return 新数组或原有数组
+     */
+    public static <T> T[] setOrAppend(T[] buffer, int index, T value) {
+        if (index < buffer.length) {
+            Array.set(buffer, index, value);
+            return buffer;
+        } else {
+            return append(buffer, value);
+        }
+    }
+
+    /**
+     * 将元素值设置为数组的某个位置，当给定的index大于数组长度，则追加
+     *
+     * @param array 已有数组
+     * @param index 位置，大于长度追加，否则替换
+     * @param value 新值
+     * @return 新数组或原有数组
+     */
+    public static Object setOrAppend(Object array, int index, Object value) {
+        if (index < length(array)) {
+            Array.set(array, index, value);
+            return array;
+        } else {
+            return append(array, value);
+        }
+    }
 
     /**
      * 将新元素插入到到已有数组中的某个位置<br>
@@ -623,6 +663,175 @@ public class ArrayUtil {
         return resize(buffer, newSize, buffer.getClass().getComponentType());
     }
 
-    //todo 后续数组方法移植
+    /**
+     * 生成一个数字列表<br>
+     * 自动判定正序反序
+     *
+     * @param includedStart 开始的数字（包含）
+     * @param excludedEnd   结束的数字（不包含）
+     * @param step          步进
+     * @return 数字列表
+     */
+    public static int[] range(int includedStart, int excludedEnd, int step) {
+        if (includedStart > excludedEnd) {
+            int tmp = includedStart;
+            includedStart = excludedEnd;
+            excludedEnd = tmp;
+        }
 
+        if (step <= 0) {
+            step = 1;
+        }
+
+        int deviation = excludedEnd - includedStart;
+        int length = deviation / step;
+        if (deviation % step != 0) {
+            length += 1;
+        }
+        int[] range = new int[length];
+        for (int i = 0; i < length; i++) {
+            range[i] = includedStart;
+            includedStart += step;
+        }
+        return range;
+    }
+
+    /**
+     * 过滤<br>
+     * 过滤过程通过传入的Editor实现来返回需要的元素内容，这个Editor实现可以实现以下功能：
+     *
+     * <pre>
+     * 1、过滤出需要的对象，如果返回null表示这个元素对象抛弃
+     * 2、修改元素对象，返回集合中为修改后的对象
+     * </pre>
+     * {@link Editor}
+     *
+     * @param <T>    数组元素类型
+     * @param array  数组
+     * @param editor 编辑器接口
+     * @return 过滤后的数组
+     */
+    public static <T> T[] editor(T[] array, Editor<T> editor) {
+        ArrayList<T> list = new ArrayList<>(array.length);
+        T modified;
+        for (T t : array) {
+            modified = editor.edit(t);
+            if (null != modified) {
+                list.add(modified);
+            }
+        }
+        return list.toArray(Arrays.copyOf(array, list.size()));
+    }
+
+    /**
+     * 过滤<br>
+     * 过滤过程通过传入的Filter实现来过滤返回需要的元素内容，这个Filter实现可以实现以下功能：
+     *
+     * <pre>
+     * 1、过滤出需要的对象，{@link Filter#accept(Object)}方法返回true的对象将被加入结果集合中
+     * </pre>
+     *
+     * @param <T>    数组元素类型
+     * @param array  数组
+     * @param filter 过滤器接口，用于定义过滤规则
+     * @return 过滤后的数组
+     */
+    public static <T> T[] filter(T[] array, Filter<T> filter) {
+        ArrayList<T> list = new ArrayList<>(array.length);
+        boolean isAccept;
+        for (T t : array) {
+            isAccept = filter.accept(t);
+            if (isAccept) {
+                list.add(t);
+            }
+        }
+        return list.toArray(Arrays.copyOf(array, list.size()));
+    }
+
+    /**
+     * 去除{@code null} 元素
+     *
+     * @param array 数组
+     * @return 处理后的数组
+     */
+    public static <T> T[] removeNull(T[] array) {
+        return editor(array, t -> t);
+    }
+
+    /**
+     * 去除{@code null}或者""元素
+     *
+     * @param array 数组
+     * @return 处理后的数组
+     */
+    public static <T extends CharSequence> T[] removeEmpty(T[] array) {
+        return filter(array, t -> false == StringUtils.isEmpty(t));
+    }
+
+    /**
+     * 去除{@code null}或者""或者空白字符串 元素
+     *
+     * @param array 数组
+     * @return 处理后的数组
+     */
+    public static <T extends CharSequence> T[] removeBlank(T[] array) {
+        return filter(array, t -> false == StringUtils.isBlank(t));
+    }
+
+    /**
+     * 数组元素中的null转换为""
+     *
+     * @param array 数组
+     * @return 新数组
+     */
+    public static String[] nullToEmpty(String[] array) {
+        return editor(array, t -> null == t ? StringUtils.EMPTY : t);
+    }
+
+    /**
+     * 映射键值（参考Python的zip()函数）<br>
+     * 例如：<br>
+     * keys = [a,b,c,d]<br>
+     * values = [1,2,3,4]<br>
+     * 则得到的Map是 {a=1, b=2, c=3, d=4}<br>
+     * 如果两个数组长度不同，则只对应最短部分
+     *
+     * @param <K> Key类型
+     * @param <V> Value类型
+     * @param keys 键列表
+     * @param values 值列表
+     * @param isOrder 是否有序
+     * @return Map
+     */
+    public static <K, V> Map<K, V> zip(K[] keys, V[] values, boolean isOrder) {
+        if (isEmpty(keys) || isEmpty(values)) {
+            return null;
+        }
+
+        final int size = Math.min(keys.length, values.length);
+        final Map<K, V> map = MapUtil.newHashMap(size, isOrder);
+        for (int i = 0; i < size; i++) {
+            map.put(keys[i], values[i]);
+        }
+
+        return map;
+    }
+
+    /**
+     * 映射键值（参考Python的zip()函数），返回Map无序<br>
+     * 例如：<br>
+     * keys = [a,b,c,d]<br>
+     * values = [1,2,3,4]<br>
+     * 则得到的Map是 {a=1, b=2, c=3, d=4}<br>
+     * 如果两个数组长度不同，则只对应最短部分
+     *
+     * @param <K> Key类型
+     * @param <V> Value类型
+     * @param keys 键列表
+     * @param values 值列表
+     * @return Map
+     */
+    public static <K, V> Map<K, V> zip(K[] keys, V[] values) {
+        return zip(keys, values, false);
+    }
 }

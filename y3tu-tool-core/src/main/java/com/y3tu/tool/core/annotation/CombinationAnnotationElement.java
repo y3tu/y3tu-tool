@@ -1,6 +1,5 @@
 package com.y3tu.tool.core.annotation;
 
-import com.y3tu.tool.core.collection.CollectionUtil;
 import com.y3tu.tool.core.collection.SetUtil;
 
 import java.lang.annotation.Annotation;
