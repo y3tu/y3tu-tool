@@ -9,7 +9,7 @@ import java.util.List;
 
 import com.y3tu.tool.core.exception.DependencyException;
 import com.y3tu.tool.core.exception.ExceptionUtil;
-import com.y3tu.tool.core.io.IoUtil;
+import com.y3tu.tool.core.io.IOUtil;
 import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.poi.excel.sax.handler.RowHandler;
 import com.y3tu.tool.poi.exceptions.POIException;
@@ -177,7 +177,7 @@ public class Excel07SaxReader extends AbstractExcelSaxReader<Excel07SaxReader> i
         } catch (Exception e) {
             throw ExceptionUtil.wrap(e, POIException.class);
         } finally {
-            IoUtil.close(sheetInputStream);
+            IOUtil.close(sheetInputStream);
         }
         return this;
     }

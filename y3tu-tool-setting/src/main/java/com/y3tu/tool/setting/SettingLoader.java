@@ -1,10 +1,9 @@
 package com.y3tu.tool.setting;
 
-import com.y3tu.tool.core.collection.ArrayUtil;
 import com.y3tu.tool.core.collection.ListUtil;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IORuntimeException;
-import com.y3tu.tool.core.io.IoUtil;
+import com.y3tu.tool.core.io.IOUtil;
 import com.y3tu.tool.core.text.CharUtil;
 import com.y3tu.tool.core.text.CharsetUtil;
 import com.y3tu.tool.core.text.StringUtils;
@@ -88,7 +87,7 @@ public class SettingLoader {
 			log.error("Load setting error!",e);
 			return false;
 		} finally {
-			IoUtil.close(settingStream);
+			IOUtil.close(settingStream);
 		}
 		return true;
 	}
@@ -104,7 +103,7 @@ public class SettingLoader {
 		groupedMap.clear();
 		BufferedReader reader = null;
 		try {
-			reader = IoUtil.getReader(settingStream, this.charset);
+			reader = IOUtil.getReader(settingStream, this.charset);
 			// 分组
 			String group = null;
 
@@ -139,7 +138,7 @@ public class SettingLoader {
 				this.groupedMap.put(group, keyValue[0].trim(), value);
 			}
 		} finally {
-			IoUtil.close(reader);
+			IOUtil.close(reader);
 		}
 		return true;
 	}
@@ -168,7 +167,7 @@ public class SettingLoader {
 		} catch (IOException e) {
 			throw new IORuntimeException(e, "Store Setting to [{}] error!", absolutePath);
 		} finally {
-			IoUtil.close(writer);
+			IOUtil.close(writer);
 		}
 	}
 

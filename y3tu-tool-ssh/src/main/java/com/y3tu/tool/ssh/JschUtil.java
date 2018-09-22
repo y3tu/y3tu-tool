@@ -12,7 +12,7 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.y3tu.tool.core.io.IORuntimeException;
-import com.y3tu.tool.core.io.IoUtil;
+import com.y3tu.tool.core.io.IOUtil;
 import com.y3tu.tool.core.lang.LocalPortGenerater;
 import com.y3tu.tool.core.text.CharsetUtil;
 import com.y3tu.tool.core.text.StringUtils;
@@ -233,13 +233,13 @@ public class JschUtil {
 		try {
 			channel.connect();// 执行命令 等待执行结束
 			in = channel.getInputStream();
-			return IoUtil.read(in, CharsetUtil.UTF_8);
+			return IOUtil.read(in, CharsetUtil.UTF_8);
 		} catch (IOException e) {
 			throw new IORuntimeException(e);
 		} catch (JSchException e) {
 			throw new JschRuntimeException(e);
 		} finally {
-			IoUtil.close(in);
+			IOUtil.close(in);
 			close(channel);
 		}
 	}

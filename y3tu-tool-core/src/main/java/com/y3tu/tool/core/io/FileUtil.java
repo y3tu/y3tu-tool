@@ -377,7 +377,7 @@ public class FileUtil {
             } catch (IOException e) {
                 throw new IORuntimeException(StringUtils.format("Can not read file path of [{}]", path), e);
             } finally {
-                IoUtil.close(jarFile);
+                IOUtil.close(jarFile);
             }
         }
         return paths;

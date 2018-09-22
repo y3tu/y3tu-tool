@@ -3,7 +3,7 @@ package com.y3tu.tool.core.util;
 import com.y3tu.tool.core.collection.ArrayUtil;
 import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.io.FastByteArrayOutputStream;
-import com.y3tu.tool.core.io.IoUtil;
+import com.y3tu.tool.core.io.IOUtil;
 import com.y3tu.tool.core.reflect.ClassUtil;
 import com.y3tu.tool.core.reflect.ReflectionUtil;
 
@@ -279,7 +279,7 @@ public class ObjectUtil {
         } catch (Exception e) {
             throw new UtilException(e);
         } finally {
-            IoUtil.close(out);
+            IOUtil.close(out);
         }
     }
 
@@ -305,7 +305,7 @@ public class ObjectUtil {
         } catch (Exception e) {
             throw new UtilException(e);
         } finally {
-            IoUtil.close(oos);
+            IOUtil.close(oos);
         }
         return byteOut.toByteArray();
     }

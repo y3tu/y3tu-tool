@@ -2,7 +2,7 @@ package com.y3tu.tool.core.lang;
 
 import com.y3tu.tool.core.collection.CollectionUtil;
 import com.y3tu.tool.core.exception.NetException;
-import com.y3tu.tool.core.io.IoUtil;
+import com.y3tu.tool.core.io.IOUtil;
 import com.y3tu.tool.core.text.StringUtils;
 
 import java.io.IOException;
@@ -415,7 +415,7 @@ public class NetUtil {
         } catch (IOException e) {
             throw new IOException(e);
         } finally {
-            IoUtil.close(out);
+            IOUtil.close(out);
         }
     }
 

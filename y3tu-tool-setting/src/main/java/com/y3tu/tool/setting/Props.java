@@ -1,18 +1,16 @@
 package com.y3tu.tool.setting;
 
 import com.y3tu.tool.core.convert.ConvertUtil;
-import com.y3tu.tool.core.convert.impl.CharsetConverter;
 import com.y3tu.tool.core.io.FilePathUtil;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IORuntimeException;
-import com.y3tu.tool.core.io.IoUtil;
+import com.y3tu.tool.core.io.IOUtil;
 import com.y3tu.tool.core.io.resource.ResourceUtil;
 import com.y3tu.tool.core.io.watch.SimpleWatcher;
 import com.y3tu.tool.core.io.watch.WatchMonitor;
 import com.y3tu.tool.core.lang.Assert;
 import com.y3tu.tool.core.reflect.ReflectionUtil;
 import com.y3tu.tool.core.text.CharsetUtil;
-import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.core.util.URLUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -174,7 +172,7 @@ public class Props extends Properties {
         }
         log.debug("Load properties [{}]", propertiesFileUrl.getPath());
         try {
-            BufferedReader reader = IoUtil.getReader(URLUtil.getReader(this.propertiesFileUrl, charset));
+            BufferedReader reader = IOUtil.getReader(URLUtil.getReader(this.propertiesFileUrl, charset));
             super.load(reader);
         } catch (Exception e) {
             log.error("Load properties error!", e);
@@ -211,7 +209,7 @@ public class Props extends Properties {
                 throw new SettingRuntimeException(e, "Setting auto load not support url: [{}]", this.propertiesFileUrl);
             }
         } else {
-            IoUtil.close(this.watchMonitor);
+            IOUtil.close(this.watchMonitor);
             this.watchMonitor = null;
         }
     }
@@ -242,7 +240,7 @@ public class Props extends Properties {
         } catch (IOException e) {
             throw new IORuntimeException(e, "Store properties to [{}] error!", absolutePath);
         } finally {
-            IoUtil.close(writer);
+            IOUtil.close(writer);
         }
     }
 

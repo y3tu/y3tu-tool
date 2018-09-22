@@ -8,7 +8,7 @@ import java.io.OutputStream;
 
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IORuntimeException;
-import com.y3tu.tool.core.io.IoUtil;
+import com.y3tu.tool.core.io.IOUtil;
 import com.y3tu.tool.poi.exceptions.POIException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
@@ -77,12 +77,12 @@ public class WorkbookUtil {
      */
     public static Workbook createBook(InputStream in, String password, boolean closeAfterRead) {
         try {
-            return WorkbookFactory.create(IoUtil.toMarkSupportStream(in), password);
+            return WorkbookFactory.create(IOUtil.toMarkSupportStream(in), password);
         } catch (Exception e) {
             throw new POIException(e);
         } finally {
             if (closeAfterRead) {
-                IoUtil.close(in);
+                IOUtil.close(in);
             }
         }
     }

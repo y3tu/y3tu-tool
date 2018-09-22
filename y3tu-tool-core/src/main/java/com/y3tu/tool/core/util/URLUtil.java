@@ -3,7 +3,7 @@ package com.y3tu.tool.core.util;
 import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IORuntimeException;
-import com.y3tu.tool.core.io.IoUtil;
+import com.y3tu.tool.core.io.IOUtil;
 import com.y3tu.tool.core.io.resource.ResourceUtil;
 import com.y3tu.tool.core.lang.Assert;
 import com.y3tu.tool.core.reflect.ClassLoaderUtil;
@@ -416,6 +416,6 @@ public class URLUtil {
      * @return {@link BufferedReader}
      */
     public static BufferedReader getReader(URL url, Charset charset) {
-        return IoUtil.getReader(getStream(url), charset);
+        return IOUtil.getReader(getStream(url), charset);
     }
 }

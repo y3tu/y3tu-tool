@@ -3,7 +3,7 @@ package com.y3tu.tool.setting;
 import com.y3tu.tool.core.collection.ListUtil;
 import com.y3tu.tool.core.convert.ConvertUtil;
 import com.y3tu.tool.core.convert.impl.CharsetConverter;
-import com.y3tu.tool.core.io.IoUtil;
+import com.y3tu.tool.core.io.IOUtil;
 import com.y3tu.tool.core.io.resource.ResourceUtil;
 import com.y3tu.tool.core.io.watch.SimpleWatcher;
 import com.y3tu.tool.core.io.watch.WatchMonitor;
@@ -142,7 +142,7 @@ public class Setting extends LinkedHashMap<String, String> {
             }
             log.debug("Auto load for [{}] listenning...", this.settingUrl);
         } else {
-            IoUtil.close(this.watchMonitor);
+            IOUtil.close(this.watchMonitor);
             this.watchMonitor = null;
         }
     }

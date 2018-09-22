@@ -4,7 +4,7 @@ import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.y3tu.tool.core.io.IoUtil;
+import com.y3tu.tool.core.io.IOUtil;
 import com.y3tu.tool.core.lang.Assert;
 import com.y3tu.tool.poi.excel.cell.CellUtil;
 import org.apache.poi.ss.usermodel.Cell;
@@ -234,7 +234,7 @@ public class ExcelBase<T extends ExcelBase<T>> implements Closeable {
      */
     @Override
     public void close() {
-        IoUtil.close(this.workbook);
+        IOUtil.close(this.workbook);
         this.sheet = null;
         this.workbook = null;
         this.isClosed = true;

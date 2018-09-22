@@ -2,9 +2,8 @@ package com.y3tu.tool.core.io.watch;
 
 import com.y3tu.tool.core.collection.ArrayUtil;
 import com.y3tu.tool.core.io.FilePathUtil;
-import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IORuntimeException;
-import com.y3tu.tool.core.io.IoUtil;
+import com.y3tu.tool.core.io.IOUtil;
 import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.core.util.URLUtil;
 
@@ -427,7 +426,7 @@ public class WatchMonitor extends Thread implements Closeable{
 	@Override
 	public void close(){
 		isClosed = true;
-		IoUtil.close(watchService);
+		IOUtil.close(watchService);
 	}
 	
 	//------------------------------------------------------ private method start
