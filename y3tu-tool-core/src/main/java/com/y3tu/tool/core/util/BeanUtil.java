@@ -2,6 +2,7 @@ package com.y3tu.tool.core.util;
 
 import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.reflect.ClassUtil;
+import org.apache.commons.beanutils.BeanUtils;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
@@ -19,7 +20,7 @@ import java.util.Map;
  *
  * @author y3tu
  */
-public class BeanUtil {
+public class BeanUtil extends BeanUtils {
     /**
      * 判断是否为Bean对象<br>
      * 判定方法是是否存在只有一个参数的setXXX方法

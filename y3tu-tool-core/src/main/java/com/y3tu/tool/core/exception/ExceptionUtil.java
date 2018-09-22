@@ -1,7 +1,7 @@
 package com.y3tu.tool.core.exception;
 
-import com.y3tu.tool.core.collection.MapUtil;
 import com.y3tu.tool.core.io.FastByteArrayOutputStream;
+import com.y3tu.tool.core.map.MapUtil;
 import com.y3tu.tool.core.reflect.ReflectionUtil;
 import com.y3tu.tool.core.text.StringUtils;
 

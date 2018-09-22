@@ -1,6 +1,5 @@
 package com.y3tu.tool.core.io;
 
-import com.y3tu.tool.core.collection.ArrayUtil;
 import com.y3tu.tool.core.collection.CollectionUtil;
 import com.y3tu.tool.core.collection.ListUtil;
 import com.y3tu.tool.core.io.resource.ResourceUtil;
@@ -14,11 +13,7 @@ import com.y3tu.tool.core.util.URLUtil;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
 import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.LinkedList;
 import java.util.List;
 

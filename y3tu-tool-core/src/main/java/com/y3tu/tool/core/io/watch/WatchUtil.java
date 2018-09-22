@@ -14,7 +14,6 @@ import com.y3tu.tool.core.util.URLUtil;
  * 主要负责文件监听器的快捷创建
  * 
  * @author Looly
- * @since 3.1.0
  */
 public class WatchUtil {
 	/**

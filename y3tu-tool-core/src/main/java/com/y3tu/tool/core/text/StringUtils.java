@@ -234,7 +234,6 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @param str2       要比较的字符串2
      * @param ignoreCase 是否忽略大小写
      * @return 如果两个字符串相同，或者都是<code>null</code>，则返回<code>true</code>
-     * @since 3.2.0
      */
     public static boolean equals(CharSequence str1, CharSequence str2, boolean ignoreCase) {
         if (null == str1) {
@@ -508,7 +507,6 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @param filledChar 填充的字符
      * @param len        填充长度
      * @return 填充后的字符串
-     * @since 3.1.2
      */
     public static String fillBefore(String str, char filledChar, int len) {
         return fill(str, filledChar, len, true);
@@ -522,7 +520,6 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @param filledChar 填充的字符
      * @param len        填充长度
      * @return 填充后的字符串
-     * @since 3.1.2
      */
     public static String fillAfter(String str, char filledChar, int len) {
         return fill(str, filledChar, len, false);
@@ -536,7 +533,6 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @param len        填充长度
      * @param isPre      是否填充在前
      * @return 填充后的字符串
-     * @since 3.1.2
      */
     public static String fill(String str, char filledChar, int len, boolean isPre) {
         final int strLen = str.length();
@@ -569,6 +565,40 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             return str.toString().toLowerCase().endsWith(suffix.toString().toLowerCase());
         } else {
             return str.toString().endsWith(suffix.toString());
+        }
+    }
+
+    /**
+     * 将下划线方式命名的字符串转换为驼峰式。如果转换前的下划线大写方式命名的字符串为空，则返回空字符串。<br>
+     * 例如：hello_world=》helloWorld
+     *
+     * @param name 转换前的下划线大写方式命名的字符串
+     * @return 转换后的驼峰式命名的字符串
+     */
+    public static String toCamelCase(CharSequence name) {
+        if (null == name) {
+            return null;
+        }
+
+        String name2 = name.toString();
+        if (name2.contains(UNDERLINE)) {
+            final StringBuilder sb = new StringBuilder(name2.length());
+            boolean upperCase = false;
+            for (int i = 0; i < name2.length(); i++) {
+                char c = name2.charAt(i);
+
+                if (c == CharUtil.UNDERLINE) {
+                    upperCase = true;
+                } else if (upperCase) {
+                    sb.append(Character.toUpperCase(c));
+                    upperCase = false;
+                } else {
+                    sb.append(Character.toLowerCase(c));
+                }
+            }
+            return sb.toString();
+        } else {
+            return name2;
         }
     }
 }

@@ -8,7 +8,6 @@ import java.io.OutputStream;
  * 来自 Apache Commons io
  * 
  * @author looly
- * @since 4.0.6
  */
 public class NullOutputStream extends OutputStream {
 
