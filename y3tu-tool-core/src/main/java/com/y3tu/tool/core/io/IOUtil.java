@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author xiaoleilu
  */
 @Slf4j
-public class IoUtil {
+public class IOUtil {
 
     /**
      * 默认缓存大小
@@ -927,9 +927,9 @@ public class IoUtil {
         }
         try {
             in = new CheckedInputStream(in, checksum);
-            IoUtil.copy(in, new NullOutputStream(), -1, null);
+            IOUtil.copy(in, new NullOutputStream(), -1, null);
         } finally {
-            IoUtil.close(in);
+            IOUtil.close(in);
         }
         return checksum;
     }
