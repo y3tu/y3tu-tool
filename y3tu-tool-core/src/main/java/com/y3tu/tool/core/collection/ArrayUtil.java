@@ -1009,7 +1009,6 @@ public class ArrayUtil {
      * @param element 要移除的元素
      * @return 去掉指定元素后的新数组或原数组
      * @throws IllegalArgumentException 参数对象不为数组对象
-     * @since 3.0.8
      */
     public static <T> T[] removeEle(T[] array, T element) throws IllegalArgumentException {
         return remove(array, indexOf(array, element));

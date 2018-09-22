@@ -29,8 +29,9 @@ import com.google.common.collect.Ordering;
 
 /**
  * Map 工具类
+ *
+ * @author Looly
  */
-@SuppressWarnings("unchecked")
 public class MapUtil {
 
 
@@ -45,17 +46,23 @@ public class MapUtil {
 
 
     /**
-     * 判断是否为空.
+     * Map是否为空
+     *
+     * @param map 集合
+     * @return 是否为空
      */
-    public static boolean isEmpty(final Map<?, ?> map) {
-        return (map == null) || map.isEmpty();
+    public static boolean isEmpty(Map<?, ?> map) {
+        return null == map || map.isEmpty();
     }
 
     /**
-     * 判断是否为空.
+     * Map是否为非空
+     *
+     * @param map 集合
+     * @return 是否为非空
      */
-    public static boolean isNotEmpty(final Map<?, ?> map) {
-        return (map != null) && !map.isEmpty();
+    public static boolean isNotEmpty(Map<?, ?> map) {
+        return null != map && false == map.isEmpty();
     }
 
     /**
@@ -130,7 +137,6 @@ public class MapUtil {
      * @param size    初始大小，由于默认负载因子0.75，传入的size会实际初始大小为size / 0.75
      * @param isOrder Map的Key是否有序，有序返回 {@link LinkedHashMap}，否则返回 {@link HashMap}
      * @return HashMap对象
-     * @since 3.0.4
      */
     public static <K, V> HashMap<K, V> newHashMap(int size, boolean isOrder) {
         int initialCapacity = (int) (size / DEFAULT_LOAD_FACTOR);

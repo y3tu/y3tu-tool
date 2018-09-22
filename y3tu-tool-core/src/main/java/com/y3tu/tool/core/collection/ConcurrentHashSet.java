@@ -11,7 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Looly
  *
  * @param <E> 元素类型
- * @since 3.1.0
  */
 public class ConcurrentHashSet<E> extends AbstractSet<E> implements java.io.Serializable {
 	private static final long serialVersionUID = 7997886765361607470L;

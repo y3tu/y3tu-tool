@@ -8,7 +8,6 @@ import java.util.Iterator;
  * @author Looly
  *
  * @param <E> 元素类型
- * @since 4.1.1
  */
 public class EnumerationIter<E> implements Iterator<E>, Iterable<E>{
 	

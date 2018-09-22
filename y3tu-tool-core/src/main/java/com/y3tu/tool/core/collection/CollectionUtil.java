@@ -12,6 +12,7 @@ import com.y3tu.tool.core.reflect.TypeUtil;
 
 /**
  * 集合工具类
+ *
  * @author y3tu
  */
 public class CollectionUtil {
@@ -39,6 +40,10 @@ public class CollectionUtil {
 
     /**
      * 取得Collection的第一个元素，如果collection为空返回null.
+     *
+     * @param collection 集合数据源
+     * @param <T>        集合里面的数据类型
+     * @return 集合里面的第一个元素
      */
     public static <T> T getFirst(Collection<T> collection) {
         if (isEmpty(collection)) {
@@ -52,12 +57,14 @@ public class CollectionUtil {
 
     /**
      * 获取Collection的最后一个元素，如果collection为空返回null.
+     * @param collection 集合数据源
+     * @param <T>  集合里面的数据类型
+     * @return 集合里面的最后一个元素
      */
     public static <T> T getLast(Collection<T> collection) {
         if (isEmpty(collection)) {
             return null;
         }
-
         // 当类型List时，直接取得最后一个元素.
         if (collection instanceof List) {
             List<T> list = (List<T>) collection;

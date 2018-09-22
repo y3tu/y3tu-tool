@@ -7,7 +7,6 @@ import com.y3tu.tool.core.text.StringUtils;
  * 依赖异常
  *
  * @author xiaoleilu
- * @since 4.0.10
  */
 public class DependencyException extends RuntimeException {
     private static final long serialVersionUID = 8247610319171014183L;

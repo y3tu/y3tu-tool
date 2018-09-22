@@ -56,7 +56,6 @@ public class ListUtil {
 		if (isEmpty(list)) {
 			return null;
 		}
-
 		return list.get(list.size() - 1);
 	}
 

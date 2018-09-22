@@ -161,7 +161,6 @@ public class IterUtil {
      * @param keys   键列表
      * @param values 值列表
      * @return 标题内容Map
-     * @since 3.1.0
      */
     public static <K, V> Map<K, V> toMap(Iterator<K> keys, Iterator<V> values) {
         final Map<K, V> resultMap = new HashMap<>();

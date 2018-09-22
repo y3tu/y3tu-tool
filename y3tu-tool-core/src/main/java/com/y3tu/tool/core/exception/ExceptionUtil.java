@@ -1,14 +1,11 @@
 package com.y3tu.tool.core.exception;
 
-import com.y3tu.tool.core.collection.CollectionUtil;
 import com.y3tu.tool.core.collection.MapUtil;
 import com.y3tu.tool.core.io.FastByteArrayOutputStream;
 import com.y3tu.tool.core.reflect.ReflectionUtil;
 import com.y3tu.tool.core.text.StringUtils;
 
 import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.HashMap;
