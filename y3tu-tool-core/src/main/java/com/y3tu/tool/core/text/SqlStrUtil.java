@@ -56,7 +56,14 @@ public class SqlStrUtil {
     }
 
     enum SqlType {
-        ORACLE(1), MYSQL(2);
+        /**
+         * oracle
+         */
+        ORACLE(1),
+        /**
+         * mysql
+         */
+        MYSQL(2);
 
         private final int type;
 

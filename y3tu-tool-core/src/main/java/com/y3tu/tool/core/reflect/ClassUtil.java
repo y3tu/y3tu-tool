@@ -4,7 +4,6 @@ import com.y3tu.tool.core.collection.ArrayUtil;
 import com.y3tu.tool.core.collection.ListUtil;
 import com.y3tu.tool.core.collection.SetUtil;
 import com.y3tu.tool.core.io.FilePathUtil;
-import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IORuntimeException;
 import com.y3tu.tool.core.io.resource.ResourceUtil;
 import com.y3tu.tool.core.lang.Singleton;
@@ -51,7 +50,6 @@ public class ClassUtil {
      * @param obj      获取类名对象
      * @param isSimple 是否简单类名，如果为true，返回不带包名的类名
      * @return 类名
-     * @since 3.0.7
      */
     public static String getClassName(Object obj, boolean isSimple) {
         if (null == obj) {
@@ -74,7 +72,6 @@ public class ClassUtil {
      * @param clazz    类
      * @param isSimple 是否简单类名，如果为true，返回不带包名的类名
      * @return 类名
-     * @since 3.0.7
      */
     public static String getClassName(Class<?> clazz, boolean isSimple) {
         if (null == clazz) {
@@ -106,7 +103,6 @@ public class ClassUtil {
      * @param className  类名，可以是全类名（包含包名），也可以是简单类名（不包含包名）
      * @param ignoreCase 是否忽略大小写
      * @return 指定类是否与给定的类名相同
-     * @since 3.0.7
      */
     public static boolean equals(Class<?> clazz, String className, boolean ignoreCase) {
         if (null == clazz || StringUtils.isBlank(className)) {
@@ -661,7 +657,6 @@ public class ClassUtil {
      *
      * @param clazz 类
      * @return 是否为枚举类型
-     * @since 3.2.0
      */
     public static boolean isEnum(Class<?> clazz) {
         return null == clazz ? false : clazz.isEnum();
@@ -734,7 +729,6 @@ public class ClassUtil {
      *
      * @param clazz 类
      * @return 默认值
-     * @since 3.0.8
      */
     public static Object getDefaultValue(Class<?> clazz) {
         if (clazz.isPrimitive()) {
@@ -765,7 +759,6 @@ public class ClassUtil {
      *
      * @param classes 值类型
      * @return 默认值列表
-     * @since 3.0.9
      */
     public static Object[] getDefaultValues(Class<?>... classes) {
         final Object[] values = new Object[classes.length];
@@ -790,7 +783,6 @@ public class ClassUtil {
      *
      * @param isEncoded 是否编码路径中的中文
      * @return ClassPath
-     * @since 3.2.1
      */
     public static String getClassPath(boolean isEncoded) {
         final URL classPathURL = getClassPathURL();

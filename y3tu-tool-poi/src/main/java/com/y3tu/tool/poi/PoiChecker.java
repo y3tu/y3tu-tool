@@ -8,7 +8,6 @@ import com.y3tu.tool.core.reflect.ClassLoaderUtil;
  * POI引入检查器
  *
  * @author looly
- * @since 4.0.10
  */
 public class PoiChecker {
 

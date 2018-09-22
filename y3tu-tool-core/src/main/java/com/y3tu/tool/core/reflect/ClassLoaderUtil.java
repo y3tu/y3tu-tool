@@ -15,7 +15,6 @@ import com.y3tu.tool.core.text.StringUtils;
  * {@link ClassLoader}工具类
  * 
  * @author Looly
- * @since 3.0.9
  */
 public class ClassLoaderUtil {
 

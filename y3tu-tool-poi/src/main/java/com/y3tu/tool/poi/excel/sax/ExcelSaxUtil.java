@@ -124,7 +124,6 @@ public class ExcelSaxUtil {
      *
      * @param value 单元格值
      * @return 日期
-     * @since 4.1.0
      */
     private static Date getDateValue(String value) throws ParseException {
         return DateFormatUtil.parseDate(value, DateFormatUtil.PATTERN_YYYY_MM_DD_HH_MM_SS);
@@ -136,7 +135,6 @@ public class ExcelSaxUtil {
      * @param value        值
      * @param numFmtString 格式
      * @return 数字，可以是Double、Long
-     * @since 4.1.0
      */
     private static Number getNumberValue(String value, String numFmtString) {
         if (StringUtils.isBlank(value)) {

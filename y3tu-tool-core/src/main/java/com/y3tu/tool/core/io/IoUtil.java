@@ -545,7 +545,7 @@ public class IoUtil {
      * @param in          {@link InputStream}
      * @param lineHandler 行处理接口，实现handle方法用于编辑一行的数据后入到指定地方
      * @throws IORuntimeException IO异常
-     * @since 3.1.1
+     *  3.1.1
      */
     public static void readUtf8Lines(InputStream in, LineHandler lineHandler) throws IORuntimeException {
         readLines(in, CharsetUtil.CHARSET_UTF_8, lineHandler);

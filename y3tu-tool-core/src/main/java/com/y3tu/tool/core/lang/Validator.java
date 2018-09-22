@@ -317,7 +317,7 @@ public class Validator {
 	 * 
 	 * @param value 值
 	 * @return 是否全部为字母组成，包括大写和小写字母和汉字
-	 * @since 3.3.0
+	 *
 	 */
 	public static boolean isLetter(String value) {
 //		return StrUtil.isAllCharMatch(value, new cn.hutool.core.lang.Matcher<Character>() {
@@ -335,7 +335,7 @@ public class Validator {
 	 * @param value 表单值
 	 * @param errorMsg 验证错误的信息
 	 * @throws ValidatorException 验证异常
-	 * @since 3.3.0
+	 *
 	 */
 	public static void validateLetter(String value, String errorMsg) throws ValidatorException {
 		if (false == isLetter(value)) {
@@ -377,7 +377,7 @@ public class Validator {
 	 * 
 	 * @param value 值
 	 * @return 是否全部为小写字母
-	 * @since 3.3.0
+	 *
 	 */
 	public static boolean isLowerCase(String value) {
 //		return StrUtil.isAllCharMatch(value, new cn.hutool.core.lang.Matcher<Character>() {

@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.List;
 
 
-import com.y3tu.tool.core.collection.ArrayUtil;
 import com.y3tu.tool.core.collection.CollectionUtil;
 import com.y3tu.tool.core.collection.ListUtil;
 import com.y3tu.tool.core.text.StringUtils;
@@ -15,7 +14,6 @@ import com.y3tu.tool.core.text.StringUtils;
  * 邮件工具类，基于javax.mail封装
  * 
  * @author looly
- * @since 3.1.2
  */
 public class MailUtil {
 	
@@ -27,7 +25,6 @@ public class MailUtil {
 	 * @param subject 标题
 	 * @param content 正文
 	 * @param files 附件列表
-	 * @since 3.2.0
 	 */
 	public static void sendText(String to, String subject, String content, File... files) {
 		send(to, subject, content, false, files);
@@ -41,7 +38,6 @@ public class MailUtil {
 	 * @param subject 标题
 	 * @param content 正文
 	 * @param files 附件列表
-	 * @since 3.2.0
 	 */
 	public static void sendHtml(String to, String subject, String content, File... files) {
 		send(to, subject, content, true, files);
@@ -72,7 +68,6 @@ public class MailUtil {
 	 * @param content 正文
 	 * @param isHtml 是否为HTML
 	 * @param files 附件列表
-	 * @since 4.0.3
 	 */
 	public static void send(String to, String cc, String bcc, String subject, String content, boolean isHtml, File... files) {
 		send(splitAddress(to), splitAddress(cc), splitAddress(bcc), subject, content, isHtml, files);
@@ -97,7 +92,6 @@ public class MailUtil {
 	 * @param subject 标题
 	 * @param content 正文
 	 * @param files 附件列表
-	 * @since 3.2.0
 	 */
 	public static void sendHtml(Collection<String> tos, String subject, String content, File... files) {
 		send(tos, subject, content, true, files);
@@ -126,7 +120,6 @@ public class MailUtil {
 	 * @param content 正文
 	 * @param isHtml 是否为HTML
 	 * @param files 附件列表
-	 * @since 4.0.3
 	 */
 	public static void send(Collection<String> tos, Collection<String> ccs, Collection<String> bccs, String subject, String content, boolean isHtml, File... files) {
 		send(GlobalMailAccount.INSTANCE.getAccount(), tos, ccs, bccs, subject, content, isHtml, files);
@@ -142,7 +135,6 @@ public class MailUtil {
 	 * @param content 正文
 	 * @param isHtml 是否为HTML格式
 	 * @param files 附件列表
-	 * @since 3.2.0
 	 */
 	public static void send(MailAccount mailAccount, String to, String subject, String content, boolean isHtml, File... files) {
 		send(mailAccount, splitAddress(to), subject, content, isHtml, files);
@@ -179,7 +171,6 @@ public class MailUtil {
 	 * @param content 正文
 	 * @param isHtml 是否为HTML格式
 	 * @param files 附件列表
-	 * @since 4.0.3
 	 */
 	public static void send(MailAccount mailAccount, Collection<String> tos, Collection<String> ccs, Collection<String> bccs, String subject, String content, boolean isHtml, File... files) {
 		final Mail mail = Mail.create(mailAccount);

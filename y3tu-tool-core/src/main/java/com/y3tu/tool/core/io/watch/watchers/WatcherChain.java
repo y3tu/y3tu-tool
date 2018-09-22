@@ -1,6 +1,5 @@
 package com.y3tu.tool.core.io.watch.watchers;
 
-import com.y3tu.tool.core.collection.CollectionUtil;
 import com.y3tu.tool.core.io.watch.Watcher;
 import com.y3tu.tool.core.lang.Chain;
 
@@ -16,7 +15,6 @@ import java.util.List;
  * 用于加入多个观察者
  * 
  * @author Looly
- * @since 3.1.0
  */
 public class WatcherChain implements Watcher, Chain<Watcher, WatcherChain> {
 

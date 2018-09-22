@@ -28,7 +28,7 @@ import com.y3tu.tool.ssh.ftp.FileProgressMonitor;
  * </p>
  *
  * @author looly
- * @since 4.0.2
+ *
  */
 public class Sftp implements Closeable {
 
@@ -96,7 +96,7 @@ public class Sftp implements Closeable {
      * 获取HOME路径
      *
      * @return HOME路径
-     * @since 4.0.5
+     *  4.0.5
      */
     public String home() {
         try {
@@ -112,7 +112,7 @@ public class Sftp implements Closeable {
      * @param path          目录
      * @param fileOrDirName 文件或目录名
      * @return 是否存在
-     * @since 4.0.5
+     *  4.0.5
      */
     public boolean exist(String path, String fileOrDirName) {
         List<String> ls = ls(path);
@@ -124,7 +124,6 @@ public class Sftp implements Closeable {
      *
      * @param path 遍历某个目录下所有文件或目录
      * @return 目录或文件名列表
-     * @since 4.0.5
      */
     public List<String> ls(String path) {
         return ls(path, null);
@@ -135,7 +134,6 @@ public class Sftp implements Closeable {
      *
      * @param path 遍历某个目录下所有目录
      * @return 目录名列表
-     * @since 4.0.5
      */
     public List<String> lsDirs(String path) {
         return ls(path, new Filter<LsEntry>() {
@@ -151,7 +149,6 @@ public class Sftp implements Closeable {
      *
      * @param path 遍历某个目录下所有文件
      * @return 文件名列表
-     * @since 4.0.5
      */
     public List<String> lsFiles(String path) {
         return ls(path, new Filter<LsEntry>() {
@@ -168,7 +165,6 @@ public class Sftp implements Closeable {
      * @param path   遍历某个目录下所有文件或目录
      * @param filter 文件或目录过滤器，可以实现过滤器返回自己需要的文件或目录名列表
      * @return 目录或文件名列表
-     * @since 4.0.5
      */
     public List<String> ls(String path, final Filter<LsEntry> filter) {
         final List<String> fileNames = new ArrayList<>();
@@ -195,7 +191,6 @@ public class Sftp implements Closeable {
      * 打开上级目录
      *
      * @return 是否打开目录
-     * @since 4.0.5
      */
     public boolean toParent() {
         return cd("..");
@@ -381,7 +376,6 @@ public class Sftp implements Closeable {
      * @param names      文件或目录名列表
      * @param nameToFind 要查找的文件或目录名
      * @return 是否包含
-     * @since 4.0.5
      */
     private static boolean containsIgnoreCase(List<String> names, String nameToFind) {
         if (ListUtil.isEmpty(names)) {

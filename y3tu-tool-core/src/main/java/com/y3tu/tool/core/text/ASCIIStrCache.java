@@ -4,7 +4,6 @@ package com.y3tu.tool.core.text;
  * ASCII字符对应的字符串缓存
  * 
  * @author looly
- * @since 4.0.1
  *
  */
 public class ASCIIStrCache {

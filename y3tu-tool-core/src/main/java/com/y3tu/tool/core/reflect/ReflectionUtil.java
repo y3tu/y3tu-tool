@@ -264,7 +264,6 @@ public class ReflectionUtil {
      * @param paramTypes 参数类型，指定参数类型如果是方法的子类也算
      * @return 方法
      * @throws SecurityException 无权访问抛出异常
-     * @since 3.2.0
      */
     public static Method getMethodIgnoreCase(Class<?> clazz, String methodName, Class<?>... paramTypes) throws SecurityException {
         return getMethod(clazz, true, methodName, paramTypes);
@@ -292,7 +291,6 @@ public class ReflectionUtil {
      * @param paramTypes 参数类型，指定参数类型如果是方法的子类也算
      * @return 方法
      * @throws SecurityException 无权访问抛出异常
-     * @since 3.2.0
      */
     public static Method getMethod(Class<?> clazz, boolean ignoreCase, String methodName, Class<?>... paramTypes) throws SecurityException {
         if (null == clazz || StringUtils.isBlank(methodName)) {
@@ -619,7 +617,6 @@ public class ReflectionUtil {
      * @param args       参数列表
      * @return 执行结果
      * @throws ReflectionException IllegalAccessException包装
-     * @since 3.1.2
      */
     public static <T> T invoke(Object obj, String methodName, Object... args) throws ReflectionException {
         final Method method = getMethodOfObj(obj, methodName, args);

@@ -273,7 +273,6 @@ public class ExcelWriter extends ExcelBase<ExcelWriter> {
      *
      * @param headerAlias 标题别名
      * @return this
-     * @since 3.2.1
      */
     public ExcelWriter setHeaderAlias(Map<String, String> headerAlias) {
         this.headerAlias = headerAlias;

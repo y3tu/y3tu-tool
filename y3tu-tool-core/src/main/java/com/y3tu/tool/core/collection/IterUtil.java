@@ -1,8 +1,5 @@
 package com.y3tu.tool.core.collection;
 
-import com.y3tu.tool.core.collection.ArrayUtil;
-import com.y3tu.tool.core.collection.CopiedIter;
-import com.y3tu.tool.core.collection.EnumerationIter;
 import com.y3tu.tool.core.map.MapUtil;
 import com.y3tu.tool.core.reflect.ReflectionUtil;
 import com.y3tu.tool.core.text.StringUtils;
@@ -190,7 +187,7 @@ public class IterUtil {
      * @param iter      对象列表
      * @param fieldName 字段名（会通过反射获取其值）
      * @return 某个字段值与对象对应Map
-     * @since 4.0.4
+     *  4.0.4
      */
     @SuppressWarnings("unchecked")
     public static <K, V> Map<K, V> fieldValueMap(Iterator<V> iter, String fieldName) {

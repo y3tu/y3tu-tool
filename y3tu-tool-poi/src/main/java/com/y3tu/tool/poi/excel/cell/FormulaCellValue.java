@@ -4,7 +4,6 @@ package com.y3tu.tool.poi.excel.cell;
  * 公式类型的值
  * 
  * @author looly
- * @since 4.0.11
  */
 public class FormulaCellValue implements CellValue<String> {
 

@@ -5,7 +5,6 @@ package com.y3tu.tool.poi.excel.cell;
  * 
  * @param <T> 值得类型
  * @author looly
- * @since 4.0.11
  */
 public interface CellValue<T> {
 	/**

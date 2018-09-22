@@ -335,7 +335,6 @@ public class ExcelReader extends ExcelBase<ExcelReader> {
      * @param startRowIndex  起始行（包含，从0开始计数）
      * @param beanType       每行对应Bean的类型
      * @return Map的列表
-     * @since 4.0.1
      */
     public <T> List<T> read(int headerRowIndex, int startRowIndex, Class<T> beanType) {
         return read(headerRowIndex, startRowIndex, Integer.MAX_VALUE, beanType);
@@ -373,7 +372,6 @@ public class ExcelReader extends ExcelBase<ExcelReader> {
      *
      * @param withSheetName 是否附带sheet名
      * @return Excel文本
-     * @since 4.1.0
      */
     public String readAsText(boolean withSheetName) {
         final ExcelExtractor extractor = getExtractor();
@@ -385,7 +383,6 @@ public class ExcelReader extends ExcelBase<ExcelReader> {
      * 获取 {@link ExcelExtractor} 对象
      *
      * @return {@link ExcelExtractor}
-     * @since 4.1.0
      */
     public ExcelExtractor getExtractor() {
         ExcelExtractor extractor;
@@ -403,7 +400,6 @@ public class ExcelReader extends ExcelBase<ExcelReader> {
      *
      * @param rowIndex 行号，从0开始
      * @return 一行数据
-     * @since 4.0.3
      */
     public List<Object> readRow(int rowIndex) {
         return readRow(this.sheet.getRow(rowIndex));
@@ -415,7 +411,6 @@ public class ExcelReader extends ExcelBase<ExcelReader> {
      * @param x X坐标，从0计数，既列号
      * @param y Y坐标，从0计数，既行号
      * @return 值，如果单元格无值返回null
-     * @since 4.0.3
      */
     public Object readCellValue(int x, int y) {
         return CellUtil.getCellValue(getCell(x, y), this.cellEditor);
@@ -426,7 +421,6 @@ public class ExcelReader extends ExcelBase<ExcelReader> {
      * 在读取Excel并做一定编辑后，获取写出器写出
      *
      * @return {@link ExcelWriter}
-     * @since 4.0.6
      */
     public ExcelWriter getWriter() {
         return new ExcelWriter(this.sheet);

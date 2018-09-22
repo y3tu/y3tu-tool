@@ -2,11 +2,9 @@ package com.y3tu.tool.core.text;
 
 
 import com.y3tu.tool.core.annotation.Nullable;
-import com.y3tu.tool.core.collection.ArrayUtil;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.util.List;
 
 /**
  * @author y3tu

@@ -26,7 +26,6 @@ import javax.mail.internet.MimeMultipart;
  * 邮件发送客户端
  * 
  * @author looly
- * @since 3.2.0
  */
 public class Mail {
 
@@ -115,7 +114,6 @@ public class Mail {
 	 * 
 	 * @param ccs 抄送人列表
 	 * @return this
-	 * @since 4.0.3
 	 */
 	public Mail setCcs(String... ccs) {
 		this.ccs = ccs;
@@ -127,7 +125,6 @@ public class Mail {
 	 * 
 	 * @param bccs 密送人列表
 	 * @return this
-	 * @since 4.0.3
 	 */
 	public Mail setBccs(String... bccs) {
 		this.bccs = bccs;
@@ -186,7 +183,6 @@ public class Mail {
 	 * 
 	 * @param attachments 附件列表
 	 * @return this
-	 * @since 4.0.9
 	 */
 	public Mail setAttachments(DataSource... attachments) {
 		this.attachments = attachments;
@@ -210,7 +206,6 @@ public class Mail {
 	 * 
 	 * @param isUseGlobalSession 是否使用全局会话，默认为true
 	 * @return this
-	 * @since 4.0.2
 	 */
 	public Mail setUseGlobalSession(boolean isUseGlobalSession) {
 		this.useGlobalSession = isUseGlobalSession;
@@ -315,7 +310,6 @@ public class Mail {
 	 * 
 	 * @param isSingleton 是否使用单例Session
 	 * @return 邮件会话 {@link Session}
-	 * @since 4.0.2
 	 */
 	private Session getSession(boolean isSingleton) {
 		Authenticator authenticator = null;

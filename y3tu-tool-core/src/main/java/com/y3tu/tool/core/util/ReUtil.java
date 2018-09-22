@@ -35,7 +35,6 @@ public class ReUtil {
 	 * @param regex 匹配的正则
 	 * @param content 被匹配的内容
 	 * @return 匹配后得到的字符串，未匹配返回null
-	 * @since 3.1.2
 	 */
 	public static String getGroup0(String regex, String content) {
 		return get(regex, content, 0);
@@ -47,7 +46,6 @@ public class ReUtil {
 	 * @param regex 匹配的正则
 	 * @param content 被匹配的内容
 	 * @return 匹配后得到的字符串，未匹配返回null
-	 * @since 3.1.2
 	 */
 	public static String getGroup1(String regex, String content) {
 		return get(regex, content, 1);
@@ -77,7 +75,6 @@ public class ReUtil {
 	 * @param pattern 编译后的正则模式
 	 * @param content 被匹配的内容
 	 * @return 匹配后得到的字符串，未匹配返回null
-	 * @since 3.1.2
 	 */
 	public static String getGroup0(Pattern pattern, String content) {
 		return get(pattern, content, 0);
@@ -89,7 +86,6 @@ public class ReUtil {
 	 * @param pattern 编译后的正则模式
 	 * @param content 被匹配的内容
 	 * @return 匹配后得到的字符串，未匹配返回null
-	 * @since 3.1.2
 	 */
 	public static String getGroup1(Pattern pattern, String content) {
 		return get(pattern, content, 1);
@@ -121,7 +117,6 @@ public class ReUtil {
 	 * @param pattern 编译后的正则模式
 	 * @param content 被匹配的内容
 	 * @return 匹配后得到的字符串数组，按照分组顺序依次列出，未匹配到返回空列表，任何一个参数为null返回null
-	 * @since 3.1.0
 	 */
 	public static List<String> getAllGroups(Pattern pattern, String content) {
 		return getAllGroups(pattern, content, true);
@@ -134,7 +129,6 @@ public class ReUtil {
 	 * @param content 被匹配的内容
 	 * @param withGroup0 是否包括分组0，此分组表示全匹配的信息
 	 * @return 匹配后得到的字符串数组，按照分组顺序依次列出，未匹配到返回空列表，任何一个参数为null返回null
-	 * @since 4.0.13
 	 */
 	public static List<String> getAllGroups(Pattern pattern, String content, boolean withGroup0) {
 		if (null == content || null == pattern) {
@@ -353,7 +347,6 @@ public class ReUtil {
 	 * @param regex 正则
 	 * @param content 被查找的内容
 	 * @return 结果列表
-	 * @since 3.1.2
 	 */
 	public static List<String> findAllGroup0(String regex, String content) {
 		return findAll(regex, content, 0);
@@ -365,7 +358,6 @@ public class ReUtil {
 	 * @param regex 正则
 	 * @param content 被查找的内容
 	 * @return 结果列表
-	 * @since 3.1.2
 	 */
 	public static List<String> findAllGroup1(String regex, String content) {
 		return findAll(regex, content, 1);
@@ -378,7 +370,6 @@ public class ReUtil {
 	 * @param content 被查找的内容
 	 * @param group 正则的分组
 	 * @return 结果列表
-	 * @since 3.0.6
 	 */
 	public static List<String> findAll(String regex, String content, int group) {
 		return findAll(regex, content, group, new ArrayList<String>());
@@ -409,7 +400,6 @@ public class ReUtil {
 	 * @param pattern 编译后的正则模式
 	 * @param content 被查找的内容
 	 * @return 结果列表
-	 * @since 3.1.2
 	 */
 	public static List<String> findAllGroup0(Pattern pattern, String content) {
 		return findAll(pattern, content, 0);
@@ -421,7 +411,6 @@ public class ReUtil {
 	 * @param pattern 编译后的正则模式
 	 * @param content 被查找的内容
 	 * @return 结果列表
-	 * @since 3.1.2
 	 */
 	public static List<String> findAllGroup1(Pattern pattern, String content) {
 		return findAll(pattern, content, 1);
@@ -434,7 +423,6 @@ public class ReUtil {
 	 * @param content 被查找的内容
 	 * @param group 正则的分组
 	 * @return 结果列表
-	 * @since 3.0.6
 	 */
 	public static List<String> findAll(Pattern pattern, String content, int group) {
 		return findAll(pattern, content, group, new ArrayList<String>());
@@ -510,7 +498,7 @@ public class ReUtil {
 	 * @param regex 正则表达式
 	 * @param content 被查找的内容
 	 * @return 指定内容中是否有表达式匹配的内容
-	 * @since 3.3.1
+	 *
 	 */
 	public static boolean contains(String regex, String content) {
 		if (null == regex || null == content) {
@@ -527,7 +515,7 @@ public class ReUtil {
 	 * @param pattern 编译后的正则模式
 	 * @param content 被查找的内容
 	 * @return 指定内容中是否有表达式匹配的内容
-	 * @since 3.3.1
+	 *
 	 */
 	public static boolean contains(Pattern pattern, String content) {
 		if (null == pattern || null == content) {
@@ -607,7 +595,7 @@ public class ReUtil {
 	 * @param pattern {@link Pattern}
 	 * @param replacementTemplate 替换的文本模板，可以使用$1类似的变量提取正则匹配出的内容
 	 * @return 处理后的文本
-	 * @since 3.0.4
+	 *
 	 */
 	public static String replaceAll(String content, Pattern pattern, String replacementTemplate) {
 		if (StringUtils.isEmpty(content)) {

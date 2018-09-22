@@ -45,7 +45,6 @@ public class Console {
      * 同 System.out.print()方法，打印控制台日志
      *
      * @param obj 要打印的对象
-     * @since 3.3.1
      */
     public static void print(Object obj) {
         print("{}", obj);
@@ -66,7 +65,6 @@ public class Console {
      *
      * @param template 文本模板，被替换的部分用 {} 表示
      * @param values   值
-     * @since 3.3.1
      */
     public static void print(String template, Object... values) {
         out.print(StringUtils.format(template, values));
@@ -141,7 +139,6 @@ public class Console {
      * 创建从控制台读取内容的{@link Scanner}
      *
      * @return {@link Scanner}
-     * @since 3.3.1
      */
     public static Scanner scanner() {
         return new Scanner(System.in);
@@ -151,7 +148,6 @@ public class Console {
      * 读取用户输入的内容（在控制台敲回车前的内容）
      *
      * @return 用户输入的内容
-     * @since 3.3.1
      */
     public static String input() {
         return scanner().next();

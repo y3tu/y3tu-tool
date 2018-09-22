@@ -151,7 +151,7 @@ public class ThreadUtil {
      *
      * @param runnable 可运行对象
      * @return {@link Future}
-     * @since 3.0.5
+     *  3.0.5
      */
     public static Future<?> execAsync(Runnable runnable) {
         return GlobalThreadPool.submit(runnable);
@@ -196,7 +196,7 @@ public class ThreadUtil {
      * @param runnable {@link Runnable}
      * @param name     线程名
      * @return {@link Thread}
-     * @since 3.1.2
+     *
      */
     public static Thread newThread(Runnable runnable, String name) {
         final Thread t = new Thread(currentThreadGroup(), runnable, name);
@@ -377,7 +377,7 @@ public class ThreadUtil {
      * 获取当前线程的线程组
      *
      * @return 线程组
-     * @since 3.1.2
+     *
      */
     public static ThreadGroup currentThreadGroup() {
         final SecurityManager s = System.getSecurityManager();
@@ -389,7 +389,7 @@ public class ThreadUtil {
      *
      * @param prefix   线程名前缀
      * @param isDeamon 是否守护线程
-     * @since 4.0.0
+     *  4.0.0
      */
     public static ThreadFactory newNamedThreadFactory(String prefix, boolean isDeamon) {
         return new NamedThreadFactory(prefix, isDeamon);
@@ -401,7 +401,7 @@ public class ThreadUtil {
      * @param prefix      线程名前缀
      * @param threadGroup 线程组，可以为null
      * @param isDeamon    是否守护线程
-     * @since 4.0.0
+     *  4.0.0
      */
     public static ThreadFactory newNamedThreadFactory(String prefix, ThreadGroup threadGroup, boolean isDeamon) {
         return new NamedThreadFactory(prefix, threadGroup, isDeamon);
@@ -414,7 +414,7 @@ public class ThreadUtil {
      * @param threadGroup 线程组，可以为null
      * @param isDeamon    是否守护线程
      * @param handler     未捕获异常处理
-     * @since 4.0.0
+     *  4.0.0
      */
     public static ThreadFactory newNamedThreadFactory(String prefix, ThreadGroup threadGroup, boolean isDeamon, Thread.UncaughtExceptionHandler handler) {
         return new NamedThreadFactory(prefix, threadGroup, isDeamon, handler);

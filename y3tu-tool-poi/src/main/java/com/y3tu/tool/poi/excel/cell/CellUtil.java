@@ -23,7 +23,6 @@ import org.apache.poi.ss.util.RegionUtil;
  * Excel表格中单元格工具类
  *
  * @author looly
- * @since 4.0.7
  */
 public class CellUtil {
     /**

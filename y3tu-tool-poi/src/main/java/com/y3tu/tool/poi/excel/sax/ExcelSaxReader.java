@@ -11,7 +11,6 @@ import java.io.InputStream;
  *
  * @param <T> 子对象类型，用于标记返回值this
  * @author looly
- * @since 3.2.0
  */
 public interface ExcelSaxReader<T> {
     /**

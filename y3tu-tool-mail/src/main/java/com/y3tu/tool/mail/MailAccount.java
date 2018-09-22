@@ -222,7 +222,6 @@ public class MailAccount implements Serializable {
 	 * 是否打开调试模式，调试模式会显示与邮件服务器通信过程，默认不开启
 	 * 
 	 * @return 是否打开调试模式，调试模式会显示与邮件服务器通信过程，默认不开启
-	 * @since 4.0.2
 	 */
 	public boolean isDebug() {
 		return debug;
@@ -232,7 +231,6 @@ public class MailAccount implements Serializable {
 	 * 设置是否打开调试模式，调试模式会显示与邮件服务器通信过程，默认不开启
 	 * 
 	 * @param debug 是否打开调试模式，调试模式会显示与邮件服务器通信过程，默认不开启
-	 * @since 4.0.2
 	 */
 	public MailAccount setDebug(boolean debug) {
 		this.debug = debug;

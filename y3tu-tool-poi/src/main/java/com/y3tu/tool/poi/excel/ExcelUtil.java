@@ -35,7 +35,6 @@ public class ExcelUtil {
      * @param path       Excel文件路径
      * @param sheetIndex sheet序号
      * @param rowHandler 行处理器
-     * @since 3.2.0
      */
     public static void readBySax(String path, int sheetIndex, RowHandler rowHandler) throws IOException {
         readBySax(FileUtil.asInputStream(path), sheetIndex, rowHandler);
@@ -47,7 +46,6 @@ public class ExcelUtil {
      * @param file       Excel文件
      * @param sheetIndex sheet序号
      * @param rowHandler 行处理器
-     * @since 3.2.0
      */
     public static void readBySax(File file, int sheetIndex, RowHandler rowHandler) throws IOException {
         readBySax(FileUtil.asInputStream(file), sheetIndex, rowHandler);
@@ -59,7 +57,6 @@ public class ExcelUtil {
      * @param in         Excel流
      * @param sheetIndex sheet序号
      * @param rowHandler 行处理器
-     * @since 3.2.0
      */
     public static void readBySax(InputStream in, int sheetIndex, RowHandler rowHandler) {
         in = IoUtil.toMarkSupportStream(in);
@@ -77,7 +74,6 @@ public class ExcelUtil {
      * @param sheetIndex Sheet索引，-1表示全部Sheet, 0表示第一个Sheet
      * @param rowHandler 行处理器
      * @return {@link Excel07SaxReader}
-     * @since 3.2.0
      */
     public static Excel07SaxReader read07BySax(InputStream in, int sheetIndex, RowHandler rowHandler) {
         try {
@@ -94,7 +90,6 @@ public class ExcelUtil {
      * @param sheetIndex Sheet索引，-1表示全部Sheet, 0表示第一个Sheet
      * @param rowHandler 行处理器
      * @return {@link Excel07SaxReader}
-     * @since 3.2.0
      */
     public static Excel07SaxReader read07BySax(File file, int sheetIndex, RowHandler rowHandler) {
         try {
@@ -111,7 +106,6 @@ public class ExcelUtil {
      * @param sheetIndex Sheet索引，-1表示全部Sheet, 0表示第一个Sheet
      * @param rowHandler 行处理器
      * @return {@link Excel07SaxReader}
-     * @since 3.2.0
      */
     public static Excel07SaxReader read07BySax(String path, int sheetIndex, RowHandler rowHandler) {
         try {
@@ -128,7 +122,6 @@ public class ExcelUtil {
      * @param sheetIndex Sheet索引，-1表示全部Sheet, 0表示第一个Sheet
      * @param rowHandler 行处理器
      * @return {@link Excel07SaxReader}
-     * @since 3.2.0
      */
     public static Excel03SaxReader read03BySax(InputStream in, int sheetIndex, RowHandler rowHandler) {
         try {
@@ -145,7 +138,6 @@ public class ExcelUtil {
      * @param sheetIndex Sheet索引，-1表示全部Sheet, 0表示第一个Sheet
      * @param rowHandler 行处理器
      * @return {@link Excel03SaxReader}
-     * @since 3.2.0
      */
     public static Excel03SaxReader read03BySax(File file, int sheetIndex, RowHandler rowHandler) {
         try {
@@ -162,7 +154,6 @@ public class ExcelUtil {
      * @param sheetIndex Sheet索引，-1表示全部Sheet, 0表示第一个Sheet
      * @param rowHandler 行处理器
      * @return {@link Excel03SaxReader}
-     * @since 3.2.0
      */
     public static Excel03SaxReader read03BySax(String path, int sheetIndex, RowHandler rowHandler) {
         try {
@@ -179,7 +170,6 @@ public class ExcelUtil {
      *
      * @param bookFilePath Excel文件路径，绝对路径或相对于ClassPath路径
      * @return {@link ExcelReader}
-     * @since 3.1.1
      */
     public static ExcelReader getReader(String bookFilePath) {
         return getReader(bookFilePath, 0);
@@ -202,7 +192,6 @@ public class ExcelUtil {
      * @param bookFilePath Excel文件路径，绝对路径或相对于ClassPath路径
      * @param sheetIndex   sheet序号，0表示第一个sheet
      * @return {@link ExcelReader}
-     * @since 3.1.1
      */
     public static ExcelReader getReader(String bookFilePath, int sheetIndex) {
         try {
@@ -260,7 +249,6 @@ public class ExcelUtil {
      * @param bookStream     Excel文件的流
      * @param closeAfterRead 读取结束是否关闭流
      * @return {@link ExcelReader}
-     * @since 4.0.3
      */
     public static ExcelReader getReader(InputStream bookStream, boolean closeAfterRead) {
         try {
@@ -293,7 +281,6 @@ public class ExcelUtil {
      * @param sheetIndex     sheet序号，0表示第一个sheet
      * @param closeAfterRead 读取结束是否关闭流
      * @return {@link ExcelReader}
-     * @since 4.0.3
      */
     public static ExcelReader getReader(InputStream bookStream, int sheetIndex, boolean closeAfterRead) {
         try {
@@ -341,7 +328,6 @@ public class ExcelUtil {
      * 若写出到文件，还需调用{@link ExcelWriter#setDestFile(File)}方法自定义写出的文件，然后调用{@link ExcelWriter#flush()}方法写出到文件
      *
      * @return {@link ExcelWriter}
-     * @since 3.2.1
      */
     public static ExcelWriter getWriter() {
         try {
@@ -358,7 +344,6 @@ public class ExcelUtil {
      *
      * @param isXlsx 是否为xlsx格式
      * @return {@link ExcelWriter}
-     * @since 3.2.1
      */
     public static ExcelWriter getWriter(boolean isXlsx) {
         try {
@@ -495,7 +480,6 @@ public class ExcelUtil {
      *
      * @param sheet {@link Sheet}
      * @return sheet是否为空
-     * @since 4.0.1
      */
     public static boolean isEmpty(Sheet sheet) {
         return null == sheet || (sheet.getLastRowNum() == 0 && sheet.getPhysicalNumberOfRows() == 0);

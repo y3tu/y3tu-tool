@@ -22,7 +22,6 @@ import com.y3tu.tool.core.text.StringUtils;
  * JSch是Java Secure Channel的缩写。JSch是一个SSH2的纯Java实现。它允许你连接到一个SSH服务器，并且可以使用端口转发，X11转发，文件传输等。<br>
  * 
  * @author Looly
- * @since 4.0.0
  */
 public class JschUtil {
 
@@ -155,7 +154,6 @@ public class JschUtil {
 	 * 
 	 * @param session Session会话
 	 * @return {@link ChannelSftp}
-	 * @since 4.0.3
 	 */
 	public static ChannelSftp openSftp(Session session) {
 		Channel channel;
@@ -176,7 +174,6 @@ public class JschUtil {
 	 * @param sshUser 远程主机用户名
 	 * @param sshPass 远程主机密码
 	 * @return {@link Sftp}
-	 * @since 4.0.3
 	 */
 	public static Sftp createSftp(String sshHost, int sshPort, String sshUser, String sshPass) {
 		return new Sftp(sshHost, sshPort, sshUser, sshPass);
@@ -187,7 +184,6 @@ public class JschUtil {
 	 * 
 	 * @param session SSH会话
 	 * @return {@link Sftp}
-	 * @since 4.0.5
 	 */
 	public static Sftp createSftp(Session session) {
 		return new Sftp(session);
@@ -198,7 +194,6 @@ public class JschUtil {
 	 * 
 	 * @param session Session会话
 	 * @return {@link ChannelShell}
-	 * @since 4.0.3
 	 */
 	public static ChannelShell openShell(Session session) {
 		Channel channel;
@@ -219,7 +214,6 @@ public class JschUtil {
 	 * @param cmd 命令
 	 * @param charset 发送和读取内容的编码
 	 * @return {@link ChannelExec}
-	 * @since 4.0.3
 	 */
 	public static String exec(Session session, String cmd, Charset charset) {
 		if (null == charset) {
@@ -265,7 +259,6 @@ public class JschUtil {
 	 * 关闭会话通道
 	 * 
 	 * @param channel 会话通道
-	 * @since 4.0.3
 	 */
 	public static void close(Channel channel) {
 		if (channel != null && channel.isConnected()) {
