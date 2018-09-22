@@ -101,7 +101,6 @@ public class URLUtil {
      * @param url     URL
      * @param handler {@link URLStreamHandler}
      * @return URL对象
-     * @since 4.1.1
      */
     public static URL url(String url, URLStreamHandler handler) {
         Assert.notNull(url, "URL must not be null");
@@ -229,7 +228,6 @@ public class URLUtil {
      * @param url URL
      * @return 编码后的URL
      * @throws UtilException UnsupportedEncodingException
-     * @since 3.1.2
      */
     public static String encode(String url) throws UtilException {
         return encode(url, CharsetUtil.UTF_8);
@@ -259,7 +257,6 @@ public class URLUtil {
      * @param url URL
      * @return 解码后的URL
      * @throws UtilException UnsupportedEncodingException
-     * @since 3.1.2
      */
     public static String decode(String url) throws UtilException {
         return decode(url, CharsetUtil.UTF_8);
@@ -306,7 +303,6 @@ public class URLUtil {
      *
      * @param url {@link URL}
      * @return 路径
-     * @since 3.0.8
      */
     public static String getDecodedPath(URL url) {
         if (null == url) {
@@ -362,7 +358,6 @@ public class URLUtil {
      *
      * @param url {@link URL}
      * @return 是否为文件
-     * @since 3.0.9
      */
     public static boolean isFileURL(URL url) {
         String protocol = url.getProtocol();
@@ -392,7 +387,6 @@ public class URLUtil {
      *
      * @param url the URL to check
      * @return whether the URL has been identified as a JAR file URL
-     * @since 4.1
      */
     public static boolean isJarFileURL(URL url) {
         return (URL_PROTOCOL_FILE.equals(url.getProtocol()) && //
@@ -404,7 +398,6 @@ public class URLUtil {
      *
      * @param url {@link URL}
      * @return InputStream流
-     * @since 3.2.1
      */
     public static InputStream getStream(URL url) {
         Assert.notNull(url);
@@ -421,7 +414,6 @@ public class URLUtil {
      * @param url     {@link URL}
      * @param charset 编码
      * @return {@link BufferedReader}
-     * @since 3.2.1
      */
     public static BufferedReader getReader(URL url, Charset charset) {
         return IoUtil.getReader(getStream(url), charset);

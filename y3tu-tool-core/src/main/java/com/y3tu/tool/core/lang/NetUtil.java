@@ -281,7 +281,6 @@ public class NetUtil {
      * 参考：http://stackoverflow.com/questions/9481865/getting-the-ip-address-of-the-current-machine-using-java
      *
      * @return 本机网卡IP地址，获取失败返回<code>null</code>
-     * @since 3.0.1
      */
     public static InetAddress getLocalhost() {
         InetAddress candidateAddress = null;

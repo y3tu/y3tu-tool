@@ -348,7 +348,6 @@ public class Validator {
 	 * 
 	 * @param value 值
 	 * @return 是否全部为大写字母
-	 * @since 3.3.0
 	 */
 	public static boolean isUpperCase(String value) {
 //		return StrUtil.isAllCharMatch(value, new cn.hutool.core.lang.Matcher<Character>() {
@@ -366,7 +365,6 @@ public class Validator {
 	 * @param value 表单值
 	 * @param errorMsg 验证错误的信息
 	 * @throws ValidatorException 验证异常
-	 * @since 3.3.0
 	 */
 	public static void validateUpperCase(String value, String errorMsg) throws ValidatorException {
 		if (false == isUpperCase(value)) {
@@ -397,7 +395,6 @@ public class Validator {
 	 * @param value 表单值
 	 * @param errorMsg 验证错误的信息
 	 * @throws ValidatorException 验证异常
-	 * @since 3.3.0
 	 */
 	public static void validateLowerCase(String value, String errorMsg) throws ValidatorException {
 		if (false == isLowerCase(value)) {
@@ -650,7 +647,6 @@ public class Validator {
 	 * 
 	 * @param value 值
 	 * @return 是否为IPV4地址
-	 * @since 3.0.6
 	 */
 	public static boolean isPlateNumber(String value) {
 		return isMactchRegex(PLATE_NUMBER, value);
@@ -662,7 +658,6 @@ public class Validator {
 	 * @param value 值
 	 * @param errorMsg 验证错误的信息
 	 * @throws ValidatorException 验证异常
-	 * @since 3.0.6
 	 */
 	public static void validatePlateNumber(String value, String errorMsg) throws ValidatorException {
 		if (false == isPlateNumber(value)) {

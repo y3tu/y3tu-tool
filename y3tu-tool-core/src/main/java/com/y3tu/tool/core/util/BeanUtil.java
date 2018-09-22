@@ -16,9 +16,9 @@ import java.util.Map;
  *
  * <p>
  * 把一个拥有对属性进行set和get方法的类，我们就可以称之为JavaBean。
- * </p>
  *
  * @author y3tu
+ * @see BeanUtils 主要使用org.apache.commons.beanutils.BeanUtils里面的方法
  */
 public class BeanUtil extends BeanUtils {
     /**

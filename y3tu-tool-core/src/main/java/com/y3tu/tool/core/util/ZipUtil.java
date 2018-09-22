@@ -1,7 +1,6 @@
 package com.y3tu.tool.core.util;
 
 import com.y3tu.tool.core.exception.UtilException;
-import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.text.CharsetUtil;
 
 import java.io.File;
@@ -14,7 +13,9 @@ import java.nio.charset.Charset;
  * @date 2018/7/25
  */
 public class ZipUtil {
-    /** 默认编码，使用平台相关编码 */
+    /**
+     * 默认编码，使用平台相关编码
+     */
     private static final Charset DEFAULT_CHARSET = CharsetUtil.defaultCharset();
 
     /**
@@ -37,7 +38,7 @@ public class ZipUtil {
      * @throws UtilException IO异常
      */
     public static File zip(String srcPath, Charset charset) throws UtilException {
-       // return zip(FileUtil.touch(srcPath), charset);
+        // return zip(FileUtil.touch(srcPath), charset);
         return null;
     }
 
@@ -49,7 +50,7 @@ public class ZipUtil {
      * @throws UtilException IO异常
      */
     public static File zip(File srcFile) throws UtilException {
-       // return zip(srcFile, DEFAULT_CHARSET);
+        // return zip(srcFile, DEFAULT_CHARSET);
         return null;
     }
 }
