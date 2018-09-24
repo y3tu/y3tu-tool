@@ -9,6 +9,9 @@ import com.y3tu.tool.core.io.IORuntimeException;
  * @author looly
  */
 public enum GlobalMailAccount {
+    /**
+     * 实例
+     */
     INSTANCE;
 
     private final MailAccount mailAccount;

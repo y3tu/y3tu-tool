@@ -13,7 +13,7 @@ import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 
 import com.y3tu.tool.core.collection.ListUtil;
-import com.y3tu.tool.core.reflect.Filter;
+import com.y3tu.tool.core.lang.Filter;
 import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.ssh.ftp.FileProgressMonitor;
 

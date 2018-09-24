@@ -7,6 +7,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.jcraft.jsch.Session;
 
 public enum JschSessionPool {
+    /**
+     * 实例
+     */
     INSTANCE;
 
     /**
