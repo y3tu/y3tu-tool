@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 import com.y3tu.tool.core.annotation.NotNull;
+import com.y3tu.tool.core.text.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.DateUtils;
 
@@ -81,6 +82,14 @@ public class DateUtil {
         return DateFormatUtil.formatDate(pattern, getNowDate());
     }
 
+    /**
+     * 当前时间秒数
+     *
+     * @return 当前时间秒数
+     */
+    public static long currentSeconds() {
+        return System.currentTimeMillis() / 1000;
+    }
 
     //---------------------------------- 日期比较
 
@@ -392,8 +401,50 @@ public class DateUtil {
             case 7:
                 week = "星期六";
                 break;
+            default:
+                week = "";
         }
         return week;
+    }
+
+    /**
+     * 获取时间的年份
+     *
+     * @param date 日期
+     * @return 时间的年份
+     */
+    public static int getYear(Date date) {
+        return get(date, Calendar.YEAR);
+    }
+
+    /**
+     * 获取日期的月份
+     *
+     * @param date 日期
+     * @return 日期的月份
+     */
+    public static int getMonth(Date date) {
+        return get(date, Calendar.MONTH);
+    }
+
+    /**
+     * 获取日期的天数
+     *
+     * @param date 日期
+     * @return 日期的天数
+     */
+    public static int getDay(Date date) {
+        return get(date, Calendar.DATE);
+    }
+
+    /**
+     * 获取日期是一月的第几天
+     *
+     * @param date 日期
+     * @return 一月的第几天, 返回值从1开始
+     */
+    public static int getDayOfMonth(Date date) {
+        return get(date, Calendar.DAY_OF_MONTH);
     }
 
     /**
@@ -619,5 +670,42 @@ public class DateUtil {
         return MONTH_LENGTH[month];
     }
 
+
+    /**
+     * 计算相对于dateToCompare的年龄，长用于计算指定生日在某年的年龄
+     *
+     * @param birthDay      生日
+     * @param dateToCompare 需要对比的日期
+     * @return 年龄
+     */
+    public static int age(Date birthDay, Date dateToCompare) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateToCompare);
+
+        if (cal.before(birthDay)) {
+            throw new IllegalArgumentException(StringUtils.format("Birthday is after date {}!", dateToCompare));
+        }
+
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+
+        cal.setTime(birthDay);
+        int age = year - cal.get(Calendar.YEAR);
+
+        int monthBirth = cal.get(Calendar.MONTH);
+        if (month == monthBirth) {
+            int dayOfMonthBirth = cal.get(Calendar.DAY_OF_MONTH);
+            if (dayOfMonth < dayOfMonthBirth) {
+                // 如果生日在当月，但是未达到生日当天的日期，年龄减一
+                age--;
+            }
+        } else if (month < monthBirth) {
+            // 如果当前月份未达到生日的月份，年龄计算减一
+            age--;
+        }
+
+        return age;
+    }
 
 }
