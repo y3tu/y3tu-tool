@@ -2,7 +2,9 @@ package com.y3tu.tool.core.text;
 
 
 import com.y3tu.tool.core.annotation.Nullable;
+import com.y3tu.tool.core.exception.UtilException;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
@@ -428,6 +430,24 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
 
     /**
+     * 编码字符串
+     *
+     * @param str     字符串
+     * @param charset 字符集，如果此字段为空，则解码的结果取决于平台
+     * @return 编码后的字节码
+     */
+    public static byte[] bytes(CharSequence str, String charset) {
+        if (str == null) {
+            return null;
+        }
+        try {
+            return str.toString().getBytes(charset);
+        } catch (UnsupportedEncodingException e) {
+            throw new UtilException(e);
+        }
+    }
+
+    /**
      * 将byte数组转为字符串
      *
      * @param bytes   byte数组
@@ -670,5 +690,25 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      */
     public static String hide(CharSequence str, int startInclude, int endExclude) {
         return replace(str, startInclude, endExclude, '*');
+    }
+
+    /**
+     * 如果给定字符串不是以suffix结尾的，在尾部补充 suffix
+     *
+     * @param str    字符串
+     * @param suffix 后缀
+     * @return 补充后的字符串
+     */
+    public static String addSuffixIfNot(CharSequence str, CharSequence suffix) {
+        if (isEmpty(str) || isEmpty(suffix)) {
+            return str(str);
+        }
+
+        final String str2 = str.toString();
+        final String suffix2 = suffix.toString();
+        if (false == str2.endsWith(suffix2)) {
+            return str2.concat(suffix2);
+        }
+        return str2;
     }
 }

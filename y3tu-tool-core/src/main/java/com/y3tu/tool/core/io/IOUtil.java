@@ -57,6 +57,16 @@ public class IOUtil {
     // -------------------------------------------------------------------------------------- Copy start
 
     /**
+     * @param in  输入流
+     * @param out 输出流
+     * @return 传输的byte数
+     * @throws IORuntimeException
+     */
+    public static long copy(InputStream in, OutputStream out) throws IORuntimeException {
+        return copy(in, out, -1, null);
+    }
+
+    /**
      * 拷贝流
      *
      * @param in             输入流

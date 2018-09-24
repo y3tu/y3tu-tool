@@ -1069,8 +1069,10 @@ public class FileUtil {
 
     /**
      * 获取文件名(不包含路径)
+     *
+     * @param fullName 文件全名
      */
-    public static String getFileName(@NotNull String fullName) {
+    public static String getFileName(String fullName) {
         Validate.notEmpty(fullName);
         int last = fullName.lastIndexOf(Platforms.FILE_PATH_SEPARATOR_CHAR);
         return fullName.substring(last + 1);
@@ -1079,6 +1081,7 @@ public class FileUtil {
     /**
      * 获取文件名的扩展名部分(不包含.)
      *
+     * @param file 文件
      * @see {@link com.google.common.io.Files#getFileExtension}
      */
     public static String getFileExtension(File file) {
@@ -1088,9 +1091,30 @@ public class FileUtil {
     /**
      * 获取文件名的扩展名部分(不包含.)
      *
+     * @param fullName 文件全名
      * @see {@link com.google.common.io.Files#getFileExtension}
      */
     public static String getFileExtension(String fullName) {
         return com.google.common.io.Files.getFileExtension(fullName);
+    }
+
+    /**
+     * 返回主文件名
+     *
+     * @param fullName 文件全名
+     * @return 返回主文件名
+     */
+    public static String getNameWithoutExtension(String fullName) {
+        return com.google.common.io.Files.getNameWithoutExtension(fullName);
+    }
+
+    /**
+     * 返回主文件名
+     *
+     * @param file 文件
+     * @return 返回主文件名
+     */
+    public static String getNameWithoutExtension(File file) {
+        return com.google.common.io.Files.getNameWithoutExtension(file.getName());
     }
 }
