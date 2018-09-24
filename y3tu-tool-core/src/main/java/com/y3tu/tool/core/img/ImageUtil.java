@@ -9,7 +9,7 @@ import com.y3tu.tool.core.io.IOUtil;
 import com.y3tu.tool.core.lang.Assert;
 import com.y3tu.tool.core.math.NumberUtil;
 import com.y3tu.tool.core.text.StringUtils;
-import com.y3tu.tool.core.util.Base64Util;
+import com.y3tu.tool.core.codec.Base64Util;
 import com.y3tu.tool.core.util.RandomUtil;
 
 import javax.imageio.ImageIO;

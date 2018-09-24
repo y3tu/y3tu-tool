@@ -1,4 +1,4 @@
-package com.y3tu.tool.core.util;
+package com.y3tu.tool.core.codec;
 
 import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.text.CharsetUtil;
