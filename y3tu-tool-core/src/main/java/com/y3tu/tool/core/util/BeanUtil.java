@@ -1,7 +1,9 @@
 package com.y3tu.tool.core.util;
 
 import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.lang.Editor;
 import com.y3tu.tool.core.reflect.ClassUtil;
+import com.y3tu.tool.core.text.StringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 
 import java.beans.BeanInfo;
@@ -43,17 +45,74 @@ public class BeanUtil extends BeanUtils {
     }
 
     /**
-     * bean转换成map
+     * 对象转Map，不进行驼峰转下划线，不忽略值为空的字段
      *
-     * @param obj 需要转换的bean
-     * @return
-     * @throws Exception
+     * @param bean bean对象
+     * @return Map
      */
-    public static Map<String, Object> beanToMap(Object obj) {
-        //obj为空，结束方法
-        if (obj == null)
+    public static Map<String, Object> beanToMap(Object bean) {
+        return beanToMap(bean, false, false);
+    }
+
+    /**
+     * 对象转Map
+     *
+     * @param bean              bean对象
+     * @param isToUnderlineCase 是否转换为下划线模式
+     * @param ignoreNullValue   是否忽略值为空的字段
+     * @return Map
+     */
+    public static Map<String, Object> beanToMap(Object bean, boolean isToUnderlineCase, boolean ignoreNullValue) {
+        return beanToMap(bean, new HashMap<String, Object>(), isToUnderlineCase, ignoreNullValue);
+    }
+
+    /**
+     * 对象转Map
+     *
+     * @param bean              bean对象
+     * @param targetMap         目标的Map
+     * @param isToUnderlineCase 是否转换为下划线模式
+     * @param ignoreNullValue   是否忽略值为空的字段
+     * @return Map
+     */
+    public static Map<String, Object> beanToMap(Object bean, Map<String, Object> targetMap, final boolean isToUnderlineCase, boolean ignoreNullValue) {
+        if (bean == null) {
             return null;
-        Map<String, Object> map = new HashMap<>();
+        }
+
+        return beanToMap(bean, targetMap, ignoreNullValue, new Editor<String>() {
+
+            @Override
+            public String edit(String key) {
+                return isToUnderlineCase ? StringUtils.toUnderlineCase(key) : key;
+            }
+        });
+    }
+
+    /**
+     * 对象转Map<br>
+     * 通过实现{@link Editor} 可以自定义字段值，如果这个Editor返回null则忽略这个字段，以便实现：
+     *
+     * <pre>
+     * 1. 字段筛选，可以去除不需要的字段
+     * 2. 字段变换，例如实现驼峰转下划线
+     * 3. 自定义字段前缀或后缀等等
+     * </pre>
+     *
+     * @param obj             bean对象
+     * @param targetMap       目标的Map
+     * @param ignoreNullValue 是否忽略值为空的字段
+     * @param keyEditor       属性字段（Map的key）编辑器，用于筛选、编辑key
+     * @return Map
+     */
+    public static Map<String, Object> beanToMap(Object obj, Map<String, Object> targetMap, boolean ignoreNullValue, Editor<String> keyEditor) {
+        //obj为空，结束方法
+        if (obj == null) {
+            return null;
+        }
+        if (targetMap == null) {
+            targetMap = new HashMap<>();
+        }
         //Introspector 类为通过工具学习有关受目标 Java Bean 支持的属性、事件和方法的知识提供了一个标准方法。
         // java的自省机制
         try {
@@ -65,13 +124,18 @@ public class BeanUtil extends BeanUtils {
                 if (!"class".equals(key)) {
                     Method getter = propertyDescriptor.getReadMethod();
                     Object value = getter.invoke(obj);
-                    map.put(key, value);
+                    if (false == ignoreNullValue || (null != value && false == value.equals(obj))) {
+                        key = keyEditor.edit(key);
+                        if (null != key) {
+                            targetMap.put(key, value);
+                        }
+                    }
                 }
             }
         } catch (Exception e) {
             throw new UtilException("bean转换成map失败：" + e.getMessage());
         }
-        return map;
+        return targetMap;
     }
 
     /**
@@ -101,5 +165,6 @@ public class BeanUtil extends BeanUtils {
             throw new UtilException("map转换成bean失败：" + e.getMessage());
         }
     }
+
 
 }

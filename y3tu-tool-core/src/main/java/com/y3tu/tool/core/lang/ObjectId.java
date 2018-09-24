@@ -50,7 +50,7 @@ public class ObjectId {
         }
         s = StringUtils.removeAll(s, "-");
         final int len = s.length();
-        if (len != 24){
+        if (len != 24) {
             return false;
         }
 
