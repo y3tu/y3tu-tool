@@ -2,13 +2,15 @@ package com.y3tu.tool.core.thread;
 
 import com.y3tu.tool.core.exception.UtilException;
 
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+
 
 /**
  * 全局公共线程池
  *
- * @author y3tu
- * @date 2018/6/16
+ * @author Looly
  */
 public class GlobalThreadPool {
     private static ExecutorService executor;
@@ -27,7 +29,7 @@ public class GlobalThreadPool {
         if (null != executor) {
             executor.shutdownNow();
         }
-        executor = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
+        executor = ExecutorBuilder.create().useSynchronousQueue().build();
     }
 
     /**
@@ -63,7 +65,7 @@ public class GlobalThreadPool {
         try {
             executor.execute(runnable);
         } catch (Exception e) {
-            throw new UtilException("Exception when running task!", e);
+            throw new UtilException(e, "Exception when running task!");
         }
     }
 
@@ -71,7 +73,7 @@ public class GlobalThreadPool {
      * 执行有返回值的异步方法<br>
      * Future代表一个异步执行的操作，通过get()方法可以获得操作的结果，如果异步操作还没有完成，则，get()会使当前线程阻塞
      *
-     * @param <T> 执行的Task
+     * @param <T>  执行的Task
      * @param task {@link Callable}
      * @return Future
      */

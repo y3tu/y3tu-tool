@@ -2,8 +2,10 @@ package com.y3tu.tool.core.thread;
 
 import com.y3tu.tool.core.text.StringUtils;
 
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
+
 
 /**
  * 线程创建工厂类，此工厂可选配置：
@@ -13,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 2. 自定义是否守护线程
  * </pre>
  *
- * @author y3tu
+ * @author looly
  */
 public class NamedThreadFactory implements ThreadFactory {
 
@@ -36,7 +38,7 @@ public class NamedThreadFactory implements ThreadFactory {
     /**
      * 无法捕获的异常统一处理
      */
-    private final Thread.UncaughtExceptionHandler handler;
+    private final UncaughtExceptionHandler handler;
 
     /**
      * 构造
@@ -67,8 +69,8 @@ public class NamedThreadFactory implements ThreadFactory {
      * @param isDeamon    是否守护线程
      * @param handler     未捕获异常处理
      */
-    public NamedThreadFactory(String prefix, ThreadGroup threadGroup, boolean isDeamon, Thread.UncaughtExceptionHandler handler) {
-        this.prefix = StringUtils.isBlank(prefix) ? "y3tu" : prefix;
+    public NamedThreadFactory(String prefix, ThreadGroup threadGroup, boolean isDeamon, UncaughtExceptionHandler handler) {
+        this.prefix = StringUtils.isBlank(prefix) ? "y3tu-tool" : prefix;
         if (null == threadGroup) {
             threadGroup = ThreadUtil.currentThreadGroup();
         }
@@ -79,9 +81,7 @@ public class NamedThreadFactory implements ThreadFactory {
 
     @Override
     public Thread newThread(Runnable r) {
-
-        String name = prefix + "-" + threadNumber.getAndIncrement();
-        final Thread t = new Thread(this.group, r, name,0);
+        final Thread t = new Thread(this.group, r, StringUtils.format("{}{}", prefix, threadNumber.getAndIncrement()));
 
         //守护线程
         if (false == t.isDaemon()) {
@@ -104,4 +104,5 @@ public class NamedThreadFactory implements ThreadFactory {
         }
         return t;
     }
+
 }

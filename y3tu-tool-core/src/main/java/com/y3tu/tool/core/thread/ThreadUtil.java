@@ -1,85 +1,64 @@
 package com.y3tu.tool.core.thread;
 
-import com.y3tu.tool.core.exception.ThreadException;
-import lombok.extern.slf4j.Slf4j;
-
-import java.util.Date;
-import java.util.concurrent.*;
+import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 线程池工具
  *
- * @author y3tu
- * @date 2018/6/16
+ * @author luxiaolei
  */
-@Slf4j
 public class ThreadUtil {
 
-    private static int corePoolSize = 20;
-    private static int queueSize = 1;
-
-    private static int maximumPoolSize = 21;
-    private static long keepAliveTime = 60;
-    private static long rejectedNum = 0;
-
     /**
-     * 默认拒绝策略
-     */
-    private static final RejectedExecutionHandler DEFAULTHANDLER =
-            new RejectedExecutionHandler() {
-                @Override
-                public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-                    log.info("rejected call");
-                    if (!executor.isShutdown()) {
-                        r.run();
-                        log.info("##################使用拒绝策略:" + r.getClass());
-                        rejectedNum++;
-                    }
-                }
-            };
-    private static final ThreadFactory DEFAULT_THREAD_FACTORY = ThreadUtil.newNamedThreadFactory("y3tu", false);
-
-    /**
-     * 创建线程池
+     * 新建一个线程池
      *
-     * @param corePoolSize    核心池大小
-     * @param maximumPoolSize 线程池最大线程数
-     * @param queueSize       队列大小
-     * @param keepAliveTime   核心线程存活时间
-     * @return
-     * @throws ThreadException
+     * @param threadSize 同时执行的线程数大小
+     * @return ExecutorService
      */
-    public static GeneralThreadPool createThreadPool(int corePoolSize, int maximumPoolSize, int queueSize, long keepAliveTime) throws ThreadException {
-        String threadName = "ThreadPool:" + new Date();
-        GeneralThreadPool generalThreadPool = ThreadPoolFactory.createGeneralThreadPool(threadName, corePoolSize, maximumPoolSize, keepAliveTime, TimeUnit.SECONDS, queueSize,
-                new ArrayBlockingQueue<Runnable>(queueSize), DEFAULT_THREAD_FACTORY, DEFAULTHANDLER);
-        return generalThreadPool;
+    public static ExecutorService newExecutor(int threadSize) {
+        return ExecutorBuilder.create().setCorePoolSize(threadSize).build();
     }
 
     /**
-     * 创建默认线程池
+     * 获得一个新的线程池
      *
-     * @return
-     * @throws ThreadException
+     * @return ExecutorService
      */
-    public static GeneralThreadPool createThreadPool() throws ThreadException {
-        String threadName = "ThreadPool:" + new Date().toString();
-        GeneralThreadPool generalThreadPool = ThreadPoolFactory.createGeneralThreadPool(threadName, corePoolSize, maximumPoolSize, keepAliveTime, TimeUnit.SECONDS, queueSize,
-                new ArrayBlockingQueue<Runnable>(queueSize), DEFAULT_THREAD_FACTORY, DEFAULTHANDLER);
-        return generalThreadPool;
+    public static ExecutorService newExecutor() {
+        return ExecutorBuilder.create().setWorkQueue(new SynchronousQueue<Runnable>()).build();
     }
 
     /**
      * 获得一个新的线程池，只有单个线程
      *
-     * @return
-     * @throws ThreadException
+     * @return ExecutorService
      */
-    public static GeneralThreadPool createSingleThreadPool() throws ThreadException {
-        String threadName = "ThreadPool:" + new Date();
-        return ThreadPoolFactory.createSingleThreadPool(threadName);
+    public static ExecutorService newSingleExecutor() {
+        return Executors.newSingleThreadExecutor();
     }
 
+    /**
+     * 获得一个新的线程池<br>
+     * 如果maximumPoolSize =》 corePoolSize，在没有新任务加入的情况下，多出的线程将最多保留60s
+     *
+     * @param corePoolSize    初始线程池大小
+     * @param maximumPoolSize 最大线程池大小
+     * @return {@link ThreadPoolExecutor}
+     */
+    public static ThreadPoolExecutor newExecutor(int corePoolSize, int maximumPoolSize) {
+        return ExecutorBuilder.create().setCorePoolSize(corePoolSize).setMaxPoolSize(maximumPoolSize).build();
+    }
 
     /**
      * 获得一个新的线程池<br>
@@ -90,18 +69,16 @@ public class ThreadUtil {
      * see: http://blog.csdn.net/partner4java/article/details/9417663
      *
      * @param blockingCoefficient 阻塞系数，阻塞因子介于0~1之间的数，阻塞因子越大，线程池中的线程数越多。
-     * @return {@link GeneralThreadPool}
+     * @return {@link ThreadPoolExecutor}
      */
-    public static GeneralThreadPool createThreadPoolByBlockingCoefficient(float blockingCoefficient) throws ThreadException {
+    public static ThreadPoolExecutor newExecutorByBlockingCoefficient(float blockingCoefficient) {
         if (blockingCoefficient >= 1 || blockingCoefficient < 0) {
             throw new IllegalArgumentException("[blockingCoefficient] must between 0 and 1, or equals 0.");
         }
 
         // 最佳的线程数 = CPU可用核心数 / (1 - 阻塞系数)
         int poolSize = (int) (Runtime.getRuntime().availableProcessors() / (1 - blockingCoefficient));
-        String threadName = "ThreadPool:" + new Date();
-        return ThreadPoolFactory.createGeneralThreadPool(threadName, poolSize, maximumPoolSize, keepAliveTime, TimeUnit.SECONDS, queueSize,
-                new ArrayBlockingQueue<Runnable>(queueSize), DEFAULT_THREAD_FACTORY, DEFAULTHANDLER);
+        return ExecutorBuilder.create().setCorePoolSize(poolSize).setMaxPoolSize(poolSize).setKeepAliveTime(0L).build();
     }
 
     /**
@@ -151,7 +128,6 @@ public class ThreadUtil {
      *
      * @param runnable 可运行对象
      * @return {@link Future}
-     *  3.0.5
      */
     public static Future<?> execAsync(Runnable runnable) {
         return GlobalThreadPool.submit(runnable);
@@ -196,16 +172,26 @@ public class ThreadUtil {
      * @param runnable {@link Runnable}
      * @param name     线程名
      * @return {@link Thread}
-     *
      */
     public static Thread newThread(Runnable runnable, String name) {
-        final Thread t = new Thread(currentThreadGroup(), runnable, name);
-        if (t.isDaemon()) {
-            t.setDaemon(false);
-        }
+        final Thread t = newThread(runnable, name, false);
         if (t.getPriority() != Thread.NORM_PRIORITY) {
             t.setPriority(Thread.NORM_PRIORITY);
         }
+        return t;
+    }
+
+    /**
+     * 创建新线程
+     *
+     * @param runnable {@link Runnable}
+     * @param name     线程名
+     * @param isDeamon 是否守护线程
+     * @return {@link Thread}
+     */
+    public static Thread newThread(Runnable runnable, String name, boolean isDeamon) {
+        final Thread t = new Thread(null, runnable, name);
+        t.setDaemon(isDeamon);
         return t;
     }
 
@@ -302,6 +288,16 @@ public class ThreadUtil {
     }
 
     /**
+     * 创建ThreadFactoryBuilder
+     *
+     * @return ThreadFactoryBuilder
+     * @see ThreadFactoryBuilder#build()
+     */
+    public static ThreadFactoryBuilder createThreadFactoryBuilder() {
+        return ThreadFactoryBuilder.create();
+    }
+
+    /**
      * 结束线程，调用此方法后，线程将抛出 {@link InterruptedException}异常
      *
      * @param thread 线程
@@ -377,7 +373,6 @@ public class ThreadUtil {
      * 获取当前线程的线程组
      *
      * @return 线程组
-     *
      */
     public static ThreadGroup currentThreadGroup() {
         final SecurityManager s = System.getSecurityManager();
@@ -389,7 +384,6 @@ public class ThreadUtil {
      *
      * @param prefix   线程名前缀
      * @param isDeamon 是否守护线程
-     *  4.0.0
      */
     public static ThreadFactory newNamedThreadFactory(String prefix, boolean isDeamon) {
         return new NamedThreadFactory(prefix, isDeamon);
@@ -401,7 +395,6 @@ public class ThreadUtil {
      * @param prefix      线程名前缀
      * @param threadGroup 线程组，可以为null
      * @param isDeamon    是否守护线程
-     *  4.0.0
      */
     public static ThreadFactory newNamedThreadFactory(String prefix, ThreadGroup threadGroup, boolean isDeamon) {
         return new NamedThreadFactory(prefix, threadGroup, isDeamon);
@@ -414,9 +407,8 @@ public class ThreadUtil {
      * @param threadGroup 线程组，可以为null
      * @param isDeamon    是否守护线程
      * @param handler     未捕获异常处理
-     *  4.0.0
      */
-    public static ThreadFactory newNamedThreadFactory(String prefix, ThreadGroup threadGroup, boolean isDeamon, Thread.UncaughtExceptionHandler handler) {
+    public static ThreadFactory newNamedThreadFactory(String prefix, ThreadGroup threadGroup, boolean isDeamon, UncaughtExceptionHandler handler) {
         return new NamedThreadFactory(prefix, threadGroup, isDeamon, handler);
     }
 }
