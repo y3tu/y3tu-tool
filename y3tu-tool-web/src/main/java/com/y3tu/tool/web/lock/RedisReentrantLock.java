@@ -22,10 +22,10 @@ public class RedisReentrantLock implements DistributedReentrantLock {
     private String lockId;
 
 
-    public RedisReentrantLock(JedisPool jedisPool,String lockId) {
+    public RedisReentrantLock(JedisPool jedisPool, String lockId) {
         this.jedisPool = jedisPool;
-        this.lockId=lockId;
-        this.internals=new RedisLockInternals(jedisPool);
+        this.lockId = lockId;
+        this.internals = new RedisLockInternals(jedisPool);
     }
 
     private static class LockData {
@@ -40,15 +40,15 @@ public class RedisReentrantLock implements DistributedReentrantLock {
     }
 
     @Override
-    public boolean tryLock(long timeout, TimeUnit unit) throws InterruptedException{
+    public boolean tryLock(long timeout, TimeUnit unit) throws InterruptedException {
         Thread currentThread = Thread.currentThread();
         LockData lockData = threadData.get(currentThread);
-        if ( lockData != null ) {
+        if (lockData != null) {
             lockData.lockCount.incrementAndGet();
             return true;
         }
-        String lockVal = internals.tryRedisLock(lockId,timeout,unit);
-        if ( lockVal != null ) {
+        String lockVal = internals.tryRedisLock(lockId, timeout, unit);
+        if (lockVal != null) {
             LockData newLockData = new LockData(currentThread, lockVal);
             threadData.put(currentThread, newLockData);
             return true;
@@ -60,18 +60,18 @@ public class RedisReentrantLock implements DistributedReentrantLock {
     public void unlock() {
         Thread currentThread = Thread.currentThread();
         LockData lockData = threadData.get(currentThread);
-        if ( lockData == null ) {
+        if (lockData == null) {
             throw new IllegalMonitorStateException("You do not own the lock: " + lockId);
         }
         int newLockCount = lockData.lockCount.decrementAndGet();
-        if ( newLockCount > 0 ) {
+        if (newLockCount > 0) {
             return;
         }
-        if ( newLockCount < 0 ) {
+        if (newLockCount < 0) {
             throw new IllegalMonitorStateException("Lock count has gone negative for lock: " + lockId);
         }
         try {
-            internals.unlockRedisLock(lockId,lockData.lockVal);
+            internals.unlockRedisLock(lockId, lockData.lockVal);
         } finally {
             threadData.remove(currentThread);
         }

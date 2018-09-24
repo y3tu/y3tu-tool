@@ -18,17 +18,17 @@ public class ExcelWriterTest {
 
     @Test
     public void write() throws IOException {
-         ExcelWriter writer = new ExcelWriter("/Users/yxy/work/writeTest.xls");
+        ExcelWriter writer = new ExcelWriter("/Users/yxy/work/writeTest.xls");
 
         // 跳过当前行，既第一行，非必须，在此演示用
-       // writer.passCurrentRow();
+        // writer.passCurrentRow();
         // 合并单元格后的标题行，使用默认标题样式
-       // writer.merge(row1.size() - 1, "测试标题");
+        // writer.merge(row1.size() - 1, "测试标题");
         // 一次性写出内容，使用默认样式
         //writer.write(rows);
 
         Map map = new HashMap();
-        map.put("ddd","xxx");
+        map.put("ddd", "xxx");
         List<String> list = new ArrayList<>();
         list.add("test");
         list.add("test2");

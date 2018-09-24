@@ -227,6 +227,38 @@ public class FileUtil {
     }
 
     /**
+     * 创建文件夹，如果存在直接返回此文件夹<br>
+     * 此方法不对File对象类型做判断，如果File不存在，无法判断其类型
+     *
+     * @param dirPath 文件夹路径，使用POSIX格式，无论哪个平台
+     * @return 创建的目录
+     */
+    public static File mkdir(String dirPath) {
+        if (dirPath == null) {
+            return null;
+        }
+        final File dir = file(dirPath);
+        return mkdir(dir);
+    }
+
+    /**
+     * 创建文件夹，会递归自动创建其不存在的父文件夹，如果存在直接返回此文件夹<br>
+     * 此方法不对File对象类型做判断，如果File不存在，无法判断其类型
+     *
+     * @param dir 目录
+     * @return 创建的目录
+     */
+    public static File mkdir(File dir) {
+        if (dir == null) {
+            return null;
+        }
+        if (false == dir.exists()) {
+            dir.mkdirs();
+        }
+        return dir;
+    }
+
+    /**
      * 创建所给文件或目录的父目录
      *
      * @param file 文件或目录

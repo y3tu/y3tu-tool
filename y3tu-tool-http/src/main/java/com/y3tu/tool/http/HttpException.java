@@ -5,6 +5,7 @@ import com.y3tu.tool.core.text.StringUtils;
 
 /**
  * Http异常
+ *
  * @author y3tu
  */
 public class HttpException extends RuntimeException {

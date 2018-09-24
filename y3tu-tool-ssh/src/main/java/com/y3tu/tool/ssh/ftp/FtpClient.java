@@ -20,7 +20,7 @@ import java.util.Properties;
 @Slf4j
 public class FtpClient {
 
-    private static final byte[] LOCK = { 0 };
+    private static final byte[] LOCK = {0};
     private static FTPClient ftpClient = null;
     private Properties properties = null;
     private static final String FILELOCK = "Token.lock";
@@ -49,8 +49,8 @@ public class FtpClient {
     /**
      * 初始化
      *
-     * @param host IP
-     * @param port 端口
+     * @param host     IP
+     * @param port     端口
      * @param username 用户名
      * @param password 密码
      * @throws FtpException
@@ -134,7 +134,7 @@ public class FtpClient {
      * 上传
      *
      * @param remotePath 上传目录
-     * @param localPath 本地目录
+     * @param localPath  本地目录
      * @return
      * @throws Exception
      */
@@ -204,7 +204,7 @@ public class FtpClient {
      * 下载
      *
      * @param remotePath 下载目录
-     * @param localPath 本地目录
+     * @param localPath  本地目录
      * @return
      * @throws Exception
      */
@@ -237,7 +237,7 @@ public class FtpClient {
     /**
      * 递归下载文件
      *
-     * @param ftpFile 下载文件/目录
+     * @param ftpFile   下载文件/目录
      * @param localPath 本地目录
      * @return
      */
@@ -263,7 +263,7 @@ public class FtpClient {
                     throw new FtpException("FTP下载[" + fileLocalPath + "]出错!", e);
                 } finally {
                     try {
-                        if (outputStream != null){
+                        if (outputStream != null) {
                             outputStream.close();
                         }
                     } catch (IOException e) {
@@ -296,7 +296,9 @@ public class FtpClient {
         return false;
     }
 
-    /** 获得目录下最大文件名 */
+    /**
+     * 获得目录下最大文件名
+     */
     public String getMaxFileName(String remotePath) throws FtpException {
         try {
             ftpClient.changeWorkingDirectory(remotePath);
@@ -318,7 +320,7 @@ public class FtpClient {
      * 连接参数
      *
      * @param properties <br>
-     *            FTPHOSTNAME:IP; FTPPORT:端口; FTPUSERNAME:用户名; FTPPASSWORD:密码
+     *                   FTPHOSTNAME:IP; FTPPORT:端口; FTPUSERNAME:用户名; FTPPASSWORD:密码
      */
     public void setProperties(Properties properties) {
         this.properties = properties;
@@ -328,11 +330,11 @@ public class FtpClient {
      * 连接参数
      *
      * @param properties <br>
-     *            FTPHOSTNAME:IP; FTPPORT:端口; FTPUSERNAME:用户名; FTPPASSWORD:密码
+     *                   FTPHOSTNAME:IP; FTPPORT:端口; FTPUSERNAME:用户名; FTPPASSWORD:密码
      */
     public void setProperties(Map<String, String> properties) {
         this.properties = new Properties();
-        String[] key = { "FTPHOSTNAME", "FTPPORT", "FTPUSERNAME", "FTPPASSWORD" };
+        String[] key = {"FTPHOSTNAME", "FTPPORT", "FTPUSERNAME", "FTPPASSWORD"};
         for (int i = 0; i < key.length; i++) {
             this.properties.put(key[i], properties.get(key[i]));
         }

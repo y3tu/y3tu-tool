@@ -210,7 +210,6 @@ public class Setting extends LinkedHashMap<String, String> {
      * 获取GroupedMap
      *
      * @return GroupedMap
-     *
      */
     public GroupedMap getGroupedMap() {
         return this.groupedMap;

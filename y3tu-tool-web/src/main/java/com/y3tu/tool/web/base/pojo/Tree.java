@@ -81,7 +81,7 @@ public class Tree<T> {
     public Tree() {
         super();
     }
-    
+
     @Override
     public String toString() {
         return JSON.toJSONString(this);

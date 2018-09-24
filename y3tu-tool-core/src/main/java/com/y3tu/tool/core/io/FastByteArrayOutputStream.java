@@ -19,91 +19,95 @@ import com.y3tu.tool.core.text.CharsetUtil;
  */
 public class FastByteArrayOutputStream extends OutputStream {
 
-	private final FastByteBuffer buffer;
+    private final FastByteBuffer buffer;
 
-	public FastByteArrayOutputStream() {
-		this(1024);
-	}
+    public FastByteArrayOutputStream() {
+        this(1024);
+    }
 
-	public FastByteArrayOutputStream(int size) {
-		buffer = new FastByteBuffer(size);
-	}
+    public FastByteArrayOutputStream(int size) {
+        buffer = new FastByteBuffer(size);
+    }
 
-	@Override
-	public void write(byte[] b, int off, int len) {
-		buffer.append(b, off, len);
-	}
+    @Override
+    public void write(byte[] b, int off, int len) {
+        buffer.append(b, off, len);
+    }
 
-	@Override
-	public void write(int b) {
-		buffer.append((byte) b);
-	}
+    @Override
+    public void write(int b) {
+        buffer.append((byte) b);
+    }
 
-	public int size() {
-		return buffer.size();
-	}
+    public int size() {
+        return buffer.size();
+    }
 
-	/**
-	 * 此方法无任何效果，当流被关闭后不会抛出IOException
-	 */
-	@Override
-	public void close() {
-		// nop
-	}
+    /**
+     * 此方法无任何效果，当流被关闭后不会抛出IOException
+     */
+    @Override
+    public void close() {
+        // nop
+    }
 
-	public void reset() {
-		buffer.reset();
-	}
+    public void reset() {
+        buffer.reset();
+    }
 
-	/**
-	 * 写出
-	 * @param out 输出流
-	 * @throws IORuntimeException IO异常
-	 */
-	public void writeTo(OutputStream out) throws IORuntimeException {
-		final int index = buffer.index();
-		byte[] buf;
-		try {
-			for (int i = 0; i < index; i++) {
-				buf = buffer.array(i);
-				out.write(buf);
-			}
-			out.write(buffer.array(index), 0, buffer.offset());
-		} catch (IOException e) {
-			throw new IORuntimeException(e);
-		}
-	}
+    /**
+     * 写出
+     *
+     * @param out 输出流
+     * @throws IORuntimeException IO异常
+     */
+    public void writeTo(OutputStream out) throws IORuntimeException {
+        final int index = buffer.index();
+        byte[] buf;
+        try {
+            for (int i = 0; i < index; i++) {
+                buf = buffer.array(i);
+                out.write(buf);
+            }
+            out.write(buffer.array(index), 0, buffer.offset());
+        } catch (IOException e) {
+            throw new IORuntimeException(e);
+        }
+    }
 
-	
-	/**
-	 * 转为Byte数组
-	 * @return Byte数组
-	 */
-	public byte[] toByteArray() {
-		return buffer.toArray();
-	}
 
-	@Override
-	public String toString() {
-		return new String(toByteArray());
-	}
+    /**
+     * 转为Byte数组
+     *
+     * @return Byte数组
+     */
+    public byte[] toByteArray() {
+        return buffer.toArray();
+    }
 
-	/**
-	 * 转为字符串
-	 * @param charsetName 编码
-	 * @return 字符串
-	 */
-	public String toString(String charsetName) {
-		return toString(CharsetUtil.charset(charsetName));
-	}
-	
-	/**
-	 * 转为字符串
-	 * @param charset 编码
-	 * @return 字符串
-	 */
-	public String toString(Charset charset) {
-		return new String(toByteArray(), charset);
-	}
+    @Override
+    public String toString() {
+        return new String(toByteArray());
+    }
+
+    /**
+     * 转为字符串
+     *
+     * @param charsetName 编码
+     * @return 字符串
+     */
+    public String toString(String charsetName) {
+        return toString(CharsetUtil.charset(charsetName));
+    }
+
+    /**
+     * 转为字符串
+     *
+     * @param charset 编码
+     * @return 字符串
+     */
+    public String toString(Charset charset) {
+        return new String(toByteArray(), charset);
+    }
 
 }

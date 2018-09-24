@@ -312,10 +312,11 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         }
         return str2;
     }
+
     /**
      * 去掉指定后缀
      *
-     * @param str 字符串
+     * @param str    字符串
      * @param suffix 后缀
      * @return 切掉后的字符串，若后缀不是 suffix， 返回原字符串
      */
@@ -336,7 +337,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     /**
      * 切割指定位置之前部分的字符串
      *
-     * @param string 字符串
+     * @param string  字符串
      * @param toIndex 切割到的位置（不包括）
      * @return 切割后的剩余的前半部分字符串
      */
@@ -347,7 +348,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     /**
      * 切割指定位置之后部分的字符串
      *
-     * @param string 字符串
+     * @param string    字符串
      * @param fromIndex 切割开始的位置（包括）
      * @return 切割后后剩余的后半部分字符串
      */
@@ -357,6 +358,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         }
         return substring(string.toString(), fromIndex, string.length());
     }
+
     /**
      * 字符串是否以给定字符开始
      *
@@ -371,7 +373,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     /**
      * 给定字符串是否被字符包围
      *
-     * @param str 字符串
+     * @param str    字符串
      * @param prefix 前缀
      * @param suffix 后缀
      * @return 是否包围，空串不包围
@@ -391,7 +393,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     /**
      * 给定字符串是否被字符包围
      *
-     * @param str 字符串
+     * @param str    字符串
      * @param prefix 前缀
      * @param suffix 后缀
      * @return 是否包围，空串不包围
@@ -406,6 +408,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
         return str.charAt(0) == prefix && str.charAt(str.length() - 1) == suffix;
     }
+
     /**
      * 编码字符串
      *
@@ -422,6 +425,17 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             return str.toString().getBytes();
         }
         return str.toString().getBytes(charset);
+    }
+
+    /**
+     * 将byte数组转为字符串
+     *
+     * @param bytes   byte数组
+     * @param charset 字符集
+     * @return 字符串
+     */
+    public static String str(byte[] bytes, String charset) {
+        return str(bytes, isBlank(charset) ? Charset.defaultCharset() : Charset.forName(charset));
     }
 
     /**
@@ -546,8 +560,8 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * 是否以指定字符串结尾<br>
      * 如果给定的字符串和开头字符串都为null则返回true，否则任意一个值为null返回false
      *
-     * @param str 被监测字符串
-     * @param suffix 结尾字符串
+     * @param str          被监测字符串
+     * @param suffix       结尾字符串
      * @param isIgnoreCase 是否忽略大小写
      * @return 是否以指定字符串结尾
      */

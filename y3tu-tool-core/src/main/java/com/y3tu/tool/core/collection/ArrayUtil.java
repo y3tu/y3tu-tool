@@ -12,8 +12,9 @@ import com.y3tu.tool.core.util.ObjectUtil;
 
 /**
  * 数组工具类
- * @see org.apache.commons.lang3.ArrayUtils 更多数组操作可以参考此工具类
+ *
  * @author Looly
+ * @see org.apache.commons.lang3.ArrayUtils 更多数组操作可以参考此工具类
  */
 public class ArrayUtil {
 
@@ -796,10 +797,10 @@ public class ArrayUtil {
      * 则得到的Map是 {a=1, b=2, c=3, d=4}<br>
      * 如果两个数组长度不同，则只对应最短部分
      *
-     * @param <K> Key类型
-     * @param <V> Value类型
-     * @param keys 键列表
-     * @param values 值列表
+     * @param <K>     Key类型
+     * @param <V>     Value类型
+     * @param keys    键列表
+     * @param values  值列表
      * @param isOrder 是否有序
      * @return Map
      */
@@ -825,9 +826,9 @@ public class ArrayUtil {
      * 则得到的Map是 {a=1, b=2, c=3, d=4}<br>
      * 如果两个数组长度不同，则只对应最短部分
      *
-     * @param <K> Key类型
-     * @param <V> Value类型
-     * @param keys 键列表
+     * @param <K>    Key类型
+     * @param <V>    Value类型
+     * @param keys   键列表
      * @param values 值列表
      * @return Map
      */
@@ -838,7 +839,7 @@ public class ArrayUtil {
     /**
      * 返回数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
      *
-     * @param <T> 数组类型
+     * @param <T>   数组类型
      * @param array 数组
      * @param value 被检查的元素
      * @return 数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
@@ -857,7 +858,7 @@ public class ArrayUtil {
     /**
      * 返回数组中指定元素所在最后的位置，未找到返回{@link #INDEX_NOT_FOUND}
      *
-     * @param <T> 数组类型
+     * @param <T>   数组类型
      * @param array 数组
      * @param value 被检查的元素
      * @return 数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
@@ -876,8 +877,7 @@ public class ArrayUtil {
     /**
      * 数组中是否包含元素
      *
-     * @param <T> 数组元素类型
-     *
+     * @param <T>   数组元素类型
      * @param array 数组
      * @param value 被检查的元素
      * @return 是否包含
@@ -889,7 +889,7 @@ public class ArrayUtil {
     /**
      * 获取数组对象中指定index的值，支持负数，例如-1表示倒数第一个值
      *
-     * @param <T> 数组元素类型
+     * @param <T>   数组元素类型
      * @param array 数组对象
      * @param index 下标，支持负数
      * @return 值
@@ -905,8 +905,8 @@ public class ArrayUtil {
     /**
      * 获取数组中指定多个下标元素值，组成新数组
      *
-     * @param <T> 数组元素类型
-     * @param array 数组
+     * @param <T>     数组元素类型
+     * @param array   数组
      * @param indexes 下标列表
      * @return 结果
      */
@@ -962,8 +962,7 @@ public class ArrayUtil {
      * 移除数组中对应位置的元素<br>
      * copy from commons-lang
      *
-     * @param <T> 数组元素类型
-     *
+     * @param <T>   数组元素类型
      * @param array 数组对象，可以是对象数组，也可以原始类型数组
      * @param index 位置，如果位置小于0或者大于长度，返回原数组
      * @return 去掉指定元素后的新数组或原数组
@@ -973,6 +972,7 @@ public class ArrayUtil {
     public static <T> T[] remove(T[] array, int index) throws IllegalArgumentException {
         return (T[]) remove((Object) array, index);
     }
+
     /**
      * 移除数组中对应位置的元素<br>
      * copy from commons-lang
@@ -1005,8 +1005,8 @@ public class ArrayUtil {
      * 移除数组中指定的元素<br>
      * 只会移除匹配到的第一个元素 copy from commons-lang
      *
-     * @param <T> 数组元素类型
-     * @param array 数组对象，可以是对象数组，也可以原始类型数组
+     * @param <T>     数组元素类型
+     * @param array   数组对象，可以是对象数组，也可以原始类型数组
      * @param element 要移除的元素
      * @return 去掉指定元素后的新数组或原数组
      * @throws IllegalArgumentException 参数对象不为数组对象

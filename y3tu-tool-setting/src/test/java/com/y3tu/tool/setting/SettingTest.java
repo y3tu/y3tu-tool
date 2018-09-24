@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 
 public class SettingTest {
     @Test
-    public void settingTest(){
+    public void settingTest() {
         Setting setting = new Setting("test.setting", true);
 
         String driver = setting.getByGroup("driver", "demo");

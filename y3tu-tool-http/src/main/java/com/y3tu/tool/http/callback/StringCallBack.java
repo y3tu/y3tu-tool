@@ -19,7 +19,7 @@ public class StringCallBack extends CallBack<String> {
 
     @Override
     public void onResponse(Call call, Response response) throws IOException {
-        onParseResponse(call,response);
+        onParseResponse(call, response);
     }
 
     @Override

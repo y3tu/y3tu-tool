@@ -258,7 +258,8 @@ public class Props extends Properties {
     /**
      * 将Properties中的键值关系映射到对象中，原理是调用对象对应的set方法<br>
      * 复杂类型需要用到ConvertUtil工具转换
-     * @param bean 被映射的对象
+     *
+     * @param bean  被映射的对象
      * @param clazz 被映射对象的class
      * @return Bean
      */

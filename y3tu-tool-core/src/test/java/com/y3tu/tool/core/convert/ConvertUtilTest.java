@@ -16,7 +16,7 @@ public class ConvertUtilTest {
 
     @Test
     public void convert() {
-        ConvertUtil.register(new CharsetConverter(),Charset.class);
+        ConvertUtil.register(new CharsetConverter(), Charset.class);
         Object result = ConvertUtil.convert("UTF-8", Charset.class);
         ConvertUtil.deregister();
         Console.log(result.getClass().toString());

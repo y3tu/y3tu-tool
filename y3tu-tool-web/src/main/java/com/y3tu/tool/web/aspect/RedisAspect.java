@@ -20,10 +20,10 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 @Slf4j
-@ConditionalOnProperty(name = "y3tu-tool.redis.enable",havingValue = "true",matchIfMissing = false)
+@ConditionalOnProperty(name = "y3tu-tool.redis.enable", havingValue = "true", matchIfMissing = false)
 public class RedisAspect {
     /**
-     *  是否开启redis缓存  true开启   false关闭
+     * 是否开启redis缓存  true开启   false关闭
      */
     @Value("${y3tu-tool.redis.open: false}")
     private boolean open;
@@ -31,10 +31,10 @@ public class RedisAspect {
     @Around("execution(* com.y3tu.tool.web.util.RedisUtils.*(..))")
     public Object around(ProceedingJoinPoint point) throws Throwable {
         Object result = null;
-        if(open){
-            try{
+        if (open) {
+            try {
                 result = point.proceed();
-            }catch (Exception e){
+            } catch (Exception e) {
                 log.error("redis error", e);
                 throw new RException("Redis服务异常");
             }

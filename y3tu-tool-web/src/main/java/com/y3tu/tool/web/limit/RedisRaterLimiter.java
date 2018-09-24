@@ -14,11 +14,12 @@ import java.util.UUID;
 
 /**
  * 基于Redis的限流
+ *
  * @author wangiegie@gmail.com https://gitee.com/boding1/pig-cloud
  */
 @Component
 @Slf4j
-@ConditionalOnProperty(name = "y3tu-tool.rateLimit.enable",havingValue = "true",matchIfMissing = false)
+@ConditionalOnProperty(name = "y3tu-tool.rateLimit.enable", havingValue = "true", matchIfMissing = false)
 public class RedisRaterLimiter {
 
     @Autowired
@@ -31,7 +32,7 @@ public class RedisRaterLimiter {
     public String acquireTokenFromBucket(String point, int limit, long timeout) {
 
         Jedis jedis = jedisPool.getResource();
-        try{
+        try {
             //UUID令牌
             String token = UUID.randomUUID().toString();
             long now = System.currentTimeMillis();
@@ -69,10 +70,10 @@ public class RedisRaterLimiter {
                 transaction.zrem(BUCKET + point, token);
                 transaction.exec();
             }
-        }catch (Exception e){
-            log.error("限流出错，请检查Redis运行状态\n"+e.toString());
-        }finally {
-            if(jedis!=null){
+        } catch (Exception e) {
+            log.error("限流出错，请检查Redis运行状态\n" + e.toString());
+        } finally {
+            if (jedis != null) {
                 jedis.close();
             }
         }

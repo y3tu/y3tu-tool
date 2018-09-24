@@ -10,7 +10,7 @@ public class PageUtilTest {
 
     @Test
     public void rainbow() {
-        int[] a = PageUtil.rainbow(1,10);
+        int[] a = PageUtil.rainbow(1, 10);
         Console.log(ObjectPrintUtil.toPrettyString(a));
     }
 }

@@ -8,6 +8,7 @@ public interface Callback {
 
     /**
      * 成功获取锁后执行方法
+     *
      * @return
      * @throws InterruptedException
      */
@@ -15,6 +16,7 @@ public interface Callback {
 
     /**
      * 获取锁超时回调
+     *
      * @return
      * @throws InterruptedException
      */

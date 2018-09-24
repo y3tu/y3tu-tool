@@ -6,13 +6,13 @@ import org.junit.Test;
 
 /**
  * 控制台单元测试
- * @author Looly
  *
+ * @author Looly
  */
 public class ConsoleTest {
 
     @Test
-    public void logTest(){
+    public void logTest() {
         Console.log();
 
         String[] a = {"abc", "bcd", "def"};
@@ -22,7 +22,7 @@ public class ConsoleTest {
     }
 
     @Test
-    public void printTest(){
+    public void printTest() {
         String[] a = {"abc", "bcd", "def"};
         Console.print(a);
 
@@ -30,7 +30,7 @@ public class ConsoleTest {
     }
 
     @Test
-    public void errorTest(){
+    public void errorTest() {
         Console.error();
 
         String[] a = {"abc", "bcd", "def"};

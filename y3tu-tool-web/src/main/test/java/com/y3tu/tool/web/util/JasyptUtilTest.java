@@ -13,6 +13,6 @@ public class JasyptUtilTest {
 
     @Test
     public void encyptPwd() {
-        Console.log(JasyptUtil.encyptPwd("123456","yxy727"));
+        Console.log(JasyptUtil.encyptPwd("123456", "yxy727"));
     }
 }

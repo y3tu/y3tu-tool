@@ -11,6 +11,6 @@ public class CharsetConverter implements Converter {
 
     @Override
     public <T> T convert(Class<T> aClass, Object o) {
-       return (T) CharsetUtil.charset(o.toString());
+        return (T) CharsetUtil.charset(o.toString());
     }
 }

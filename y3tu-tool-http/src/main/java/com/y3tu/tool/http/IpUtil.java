@@ -20,15 +20,16 @@ public class IpUtil {
     /**
      * Mob IP查询接口
      */
-    private final static String GET_IP_LOCATE = "http://apicloud.mob.com/ip/query?key="+ APPKEY +"&ip=";
+    private final static String GET_IP_LOCATE = "http://apicloud.mob.com/ip/query?key=" + APPKEY + "&ip=";
 
     /**
      * Mob IP天气查询接口
      */
-    private final static String GET_IP_WEATHER = "http://apicloud.mob.com/v1/weather/ip?key="+ APPKEY +"&ip=";
+    private final static String GET_IP_WEATHER = "http://apicloud.mob.com/v1/weather/ip?key=" + APPKEY + "&ip=";
 
     /**
      * 获取客户端IP地址
+     *
      * @param request 请求
      * @return
      */
@@ -60,22 +61,23 @@ public class IpUtil {
                 ip = ip.substring(0, ip.indexOf(","));
             }
         }
-        if("0:0:0:0:0:0:0:1".equals(ip)){
-            ip="127.0.0.1";
+        if ("0:0:0:0:0:0:0:1".equals(ip)) {
+            ip = "127.0.0.1";
         }
         return ip;
     }
 
     /**
      * 获取IP返回地理天气信息
+     *
      * @param ip ip地址
      * @return
      */
-    public static String getIpWeatherInfo(String ip){
+    public static String getIpWeatherInfo(String ip) {
 
-        if(StringUtils.isNotBlank(ip)){
+        if (StringUtils.isNotBlank(ip)) {
             String url = GET_IP_WEATHER + ip;
-            Resp result= HttpUtil.getSync(url);
+            Resp result = HttpUtil.getSync(url);
             return result.getData().toString();
         }
         return null;
@@ -83,24 +85,25 @@ public class IpUtil {
 
     /**
      * 获取IP返回地理信息
+     *
      * @param ip ip地址
      * @return
      */
-    public static String getIpCity(String ip){
-        if(null != ip){
+    public static String getIpCity(String ip) {
+        if (null != ip) {
             String url = GET_IP_LOCATE + ip;
-            String result="未知";
-            try{
-                String json= HttpUtil.getSync(url).getData().toString();
-                IpLocate locate=JSONObject.parseObject(json, IpLocate.class);
-                if(("200").equals(locate.getRetCode())){
-                    if(StringUtils.isNotBlank(locate.getResult().getProvince())){
-                        result=locate.getResult().getProvince()+" "+locate.getResult().getCity();
-                    }else{
-                        result=locate.getResult().getCountry();
+            String result = "未知";
+            try {
+                String json = HttpUtil.getSync(url).getData().toString();
+                IpLocate locate = JSONObject.parseObject(json, IpLocate.class);
+                if (("200").equals(locate.getRetCode())) {
+                    if (StringUtils.isNotBlank(locate.getResult().getProvince())) {
+                        result = locate.getResult().getProvince() + " " + locate.getResult().getCity();
+                    } else {
+                        result = locate.getResult().getCountry();
                     }
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 log.info("获取IP信息失败");
             }
             return result;

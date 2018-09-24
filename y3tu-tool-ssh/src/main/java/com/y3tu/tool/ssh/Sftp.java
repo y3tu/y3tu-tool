@@ -28,7 +28,6 @@ import com.y3tu.tool.ssh.ftp.FileProgressMonitor;
  * </p>
  *
  * @author looly
- *
  */
 public class Sftp implements Closeable {
 
@@ -96,7 +95,7 @@ public class Sftp implements Closeable {
      * 获取HOME路径
      *
      * @return HOME路径
-     *  4.0.5
+     * 4.0.5
      */
     public String home() {
         try {
@@ -112,7 +111,7 @@ public class Sftp implements Closeable {
      * @param path          目录
      * @param fileOrDirName 文件或目录名
      * @return 是否存在
-     *  4.0.5
+     * 4.0.5
      */
     public boolean exist(String path, String fileOrDirName) {
         List<String> ls = ls(path);

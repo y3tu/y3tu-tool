@@ -12,7 +12,7 @@ public class IpUtilTest {
     }
 
     @Test
-    public void getIpCity(){
+    public void getIpCity() {
         Console.log(IpUtil.getIpCity("183.232.231.173"));
     }
 }

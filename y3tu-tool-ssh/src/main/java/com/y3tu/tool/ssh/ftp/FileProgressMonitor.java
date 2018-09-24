@@ -32,7 +32,9 @@ public class FileProgressMonitor implements SftpProgressMonitor {
     private DecimalFormat df = new DecimalFormat("#.##");
     private long preTime;
 
-    /** 传输开始 */
+    /**
+     * 传输开始
+     */
     @Override
     public void init(int op, String src, String dest, long max) {
         this.fileSize = max;
@@ -40,7 +42,9 @@ public class FileProgressMonitor implements SftpProgressMonitor {
         start = System.currentTimeMillis();
     }
 
-    /** 传输中 */
+    /**
+     * 传输中
+     */
     @Override
     public boolean count(long count) {
         if (fileSize != 0 && transfered == 0) {
@@ -61,7 +65,9 @@ public class FileProgressMonitor implements SftpProgressMonitor {
         return true;
     }
 
-    /** 传输结束 */
+    /**
+     * 传输结束
+     */
     @Override
     public void end() {
         log.info("Transferring end. used time: {}ms", System.currentTimeMillis() - start);

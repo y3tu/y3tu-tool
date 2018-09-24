@@ -19,12 +19,12 @@ public abstract class FileCallBack extends CallBack<File> {
      * 目标文件名
      */
     private String destFileName;
+
     /**
-     *
      * @param destFileDir:文件目录
      * @param destFileName：文件名
      */
-    public FileCallBack(String destFileDir, String destFileName){
+    public FileCallBack(String destFileDir, String destFileName) {
         destFileDir = destFileDir;
         destFileName = destFileName;
     }
@@ -36,28 +36,28 @@ public abstract class FileCallBack extends CallBack<File> {
 
     @Override
     public void onResponse(Call call, Response response) throws IOException {
-        onParseResponse(call,response);
+        onParseResponse(call, response);
     }
 
     @Override
     public File onParseResponse(Call call, Response response) {
         InputStream is = null;
-        byte[] buf = new byte[1024*8];
+        byte[] buf = new byte[1024 * 8];
         int len = 0;
         FileOutputStream fos = null;
-        try{
+        try {
             is = response.body().byteStream();
             final long total = response.body().contentLength();
 
             long sum = 0;
 
             File dir = new File(destFileDir);
-            if (!dir.exists()){
+            if (!dir.exists()) {
                 dir.mkdirs();
             }
             File file = new File(dir, destFileName);
             fos = new FileOutputStream(file);
-            while ((len = is.read(buf)) != -1){
+            while ((len = is.read(buf)) != -1) {
                 sum += len;
                 fos.write(buf, 0, len);
                 final long finalSum = sum;
@@ -68,15 +68,15 @@ public abstract class FileCallBack extends CallBack<File> {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally{
-            try{
+        } finally {
+            try {
                 response.body().close();
                 if (is != null) is.close();
-            } catch (IOException e){
+            } catch (IOException e) {
             }
-            try{
+            try {
                 if (fos != null) fos.close();
-            } catch (IOException e){
+            } catch (IOException e) {
             }
 
         }

@@ -25,8 +25,8 @@ import java.io.Writer;
  * <strong>NOTE:</strong> This implementation, as an alternative to <code>java.io.StringWriter</code>, provides an
  * <i>un-synchronized</i> (i.e. for use in a single thread) implementation for better performance. For safe usage with
  * multiple {@link Thread}s then <code>java.io.StringWriter</code> should be used.
- *
- *  2.0
+ * <p>
+ * 2.0
  */
 public class StringBuilderWriter extends Writer implements Serializable {
 

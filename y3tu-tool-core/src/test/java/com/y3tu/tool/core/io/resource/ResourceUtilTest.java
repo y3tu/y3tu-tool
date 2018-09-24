@@ -22,25 +22,25 @@ public class ResourceUtilTest {
     public void test() throws IOException {
 
         Console.log(ResourceUtil.asUrl("META-INF/MANIFEST.MF"));
-       // assertThat(ResourceUtil.toString("test.txt")).contains("ABCDEFG");
+        // assertThat(ResourceUtil.toString("test.txt")).contains("ABCDEFG");
         //Console.log(ResourceUtil.toString(ResourceUtilTest.class,"/test/test.txt"));
 
 //        assertThat(ResourceUtil.toString(ResourceUtilTest.class, "/test.txt")).contains("ABCDEFG");
- //       Console.log(ResourceUtil.toLines("test/test.txt"));
+        //       Console.log(ResourceUtil.toLines("test/test.txt"));
 //        assertThat(ResourceUtil.toLines("test.txt")).containsExactly("ABCDEFG", "ABC");
 //        assertThat(ResourceUtil.toLines(ResourceUtilTest.class, "/test.txt")).containsExactly("ABCDEFG", "ABC");
 //
 //        // getResoruce 处理重复的资源
- //       Console.log(ResourceUtil.asUrl("META-INF/MANIFEST.MF"));
+        //       Console.log(ResourceUtil.asUrl("META-INF/MANIFEST.MF"));
 //        System.out.println(ResourceUtil.asUrl("META-INF/MANIFEST.MF"));
 //        assertThat(ResourceUtil.toString("META-INF/MANIFEST.MF")).contains("Manifest");
 //
 //        // getResources
 //        assertThat(ResourceUtil.getResourcesQuietly("META-INF/MANIFEST.MF").size()).isGreaterThan(1);
 //
-       // ResourceUtil.asUrl("test.txt");
-       // Console.log(ResourceUtil.toString("LICENSE-junit.txt"));
-      //  Console.log(ResourceUtil.getResourcesQuietly("LICENSE-junit.txt"));
+        // ResourceUtil.asUrl("test.txt");
+        // Console.log(ResourceUtil.toString("LICENSE-junit.txt"));
+        //  Console.log(ResourceUtil.getResourcesQuietly("LICENSE-junit.txt"));
 //        System.out.println(ResourceUtil.getResourcesQuietly("META-INF/MANIFEST.MF"));
 //
 //        assertThat(ResourceUtil.getResourcesQuietly("META-INF/MANIFEST.MF", ResourceUtilTest.class.getClassLoader()).size())

@@ -4,8 +4,7 @@ import java.util.Arrays;
 
 /**
  * 1. Object打印优化，主要解决数组的打印
- *
- * */
+ */
 public class ObjectPrintUtil {
     private static final String NULL = "null";
 

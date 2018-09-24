@@ -12,6 +12,7 @@ import java.net.InetSocketAddress;
 
 /**
  * NetUtil单元测试
+ *
  * @author y3tu
  */
 public class NetUtilTest {
@@ -40,7 +41,7 @@ public class NetUtilTest {
 
     @Test
     public void toAbsoluteUrl() {
-        Console.log(NetUtil.toAbsoluteUrl("file:/Users/yxy/work/","dfd/work"));
+        Console.log(NetUtil.toAbsoluteUrl("file:/Users/yxy/work/", "dfd/work"));
     }
 
     @Test
@@ -50,25 +51,25 @@ public class NetUtilTest {
 
     @Test
     public void buildInetSocketAddress() {
-        InetSocketAddress inetSocketAddress = NetUtil.buildInetSocketAddress("104.224.153.202:27506",8080);
+        InetSocketAddress inetSocketAddress = NetUtil.buildInetSocketAddress("104.224.153.202:27506", 8080);
         Console.log(inetSocketAddress.getAddress());
     }
 
     @Test
-    public void getIpByHost(){
+    public void getIpByHost() {
         Console.log(NetUtil.getIpByHost("www.y3tu.com"));
     }
 
 
     @Test
     public void createAddress() {
-        InetSocketAddress inetSocketAddress=  NetUtil.createAddress("104.224.153.202",27506);
+        InetSocketAddress inetSocketAddress = NetUtil.createAddress("104.224.153.202", 27506);
         Console.log(inetSocketAddress.getHostString());
     }
 
     @Test
     public void netCat() throws IOException {
-        byte[] bytes = new byte[]{1,2};
-        NetUtil.netCat("104.224.153.202",27506,bytes);
+        byte[] bytes = new byte[]{1, 2};
+        NetUtil.netCat("104.224.153.202", 27506, bytes);
     }
 }

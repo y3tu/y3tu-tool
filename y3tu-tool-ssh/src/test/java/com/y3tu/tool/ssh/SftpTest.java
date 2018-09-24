@@ -13,7 +13,7 @@ public class SftpTest {
 
     @Test
     public void ls() {
-        Sftp sftp = new Sftp("www.y3tu.com",27506,"root","");
+        Sftp sftp = new Sftp("www.y3tu.com", 27506, "root", "");
         Console.log(sftp.home());
     }
 }

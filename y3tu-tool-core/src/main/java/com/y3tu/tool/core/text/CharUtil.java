@@ -261,7 +261,6 @@ public class CharUtil {
      *
      * @param c 字符
      * @return 是否为emoji
-     *
      */
     public static boolean isEmoji(char c) {
         return (c == 0x0) || //
@@ -280,7 +279,6 @@ public class CharUtil {
      * @param c2         字符2
      * @param ignoreCase 是否忽略大小写
      * @return 是否相同
-     *
      */
     public static boolean equals(char c1, char c2, boolean ignoreCase) {
         if (ignoreCase) {

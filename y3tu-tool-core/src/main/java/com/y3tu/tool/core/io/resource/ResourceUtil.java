@@ -39,8 +39,8 @@ public class ResourceUtil {
             } else {
                 return Resources.getResource(path);
             }
-        }catch (Exception e){
-            throw new IORuntimeException(e,"获取配置文件错误");
+        } catch (Exception e) {
+            throw new IORuntimeException(e, "获取配置文件错误");
         }
     }
 

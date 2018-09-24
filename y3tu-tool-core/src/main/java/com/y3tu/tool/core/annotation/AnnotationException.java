@@ -5,6 +5,7 @@ import com.y3tu.tool.core.text.StringUtils;
 
 /**
  * 注解异常
+ *
  * @author y3tu
  */
 public class AnnotationException extends RuntimeException {

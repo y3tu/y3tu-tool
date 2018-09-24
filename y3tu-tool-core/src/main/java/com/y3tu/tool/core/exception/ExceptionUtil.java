@@ -138,7 +138,7 @@ public class ExceptionUtil {
      * 堆栈转为单行完整字符串
      *
      * @param throwable 异常对象
-     * @param limit 限制最大长度
+     * @param limit     限制最大长度
      * @return 堆栈转为的字符串
      */
     public static String stacktraceToOneLineString(Throwable throwable, int limit) {
@@ -154,7 +154,7 @@ public class ExceptionUtil {
      * 堆栈转为完整字符串
      *
      * @param throwable 异常对象
-     * @param limit 限制最大长度
+     * @param limit     限制最大长度
      * @return 堆栈转为的字符串
      */
     public static String stacktraceToString(Throwable throwable, int limit) {
@@ -164,8 +164,8 @@ public class ExceptionUtil {
     /**
      * 堆栈转为完整字符串
      *
-     * @param throwable 异常对象
-     * @param limit 限制最大长度
+     * @param throwable           异常对象
+     * @param limit               限制最大长度
      * @param replaceCharToStrMap 替换字符为指定字符串
      * @return 堆栈转为的字符串
      */
@@ -200,7 +200,7 @@ public class ExceptionUtil {
     /**
      * 判断是否由指定异常类引起
      *
-     * @param throwable 异常
+     * @param throwable    异常
      * @param causeClasses 定义的引起异常的类
      * @return 是否由指定异常类引起
      */
@@ -212,7 +212,7 @@ public class ExceptionUtil {
     /**
      * 获取由指定异常类引起的异常
      *
-     * @param throwable 异常
+     * @param throwable    异常
      * @param causeClasses 定义的引起异常的类
      * @return 是否由指定异常类引起
      */

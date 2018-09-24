@@ -4,13 +4,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-#if(${superControllerClassPackage})
-import ${superControllerClassPackage};
-#end
+    #if(${superControllerClassPackage})
+    import ${superControllerClassPackage};
+    #end
 import ${cfg.basePackage}.${cfg.moduleName}.service.${table.serviceName};
 import ${cfg.basePackage}.${cfg.moduleName}.entity.${table.entityName};
-
-
 
 
 /**
@@ -29,4 +27,4 @@ public class ${table.controllerName} extends ${superControllerClass}<${table.ser
 public class ${table.controllerName} {
 #end
 
-}
+        }

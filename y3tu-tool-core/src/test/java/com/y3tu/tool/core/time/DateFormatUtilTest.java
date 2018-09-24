@@ -22,7 +22,7 @@ public class DateFormatUtilTest {
     }
 
     @Test
-    public void formatDuration(){
+    public void formatDuration() {
 
     }
 }

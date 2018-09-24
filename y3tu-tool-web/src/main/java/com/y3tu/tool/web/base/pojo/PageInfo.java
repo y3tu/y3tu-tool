@@ -28,17 +28,18 @@ public class PageInfo {
 
     /**
      * 分页
-     * @param list        列表数据
-     * @param totalCount  总记录数
-     * @param pageSize    每页记录数
-     * @param currPage    当前页数
+     *
+     * @param list       列表数据
+     * @param totalCount 总记录数
+     * @param pageSize   每页记录数
+     * @param currPage   当前页数
      */
     public PageInfo(List<?> list, long totalCount, int pageSize, int currPage) {
         this.list = list;
         this.totalCount = totalCount;
         this.pageSize = pageSize;
         this.currPage = currPage;
-        this.totalPage = (long) Math.ceil((double)totalCount/pageSize);
+        this.totalPage = (long) Math.ceil((double) totalCount / pageSize);
     }
 
     /**

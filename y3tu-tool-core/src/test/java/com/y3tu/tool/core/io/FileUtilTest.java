@@ -30,7 +30,7 @@ public class FileUtilTest {
 
     @Test
     public void size() throws IOException {
-       FileUtil.createTempFile("y3tu",".txt",FileUtil.file("classpath:test"),true);
+        FileUtil.createTempFile("y3tu", ".txt", FileUtil.file("classpath:test"), true);
     }
 
     @Test

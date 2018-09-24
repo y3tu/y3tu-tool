@@ -21,13 +21,13 @@ public class PropsTest {
     }
 
     @Test
-    public void load1(){
+    public void load1() {
         Props props = new Props("/Users/yxy/work/test.properties");
         props.autoLoad(true);
         String user = props.getProperty("user");
         Assert.assertEquals(user, "root1");
         props.store("/Users/yxy/work/test.properties");
-        while (true){
+        while (true) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

@@ -18,7 +18,7 @@ import java.nio.file.AccessDeniedException;
 @Configuration
 @RestControllerAdvice
 @Slf4j
-@ConditionalOnProperty(value = "y3tu-tool.exceptionHandler.enable",havingValue = "true",matchIfMissing = false)
+@ConditionalOnProperty(value = "y3tu-tool.exceptionHandler.enable", havingValue = "true", matchIfMissing = false)
 public class RExceptionHandler {
 
     /**
@@ -41,6 +41,7 @@ public class RExceptionHandler {
         log.error(e.getMessage(), e);
         return R.warn(e.getMessage());
     }
+
     @ExceptionHandler(Exception.class)
     public R handleException(Exception e) {
         log.error(e.getMessage(), e);
