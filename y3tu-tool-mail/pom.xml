@@ -8,13 +8,12 @@
     <parent>
         <artifactId>y3tu-tool</artifactId>
         <groupId>com.y3tu</groupId>
-        <version>${y3tu-tool-version}</version>
+        <version>1.4</version>
     </parent>
 
 
     <groupId>com.y3tu</groupId>
     <artifactId>y3tu-tool-mail</artifactId>
-    <version>${project.parent.version}</version>
     <name>${project.artifactId}</name>
     <url>邮件工具</url>
 

@@ -8,13 +8,12 @@
     <parent>
         <artifactId>y3tu-tool</artifactId>
         <groupId>com.y3tu</groupId>
-        <version>${y3tu-tool-version}</version>
+        <version>1.4</version>
     </parent>
 
     <groupId>com.y3tu</groupId>
     <artifactId>y3tu-tool-poi</artifactId>
     <description>对excel,word的操作</description>
-    <version>${project.parent.version}</version>
 
     <properties>
         <!-- versions -->

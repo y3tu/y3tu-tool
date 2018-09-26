@@ -7,11 +7,10 @@
     <parent>
         <groupId>com.y3tu</groupId>
         <artifactId>y3tu-tool</artifactId>
-        <version>${y3tu-tool-version}</version>
+        <version>1.4</version>
     </parent>
     <groupId>com.y3tu</groupId>
     <artifactId>y3tu-tool-web</artifactId>
-    <version>${project.parent.version}</version>
 
     <name>${project.artifactId}</name>
     <description>web相关工具类</description>
