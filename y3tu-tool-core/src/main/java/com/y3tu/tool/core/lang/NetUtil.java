@@ -317,6 +317,37 @@ public class NetUtil {
     }
 
     /**
+     * 获得外网IP
+     * @return 外网IP
+     */
+    public static String getInternetIp(){
+        try{
+            Enumeration<NetworkInterface> networks = NetworkInterface.getNetworkInterfaces();
+            InetAddress ip = null;
+            Enumeration<InetAddress> addrs;
+            while (networks.hasMoreElements())
+            {
+                addrs = networks.nextElement().getInetAddresses();
+                while (addrs.hasMoreElements())
+                {
+                    ip = addrs.nextElement();
+                    if (ip != null
+                            && ip instanceof Inet4Address
+                            && ip.isSiteLocalAddress()
+                            && !ip.getHostAddress().equals(getLocalhostStr()))
+                    {
+                        return ip.getHostAddress();
+                    }
+                }
+            }
+
+            // 如果没有外网IP，就返回内网IP
+            return getLocalhostStr();
+        } catch(Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+    /**
      * 获得本机MAC地址
      *
      * @return 本机MAC地址
