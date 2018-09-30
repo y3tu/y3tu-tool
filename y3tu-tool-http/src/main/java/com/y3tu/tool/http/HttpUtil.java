@@ -1,5 +1,6 @@
 package com.y3tu.tool.http;
 
+import com.y3tu.tool.core.collection.IterUtil;
 import com.y3tu.tool.core.collection.ListUtil;
 import com.y3tu.tool.core.map.MapUtil;
 import com.y3tu.tool.core.text.CharsetUtil;
@@ -512,5 +513,77 @@ public class HttpUtil {
             params.put(name, values);
         }
         values.add(value);
+    }
+
+    /**
+     * 将Map形式的Form表单数据转换为Url参数形式，不做编码
+     *
+     * @param paramMap 表单数据
+     * @return url参数
+     */
+    public static String toParams(Map<String, ?> paramMap) {
+        return toParams(paramMap, CharsetUtil.CHARSET_UTF_8);
+    }
+
+    /**
+     * 将Map形式的Form表单数据转换为Url参数形式<br>
+     * 编码键和值对
+     *
+     * @param paramMap 表单数据
+     * @param charsetName 编码
+     * @return url参数
+     */
+    public static String toParams(Map<String, Object> paramMap, String charsetName) {
+        return toParams(paramMap, CharsetUtil.charset(charsetName));
+    }
+
+    /**
+     * 将Map形式的Form表单数据转换为Url参数形式<br>
+     * paramMap中如果key为空（null和""）会被忽略，如果value为null，会被做为空白符（""）<br>
+     * 会自动url编码键和值
+     *
+     * <pre>
+     * key1=v1&amp;key2=&amp;key3=v3
+     * </pre>
+     *
+     * @param paramMap 表单数据
+     * @param charset 编码
+     * @return url参数
+     */
+    public static String toParams(Map<String, ?> paramMap, Charset charset) {
+        if (MapUtil.isEmpty(paramMap)) {
+            return StringUtils.EMPTY;
+        }
+        if (null == charset) {// 默认编码为系统编码
+            charset = CharsetUtil.CHARSET_UTF_8;
+        }
+
+        final StringBuilder sb = new StringBuilder();
+        boolean isFirst = true;
+        String key;
+        Object value;
+        String valueStr;
+        for (Map.Entry<String, ?> item : paramMap.entrySet()) {
+            if (isFirst) {
+                isFirst = false;
+            } else {
+                sb.append("&");
+            }
+            key = item.getKey();
+            value = item.getValue();
+            if (value instanceof Iterable) {
+                value = IterUtil.join((Iterable<?>) value, ",");
+            } else if (value instanceof Iterator) {
+                value = IterUtil.join((Iterator<?>) value, ",");
+            }
+            valueStr = String.valueOf(value);
+            if (StringUtils.isNotEmpty(key)) {
+                sb.append(encode(key, charset)).append("=");
+                if (StringUtils.isNotEmpty(valueStr)) {
+                    sb.append(encode(valueStr, charset));
+                }
+            }
+        }
+        return sb.toString();
     }
 }
