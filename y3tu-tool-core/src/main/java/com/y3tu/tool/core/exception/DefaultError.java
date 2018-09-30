@@ -1,7 +1,6 @@
 package com.y3tu.tool.core.exception;
 
 
-
 /**
  * 说明：默认异常
  *
@@ -77,7 +76,16 @@ public enum DefaultError implements IError {
      * 演示环境 没有权限访问
      */
     SHOW_AUTH_CONTROL("0016", "演示环境,没有权限访问"),
-    ;
+    /**
+     * 系统繁忙,请稍候再试
+     */
+    SYSTEM_BUSY("0017", "系统繁忙,请稍候再试"),
+
+    SYSTEM_NO_PERMISSION("0018", "无权限"),
+    GATEWAY_ERROR("0019", "网关异常"),
+    GATEWAY_CONNECT_TIME_OUT("0020", "网关超时"),
+    UPLOAD_FILE_SIZE_LIMIT("0021", "上传文件大小超过限制");
+
 
     String errorCode;
     String errorMessage;
