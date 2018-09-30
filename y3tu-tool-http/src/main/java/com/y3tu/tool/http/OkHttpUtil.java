@@ -132,7 +132,8 @@ public class OkHttpUtil {
                 .readTimeout(readTimeout, TimeUnit.SECONDS)
                 .build();
         requestBuilder = new Request.Builder();
-        if (file != null || fileList != null || fileMap != null) {//先判断是否有文件，
+        //先判断是否有文件
+        if (file != null || fileList != null || fileMap != null) {
             setFile();
         } else {
             //设置参数
@@ -149,6 +150,8 @@ public class OkHttpUtil {
                 case HttpUtil.METHOD_DELETE:
                     requestBuilder.delete(getRequestBody());
                     break;
+                default:
+                    setGetParams();
             }
         }
         requestBuilder.url(url);
@@ -333,9 +336,13 @@ public class OkHttpUtil {
      * 自定义RequestBody类，得到文件上传的进度
      */
     private static class ProgressRequestBody extends RequestBody {
-        //实际的待包装请求体
+        /**
+         * //实际的待包装请求体
+         */
         private final RequestBody requestBody;
-        //包装完成的BufferedSink
+        /**
+         * 包装完成的BufferedSink
+         */
         private BufferedSink bufferedSink;
         private CallBack callBack;
 

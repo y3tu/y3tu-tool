@@ -1,11 +1,18 @@
 package com.y3tu.tool.http;
 
+import com.y3tu.tool.core.collection.ListUtil;
+import com.y3tu.tool.core.map.MapUtil;
+import com.y3tu.tool.core.text.CharsetUtil;
+import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.http.callback.CallBack;
 import okhttp3.Response;
 
 import java.io.File;
-import java.util.List;
-import java.util.Map;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.util.*;
 
 /**
  * Http请求工具
@@ -335,4 +342,175 @@ public class HttpUtil {
         get(url, paramsMap, callBack);
     }
 
+    /**
+     * 编码字符为 application/x-www-form-urlencoded，使用UTF-8编码
+     *
+     * @param content 被编码内容
+     * @return 编码后的字符
+     */
+    public static String encodeUtf8(String content) {
+        return encode(content, CharsetUtil.UTF_8);
+    }
+
+    /**
+     * 编码字符为 application/x-www-form-urlencoded
+     *
+     * @param content 被编码内容
+     * @param charset 编码
+     * @return 编码后的字符
+     */
+    public static String encode(String content, Charset charset) {
+        if (null == charset) {
+            charset = CharsetUtil.defaultCharset();
+        }
+        return encode(content, charset.name());
+    }
+
+    /**
+     * 编码字符为 application/x-www-form-urlencoded
+     *
+     * @param content 被编码内容
+     * @param charsetStr 编码
+     * @return 编码后的字符
+     * @throws HttpException 编码不支持
+     */
+    public static String encode(String content, String charsetStr) throws HttpException {
+        if (StringUtils.isBlank(content)) {
+            return content;
+        }
+
+        String encodeContent = null;
+        try {
+            encodeContent = URLEncoder.encode(content, charsetStr);
+        } catch (UnsupportedEncodingException e) {
+            throw new HttpException(StringUtils.format("Unsupported encoding: [{}]", charsetStr), e);
+        }
+        return encodeContent;
+    }
+
+    /**
+     * 解码application/x-www-form-urlencoded字符
+     *
+     * @param content 被解码内容
+     * @param charset 编码
+     * @return 编码后的字符
+     */
+    public static String decode(String content, Charset charset) {
+        return decode(content, charset.name());
+    }
+
+    /**
+     * 解码application/x-www-form-urlencoded字符
+     *
+     * @param content 被解码内容
+     * @param charsetStr 编码
+     * @return 编码后的字符
+     */
+    public static String decode(String content, String charsetStr) {
+        if (StringUtils.isBlank(content)) {
+            return content;
+        }
+        String encodeContnt = null;
+        try {
+            encodeContnt = URLDecoder.decode(content, charsetStr);
+        } catch (UnsupportedEncodingException e) {
+            throw new HttpException(StringUtils.format("Unsupported encoding: [{}]", charsetStr), e);
+        }
+        return encodeContnt;
+    }
+
+    /**
+     * 将URL参数解析为Map（也可以解析Post中的键值对参数）
+     *
+     * @param paramsStr 参数字符串（或者带参数的Path）
+     * @param charset   字符集
+     * @return 参数Map
+     */
+    public static HashMap<String, String> decodeParamMap(String paramsStr, String charset) {
+        final Map<String, List<String>> paramsMap = decodeParams(paramsStr, charset);
+        final HashMap<String, String> result = MapUtil.newHashMap(paramsMap.size());
+        List<String> valueList;
+        for (Map.Entry<String, List<String>> entry : paramsMap.entrySet()) {
+            valueList = entry.getValue();
+            result.put(entry.getKey(), ListUtil.isEmpty(valueList) ? null : valueList.get(0));
+        }
+        return result;
+    }
+
+    /**
+     * 将URL参数解析为Map（也可以解析Post中的键值对参数）
+     *
+     * @param paramsStr 参数字符串（或者带参数的Path）
+     * @param charset   字符集
+     * @return 参数Map
+     */
+    public static Map<String, List<String>> decodeParams(String paramsStr, String charset) {
+        if (StringUtils.isBlank(paramsStr)) {
+            return Collections.emptyMap();
+        }
+
+        // 去掉Path部分
+        int pathEndPos = paramsStr.indexOf('?');
+        if (pathEndPos > -1) {
+            paramsStr = StringUtils.subSuf(paramsStr, pathEndPos + 1);
+        }
+
+        final Map<String, List<String>> params = new LinkedHashMap<String, List<String>>();
+        final int len = paramsStr.length();
+        String name = null;
+        int pos = 0; // 未处理字符开始位置
+        int i; // 未处理字符结束位置
+        char c; // 当前字符
+        for (i = 0; i < len; i++) {
+            c = paramsStr.charAt(i);
+            if (c == '=') { // 键值对的分界点
+                if (null == name) {
+                    // name可以是""
+                    name = paramsStr.substring(pos, i);
+                }
+                pos = i + 1;
+            } else if (c == '&') { // 参数对的分界点
+                if (null == name && pos != i) {
+                    // 对于像&a&这类无参数值的字符串，我们将name为a的值设为""
+                    addParam(params, paramsStr.substring(pos, i), StringUtils.EMPTY, charset);
+                } else if (name != null) {
+                    addParam(params, name, paramsStr.substring(pos, i), charset);
+                    name = null;
+                }
+                pos = i + 1;
+            }
+        }
+
+        // 处理结尾
+        if (pos != i) {
+            if (name == null) {
+                addParam(params, paramsStr.substring(pos, i), StringUtils.EMPTY, charset);
+            } else {
+                addParam(params, name, paramsStr.substring(pos, i), charset);
+            }
+        } else if (name != null) {
+            addParam(params, name, StringUtils.EMPTY, charset);
+        }
+
+        return params;
+    }
+
+    /**
+     * 将键值对加入到值为List类型的Map中
+     *
+     * @param params 参数
+     * @param name key
+     * @param value value
+     * @param charset 编码
+     */
+    private static void addParam(Map<String, List<String>> params, String name, String value, String charset) {
+        name = decode(name, charset);
+        value = decode(value, charset);
+        List<String> values = params.get(name);
+        if (values == null) {
+            values = new ArrayList<String>(1); // 一般是一个参数
+            params.put(name, values);
+        }
+        values.add(value);
+    }
 }
