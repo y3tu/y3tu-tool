@@ -2,7 +2,6 @@ package com.y3tu.tool.web.limit;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -19,7 +18,6 @@ import java.util.UUID;
  */
 @Component
 @Slf4j
-@ConditionalOnProperty(name = "y3tu-tool.rateLimit.enable", havingValue = "true", matchIfMissing = false)
 public class RedisRaterLimiter {
 
     @Autowired

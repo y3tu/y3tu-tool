@@ -84,7 +84,9 @@ public enum DefaultError implements IError {
     SYSTEM_NO_PERMISSION("0018", "无权限"),
     GATEWAY_ERROR("0019", "网关异常"),
     GATEWAY_CONNECT_TIME_OUT("0020", "网关超时"),
-    UPLOAD_FILE_SIZE_LIMIT("0021", "上传文件大小超过限制");
+    UPLOAD_FILE_SIZE_LIMIT("0021", "上传文件大小超过限制"),
+
+    UTIL_EXCEPTION("0022","工具异常");
 
 
     String errorCode;

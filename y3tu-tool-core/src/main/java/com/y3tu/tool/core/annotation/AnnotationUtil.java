@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.y3tu.tool.core.collection.ArrayUtil;
+import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.lang.Filter;
 import com.y3tu.tool.core.reflect.ReflectionUtil;
 
@@ -68,9 +69,9 @@ public class AnnotationUtil {
      * @param annotationEle  {@link AccessibleObject}，可以是Class、Method、Field、Constructor、ReflectPermission
      * @param annotationType 注解类型
      * @return 注解对象
-     * @throws AnnotationException 调用注解中的方法时执行异常
+     * @throws UtilException 调用注解中的方法时执行异常
      */
-    public static <T> T getAnnotationValue(AnnotatedElement annotationEle, Class<? extends Annotation> annotationType) throws AnnotationException {
+    public static <T> T getAnnotationValue(AnnotatedElement annotationEle, Class<? extends Annotation> annotationType) throws UtilException {
         return getAnnotationValue(annotationEle, annotationType, "value");
     }
 
@@ -83,9 +84,9 @@ public class AnnotationUtil {
      * @param annotationType 注解类型
      * @param propertyName   属性名，例如注解中定义了name()方法，则 此处传入name
      * @return 注解对象
-     * @throws AnnotationException 调用注解中的方法时执行异常
+     * @throws UtilException 调用注解中的方法时执行异常
      */
-    public static <T> T getAnnotationValue(AnnotatedElement annotationEle, Class<? extends Annotation> annotationType, String propertyName) throws AnnotationException {
+    public static <T> T getAnnotationValue(AnnotatedElement annotationEle, Class<? extends Annotation> annotationType, String propertyName) throws UtilException {
         final Annotation annotation = getAnnotation(annotationEle, annotationType);
         if (null == annotation) {
             return null;
@@ -105,9 +106,9 @@ public class AnnotationUtil {
      * @param annotationEle  {@link AnnotatedElement}，可以是Class、Method、Field、Constructor、ReflectPermission
      * @param annotationType 注解类型
      * @return 注解对象
-     * @throws AnnotationException 调用注解中的方法时执行异常
+     * @throws UtilException 调用注解中的方法时执行异常
      */
-    public static Map<String, Object> getAnnotationValueMap(AnnotatedElement annotationEle, Class<? extends Annotation> annotationType) throws AnnotationException {
+    public static Map<String, Object> getAnnotationValueMap(AnnotatedElement annotationEle, Class<? extends Annotation> annotationType) throws UtilException {
         final Annotation annotation = getAnnotation(annotationEle, annotationType);
         if (null == annotation) {
             return null;

@@ -1,79 +1,115 @@
 package com.y3tu.tool.web.base.pojo;
 
-import java.util.HashMap;
+import com.y3tu.tool.core.exception.IError;
+import lombok.Data;
+
+import java.io.Serializable;
 
 /**
+ * 统一返回
+ *
  * @author y3tu
  * @date 2018/1/10
  */
-public class R extends HashMap<String, Object> {
+@Data
+public class R implements Serializable {
 
-    /**
-     * 成功
-     */
-    private static final Integer SUCCESS = 200;
-    /**
-     * 警告
-     */
-    private static final Integer WARN = 1;
-    /**
-     * 异常 失败
-     */
-    private static final Integer FAIL = 500;
+    private static final long serialVersionUID = -5359531292427290394L;
+    private String errorCode;
+    private String errorMessage;
+    private String message;
+    private Object result;
+    private R.Status status;
 
     public R() {
-        put("code", SUCCESS);
-        put("msg", "操作成功!");
     }
 
-
-    /********************************************静态方法************************************************************/
+    public R(IError error) {
+        this.errorCode = error.getErrorCode();
+        this.errorMessage = error.getErrorMessage();
+        this.status = Status.ERROR;
+    }
 
     public static R ok() {
         R r = new R();
-        return r.put("code", SUCCESS);
+        r.setStatus(Status.OK);
+        return r;
     }
 
-
-    public static R ok(String msg) {
+    public static R ok(Object result) {
         R r = new R();
-        return r.put("code", SUCCESS).put("msg", msg);
+        r.setStatus(Status.OK);
+        r.setResult(result);
+        return r;
     }
 
-    public static R ok(Object data) {
+    public static R ok(String msg, Object result) {
         R r = new R();
-        return r.put("code", SUCCESS).put("data", data);
+        r.setStatus(Status.OK);
+        r.setResult(result);
+        r.setMessage(msg);
+        return r;
     }
 
-    public static R ok(String msg, Object data) {
+    public static R warn() {
         R r = new R();
-        return r.put("code", SUCCESS).put("msg", msg).put("data", data);
+        r.setStatus(Status.WARN);
+        return r;
     }
 
-    public static R warn(String msg) {
+    public static R warn(Object result) {
         R r = new R();
-        return r.put("code", WARN).put("msg", msg);
+        r.setStatus(Status.WARN);
+        r.setResult(result);
+        return r;
     }
 
-    public static R error(String msg) {
+    public static R warn(String msg, Object result) {
         R r = new R();
-        return r.put("code", FAIL).put("msg", msg);
-    }
-
-    public static R error(String code, String msg) {
-        R r = new R();
-        return r.put("code", code).put("msg", msg);
+        r.setStatus(Status.WARN);
+        r.setResult(result);
+        r.setMessage(msg);
+        return r;
     }
 
     public static R error() {
         R r = new R();
-        return r.put("code", FAIL).put("msg", "服务器内部异常，请联系管理员!");
+        r.setStatus(Status.ERROR);
+        return r;
     }
 
-    @Override
-    public R put(String key, Object value) {
-        super.put(key, value);
-        return this;
+    public static R error(Object result) {
+        R r = new R();
+        r.setStatus(Status.ERROR);
+        r.setResult(result);
+        return r;
     }
 
+    public static R error(String msg, Object result) {
+        R r = new R();
+        r.setStatus(Status.ERROR);
+        r.setResult(result);
+        r.setMessage(msg);
+        return r;
+    }
+
+    public static R error(IError error) {
+        R r = new R();
+        r.errorCode = error.getErrorCode();
+        r.errorMessage = error.getErrorMessage();
+        r.status = Status.ERROR;
+        return r;
+    }
+
+    public static enum Status {
+        /**
+         * 状态
+         */
+        OK,
+        WARN,
+        ERROR;
+
+        Status() {
+        }
+    }
 }

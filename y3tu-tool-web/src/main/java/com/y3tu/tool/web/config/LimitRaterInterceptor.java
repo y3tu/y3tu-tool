@@ -1,6 +1,5 @@
 package com.y3tu.tool.web.config;
 
-import com.y3tu.tool.core.lang.Console;
 import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.http.IpUtil;
 import com.y3tu.tool.web.annotation.RateLimiter;
@@ -8,9 +7,7 @@ import com.y3tu.tool.web.exception.RException;
 import com.y3tu.tool.web.limit.RedisRaterLimiter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -25,22 +22,29 @@ import java.lang.reflect.Method;
  * @author Exrickx
  */
 @Slf4j
-@Component
-@ConditionalOnProperty(name = "y3tu-tool.rateLimit.enable", havingValue = "true", matchIfMissing = false)
 public class LimitRaterInterceptor extends HandlerInterceptorAdapter {
+
+    @Bean
+    public LimitRaterInterceptor limitRaterInterceptor() {
+        return new LimitRaterInterceptor(true, 10, 10);
+    }
+
+    LimitRaterInterceptor(boolean rateLimitEnable, int limit, int timeout) {
+        this.rateLimitEnable = rateLimitEnable;
+        this.limit = limit;
+        this.timeout = timeout;
+    }
+
 
     /**
      * 限流标识
      */
     String LIMIT_ALL = "LIMIT_ALL";
 
-    @Value("${y3tu-tool.rateLimit.enable}")
     private boolean rateLimitEnable;
 
-    @Value("${y3tu-tool.rateLimit.limit}")
     private Integer limit;
 
-    @Value("${y3tu-tool.rateLimit.timeout}")
     private Integer timeout;
 
     @Autowired

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.y3tu.tool.core.exception.DependencyException;
+import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.exception.ExceptionUtil;
 import com.y3tu.tool.core.io.IOUtil;
 import com.y3tu.tool.core.text.StringUtils;
@@ -130,7 +130,7 @@ public class Excel07SaxReader extends AbstractExcelSaxReader<Excel07SaxReader> i
     public Excel07SaxReader read(InputStream in, int sheetIndex) throws POIException {
         try {
             return read(OPCPackage.open(in), sheetIndex);
-        } catch (DependencyException e) {
+        } catch (UtilException e) {
             throw e;
         } catch (Exception e) {
             throw ExceptionUtil.wrap(e, POIException.class);
@@ -172,7 +172,7 @@ public class Excel07SaxReader extends AbstractExcelSaxReader<Excel07SaxReader> i
                     parse(sheetInputStream);
                 }
             }
-        } catch (DependencyException e) {
+        } catch (UtilException e) {
             throw e;
         } catch (Exception e) {
             throw ExceptionUtil.wrap(e, POIException.class);
@@ -379,7 +379,7 @@ public class Excel07SaxReader extends AbstractExcelSaxReader<Excel07SaxReader> i
             xmlReader = XMLReaderFactory.createXMLReader(CLASS_SAXPARSER);
         } catch (SAXException e) {
             if (e.getMessage().contains("org.apache.xerces.parsers.SAXParser")) {
-                throw new DependencyException(e, "You need to add 'xerces:xercesImpl' to your project and version >= 2.11.0");
+                throw new UtilException(e, "You need to add 'xerces:xercesImpl' to your project and version >= 2.11.0");
             } else {
                 throw e;
             }

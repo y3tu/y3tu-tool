@@ -1,6 +1,5 @@
 package com.y3tu.tool.core.exception;
 
-import com.y3tu.tool.core.text.StringUtils;
 
 /**
  * 校验异常
@@ -8,27 +7,52 @@ import com.y3tu.tool.core.text.StringUtils;
  * @author y3tu
  * @date 2018/6/26
  */
-public class ValidatorException extends StatefulException {
+public class ValidatorException extends BaseException {
     public ValidatorException() {
-    }
-
-    public ValidatorException(String messageTemplate, Object... params) {
-        super(StringUtils.format(messageTemplate, params));
+        super();
     }
 
     public ValidatorException(String message) {
         super(message);
     }
 
-    public ValidatorException(Throwable cause) {
-        super(cause);
+    public ValidatorException(Throwable e) {
+        super(e);
     }
 
     public ValidatorException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public ValidatorException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+    public ValidatorException(String messageTemplate, Object... params) {
+        super(messageTemplate, params);
+    }
+
+    public ValidatorException(Throwable throwable, String messageTemplate, Object... params) {
+        super(throwable, messageTemplate, params);
+    }
+
+    public ValidatorException(IError error) {
+        super();
+        this.errorMessage = null;
+        this.error = error;
+    }
+
+    public ValidatorException(String message, IError error) {
+        this(message);
+        this.errorMessage = message;
+        this.error = error;
+    }
+
+    public ValidatorException(String message, Throwable cause, IError error) {
+        this(message, cause);
+        this.errorMessage = message;
+        this.error = error;
+    }
+
+    public ValidatorException(Throwable cause, IError error) {
+        this(cause);
+        this.errorMessage = null;
+        this.error = error;
     }
 }
