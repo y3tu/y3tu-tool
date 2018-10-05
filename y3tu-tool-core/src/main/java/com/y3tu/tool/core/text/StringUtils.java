@@ -613,7 +613,9 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
     /**
      * 将下划线方式命名的字符串转换为驼峰式。如果转换前的下划线大写方式命名的字符串为空，则返回空字符串。<br>
-     * 例如：hello_world=》helloWorld
+     * 例如：
+     * hello_world=》helloWorld
+     * hello-world=》helloWorld
      *
      * @param name 转换前的下划线大写方式命名的字符串
      * @return 转换后的驼峰式命名的字符串
@@ -624,13 +626,13 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         }
 
         String name2 = name.toString();
-        if (name2.contains(UNDERLINE)) {
+        if (name2.contains(UNDERLINE)||name2.contains(DASHED)) {
             final StringBuilder sb = new StringBuilder(name2.length());
             boolean upperCase = false;
             for (int i = 0; i < name2.length(); i++) {
                 char c = name2.charAt(i);
 
-                if (c == CharUtil.UNDERLINE) {
+                if (c == CharUtil.UNDERLINE||c==CharUtil.DASHED) {
                     upperCase = true;
                 } else if (upperCase) {
                     sb.append(Character.toUpperCase(c));
