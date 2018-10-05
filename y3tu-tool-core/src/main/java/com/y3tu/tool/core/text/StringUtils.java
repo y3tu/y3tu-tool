@@ -2,6 +2,7 @@ package com.y3tu.tool.core.text;
 
 
 import com.y3tu.tool.core.annotation.Nullable;
+import com.y3tu.tool.core.collection.ArrayUtil;
 import com.y3tu.tool.core.exception.UtilException;
 
 import java.io.UnsupportedEncodingException;
@@ -778,5 +779,128 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * 指定字符是否在字符串中出现过
+     *
+     * @param str        字符串
+     * @param searchChar 被查找的字符
+     * @return 是否包含
+     */
+    public static boolean contains(CharSequence str, char searchChar) {
+        return indexOf(str, searchChar) > -1;
+    }
+
+    /**
+     * 查找指定字符串是否包含指定字符串列表中的任意一个字符串
+     *
+     * @param str      指定字符串
+     * @param testStrs 需要检查的字符串数组
+     * @return 是否包含任意一个字符串
+     */
+    public static boolean containsAny(CharSequence str, CharSequence... testStrs) {
+        return null != getContainsStr(str, testStrs);
+    }
+
+    /**
+     * 查找指定字符串是否包含指定字符列表中的任意一个字符
+     *
+     * @param str       指定字符串
+     * @param testChars 需要检查的字符数组
+     * @return 是否包含任意一个字符
+     */
+    public static boolean containsAny(CharSequence str, char... testChars) {
+        return org.apache.commons.lang3.StringUtils.containsAny(str, testChars);
+    }
+
+    /**
+     * 给定字符串是否包含空白符（空白符包括空格、制表符、全角空格和不间断空格）<br>
+     * 如果给定字符串为null或者""，则返回false
+     *
+     * @param str 字符串
+     * @return 是否包含空白符
+     */
+    public static boolean containsBlank(CharSequence str) {
+        if (null == str) {
+            return false;
+        }
+        final int length = str.length();
+        if (0 == length) {
+            return false;
+        }
+
+        for (int i = 0; i < length; i += 1) {
+            if (CharUtil.isBlankChar(str.charAt(i))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 查找指定字符串是否包含指定字符串列表中的任意一个字符串，如果包含返回找到的第一个字符串
+     *
+     * @param str      指定字符串
+     * @param testStrs 需要检查的字符串数组
+     * @return 被包含的第一个字符串
+     */
+    public static String getContainsStr(CharSequence str, CharSequence... testStrs) {
+        if (isEmpty(str) || ArrayUtil.isEmpty(testStrs)) {
+            return null;
+        }
+        for (CharSequence checkStr : testStrs) {
+            if (str.toString().contains(checkStr)) {
+                return checkStr.toString();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 是否包含特定字符，忽略大小写，如果给定两个参数都为<code>null</code>，返回true
+     *
+     * @param str     被检测字符串
+     * @param testStr 被测试是否包含的字符串
+     * @return 是否包含
+     */
+    public static boolean containsIgnoreCase(CharSequence str, CharSequence testStr) {
+        if (null == str) {
+            // 如果被监测字符串和
+            return null == testStr;
+        }
+        return str.toString().toLowerCase().contains(testStr.toString().toLowerCase());
+    }
+
+    /**
+     * 查找指定字符串是否包含指定字符串列表中的任意一个字符串<br>
+     * 忽略大小写
+     *
+     * @param str      指定字符串
+     * @param testStrs 需要检查的字符串数组
+     * @return 是否包含任意一个字符串
+     */
+    public static boolean containsAnyIgnoreCase(CharSequence str, CharSequence... testStrs) {
+        return null != getContainsStrIgnoreCase(str, testStrs);
+    }
+
+    /**
+     * 查找指定字符串是否包含指定字符串列表中的任意一个字符串，如果包含返回找到的第一个字符串<br>
+     * 忽略大小写
+     *
+     * @param str      指定字符串
+     * @param testStrs 需要检查的字符串数组
+     * @return 被包含的第一个字符串
+     */
+    public static String getContainsStrIgnoreCase(CharSequence str, CharSequence... testStrs) {
+        if (isEmpty(str) || ArrayUtil.isEmpty(testStrs)) {
+            return null;
+        }
+        for (CharSequence testStr : testStrs) {
+            if (containsIgnoreCase(str, testStr)) {
+                return testStr.toString();
+            }
+        }
+        return null;
     }
 }

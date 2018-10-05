@@ -1,8 +1,8 @@
 package com.y3tu.tool.web.xss;
 
 
+import com.y3tu.tool.core.exception.BusinessException;
 import com.y3tu.tool.core.text.StringUtils;
-import com.y3tu.tool.web.exception.RException;
 
 /**
  * @author y3tu
@@ -32,7 +32,7 @@ public class SqlFilter {
         //判断是否包含非法字符
         for (String keyword : keywords) {
             if (str.indexOf(keyword) != -1) {
-                throw new RException("包含非法字符");
+                throw new BusinessException("包含非法字符");
             }
         }
 

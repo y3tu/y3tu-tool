@@ -1,7 +1,7 @@
 package com.y3tu.tool.web.aspect;
 
 
-import com.y3tu.tool.web.exception.RException;
+import com.y3tu.tool.core.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -28,7 +28,7 @@ public class RedisAspect {
     @Value("${y3tu-tool.redis.open: false}")
     private boolean open;
 
-    @Around("execution(* com.y3tu.tool.web.util.RedisUtils.*(..))")
+    @Around("execution(* com.y3tu.tool.web.redis.RedisUtils.*(..))")
     public Object around(ProceedingJoinPoint point) throws Throwable {
         Object result = null;
         if (open) {
@@ -36,7 +36,7 @@ public class RedisAspect {
                 result = point.proceed();
             } catch (Exception e) {
                 log.error("redis error", e);
-                throw new RException("Redis服务异常");
+                throw new BusinessException("Redis服务异常");
             }
         }
         return result;

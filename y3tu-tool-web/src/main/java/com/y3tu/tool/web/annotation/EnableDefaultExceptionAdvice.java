@@ -2,7 +2,6 @@ package com.y3tu.tool.web.annotation;
 
 import com.y3tu.tool.web.exception.DefaultExceptionAdvice;
 import org.springframework.context.annotation.Import;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 
 import java.lang.annotation.*;
 
@@ -16,5 +15,5 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Documented
 @Import(DefaultExceptionAdvice.class)
-public @interface EnableDefaultExceptionAdivce {
+public @interface EnableDefaultExceptionAdvice {
 }

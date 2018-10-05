@@ -1,19 +1,17 @@
-package com.y3tu.tool.web.util;
+package com.y3tu.tool.web.redis;
 
-import com.alibaba.fastjson.JSONObject;
+import com.y3tu.tool.core.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.redis.core.*;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Redis工具
+ *
+ * @author y3tu
  */
-@Component
-@ConditionalOnProperty(name = "y3tu-tool.redis.enable", havingValue = "true", matchIfMissing = false)
 public class RedisUtils {
     @Autowired
     private RedisTemplate redisTemplate;
@@ -45,7 +43,7 @@ public class RedisUtils {
     }
 
     public void set(String key, Object value, long expire, TimeUnit timeUnit) {
-        valueOperations.set(key, toJson(value));
+        valueOperations.set(key, JsonUtil.toJson(value));
         if (expire != NOT_EXPIRE) {
             redisTemplate.expire(key, expire, timeUnit);
         }
@@ -56,7 +54,7 @@ public class RedisUtils {
         if (expire != NOT_EXPIRE) {
             redisTemplate.expire(key, expire, TimeUnit.SECONDS);
         }
-        return value == null ? null : fromJson(value, clazz);
+        return value == null ? null : JsonUtil.fromJson(value, clazz);
     }
 
     public <T> T get(String key, Class<T> clazz) {
@@ -79,22 +77,5 @@ public class RedisUtils {
         redisTemplate.delete(key);
     }
 
-    /**
-     * Object转成JSON数据
-     */
-    private String toJson(Object object) {
-        if (object instanceof Integer || object instanceof Long || object instanceof Float ||
-                object instanceof Double || object instanceof Boolean || object instanceof String) {
-            return String.valueOf(object);
-        }
-        return JSONObject.toJSONString(object);
-    }
-
-    /**
-     * JSON数据，转成Object
-     */
-    private <T> T fromJson(String json, Class<T> clazz) {
-        return JSONObject.parseObject(json, clazz);
-    }
 
 }

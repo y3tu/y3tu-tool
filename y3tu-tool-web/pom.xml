@@ -9,7 +9,6 @@
         <artifactId>y3tu-tool</artifactId>
         <version>1.4</version>
     </parent>
-    <groupId>com.y3tu</groupId>
     <artifactId>y3tu-tool-web</artifactId>
 
     <name>${project.artifactId}</name>
@@ -22,7 +21,6 @@
         <jasypt-version>1.9.2</jasypt-version>
         <spring-boot-version>2.0.3.RELEASE</spring-boot-version>
         <mysql.version>5.1.38</mysql.version>
-        <redis-version>1.4.7.RELEASE</redis-version>
     </properties>
 
     <dependencies>
@@ -56,8 +54,8 @@
         <!--Redis-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-redis</artifactId>
-            <version>${redis-version}</version>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <version>${spring-boot-version}</version>
             <scope>provided</scope>
         </dependency>
 

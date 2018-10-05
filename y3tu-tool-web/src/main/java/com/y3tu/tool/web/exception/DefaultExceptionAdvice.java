@@ -1,6 +1,7 @@
 package com.y3tu.tool.web.exception;
 
 import com.y3tu.tool.core.exception.*;
+import com.y3tu.tool.web.annotation.EnableDefaultExceptionAdvice;
 import com.y3tu.tool.web.base.pojo.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -14,21 +15,42 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.sql.SQLException;
 
 /**
- * Desc <p>Controller统一异常advice</p>
+ * Controller统一异常advice
+ * 在Application启动类上使用@EnableDefaultExceptionAAdivce注解启用统一异常配置
  *
  * @author y3tu
+ * @see EnableDefaultExceptionAdvice
  */
 @ControllerAdvice
 @ResponseBody
 @Slf4j
 public class DefaultExceptionAdvice {
 
+    /**
+     * 处理sql异常
+     *
+     * @return ResponseEntity
+     */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({SQLException.class})
     public ResponseEntity handleSQLException(SQLException e) {
         log.error("服务运行SQLException异常", e);
         R response = R.error(DefaultError.SQL_EXCEPTION);
         response.setMessage(e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    /**
+     * 处理抛出的Throwable
+     *
+     * @return ResponseEntity
+     */
+    @ExceptionHandler(value = {Throwable.class})
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity handle(Throwable throwable) {
+        RuntimeException runtimeException = ExceptionUtil.wrapRuntime(throwable);
+        R response = R.error(DefaultError.SYSTEM_INTERNAL_ERROR);
+        response.setMessage(runtimeException.getMessage());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -60,15 +82,5 @@ public class DefaultExceptionAdvice {
         response.setMessage(message);
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-    @ExceptionHandler(value = {Throwable.class})
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity handle(Throwable throwable) {
-        RuntimeException runtimeException = ExceptionUtil.wrapRuntime(throwable);
-        R response = R.error(DefaultError.SYSTEM_INTERNAL_ERROR);
-        response.setMessage(runtimeException.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
 
 }
