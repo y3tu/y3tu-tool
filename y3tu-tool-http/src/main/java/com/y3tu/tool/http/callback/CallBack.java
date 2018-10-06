@@ -1,6 +1,5 @@
 package com.y3tu.tool.http.callback;
 
-import com.y3tu.tool.http.HttpException;
 import okhttp3.Call;
 import okhttp3.Response;
 
