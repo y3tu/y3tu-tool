@@ -9,7 +9,6 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
-    <groupId>com.y3tu</groupId>
     <artifactId>y3tu-tool-ssh</artifactId>
     <name>${project.artifactId}</name>
 

@@ -11,7 +11,7 @@ import java.lang.annotation.*;
  * 在启动类上添加该注解来启用代码生成器
  * <p>
  * 注意:
- * 代码生成器需要mybatis-plus支持，xml文件路径为classpath*:mapper/*.xml（如和项目路径不同需要添加此路径才能是代码生成器起效果）
+ * 代码生成器需要mybatis-plus支持，xml文件路径为classpath*:mapper/*.xml（如和项目路径不同需要添加此路径才能使代码生成器起效果）
  * 目前只支持mysql数据库
  * 访问：
  * /generator/page/ 获取数据源中表列表
