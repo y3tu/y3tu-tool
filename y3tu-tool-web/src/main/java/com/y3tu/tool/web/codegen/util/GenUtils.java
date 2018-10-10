@@ -43,17 +43,17 @@ public class GenUtils {
 
     private static List<String> getTemplates() {
         List<String> templates = new ArrayList<>();
-        templates.add("codegen-template/Entity.java.vm" );
-        templates.add("codegen-template/Mapper.java.vm" );
-        templates.add("codegen-template/Mapper.xml.vm" );
-        templates.add("codegen-template/Service.java.vm" );
-        templates.add("codegen-template/ServiceImpl.java.vm" );
-        templates.add("codegen-template/Controller.java.vm" );
-        templates.add("codegen-template/menu.sql.vm" );
+        templates.add("codegen-template/Entity.java.vm");
+        templates.add("codegen-template/Mapper.java.vm");
+        templates.add("codegen-template/Mapper.xml.vm");
+        templates.add("codegen-template/Service.java.vm");
+        templates.add("codegen-template/ServiceImpl.java.vm");
+        templates.add("codegen-template/Controller.java.vm");
+        templates.add("codegen-template/menu.sql.vm");
 
-        templates.add("codegen-template/index.vue.vm" );
-        templates.add("codegen-template/api.js.vm" );
-        templates.add("codegen-template/crud.js.vm" );
+        templates.add("codegen-template/index.vue.vm");
+        templates.add("codegen-template/api.js.vm");
+        templates.add("codegen-template/crud.js.vm");
         return templates;
     }
 
@@ -67,19 +67,19 @@ public class GenUtils {
         boolean hasBigDecimal = false;
         //表信息
         TableEntity tableEntity = new TableEntity();
-        tableEntity.setTableName(table.get("tableName" ));
+        tableEntity.setTableName(table.get("tableName"));
 
         if (StringUtils.isNotBlank(genConfig.getComments())) {
             tableEntity.setComments(genConfig.getComments());
         } else {
-            tableEntity.setComments(table.get("tableComment" ));
+            tableEntity.setComments(table.get("tableComment"));
         }
 
         String tablePrefix;
         if (StringUtils.isNotBlank(genConfig.getTablePrefix())) {
             tablePrefix = genConfig.getTablePrefix();
         } else {
-            tablePrefix = config.getProperty("tablePrefix" );
+            tablePrefix = config.getProperty("tablePrefix");
         }
 
         //表名转换成Java类名
@@ -91,10 +91,10 @@ public class GenUtils {
         List<ColumnEntity> columnList = new ArrayList<>();
         for (Map<String, String> column : columns) {
             ColumnEntity columnEntity = new ColumnEntity();
-            columnEntity.setColumnName(column.get("columnName" ));
-            columnEntity.setDataType(column.get("dataType" ));
-            columnEntity.setComments(column.get("columnComment" ));
-            columnEntity.setExtra(column.get("extra" ));
+            columnEntity.setColumnName(column.get("columnName"));
+            columnEntity.setDataType(column.get("dataType"));
+            columnEntity.setComments(column.get("columnComment"));
+            columnEntity.setExtra(column.get("extra"));
 
             //列名转换成Java属性名
             String attrName = columnToJava(columnEntity.getColumnName());
@@ -102,13 +102,13 @@ public class GenUtils {
             columnEntity.setLowerAttrName(StringUtils.uncapitalize(attrName));
 
             //列的数据类型，转换成Java类型
-            String attrType = config.getProperty(columnEntity.getDataType(), "unknowType" );
+            String attrType = config.getProperty(columnEntity.getDataType(), "unknowType");
             columnEntity.setAttrType(attrType);
             if (!hasBigDecimal && "BigDecimal".equals(attrType)) {
                 hasBigDecimal = true;
             }
             //是否主键
-            if ("PRI".equalsIgnoreCase(column.get("columnKey" )) && tableEntity.getPk() == null) {
+            if ("PRI".equalsIgnoreCase(column.get("columnKey")) && tableEntity.getPk() == null) {
                 tableEntity.setPk(columnEntity);
             }
 
@@ -123,7 +123,7 @@ public class GenUtils {
 
         //设置velocity资源加载器
         Properties prop = new Properties();
-        prop.put("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader" );
+        prop.put("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
         Velocity.init(prop);
         //封装模板数据
         Map<String, Object> map = new HashMap<>(16);
@@ -145,21 +145,21 @@ public class GenUtils {
         if (StringUtils.isNotBlank(genConfig.getAuthor())) {
             map.put("author", genConfig.getAuthor());
         } else {
-            map.put("author", config.getProperty("author" ));
+            map.put("author", config.getProperty("author"));
         }
 
         if (StringUtils.isNotBlank(genConfig.getModuleName())) {
             map.put("moduleName", genConfig.getModuleName());
         } else {
-            map.put("moduleName", config.getProperty("moduleName" ));
+            map.put("moduleName", config.getProperty("moduleName"));
         }
 
         if (StringUtils.isNotBlank(genConfig.getPackageName())) {
             map.put("package", genConfig.getPackageName());
             map.put("mainPath", genConfig.getPackageName());
         } else {
-            map.put("package", config.getProperty("package" ));
-            map.put("mainPath", config.getProperty("mainPath" ));
+            map.put("package", config.getProperty("package"));
+            map.put("mainPath", config.getProperty("mainPath"));
         }
         VelocityContext context = new VelocityContext(map);
 
@@ -175,7 +175,7 @@ public class GenUtils {
                 //添加到zip
                 zip.putNextEntry(new ZipEntry(Objects
                         .requireNonNull(getFileName(template, tableEntity.getCaseClassName()
-                                , map.get("package" ).toString(), map.get("moduleName" ).toString()))));
+                                , map.get("package").toString(), map.get("moduleName").toString()))));
                 IOUtil.write(zip, CharsetUtil.UTF_8, false, sw.toString());
                 IOUtil.close(sw);
                 zip.closeEntry();
@@ -198,7 +198,7 @@ public class GenUtils {
      */
     private static String tableToJava(String tableName, String tablePrefix) {
         if (StringUtils.isNotBlank(tablePrefix)) {
-            tableName = tableName.replace(tablePrefix, "" );
+            tableName = tableName.replace(tablePrefix, "");
         }
         return columnToJava(tableName);
     }
@@ -208,7 +208,7 @@ public class GenUtils {
      */
     private static Props getConfig() {
         try {
-            return new Props("config/codegen.properties" );
+            return new Props("config/codegen.properties");
         } catch (Exception e) {
             throw new UtilException("获取配置文件失败，", e);
         }
