@@ -1,8 +1,8 @@
 package com.y3tu.tool.core.lang;
 
+import com.y3tu.tool.core.date.DateUtil;
 import com.y3tu.tool.core.reflect.ClassLoaderUtil;
 import com.y3tu.tool.core.text.StringUtils;
-import com.y3tu.tool.core.time.DateUtil;
 import com.y3tu.tool.core.util.RandomUtil;
 
 import java.lang.management.ManagementFactory;

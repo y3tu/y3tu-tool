@@ -346,7 +346,7 @@ public class Validator {
      * @return 是否全部为字母组成，包括大写和小写字母和汉字
      */
     public static boolean isLetter(String value) {
-//		return StrUtil.isAllCharMatch(value, new cn.hutool.core.lang.Matcher<Character>() {
+//		return StringUtils.isAllCharMatch(value, new cn.hutool.core.lang.Matcher<Character>() {
 //			@Override
 //			public boolean match(Character t) {
 //				return Character.isLetter(t);
@@ -375,7 +375,7 @@ public class Validator {
      * @return 是否全部为大写字母
      */
     public static boolean isUpperCase(String value) {
-//		return StrUtil.isAllCharMatch(value, new cn.hutool.core.lang.Matcher<Character>() {
+//		return StringUtils.isAllCharMatch(value, new cn.hutool.core.lang.Matcher<Character>() {
 //			@Override
 //			public boolean match(Character t) {
 //				return Character.isUpperCase(t);
@@ -404,7 +404,7 @@ public class Validator {
      * @return 是否全部为小写字母
      */
     public static boolean isLowerCase(String value) {
-//		return StrUtil.isAllCharMatch(value, new cn.hutool.core.lang.Matcher<Character>() {
+//		return StringUtils.isAllCharMatch(value, new cn.hutool.core.lang.Matcher<Character>() {
 //			@Override
 //			public boolean match(Character t) {
 //				return Character.isLowerCase(t);

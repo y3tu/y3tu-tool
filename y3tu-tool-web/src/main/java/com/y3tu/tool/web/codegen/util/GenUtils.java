@@ -1,10 +1,10 @@
 package com.y3tu.tool.web.codegen.util;
 
+import com.y3tu.tool.core.date.DateUtil;
 import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.io.IOUtil;
 import com.y3tu.tool.core.text.CharsetUtil;
 import com.y3tu.tool.core.text.StringUtils;
-import com.y3tu.tool.core.time.DateUtil;
 import com.y3tu.tool.setting.Props;
 import com.y3tu.tool.web.codegen.entity.ColumnEntity;
 import com.y3tu.tool.web.codegen.entity.GenConfig;
@@ -134,7 +134,7 @@ public class GenUtils {
         map.put("pathName", tableEntity.getLowerClassName().toLowerCase());
         map.put("columns", tableEntity.getColumns());
         map.put("hasBigDecimal", hasBigDecimal);
-        map.put("datetime", DateUtil.getNowDate());
+        map.put("datetime", DateUtil.now());
 
         if (StringUtils.isNotBlank(genConfig.getComments())) {
             map.put("comments", genConfig.getComments());

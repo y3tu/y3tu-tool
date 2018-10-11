@@ -1,10 +1,10 @@
 package com.y3tu.tool.core.util;
 
+import com.y3tu.tool.core.date.DatePattern;
+import com.y3tu.tool.core.date.DateUtil;
 import com.y3tu.tool.core.lang.Assert;
 import com.y3tu.tool.core.lang.Validator;
 import com.y3tu.tool.core.text.StringUtils;
-import com.y3tu.tool.core.time.DateFormatUtil;
-import com.y3tu.tool.core.time.DateUtil;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -135,9 +135,9 @@ public class IdcardUtil {
         if (Validator.isNumber(idCard)) {
             // 获取出生年月日
             String birthday = idCard.substring(6, 12);
-            Date birthDate = DateFormatUtil.parseDate("yyMMdd", birthday);
+            Date birthDate = DateUtil.parse(birthday, "yyMMdd");
             // 获取出生年(完全表现形式,如：2010)
-            int sYear = Integer.valueOf(DateFormatUtil.formatDate("yyyy", birthDate));
+            int sYear = Integer.valueOf(DateUtil.format(birthDate, "yyyy"));
             if (sYear > 2000) {
                 // 2000年之后不存在15位身份证号，此处用于修复此问题的判断
                 sYear -= 100;
@@ -247,8 +247,8 @@ public class IdcardUtil {
             }
 
             // 生日
-            Date birthDate = DateFormatUtil.parseDate("yyMMdd", idCard.substring(6, 12));
-            if (false == Validator.isBirthday(DateUtil.getYear(birthDate), DateUtil.getMonth(birthDate), DateUtil.getDayOfMonth(birthDate))) {
+            Date birthDate = DateUtil.parse(idCard.substring(6, 12), "yyMMdd");
+            if (false == Validator.isBirthday(DateUtil.year(birthDate), DateUtil.month(birthDate), DateUtil.dayOfMonth(birthDate))) {
                 return false;
             }
         } else {
@@ -400,7 +400,7 @@ public class IdcardUtil {
      */
     public static Date getBirthDate(String idCard) {
         final String birthByIdCard = getBirthByIdCard(idCard);
-        return null == birthByIdCard ? null : DateFormatUtil.parseDate(DateFormatUtil.PATTERN_YYYY_MM_DD, birthByIdCard);
+        return null == birthByIdCard ? null : DateUtil.parse(birthByIdCard, DatePattern.NORM_DATE_PATTERN);
     }
 
     /**
@@ -410,7 +410,7 @@ public class IdcardUtil {
      * @return 年龄
      */
     public static int getAgeByIdCard(String idCard) {
-        return getAgeByIdCard(idCard, DateUtil.getNowDate());
+        return getAgeByIdCard(idCard, DateUtil.date());
     }
 
     /**
@@ -422,7 +422,7 @@ public class IdcardUtil {
      */
     public static int getAgeByIdCard(String idCard, Date dateToCompare) {
         String birth = getBirthByIdCard(idCard);
-        return DateUtil.age(DateFormatUtil.parseDate("yyyyMMdd", birth), dateToCompare);
+        return DateUtil.age(DateUtil.parse(birth, "yyyyMMdd"), dateToCompare);
     }
 
     /**

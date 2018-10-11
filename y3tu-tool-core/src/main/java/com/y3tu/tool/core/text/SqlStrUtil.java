@@ -1,14 +1,10 @@
 package com.y3tu.tool.core.text;
 
 /**
- * 常用sql语句封装类
- *
  * @author y3tu
- * @date 2018/7/5
+ * @date 2018/10/11
  */
 public class SqlStrUtil {
-
-
     /**
      * 把查询sql根据不同的数据库转换成分页查询语句
      * 目前支持oracle，mysql
@@ -75,5 +71,4 @@ public class SqlStrUtil {
             return type;
         }
     }
-
 }

@@ -1,20 +1,15 @@
 package com.y3tu.tool.poi.excel.cell;
 
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.y3tu.tool.core.date.DatePattern;
+import com.y3tu.tool.core.date.DateUtil;
 import com.y3tu.tool.core.text.StringUtils;
-import com.y3tu.tool.core.time.DateFormatUtil;
 import com.y3tu.tool.poi.excel.StyleSet;
 import com.y3tu.tool.poi.excel.editors.TrimEditor;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.FormulaError;
-import org.apache.poi.ss.usermodel.RichTextString;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
+
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.RegionUtil;
 
@@ -237,11 +232,7 @@ public class CellUtil {
         final short formatIndex = style.getDataFormat();
         // 判断是否为日期
         if (isDateType(cell, formatIndex)) {
-            try {
-                return DateFormatUtil.formatDateToDate(DateFormatUtil.PATTERN_YYYY_MM_DD_HH_MM_SS, cell.getDateCellValue());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            return DateUtil.format(cell.getDateCellValue(), DatePattern.NORM_DATETIME_PATTERN);
         }
 
         final String format = style.getDataFormatString();

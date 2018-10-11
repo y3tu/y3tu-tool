@@ -1,7 +1,8 @@
 package com.y3tu.tool.poi.excel.sax;
 
+import com.y3tu.tool.core.date.DatePattern;
+import com.y3tu.tool.core.date.DateUtil;
 import com.y3tu.tool.core.text.StringUtils;
-import com.y3tu.tool.core.time.DateFormatUtil;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.model.SharedStringsTable;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
@@ -126,7 +127,7 @@ public class ExcelSaxUtil {
      * @return 日期
      */
     private static Date getDateValue(String value) throws ParseException {
-        return DateFormatUtil.parseDate(value, DateFormatUtil.PATTERN_YYYY_MM_DD_HH_MM_SS);
+        return DateUtil.parse(value, DatePattern.NORM_DATETIME_PATTERN);
     }
 
     /**

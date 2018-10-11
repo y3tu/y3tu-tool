@@ -1,10 +1,10 @@
 package com.y3tu.tool.core.util;
 
+import com.y3tu.tool.core.date.DateUtil;
 import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.lang.UUID;
 import com.y3tu.tool.core.lang.WeightRandom;
 import com.y3tu.tool.core.math.NumberUtil;
-import com.y3tu.tool.core.time.DateUtil;
 
 import java.awt.Color;
 import java.math.BigDecimal;
@@ -453,6 +453,6 @@ public class RandomUtil {
      * @return 随机日期（随机天，其它时间不变）
      */
     public static Date randomDay(int min, int max) {
-        return DateUtil.addDays(DateUtil.getNowDate(), randomInt(min, max));
+        return DateUtil.offsetDay(DateUtil.date(), randomInt(min, max));
     }
 }

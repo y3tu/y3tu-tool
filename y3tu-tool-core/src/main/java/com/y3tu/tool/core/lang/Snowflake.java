@@ -1,7 +1,7 @@
 package com.y3tu.tool.core.lang;
 
 
-import com.y3tu.tool.core.time.ClockUtil;
+import com.y3tu.tool.core.date.SystemClock;
 
 /**
  * Twitter的Snowflake 算法<br>
@@ -57,7 +57,7 @@ public class Snowflake {
      *
      * @param workerId         终端ID
      * @param datacenterId     数据中心ID
-     * @param isUseSystemClock 是否使用{@link ClockUtil} 获取当前时间戳
+     * @param isUseSystemClock 是否使用SystemClock
      */
     public Snowflake(long workerId, long datacenterId, boolean isUseSystemClock) {
         if (workerId > maxWorkerId || workerId < 0) {
@@ -77,7 +77,7 @@ public class Snowflake {
      * @return ID
      */
     public synchronized long nextId() {
-        long timestamp = useSystemClock ? ClockUtil.currentTimeMillis() : System.currentTimeMillis();
+        long timestamp = useSystemClock ? SystemClock.now() : System.currentTimeMillis();
         if (timestamp < lastTimestamp) {
             throw new RuntimeException(String.format("Clock moved backwards.  Refusing to generate id for %d milliseconds", lastTimestamp - timestamp));
         }
@@ -96,9 +96,9 @@ public class Snowflake {
     }
 
     private long tilNextMillis(long lastTimestamp) {
-        long timestamp = useSystemClock ? ClockUtil.currentTimeMillis() : System.currentTimeMillis();
+        long timestamp = useSystemClock ? SystemClock.now() : System.currentTimeMillis();
         while (timestamp <= lastTimestamp) {
-            timestamp = useSystemClock ? ClockUtil.currentTimeMillis() : System.currentTimeMillis();
+            timestamp = useSystemClock ? SystemClock.now() : System.currentTimeMillis();
         }
         return timestamp;
     }
