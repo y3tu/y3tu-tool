@@ -6,6 +6,9 @@ import org.springframework.context.annotation.Import;
 import java.lang.annotation.*;
 
 /**
+ * 需要在自己的项目中配置好redis
+ * 此工具只是简化redis的调用
+ *
  * @author y3tu
  * @date 2018/10/4
  */

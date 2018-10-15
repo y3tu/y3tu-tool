@@ -1,9 +1,9 @@
 package com.y3tu.tool.core.thread;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 
-import static org.junit.Assert.*;
 
 /**
  * @author y3tu
@@ -12,7 +12,16 @@ import static org.junit.Assert.*;
 public class ThreadUtilTest {
 
     @Test
-    public void excAsync() throws InterruptedException {
+    public void executeTest() {
+        final boolean isValid = true;
+
+        ThreadUtil.execute(new Runnable() {
+
+            @Override
+            public void run() {
+                Assert.assertTrue(isValid);
+            }
+        });
 
     }
 }

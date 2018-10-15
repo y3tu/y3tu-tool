@@ -10,6 +10,8 @@ import java.math.BigDecimal;
 #end
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import com.y3tu.tool.web.base.entity.BaseEntity;
+
 
 /**
  * ${comments}
@@ -20,7 +22,7 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("${tableName}")
-public class ${className} extends Model<${className}> {
+public class ${className} extends BaseEntity<${className}> {
 	private static final long serialVersionUID = 1L;
 
 #foreach ($column in $columns)

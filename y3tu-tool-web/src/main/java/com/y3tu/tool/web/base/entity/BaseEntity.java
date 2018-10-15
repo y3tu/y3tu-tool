@@ -1,12 +1,12 @@
 package com.y3tu.tool.web.base.entity;
 
-import java.io.Serializable;
+import com.baomidou.mybatisplus.activerecord.Model;
+
 
 /**
  * 实体基类
  *
  * @author y3tu
  */
-public abstract class BaseEntity implements Serializable {
-    protected abstract Serializable pkVal();
+public abstract class BaseEntity<T extends BaseEntity> extends Model {
 }

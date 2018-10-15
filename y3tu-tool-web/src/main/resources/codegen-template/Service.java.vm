@@ -1,14 +1,13 @@
 package ${package}.${moduleName}.service;
 
-import com.baomidou.mybatisplus.service.IService;
 import ${package}.${moduleName}.entity.${className};
-
+import com.y3tu.tool.web.base.service.BaseService
 /**
  * ${comments}
  *
  * @author ${author}
  * @date ${datetime}
  */
-public interface ${className}Service extends IService<${className}> {
+public interface ${className}Service extends BaseService<${className}> {
 }
 
