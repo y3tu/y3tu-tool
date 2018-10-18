@@ -1,4 +1,4 @@
-package com.y3tu.tool.core.util;
+package com.y3tu.tool.core.bean;
 
 import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.lang.Editor;
@@ -21,6 +21,8 @@ import java.util.Map;
  *
  * @author y3tu
  * @see BeanUtils 主要使用org.apache.commons.beanutils.BeanUtils里面的方法
+ * <p>
+ * 如果使用项目中包含spring，请采用org.springframework.beans.BeanUtils.copyProperties来复制属性提高效率
  */
 public class BeanUtil extends BeanUtils {
     /**
@@ -160,10 +162,30 @@ public class BeanUtil extends BeanUtils {
                     setter.invoke(instance, value);
                 }
             }
+
             return instance;
         } catch (Exception e) {
             throw new UtilException("map转换成bean失败：" + e.getMessage());
         }
+    }
+
+
+    /**
+     * 复制对象属性
+     * 优先使用org.springframework.beans.BeanUtils进行对象属性复制，如果项目中没有包含spring-beans包，则使用
+     * org.apache.commons.beanutils.BeanUtils包的对象属性复制（效率比较低）
+     *
+     * @param dest
+     * @param orig
+     */
+    public static void copyProperties(final Object dest, final Object orig) {
+        try {
+            org.springframework.beans.BeanUtils.copyProperties(dest, orig);
+        } catch (Exception e) {
+            //ignore
+            copyProperties(dest, orig);
+        }
+
     }
 
 

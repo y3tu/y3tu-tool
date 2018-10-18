@@ -3,11 +3,14 @@ package com.y3tu.tool.core.text;
 
 import com.y3tu.tool.core.annotation.Nullable;
 import com.y3tu.tool.core.collection.ArrayUtil;
+import com.y3tu.tool.core.collection.ListUtil;
 import com.y3tu.tool.core.exception.UtilException;
+import org.apache.commons.lang3.text.StrBuilder;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.List;
 
 /**
  * @author y3tu
@@ -336,6 +339,25 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         return str2;
     }
 
+    /**
+     * 如果给定字符串不是以prefix开头的，在开头补充 prefix
+     *
+     * @param str    字符串
+     * @param prefix 前缀
+     * @return 补充后的字符串
+     */
+    public static String addPrefixIfNot(CharSequence str, CharSequence prefix) {
+        if (isEmpty(str) || isEmpty(prefix)) {
+            return str(str);
+        }
+
+        final String str2 = str.toString();
+        final String prefix2 = prefix.toString();
+        if (false == str2.startsWith(prefix2)) {
+            return prefix2.concat(str2);
+        }
+        return str2;
+    }
 
     /**
      * 切割指定位置之前部分的字符串
@@ -626,13 +648,13 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         }
 
         String name2 = name.toString();
-        if (name2.contains(UNDERLINE)||name2.contains(DASHED)) {
+        if (name2.contains(UNDERLINE) || name2.contains(DASHED)) {
             final StringBuilder sb = new StringBuilder(name2.length());
             boolean upperCase = false;
             for (int i = 0; i < name2.length(); i++) {
                 char c = name2.charAt(i);
 
-                if (c == CharUtil.UNDERLINE||c==CharUtil.DASHED) {
+                if (c == CharUtil.UNDERLINE || c == CharUtil.DASHED) {
                     upperCase = true;
                 } else if (upperCase) {
                     sb.append(Character.toUpperCase(c));
@@ -904,5 +926,100 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             }
         }
         return null;
+    }
+
+    /**
+     * 大写首字母<br>
+     * 例如：str = name, return Name
+     *
+     * @param str 字符串
+     * @return 字符串
+     */
+    public static String upperFirst(CharSequence str) {
+        if (null == str) {
+            return null;
+        }
+        if (str.length() > 0) {
+            char firstChar = str.charAt(0);
+            if (Character.isLowerCase(firstChar)) {
+                return Character.toUpperCase(firstChar) + subSuf(str, 1);
+            }
+        }
+        return str.toString();
+    }
+
+    /**
+     * 小写首字母<br>
+     * 例如：str = Name, return name
+     *
+     * @param str 字符串
+     * @return 字符串
+     */
+    public static String lowerFirst(CharSequence str) {
+        if (null == str) {
+            return null;
+        }
+        if (str.length() > 0) {
+            char firstChar = str.charAt(0);
+            if (Character.isUpperCase(firstChar)) {
+                return Character.toLowerCase(firstChar) + subSuf(str, 1);
+            }
+        }
+        return str.toString();
+    }
+
+    /**
+     * 按照指定字符分割字符串，返回list
+     *
+     * @param str           需要分割的字符串
+     * @param separatorChar 分割字符
+     * @return 切分后的集合
+     */
+    public static List<String> splitToList(final String str, final char separatorChar) {
+        return ListUtil.toList(split(str, separatorChar));
+    }
+
+    /**
+     * 按照指定字符分割字符串，返回list
+     * s
+     *
+     * @param str           需要分割的字符串
+     * @param separatorChar 分割字符
+     * @param max           分割后的最大数量 当max<=0时，全部分割
+     * @return 切分后的集合
+     */
+    public static List<String> splitToList(final String str, final String separatorChar, int max) {
+        return ListUtil.toList(split(str, separatorChar, max));
+    }
+
+    /**
+     * 重复某个字符串并通过分界符连接
+     *
+     * <pre>
+     * StrUtil.repeatAndJoin("?", 5, ",")   = "?,?,?,?,?"
+     * StrUtil.repeatAndJoin("?", 0, ",")   = ""
+     * StrUtil.repeatAndJoin("?", 5, null) = "?????"
+     * </pre>
+     *
+     * @param str         被重复的字符串
+     * @param count       数量
+     * @param conjunction 分界符
+     * @return 连接后的字符串
+     */
+    public static String repeatAndJoin(CharSequence str, int count, CharSequence conjunction) {
+        if (count <= 0) {
+            return EMPTY;
+        }
+        final StringBuilder builder = new StringBuilder();
+        boolean isFirst = true;
+        while (count-- > 0) {
+            if (isFirst) {
+                isFirst = false;
+            } else if (isNotEmpty(conjunction)) {
+                builder.append(conjunction);
+            }
+            builder.append(str);
+        }
+        return builder.toString();
     }
 }

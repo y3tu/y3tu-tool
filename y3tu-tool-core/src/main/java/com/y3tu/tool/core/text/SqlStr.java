@@ -2,9 +2,10 @@ package com.y3tu.tool.core.text;
 
 /**
  * @author y3tu
- * @date 2018/10/11
+ * @date 2018/10/17
  */
-public class SqlStrUtil {
+public class SqlStr {
+
     /**
      * 把查询sql根据不同的数据库转换成分页查询语句
      * 目前支持oracle，mysql

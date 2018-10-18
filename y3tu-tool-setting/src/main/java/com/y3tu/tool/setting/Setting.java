@@ -10,6 +10,7 @@ import com.y3tu.tool.core.io.watch.WatchMonitor;
 import com.y3tu.tool.core.lang.Assert;
 import com.y3tu.tool.core.reflect.ReflectionUtil;
 import com.y3tu.tool.core.text.CharsetUtil;
+import com.y3tu.tool.core.text.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
@@ -25,7 +26,14 @@ import java.util.Properties;
 @Slf4j
 public class Setting extends LinkedHashMap<String, String> {
 
-
+    /**
+     * 数组类型值默认分隔符
+     */
+    public final static String DEFAULT_DELIMITER = ",";
+    /**
+     * 默认分组
+     */
+    public final static String DEFAULT_GROUP = StringUtils.EMPTY;
     /**
      * 默认字符集
      */
@@ -148,6 +156,57 @@ public class Setting extends LinkedHashMap<String, String> {
     }
 
     /**
+     * @return 获得设定文件的路径
+     */
+    public String getSettingPath() {
+        return (null == this.settingUrl) ? null : this.settingUrl.getPath();
+    }
+
+    /**
+     * 键值总数
+     *
+     * @return 键值总数
+     */
+    @Override
+    public int size() {
+        return this.groupedMap.size();
+    }
+
+    /**
+     * 获取并删除键值对，当指定键对应值非空时，返回并删除这个值，后边的键对应的值不再查找
+     *
+     * @param keys 键列表，常用于别名
+     * @return 值
+     */
+    public Object getAndRemove(String... keys) {
+        Object value = null;
+        for (String key : keys) {
+            value = remove(key);
+            if (null != value) {
+                break;
+            }
+        }
+        return value;
+    }
+
+    /**
+     * 获取并删除键值对，当指定键对应值非空时，返回并删除这个值，后边的键对应的值不再查找
+     *
+     * @param keys 键列表，常用于别名
+     * @return 字符串值
+     */
+    public String getAndRemoveStr(String... keys) {
+        Object value = null;
+        for (String key : keys) {
+            value = remove(key);
+            if (null != value) {
+                break;
+            }
+        }
+        return (String) value;
+    }
+
+    /**
      * 获取配置的值
      *
      * @param key   键
@@ -248,7 +307,7 @@ public class Setting extends LinkedHashMap<String, String> {
      */
     public void toBean(Object bean, String group, Class clazz) {
         try {
-            Map<String, String> map = this.getMap(group);
+            Map<String, String> map = this.getSetting(group);
             for (String key : map.keySet()) {
                 if (ReflectionUtil.getField(clazz, key) != null) {
                     Class typeClass = ReflectionUtil.getField(clazz, key).getType();
@@ -263,6 +322,73 @@ public class Setting extends LinkedHashMap<String, String> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 获取数字型型属性值
+     *
+     * @param key          属性名
+     * @param group        分组名
+     * @param defaultValue 默认值
+     * @return 属性值
+     */
+    public Integer getInt(String key, String group, Integer defaultValue) {
+        return ConvertUtil.toInt(getByGroup(key, group), defaultValue);
+    }
+
+    /**
+     * 获取数字型型属性值
+     *
+     * @param key   属性名
+     * @param group 分组名
+     * @return 属性值
+     */
+    public Integer getInt(String key, String group) {
+        return getInt(key, group, null);
+    }
+
+    public String getStr(String key, String defaultValue) {
+        return getStr(key, DEFAULT_GROUP, defaultValue);
+    }
+
+    /**
+     * 获得字符串类型值
+     *
+     * @param key          KEY
+     * @param group        分组
+     * @param defaultValue 默认值
+     * @return 值或默认值
+     */
+    public String getStr(String key, String group, String defaultValue) {
+        final String value = getByGroup(key, group);
+        if (StringUtils.isBlank(value)) {
+            return defaultValue;
+        }
+        return value;
+    }
+
+
+    /**
+     * 获取波尔型属性值
+     *
+     * @param key   属性名
+     * @param group 分组名
+     * @return 属性值
+     */
+    public Boolean getBool(String key, String group) {
+        return getBool(key, group, null);
+    }
+
+    /**
+     * 获取波尔型型属性值
+     *
+     * @param key          属性名
+     * @param group        分组名
+     * @param defaultValue 默认值
+     * @return 属性值
+     */
+    public Boolean getBool(String key, String group, Boolean defaultValue) {
+        return ConvertUtil.toBool(getByGroup(key, group), defaultValue);
     }
 
 

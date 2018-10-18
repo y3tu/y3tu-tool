@@ -28,7 +28,6 @@ public class AuthUtils {
      */
     public static String[] extractAndDecodeHeader(String header)
             throws IOException {
-
         byte[] base64Token = header.substring(6).getBytes("UTF-8");
         byte[] decoded;
         try {

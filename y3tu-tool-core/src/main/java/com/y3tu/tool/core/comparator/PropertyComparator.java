@@ -1,6 +1,6 @@
 package com.y3tu.tool.core.comparator;
 
-import com.y3tu.tool.core.util.BeanUtil;
+import com.y3tu.tool.core.bean.BeanUtil;
 import com.y3tu.tool.core.util.ObjectUtil;
 
 import java.io.Serializable;

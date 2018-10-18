@@ -22,7 +22,7 @@ import com.y3tu.tool.core.io.IOUtil;
 import com.y3tu.tool.core.lang.Assert;
 import com.y3tu.tool.core.map.MapUtil;
 import com.y3tu.tool.core.text.StringUtils;
-import com.y3tu.tool.core.util.BeanUtil;
+import com.y3tu.tool.core.bean.BeanUtil;
 import com.y3tu.tool.poi.excel.cell.CellUtil;
 import com.y3tu.tool.poi.excel.style.Align;
 import org.apache.poi.ss.usermodel.Cell;

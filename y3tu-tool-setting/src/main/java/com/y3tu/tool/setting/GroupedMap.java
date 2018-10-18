@@ -41,6 +41,7 @@ public class GroupedMap extends LinkedHashMap<String, LinkedHashMap<String, Stri
      *
      * @return 总键值对数
      */
+    @Override
     public int size() {
         if (this.size < 0) {
             this.size = 0;
