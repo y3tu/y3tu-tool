@@ -1,7 +1,9 @@
 package com.y3tu.tool.core.bean;
 
+import com.y3tu.tool.core.date.SystemClock;
 import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.lang.Editor;
+import com.y3tu.tool.core.map.MapUtil;
 import com.y3tu.tool.core.reflect.ClassUtil;
 import com.y3tu.tool.core.text.StringUtils;
 import org.apache.commons.beanutils.BeanUtils;
@@ -83,7 +85,6 @@ public class BeanUtil extends BeanUtils {
         }
 
         return beanToMap(bean, targetMap, ignoreNullValue, new Editor<String>() {
-
             @Override
             public String edit(String key) {
                 return isToUnderlineCase ? StringUtils.toUnderlineCase(key) : key;
@@ -143,23 +144,33 @@ public class BeanUtil extends BeanUtils {
     /**
      * map转换成bean
      *
-     * @param map   需要转换的map
-     * @param clazz 目标类型
+     * @param map          需要转换的map
+     * @param clazz        目标类型
+     * @param isIgnoreCase 是否忽略属性的大小写
      * @param <T>
      * @return 转换后的bean
      * @throws Exception
      */
-    public static <T extends Object> T mapToBean(Map<String, Object> map, Class<T> clazz) {
+    public static <T extends Object> T mapToBean(Map<String, Object> map, Class<T> clazz, boolean isIgnoreCase) {
         try {
             T instance = clazz.newInstance();
             BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
             PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
             for (PropertyDescriptor property : descriptors) {
                 String key = property.getName();
-                if (map.containsKey(key)) {
-                    Object value = map.get(key);
-                    Method setter = property.getWriteMethod();
-                    setter.invoke(instance, value);
+                if (isIgnoreCase == true) {
+                    map = MapUtil.toCaseInsensitiveMap(map);
+                    if (map.containsKey(key.toLowerCase())) {
+                        Object value = map.get(key.toLowerCase());
+                        Method setter = property.getWriteMethod();
+                        setter.invoke(instance, value);
+                    }
+                } else {
+                    if (map.containsKey(key)) {
+                        Object value = map.get(key);
+                        Method setter = property.getWriteMethod();
+                        setter.invoke(instance, value);
+                    }
                 }
             }
 
@@ -188,5 +199,19 @@ public class BeanUtil extends BeanUtils {
 
     }
 
+    /**
+     * 获取{@link BeanDesc} Bean描述信息
+     *
+     * @param clazz Bean类
+     * @return {@link BeanDesc}
+     */
+    public static BeanDesc getBeanDesc(Class<?> clazz) {
+        BeanDesc beanDesc = BeanDescCache.INSTANCE.getBeanDesc(clazz);
+        if (null == beanDesc) {
+            beanDesc = new BeanDesc(clazz);
+            BeanDescCache.INSTANCE.putBeanDesc(clazz, beanDesc);
+        }
+        return beanDesc;
+    }
 
 }

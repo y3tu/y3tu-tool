@@ -29,6 +29,6 @@ user = looly
 pass = 123456
 
 [mysql]
-url = jdbc:mysql://looly.centos:3306/test_hutool
+url = jdbc:mysql://cdb-d5ge3ujs.cd.tencentcdb.com:10003/y3tu-admin??allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
 user = root
-pass = 123456
+pass =

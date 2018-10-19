@@ -215,6 +215,18 @@ public class Entity extends LinkedHashMap<String, Object> {
     }
 
     /**
+     * 转换为Bean对象
+     * 填充Value Object对象，忽略大小写
+     *
+     * @param <T>  Bean类型
+     * @param bean Bean
+     * @return Bean
+     */
+    public <T> T toBeanIgnoreCase(T bean) {
+        return (T) BeanUtil.mapToBean(this, bean.getClass(), true);
+    }
+
+    /**
      * 过滤Map保留指定键值对，如果键不存在跳过
      *
      * @param keys 键列表

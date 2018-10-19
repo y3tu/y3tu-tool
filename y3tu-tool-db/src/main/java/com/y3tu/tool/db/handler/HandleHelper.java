@@ -1,5 +1,6 @@
 package com.y3tu.tool.db.handler;
 
+import com.y3tu.tool.core.bean.BeanDesc;
 import com.y3tu.tool.core.bean.BeanUtil;
 import com.y3tu.tool.core.collection.ArrayUtil;
 import com.y3tu.tool.core.convert.ConvertUtil;
@@ -35,12 +36,9 @@ public class HandleHelper {
      * @param bean        目标Bean
      * @return 每一行的Entity
      * @throws SQLException SQL执行异常
-     *
      */
     public static <T> T handleRow(int columnCount, ResultSetMetaData meta, ResultSet rs, T bean) throws SQLException {
-        //return handleRow(columnCount, meta, rs).toBeanIgnoreCase(bean);
-        //todo
-        return null;
+        return handleRow(columnCount, meta, rs).toBeanIgnoreCase(bean);
     }
 
     /**
@@ -52,7 +50,6 @@ public class HandleHelper {
      * @param beanClass   目标Bean类型
      * @return 每一行的Entity
      * @throws SQLException SQL执行异常
-     *
      */
     @SuppressWarnings("unchecked")
     public static <T> T handleRow(int columnCount, ResultSetMetaData meta, ResultSet rs, Class<T> beanClass) throws SQLException {
@@ -81,23 +78,22 @@ public class HandleHelper {
 
         //普通bean
         final T bean = ReflectionUtil.newInstanceIfPossible(beanClass);
-        //todo 待移植
         //忽略字段大小写
-//        final Map<String, PropDesc> propMap = BeanUtil.getBeanDesc(beanClass).getPropMap(true);
-//        String columnLabel;
-//        PropDesc pd;
-//        Method setter = null;
-//        Object value = null;
-//        for (int i = 1; i <= columnCount; i++) {
-//            columnLabel = meta.getColumnLabel(i);
-//            //驼峰命名风格
-//            pd = propMap.get(StrUtil.toCamelCase(columnLabel));
-//            setter = (null == pd) ? null : pd.getSetter();
-//            if (null != setter) {
-//                value = getColumnValue(rs, columnLabel, meta.getColumnType(i), TypeUtil.getFirstParamType(setter));
-//                ReflectionUtil.invokeWithCheck(bean, setter, new Object[]{value});
-//            }
-//        }
+        final Map<String, BeanDesc.PropDesc> propMap = BeanUtil.getBeanDesc(beanClass).getPropMap(true);
+        String columnLabel;
+        BeanDesc.PropDesc pd;
+        Method setter = null;
+        Object value = null;
+        for (int i = 1; i <= columnCount; i++) {
+            columnLabel = meta.getColumnLabel(i);
+            //驼峰命名风格
+            pd = propMap.get(StringUtils.toCamelCase(columnLabel));
+            setter = (null == pd) ? null : pd.getSetter();
+            if (null != setter) {
+                value = getColumnValue(rs, columnLabel, meta.getColumnType(i), TypeUtil.getFirstParamType(setter));
+                ReflectionUtil.invokeWithCheck(bean, setter, new Object[]{value});
+            }
+        }
         return bean;
     }
 
@@ -125,7 +121,6 @@ public class HandleHelper {
      * @param withTableName 是否包含表名
      * @return 每一行的Entity
      * @throws SQLException SQL执行异常
-     *
      */
     public static <T extends Entity> T handleRow(T row, int columnCount, ResultSetMetaData meta, ResultSet rs, boolean withTableName) throws SQLException {
         if (withTableName) {
@@ -184,7 +179,6 @@ public class HandleHelper {
      * @param elementBeanType Bean类型
      * @return Entity列表
      * @throws SQLException SQL执行异常
-     *
      */
     public static <E, T extends Collection<E>> T handleRsToBeanList(ResultSet rs, T collection, Class<E> elementBeanType) throws SQLException {
         final ResultSetMetaData meta = rs.getMetaData();

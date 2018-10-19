@@ -385,6 +385,17 @@ public class MapUtil {
     }
 
     /**
+     * 将已知Map转换为key为大小写无关的的Map<br>
+     * 如果KEY为非String类型，保留原值
+     *
+     * @param map 原Map
+     * @return
+     */
+    public static <K, V> Map<K, V> toCaseInsensitiveMap(Map<K, V> map) {
+        return (map instanceof LinkedHashMap) ? new CaseInsensitiveLinkedMap<>(map) : new CaseInsensitiveMap<>(map);
+    }
+
+    /**
      * 将键值对转换为二维数组，第一维是key，第二纬是value
      *
      * @param map Map<?, ?> map
@@ -830,9 +841,9 @@ public class MapUtil {
      * 从Map中获取指定键列表对应的值列表<br>
      * 如果key在map中不存在或key对应值为null，则返回值列表对应位置的值也为null
      *
-     * @param <K> 键类型
-     * @param <V> 值类型
-     * @param map {@link Map}
+     * @param <K>  键类型
+     * @param <V>  值类型
+     * @param map  {@link Map}
      * @param keys 键列表
      * @return 值列表
      */
@@ -849,9 +860,9 @@ public class MapUtil {
      * 从Map中获取指定键列表对应的值列表<br>
      * 如果key在map中不存在或key对应值为null，则返回值列表对应位置的值也为null
      *
-     * @param <K> 键类型
-     * @param <V> 值类型
-     * @param map {@link Map}
+     * @param <K>  键类型
+     * @param <V>  值类型
+     * @param map  {@link Map}
      * @param keys 键列表
      * @return 值列表
      */
@@ -863,9 +874,9 @@ public class MapUtil {
      * 从Map中获取指定键列表对应的值列表<br>
      * 如果key在map中不存在或key对应值为null，则返回值列表对应位置的值也为null
      *
-     * @param <K> 键类型
-     * @param <V> 值类型
-     * @param map {@link Map}
+     * @param <K>  键类型
+     * @param <V>  值类型
+     * @param map  {@link Map}
      * @param keys 键列表
      * @return 值列表
      */

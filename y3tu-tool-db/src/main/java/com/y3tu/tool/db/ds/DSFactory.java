@@ -72,7 +72,7 @@ public abstract class DSFactory {
         if (null == setting) {
             try {
                 setting = new Setting(DEFAULT_DB_SETTING_PATH, true);
-            } catch (UtilException e) {
+            } catch (Exception e) {
                 // 尝试ClassPath下直接读取配置文件
                 try {
                     setting = new Setting(DEFAULT_DB_SETTING_PATH2, true);

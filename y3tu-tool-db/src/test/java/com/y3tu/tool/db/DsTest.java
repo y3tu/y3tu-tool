@@ -27,18 +27,18 @@ public class DsTest {
 	
 	@Test
 	public void defaultDsTest() throws SQLException{
-		DataSource ds = DSFactory.get("test");
+		DataSource ds = DSFactory.get("mysql");
 		Db db = Db.use(ds);
-		List<Entity> all = db.findAll("user");
+		List<Entity> all = db.findAll("sys_user");
 		Assert.assertTrue(ListUtil.isNotEmpty(all));
 	}
 	
 	@Test
 	public void hikariDsTest() throws SQLException{
 		DSFactory.setCurrentDSFactory(new HikariDSFactory());
-		DataSource ds = DSFactory.get("test");
+		DataSource ds = DSFactory.get("mysql");
 		Db db = Db.use(ds);
-		List<Entity> all = db.findAll("user");
+		List<Entity> all = db.findAll("sys_user");
 		Assert.assertTrue(ListUtil.isNotEmpty(all));
 	}
 	
