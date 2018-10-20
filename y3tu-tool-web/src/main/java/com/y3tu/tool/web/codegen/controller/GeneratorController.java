@@ -33,7 +33,7 @@ public class GeneratorController {
     @GetMapping("/page" )
     public Page list(@RequestParam Map<String, Object> params) {
         Query query = new Query(params);
-        query.getPage().setRecords(sysGeneratorService.queryPage(query));
+        query.getPage().setRecords(sysGeneratorService.queryTableName());
         return query.getPage();
     }
 

@@ -5,7 +5,6 @@ import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.db.DbRuntimeException;
 import com.y3tu.tool.db.DbUtil;
 import com.y3tu.tool.db.Entity;
-import sun.tools.jconsole.Tab;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;

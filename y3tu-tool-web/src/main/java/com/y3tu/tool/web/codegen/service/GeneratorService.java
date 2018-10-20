@@ -1,14 +1,13 @@
 package com.y3tu.tool.web.codegen.service;
 
-import com.y3tu.tool.web.base.pojo.Query;
+import com.y3tu.tool.db.meta.Table;
 import com.y3tu.tool.web.codegen.entity.GenConfig;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * @author lengleng
- * @date 2018/7/29
+ * @author y3tu
+ * @date 2018/10/20
  */
 public interface GeneratorService {
     /**
@@ -20,10 +19,17 @@ public interface GeneratorService {
     byte[] generatorCode(GenConfig tableNames);
 
     /**
-     * 分页查询表
+     * 查询数据源全部被表名
      *
-     * @param query 查询条件
      * @return
      */
-    List<Map<String, Object>> queryPage(Query query);
+    List<String> queryTableName();
+
+    /**
+     * 获取表和表的字段元数据
+     *
+     * @param tableName
+     * @return
+     */
+    Table queryTableMeta(String tableName);
 }

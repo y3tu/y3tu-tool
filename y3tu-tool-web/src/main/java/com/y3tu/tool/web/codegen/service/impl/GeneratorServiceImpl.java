@@ -1,17 +1,18 @@
 package com.y3tu.tool.web.codegen.service.impl;
 
 import com.y3tu.tool.core.io.IOUtil;
-import com.y3tu.tool.web.base.pojo.Query;
+import com.y3tu.tool.db.meta.MetaUtil;
+import com.y3tu.tool.db.meta.Table;
 import com.y3tu.tool.web.codegen.entity.GenConfig;
-import com.y3tu.tool.web.codegen.mapper.GeneratorMapper;
 import com.y3tu.tool.web.codegen.service.GeneratorService;
 import com.y3tu.tool.web.codegen.util.GenUtils;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.sql.DataSource;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
-import java.util.Map;
 import java.util.zip.ZipOutputStream;
 
 /**
@@ -23,19 +24,9 @@ import java.util.zip.ZipOutputStream;
 @Service
 @AllArgsConstructor
 public class GeneratorServiceImpl implements GeneratorService {
-    private final GeneratorMapper generatorMapper;
 
-
-    /**
-     * 分页查询表
-     *
-     * @param query 查询条件
-     * @return
-     */
-    @Override
-    public List<Map<String, Object>> queryPage(Query query) {
-        return generatorMapper.queryList(query);
-    }
+    @Autowired
+    private DataSource dataSource;
 
     /**
      * 生成代码
@@ -49,20 +40,35 @@ public class GeneratorServiceImpl implements GeneratorService {
         ZipOutputStream zip = new ZipOutputStream(outputStream);
 
         //查询表信息
-        Map<String, String> table = queryTable(genConfig.getTableName());
-        //查询列信息
-        List<Map<String, String>> columns = queryColumns(genConfig.getTableName());
+        Table table = this.queryTableMeta(genConfig.getTableName());
+        //表字段信息
+        String[] columns = MetaUtil.getColumnNames(dataSource, table.getTableName());
         //生成代码
         GenUtils.generatorCode(genConfig, table, columns, zip);
         IOUtil.close(zip);
         return outputStream.toByteArray();
     }
 
-    private Map<String, String> queryTable(String tableName) {
-        return generatorMapper.queryTable(tableName);
+    /**
+     * 查询数据源全部表名
+     *
+     * @return
+     */
+    @Override
+    public List<String> queryTableName() {
+        return MetaUtil.getTables(dataSource);
     }
 
-    private List<Map<String, String>> queryColumns(String tableName) {
-        return generatorMapper.queryColumns(tableName);
+    /**
+     * 获取表和表的字段元数据
+     *
+     * @param tableName
+     * @return
+     */
+    @Override
+    public Table queryTableMeta(String tableName) {
+        return MetaUtil.getTableMeta(dataSource, tableName);
     }
+
+
 }

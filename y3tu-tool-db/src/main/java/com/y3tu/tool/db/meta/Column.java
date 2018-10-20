@@ -90,6 +90,7 @@ public class Column implements Cloneable {
         this.comment = columnMetaRs.getString("REMARKS");
     }
 
+
     @Override
     public String toString() {
         return "Column [tableName=" + tableName + ", name=" + name + ", type=" + type + ", size=" + size + ", isNullable=" + isNullable + "]";

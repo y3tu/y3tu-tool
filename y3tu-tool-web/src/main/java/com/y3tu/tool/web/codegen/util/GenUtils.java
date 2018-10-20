@@ -2,10 +2,17 @@ package com.y3tu.tool.web.codegen.util;
 
 import com.y3tu.tool.core.date.DateUtil;
 import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IOUtil;
 import com.y3tu.tool.core.text.CharsetUtil;
 import com.y3tu.tool.core.text.StringUtils;
+import com.y3tu.tool.db.ds.DSFactory;
+import com.y3tu.tool.db.meta.Column;
+import com.y3tu.tool.db.meta.DataTypeEnum;
+import com.y3tu.tool.db.meta.MetaUtil;
+import com.y3tu.tool.db.meta.Table;
 import com.y3tu.tool.setting.Props;
+import com.y3tu.tool.setting.Setting;
 import com.y3tu.tool.web.codegen.entity.ColumnEntity;
 import com.y3tu.tool.web.codegen.entity.GenConfig;
 import com.y3tu.tool.web.codegen.entity.TableEntity;
@@ -14,9 +21,8 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
+import javax.sql.DataSource;
+import java.io.*;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -60,19 +66,18 @@ public class GenUtils {
     /**
      * 生成代码
      */
-    public static void generatorCode(GenConfig genConfig, Map<String, String> table,
-                                     List<Map<String, String>> columns, ZipOutputStream zip) {
+    public static void generatorCode(GenConfig genConfig, Table table, String[] columns, ZipOutputStream zip) {
         //配置信息
         Props config = getConfig();
         boolean hasBigDecimal = false;
         //表信息
         TableEntity tableEntity = new TableEntity();
-        tableEntity.setTableName(table.get("tableName"));
+        tableEntity.setTableName(table.getTableName());
 
         if (StringUtils.isNotBlank(genConfig.getComments())) {
             tableEntity.setComments(genConfig.getComments());
         } else {
-            tableEntity.setComments(table.get("tableComment"));
+            tableEntity.setComments(table.getRemarks());
         }
 
         String tablePrefix;
@@ -89,12 +94,16 @@ public class GenUtils {
 
         //列信息
         List<ColumnEntity> columnList = new ArrayList<>();
-        for (Map<String, String> column : columns) {
+
+        for (String columnName : columns) {
+            Column column = table.get(columnName);
+
+
             ColumnEntity columnEntity = new ColumnEntity();
-            columnEntity.setColumnName(column.get("columnName"));
-            columnEntity.setDataType(column.get("dataType"));
-            columnEntity.setComments(column.get("columnComment"));
-            columnEntity.setExtra(column.get("extra"));
+            columnEntity.setColumnName(columnName);
+            columnEntity.setDataType(column.getTypeName());
+            columnEntity.setComments(column.getComment());
+
 
             //列名转换成Java属性名
             String attrName = columnToJava(columnEntity.getColumnName());
@@ -102,16 +111,18 @@ public class GenUtils {
             columnEntity.setLowerAttrName(StringUtils.uncapitalize(attrName));
 
             //列的数据类型，转换成Java类型
-            String attrType = config.getProperty(columnEntity.getDataType(), "unknowType");
+            String attrType = DataTypeEnum.getJavaType(column.getTypeName());
             columnEntity.setAttrType(attrType);
             if (!hasBigDecimal && "BigDecimal".equals(attrType)) {
                 hasBigDecimal = true;
             }
             //是否主键
-            if ("PRI".equalsIgnoreCase(column.get("columnKey")) && tableEntity.getPk() == null) {
-                tableEntity.setPk(columnEntity);
+            Set<String> pkNames = table.getPkNames();
+            for (String pkName : pkNames) {
+                if (columnName.equals(pkName)) {
+                    tableEntity.setPk(columnEntity);
+                }
             }
-
             columnList.add(columnEntity);
         }
         tableEntity.setColumns(columnList);
@@ -266,5 +277,35 @@ public class GenUtils {
         }
 
         return null;
+    }
+
+
+    /**
+     * 程序手动调用生成代码
+     *
+     * @param tableName
+     */
+    public static void startGeneratorCode(String tableName) throws IOException {
+
+        Setting setting = new Setting("config/codegen.properties");
+        //从配置文件中读取数据源
+        DataSource dataSource = DSFactory.create(setting).getDataSource();
+
+        GenConfig genConfig = new GenConfig();
+        genConfig.setTableName(tableName);
+
+        File file = FileUtil.file("/Users/yxy/work/test.zip");
+        OutputStream outputStream = FileUtil.asOututStream(file);
+        ZipOutputStream zip = new ZipOutputStream(outputStream);
+
+        //查询表信息
+        Table table = MetaUtil.getTableMeta(dataSource, genConfig.getTableName());
+        //表字段信息
+        String[] columns = MetaUtil.getColumnNames(dataSource, table.getTableName());
+        //生成代码
+        GenUtils.generatorCode(genConfig, table, columns, zip);
+        IOUtil.close(zip);
+        outputStream.flush();
+
     }
 }

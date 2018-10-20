@@ -51,4 +51,5 @@ public class MetaTest {
         Assert.assertEquals(SetUtil.newHashSet("user_id"), table.getPkNames());
     }
 
+
 }
