@@ -103,6 +103,12 @@ public class DruidDSFactory extends DSFactory {
 		ds.setUrl(url);
 		ds.setUsername(config.getAndRemoveStr(KEY_ALIAS_USER));
 		ds.setPassword(config.getAndRemoveStr(KEY_ALIAS_PASSWORD));
+
+		Properties properties = new Properties();
+		properties.setProperty("remarks","true");
+		properties.setProperty("useInformationSchema","true");
+		ds.setConnectProperties(properties);
+
 		final String driver = config.getAndRemoveStr(KEY_ALIAS_DRIVER);
 		// 在未提供JDBC驱动的情况下，Druid会自动识别驱动
 		if (StringUtils.isNotBlank(driver)) {

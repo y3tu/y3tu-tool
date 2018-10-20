@@ -113,6 +113,7 @@ public class HikariDSFactory extends DSFactory {
         }
 
         final HikariDataSource ds = new HikariDataSource(new HikariConfig(config));
+
         return ds;
     }
 }

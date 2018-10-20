@@ -1,13 +1,10 @@
 package com.y3tu.tool.core.io;
 
-import com.y3tu.tool.core.io.resource.ResourceUtil;
-import com.y3tu.tool.core.io.resource.URLResourceUtil;
 import com.y3tu.tool.core.lang.Assert;
 import com.y3tu.tool.core.lang.Console;
-import com.y3tu.tool.core.text.ObjectPrintUtil;
+import com.y3tu.tool.core.util.ObjectUtil;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -36,6 +33,6 @@ public class FileUtilTest {
     @Test
     public void file() throws IOException {
         List strings = FileUtil.toLines(FileUtil.file("/Users/yxy/work/test.properties"));
-        Console.log(ObjectPrintUtil.toPrettyString(strings));
+        Console.log(ObjectUtil.toPrettyString(strings));
     }
 }

@@ -2,7 +2,7 @@ package com.y3tu.tool.core.net;
 
 import com.y3tu.tool.core.lang.Console;
 import com.y3tu.tool.core.lang.NetUtil;
-import com.y3tu.tool.core.text.ObjectPrintUtil;
+import com.y3tu.tool.core.util.ObjectUtil;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -19,7 +19,7 @@ public class NetUtilTest {
 
     @Test
     public void test() {
-        Console.log(ObjectPrintUtil.toPrettyString(NetUtil.getLocalMacAddress()));
+        Console.log(ObjectUtil.toPrettyString(NetUtil.getLocalMacAddress()));
     }
 
     /**

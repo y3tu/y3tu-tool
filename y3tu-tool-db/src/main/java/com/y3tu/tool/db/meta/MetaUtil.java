@@ -5,6 +5,7 @@ import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.db.DbRuntimeException;
 import com.y3tu.tool.db.DbUtil;
 import com.y3tu.tool.db.Entity;
+import sun.tools.jconsole.Tab;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -51,7 +52,6 @@ public class MetaUtil {
      * @param schema 表数据库名，对于Oracle为用户名
      * @param types  表类型
      * @return 表名列表
-     *
      */
     public static List<String> getTables(DataSource ds, String schema, TableType... types) {
         return getTables(ds, schema, null, types);
@@ -174,6 +174,10 @@ public class MetaUtil {
                 table.addPk(rs.getString("COLUMN_NAME"));
             }
 
+            rs = metaData.getTables(conn.getCatalog(), null, tableName, null);
+            while (rs.next()) {
+                table.setRemarks(rs.getString("REMARKS"));
+            }
             // 获得列
             rs = metaData.getColumns(conn.getCatalog(), null, tableName, null);
             while (rs.next()) {
