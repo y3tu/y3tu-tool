@@ -10,6 +10,9 @@ public class SettingTest {
     public void settingTest() {
         Setting setting = new Setting("test.setting", true);
 
+        String test = setting.getStr("test");
+        Assert.assertEquals("test", test);
+
         String driver = setting.getByGroup("driver", "demo");
         Assert.assertEquals("com.mysql.jdbc.Driver", driver);
 

@@ -44,7 +44,7 @@ public class GeneratorServiceImpl implements GeneratorService {
         //表字段信息
         String[] columns = MetaUtil.getColumnNames(dataSource, table.getTableName());
         //生成代码
-        GenUtils.generatorCode(genConfig, table, columns, zip);
+        GenUtils.generatorCode(genConfig, null, table, columns, zip);
         IOUtil.close(zip);
         return outputStream.toByteArray();
     }

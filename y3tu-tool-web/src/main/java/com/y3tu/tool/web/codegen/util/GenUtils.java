@@ -4,14 +4,15 @@ import com.y3tu.tool.core.date.DateUtil;
 import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IOUtil;
+import com.y3tu.tool.core.reflect.ReflectionUtil;
 import com.y3tu.tool.core.text.CharsetUtil;
 import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.db.ds.DSFactory;
+import com.y3tu.tool.db.ds.DsFactoryEnum;
 import com.y3tu.tool.db.meta.Column;
 import com.y3tu.tool.db.meta.DataTypeEnum;
 import com.y3tu.tool.db.meta.MetaUtil;
 import com.y3tu.tool.db.meta.Table;
-import com.y3tu.tool.setting.Props;
 import com.y3tu.tool.setting.Setting;
 import com.y3tu.tool.web.codegen.entity.ColumnEntity;
 import com.y3tu.tool.web.codegen.entity.GenConfig;
@@ -66,9 +67,13 @@ public class GenUtils {
     /**
      * 生成代码
      */
-    public static void generatorCode(GenConfig genConfig, Table table, String[] columns, ZipOutputStream zip) {
+    public static void generatorCode(GenConfig genConfig, Setting setting, Table table, String[] columns, ZipOutputStream zip) {
+
+        if (setting == null) {
+            setting = new Setting("config/codegen.properties");
+        }
+
         //配置信息
-        Props config = getConfig();
         boolean hasBigDecimal = false;
         //表信息
         TableEntity tableEntity = new TableEntity();
@@ -84,7 +89,7 @@ public class GenUtils {
         if (StringUtils.isNotBlank(genConfig.getTablePrefix())) {
             tablePrefix = genConfig.getTablePrefix();
         } else {
-            tablePrefix = config.getProperty("tablePrefix");
+            tablePrefix = setting.getStr("tablePrefix");
         }
 
         //表名转换成Java类名
@@ -156,21 +161,21 @@ public class GenUtils {
         if (StringUtils.isNotBlank(genConfig.getAuthor())) {
             map.put("author", genConfig.getAuthor());
         } else {
-            map.put("author", config.getProperty("author"));
+            map.put("author", setting.getStr("author"));
         }
 
         if (StringUtils.isNotBlank(genConfig.getModuleName())) {
             map.put("moduleName", genConfig.getModuleName());
         } else {
-            map.put("moduleName", config.getProperty("moduleName"));
+            map.put("moduleName", setting.getStr("moduleName"));
         }
 
         if (StringUtils.isNotBlank(genConfig.getPackageName())) {
             map.put("package", genConfig.getPackageName());
             map.put("mainPath", genConfig.getPackageName());
         } else {
-            map.put("package", config.getProperty("package"));
-            map.put("mainPath", config.getProperty("mainPath"));
+            map.put("package", setting.getStr("packageName"));
+            map.put("mainPath", setting.getStr("packageName"));
         }
         VelocityContext context = new VelocityContext(map);
 
@@ -201,7 +206,7 @@ public class GenUtils {
      * 列名转换成Java属性名
      */
     private static String columnToJava(String columnName) {
-        return StringUtils.toCamelCase(columnName);
+        return StringUtils.upperFirst(StringUtils.toCamelCase(columnName));
     }
 
     /**
@@ -212,17 +217,6 @@ public class GenUtils {
             tableName = tableName.replace(tablePrefix, "");
         }
         return columnToJava(tableName);
-    }
-
-    /**
-     * 获取配置信息
-     */
-    private static Props getConfig() {
-        try {
-            return new Props("config/codegen.properties");
-        } catch (Exception e) {
-            throw new UtilException("获取配置文件失败，", e);
-        }
     }
 
     /**
@@ -282,30 +276,46 @@ public class GenUtils {
 
     /**
      * 程序手动调用生成代码
+     * 读取配置文件里面数据库连接和配置
      *
-     * @param tableName
+     * @param tableName     表名
+     * @param setting       配置
+     * @param dsFactoryEnum 指定数据源
      */
-    public static void startGeneratorCode(String tableName) throws IOException {
+    public static void startGeneratorCode(String tableName, Setting setting, DsFactoryEnum dsFactoryEnum) {
 
-        Setting setting = new Setting("config/codegen.properties");
-        //从配置文件中读取数据源
-        DataSource dataSource = DSFactory.create(setting).getDataSource();
+        try {
+            if (setting == null) {
+                setting = new Setting("config/codegen.properties");
+            }
 
-        GenConfig genConfig = new GenConfig();
-        genConfig.setTableName(tableName);
+            //从配置文件中读取数据源
+            DataSource dataSource = null;
+            if (dsFactoryEnum == null) {
+                dataSource = DSFactory.create(setting).getDataSource();
+            } else {
+                Class<DSFactory> clazz = dsFactoryEnum.getDsFactoryClass();
+                dataSource = ReflectionUtil.newInstance(clazz, setting).getDataSource();
+            }
 
-        File file = FileUtil.file("/Users/yxy/work/test.zip");
-        OutputStream outputStream = FileUtil.asOututStream(file);
-        ZipOutputStream zip = new ZipOutputStream(outputStream);
+            GenConfig genConfig = new GenConfig();
+            genConfig.setTableName(tableName);
 
-        //查询表信息
-        Table table = MetaUtil.getTableMeta(dataSource, genConfig.getTableName());
-        //表字段信息
-        String[] columns = MetaUtil.getColumnNames(dataSource, table.getTableName());
-        //生成代码
-        GenUtils.generatorCode(genConfig, table, columns, zip);
-        IOUtil.close(zip);
-        outputStream.flush();
+            File file = FileUtil.file(setting.getStr("zipCreatePath", "") + "code.zip");
+            OutputStream outputStream = FileUtil.asOututStream(file);
+            ZipOutputStream zip = new ZipOutputStream(outputStream);
+
+            //查询表信息
+            Table table = MetaUtil.getTableMeta(dataSource, genConfig.getTableName());
+            //表字段信息
+            String[] columns = MetaUtil.getColumnNames(dataSource, table.getTableName());
+            //生成代码
+            GenUtils.generatorCode(genConfig, setting, table, columns, zip);
+            IOUtil.close(zip);
+            outputStream.flush();
+        } catch (Exception e) {
+            throw new UtilException("代码生成失败!" + e.getStackTrace());
+        }
 
     }
 }

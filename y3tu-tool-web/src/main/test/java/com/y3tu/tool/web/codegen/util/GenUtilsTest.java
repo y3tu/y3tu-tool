@@ -14,6 +14,6 @@ public class GenUtilsTest {
 
     @Test
     public void startGeneratorCode() throws IOException {
-        GenUtils.startGeneratorCode("sys_user");
+        GenUtils.startGeneratorCode("sys_user",null,null);
     }
 }

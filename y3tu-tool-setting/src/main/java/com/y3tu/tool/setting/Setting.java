@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * @author Looly
+ */
 @Slf4j
 public class Setting extends LinkedHashMap<String, String> {
 
@@ -173,6 +176,42 @@ public class Setting extends LinkedHashMap<String, String> {
     }
 
     /**
+     * 设置值
+     *
+     * @param key 键
+     * @param value 值
+     * @return this
+     */
+    public Setting set(String key, String value) {
+        this.groupedMap.put(DEFAULT_GROUP, key, value);
+        return this;
+    }
+
+    /**
+     * 将键值对加入到对应分组中
+     *
+     * @param group 分组
+     * @param key   键
+     * @param value 值
+     * @return 此key之前存在的值，如果没有返回null
+     */
+    public String put(String group, String key, String value) {
+        return this.groupedMap.put(group, key, value);
+    }
+
+    /**
+     * 加入多个键值对到某个分组下
+     *
+     * @param group 分组
+     * @param m     键值对
+     * @return this
+     */
+    public Setting putAll(String group, Map<? extends String, ? extends String> m) {
+        this.groupedMap.putAll(group, m);
+        return this;
+    }
+
+    /**
      * 获取并删除键值对，当指定键对应值非空时，返回并删除这个值，后边的键对应的值不再查找
      *
      * @param keys 键列表，常用于别名
@@ -235,7 +274,11 @@ public class Setting extends LinkedHashMap<String, String> {
      */
     public Setting getSetting(String group) {
         final Setting setting = new Setting();
-        setting.putAll(this.getMap(group));
+        group = StringUtils.nullToEmpty(group).trim();
+        Map map = this.getMap(group);
+        if (map != null) {
+            setting.putAll(map);
+        }
         return setting;
     }
 
@@ -345,6 +388,10 @@ public class Setting extends LinkedHashMap<String, String> {
      */
     public Integer getInt(String key, String group) {
         return getInt(key, group, null);
+    }
+
+    public String getStr(String key) {
+        return getStr(key, DEFAULT_GROUP, "");
     }
 
     public String getStr(String key, String defaultValue) {

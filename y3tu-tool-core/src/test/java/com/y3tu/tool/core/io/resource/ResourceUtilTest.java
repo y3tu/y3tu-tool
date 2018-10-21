@@ -2,7 +2,6 @@ package com.y3tu.tool.core.io.resource;
 
 import com.y3tu.tool.core.io.FilePathUtil;
 import com.y3tu.tool.core.lang.Console;
-import com.y3tu.tool.core.text.ObjectPrintUtil;
 import com.y3tu.tool.core.util.RuntimeUtil;
 import com.y3tu.tool.core.util.ZipUtil;
 import org.junit.Test;
