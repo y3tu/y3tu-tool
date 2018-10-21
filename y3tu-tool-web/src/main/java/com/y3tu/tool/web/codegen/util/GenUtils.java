@@ -75,6 +75,7 @@ public class GenUtils {
 
         //配置信息
         boolean hasBigDecimal = false;
+        boolean hasDate = false;
         //表信息
         TableEntity tableEntity = new TableEntity();
         tableEntity.setTableName(table.getTableName());
@@ -121,6 +122,9 @@ public class GenUtils {
             if (!hasBigDecimal && "BigDecimal".equals(attrType)) {
                 hasBigDecimal = true;
             }
+            if (!hasDate && "Date".equals(attrType)) {
+                hasDate = true;
+            }
             //是否主键
             Set<String> pkNames = table.getPkNames();
             for (String pkName : pkNames) {
@@ -150,6 +154,7 @@ public class GenUtils {
         map.put("pathName", tableEntity.getLowerClassName().toLowerCase());
         map.put("columns", tableEntity.getColumns());
         map.put("hasBigDecimal", hasBigDecimal);
+        map.put("hasDate",hasDate);
         map.put("datetime", DateUtil.now());
 
         if (StringUtils.isNotBlank(genConfig.getComments())) {

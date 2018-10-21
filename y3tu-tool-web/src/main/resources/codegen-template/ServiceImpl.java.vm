@@ -1,12 +1,11 @@
 package ${package}.${moduleName}.service.impl;
 
 import org.springframework.stereotype.Service;
-import java.util.Map;
 
 import ${package}.${moduleName}.mapper.${className}Mapper;
 import ${package}.${moduleName}.entity.${className};
 import ${package}.${moduleName}.service.${className}Service;
-import com.y3tu.tool.web.base.service.impl.BaseServiceImpl
+import com.y3tu.tool.web.base.service.impl.BaseServiceImpl;
 
 
 @Service("${classname}Service")

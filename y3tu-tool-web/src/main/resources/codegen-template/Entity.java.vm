@@ -3,13 +3,16 @@ package ${package}.${moduleName}.entity;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-  #if(${hasBigDecimal})
+#if(${hasBigDecimal})
 import java.math.BigDecimal;
 #end
+#if(${hasDate})
+import java.util.Date;
+#end
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import com.y3tu.tool.web.base.entity.BaseEntity;
 
 
@@ -30,7 +33,7 @@ public class ${className} extends BaseEntity<${className}> {
 	 * $column.comments
 	 */
 	#if($column.columnName == $pk.columnName)
-	@TableId
+	@TableId(value="$column.columnName",type = IdType.AUTO)
 	#elseif($column.columnName != $column.lowerAttrName)
 	@TableField("$column.columnName")
 	#end

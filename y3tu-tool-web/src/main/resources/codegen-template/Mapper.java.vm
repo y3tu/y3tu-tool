@@ -9,7 +9,6 @@ import com.y3tu.tool.web.base.mapper.BaseMapper;
  * @author ${author}
  * @date ${datetime}
  */
-@Mapper
 public interface ${className}Mapper extends BaseMapper<${className}> {
 
 }

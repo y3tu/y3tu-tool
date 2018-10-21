@@ -13,7 +13,8 @@ public enum DataTypeEnum {
     INT("INT", "Integer"),
     VARCHAR("VARCHAR", "String"),
     TIMESTAMP("TIMESTAMP", "Date"),
-    CHAR("CHAR", "String");
+    CHAR("CHAR", "String"),
+    DATE("DATE","Date");
 
     private String dataType;
     private String javaType;
@@ -29,6 +30,6 @@ public enum DataTypeEnum {
                 return dataTypeEnum.javaType;
             }
         }
-        return null;
+        return dataType;
     }
 }
