@@ -1,11 +1,14 @@
 package com.y3tu.tool.core.lang;
 
+import com.y3tu.tool.core.convert.ConvertUtil;
+import com.y3tu.tool.core.date.DateUtil;
 import com.y3tu.tool.core.exception.ValidatorException;
 import com.y3tu.tool.core.util.ReUtil;
 import com.y3tu.tool.core.text.StringUtils;
 
 import java.net.MalformedURLException;
 import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 
 /**
@@ -340,19 +343,18 @@ public class Validator {
     }
 
     /**
-     * todo 判断字符串是否全部为字母组成，包括大写和小写字母和汉字
+     * 判断字符串是否全部为字母组成，包括大写和小写字母和汉字
      *
      * @param value 值
      * @return 是否全部为字母组成，包括大写和小写字母和汉字
      */
     public static boolean isLetter(String value) {
-//		return StringUtils.isAllCharMatch(value, new cn.hutool.core.lang.Matcher<Character>() {
-//			@Override
-//			public boolean match(Character t) {
-//				return Character.isLetter(t);
-//			}
-//		});
-        return false;
+        return StringUtils.isAllCharMatch(value, new com.y3tu.tool.core.lang.Matcher<Character>() {
+            @Override
+            public boolean match(Character t) {
+                return Character.isLetter(t);
+            }
+        });
     }
 
     /**
@@ -369,19 +371,18 @@ public class Validator {
     }
 
     /**
-     * todo 判断字符串是否全部为大写字母
+     * 判断字符串是否全部为大写字母
      *
      * @param value 值
      * @return 是否全部为大写字母
      */
     public static boolean isUpperCase(String value) {
-//		return StringUtils.isAllCharMatch(value, new cn.hutool.core.lang.Matcher<Character>() {
-//			@Override
-//			public boolean match(Character t) {
-//				return Character.isUpperCase(t);
-//			}
-//		});
-        return false;
+        return StringUtils.isAllCharMatch(value, new com.y3tu.tool.core.lang.Matcher<Character>() {
+            @Override
+            public boolean match(Character t) {
+                return Character.isUpperCase(t);
+            }
+        });
     }
 
     /**
@@ -398,19 +399,18 @@ public class Validator {
     }
 
     /**
-     * todo 判断字符串是否全部为小写字母
+     * 判断字符串是否全部为小写字母
      *
      * @param value 值
      * @return 是否全部为小写字母
      */
     public static boolean isLowerCase(String value) {
-//		return StringUtils.isAllCharMatch(value, new cn.hutool.core.lang.Matcher<Character>() {
-//			@Override
-//			public boolean match(Character t) {
-//				return Character.isLowerCase(t);
-//			}
-//		});
-        return false;
+        return StringUtils.isAllCharMatch(value, new com.y3tu.tool.core.lang.Matcher<Character>() {
+            @Override
+            public boolean match(Character t) {
+                return Character.isLowerCase(t);
+            }
+        });
     }
 
     /**
@@ -568,7 +568,7 @@ public class Validator {
     }
 
     /**
-     * todo 验证是否为生日<br>
+     * 验证是否为生日<br>
      *
      * @param year  年
      * @param month 月
@@ -577,33 +577,33 @@ public class Validator {
      */
     public static boolean isBirthday(int year, int month, int day) {
         // 验证年
-//		int thisYear = DateUtil.thisYear();
-//		if (year < 1930 || year > thisYear) {
-//			return false;
-//		}
-//
-//		// 验证月
-//		if (month < 1 || month > 12) {
-//			return false;
-//		}
-//
-//		// 验证日
-//		if (day < 1 || day > 31) {
-//			return false;
-//		}
-//		if ((month == 4 || month == 6 || month == 9 || month == 11) && day == 31) {
-//			return false;
-//		}
-//		if (month == 2) {
-//			if (day > 29 || (day == 29 && false == DateUtil.isLeapYear(year))) {
-//				return false;
-//			}
-//		}
+        int thisYear = DateUtil.thisYear();
+        if (year < 1930 || year > thisYear) {
+            return false;
+        }
+
+        // 验证月
+        if (month < 1 || month > 12) {
+            return false;
+        }
+
+        // 验证日
+        if (day < 1 || day > 31) {
+            return false;
+        }
+        if ((month == 4 || month == 6 || month == 9 || month == 11) && day == 31) {
+            return false;
+        }
+        if (month == 2) {
+            if (day > 29 || (day == 29 && false == DateUtil.isLeapYear(year))) {
+                return false;
+            }
+        }
         return true;
     }
 
     /**
-     * todo 验证是否为生日<br>
+     * 验证是否为生日<br>
      * 只支持以下几种格式：
      * <ul>
      * <li>yyyyMMdd</li>
@@ -617,15 +617,15 @@ public class Validator {
      * @return 是否为生日
      */
     public static boolean isBirthday(String value) {
-//		if (isMactchRegex(BIRTHDAY, value)) {
-//			Matcher matcher = BIRTHDAY.matcher(value);
-//			if (matcher.find()) {
-//				int year = Convert.toInt(matcher.group(1));
-//				int month = Convert.toInt(matcher.group(3));
-//				int day = Convert.toInt(matcher.group(5));
-//				return isBirthday(year, month, day);
-//			}
-//		}
+        if (isMactchRegex(BIRTHDAY, value)) {
+            Matcher matcher = BIRTHDAY.matcher(value);
+            if (matcher.find()) {
+                int year = ConvertUtil.toInt(matcher.group(1), 0);
+                int month = ConvertUtil.toInt(matcher.group(3), 0);
+                int day = ConvertUtil.toInt(matcher.group(5), 0);
+                return isBirthday(year, month, day);
+            }
+        }
         return false;
     }
 

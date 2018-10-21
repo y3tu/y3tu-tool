@@ -1,14 +1,11 @@
 package com.y3tu.tool.core.util;
 
 import com.y3tu.tool.core.collection.SetUtil;
+import com.y3tu.tool.core.convert.ConvertUtil;
 import com.y3tu.tool.core.lang.PatternPool;
 import com.y3tu.tool.core.text.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -154,7 +151,7 @@ public class ReUtil {
     }
 
     /**
-     * todo 从content中匹配出多个值并根据template生成新的字符串<br>
+     * 从content中匹配出多个值并根据template生成新的字符串<br>
      * 例如：<br>
      * content 2013年5月 pattern (.*?)年(.*?)月 template： $1-$2 return 2013-5
      *
@@ -164,103 +161,32 @@ public class ReUtil {
      * @return 新字符串
      */
     public static String extractMulti(Pattern pattern, String content, String template) {
-//		if (null == content || null == pattern || null == template) {
-//			return null;
-//		}
-//
-//		//提取模板中的编号
-//		final TreeSet<Integer> varNums = new TreeSet<>(new Comparator<Integer>() {
-//			@Override
-//			public int compare(Integer o1, Integer o2) {
-//				return ObjectUtil.compare(o2, o1);
-//			}
-//		});
-//		final Matcher matcherForTemplate = PatternPool.GROUP_VAR.matcher(template);
-//		while (matcherForTemplate.find()) {
-//			varNums.add(Integer.parseInt(matcherForTemplate.group(1)));
-//		}
-//
-//		final Matcher matcher = pattern.matcher(content);
-//		if (matcher.find()) {
-//			for (Integer group : varNums) {
-//				template = template.replace("$" + group, matcher.group(group));
-//			}
-//			return template;
-//		}
-        return null;
-    }
-
-    /**
-     * 从content中匹配出多个值并根据template生成新的字符串<br>
-     * 匹配结束后会删除匹配内容之前的内容（包括匹配内容）<br>
-     * 例如：<br>
-     * content 2013年5月 pattern (.*?)年(.*?)月 template： $1-$2 return 2013-5
-     *
-     * @param regex    匹配正则字符串
-     * @param content  被匹配的内容
-     * @param template 生成内容模板，变量 $1 表示group1的内容，以此类推
-     * @return 按照template拼接后的字符串
-     */
-    public static String extractMulti(String regex, String content, String template) {
-        if (null == content || null == regex || null == template) {
+        if (null == content || null == pattern || null == template) {
             return null;
         }
 
-        // Pattern pattern = Pattern.compile(regex, Pattern.DOTALL);
-        final Pattern pattern = PatternPool.get(regex, Pattern.DOTALL);
-        return extractMulti(pattern, content, template);
+        //提取模板中的编号
+        final TreeSet<Integer> varNums = new TreeSet<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return ObjectUtil.compare(o2, o1);
+            }
+        });
+        final Matcher matcherForTemplate = PatternPool.GROUP_VAR.matcher(template);
+        while (matcherForTemplate.find()) {
+            varNums.add(Integer.parseInt(matcherForTemplate.group(1)));
+        }
+
+        final Matcher matcher = pattern.matcher(content);
+        if (matcher.find()) {
+            for (Integer group : varNums) {
+                template = template.replace("$" + group, matcher.group(group));
+            }
+            return template;
+        }
+        return null;
     }
 
-    /**
-     * todo 从content中匹配出多个值并根据template生成新的字符串<br>
-     * 匹配结束后会删除匹配内容之前的内容（包括匹配内容）<br>
-     * 例如：<br>
-     * content 2013年5月 pattern (.*?)年(.*?)月 template： $1-$2 return 2013-5
-     *
-     * @param pattern 匹配正则
-     * @param contentHolder 被匹配的内容的Holder，value为内容正文，经过这个方法的原文将被去掉匹配之前的内容
-     * @param template 生成内容模板，变量 $1 表示group1的内容，以此类推
-     * @return 新字符串
-     */
-//	public static String extractMultiAndDelPre(Pattern pattern, Holder<String> contentHolder, String template) {
-//		if (null == contentHolder || null == pattern || null == template) {
-//			return null;
-//		}
-//
-//		HashSet<String> varNums = findAll(PatternPool.GROUP_VAR, template, 1, new HashSet<String>());
-//
-//		final String content = contentHolder.get();
-//		Matcher matcher = pattern.matcher(content);
-//		if (matcher.find()) {
-//			for (String var : varNums) {
-//				int group = Integer.parseInt(var);
-//				template = template.replace("$" + var, matcher.group(group));
-//			}
-//			contentHolder.set(StringUtils.substring(content, matcher.end(), content.length()));
-//			return template;
-//		}
-//		return null;
-//	}
-
-    /**
-     * todo 从content中匹配出多个值并根据template生成新的字符串<br>
-     * 例如：<br>
-     * content 2013年5月 pattern (.*?)年(.*?)月 template： $1-$2 return 2013-5
-     *
-     * @param regex 匹配正则字符串
-     * @param contentHolder 被匹配的内容的Holder，value为内容正文，经过这个方法的原文将被去掉匹配之前的内容
-     * @param template 生成内容模板，变量 $1 表示group1的内容，以此类推
-     * @return 按照template拼接后的字符串
-     */
-//	public static String extractMultiAndDelPre(String regex, Holder<String> contentHolder, String template) {
-//		if (null == contentHolder || null == regex || null == template) {
-//			return null;
-//		}
-//
-//		// Pattern pattern = Pattern.compile(regex, Pattern.DOTALL);
-//		final Pattern pattern = PatternPool.get(regex, Pattern.DOTALL);
-//		return extractMultiAndDelPre(pattern, contentHolder, template);
-//	}
 
     /**
      * 删除匹配的第一个内容
@@ -529,14 +455,13 @@ public class ReUtil {
     }
 
     /**
-     * todo 从字符串中获得第一个整数
+     * 从字符串中获得第一个整数
      *
      * @param StringWithNumber 带数字的字符串
      * @return 整数
      */
     public static Integer getFirstNumber(String StringWithNumber) {
-        //return Convert.toInt(get(PatternPool.NUMBERS, StringWithNumber, 0), null);
-        return 0;
+        return ConvertUtil.toInt(get(PatternPool.NUMBERS, StringWithNumber, 0), null);
     }
 
     /**

@@ -5,6 +5,7 @@ import com.y3tu.tool.core.annotation.Nullable;
 import com.y3tu.tool.core.collection.ArrayUtil;
 import com.y3tu.tool.core.collection.ListUtil;
 import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.lang.Matcher;
 import org.apache.commons.lang3.text.StrBuilder;
 
 import java.io.UnsupportedEncodingException;
@@ -1021,5 +1022,24 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             builder.append(str);
         }
         return builder.toString();
+    }
+
+    /**
+     * 字符串的每一个字符是否都与定义的匹配器匹配
+     *
+     * @param value 字符串
+     * @param matcher 匹配器
+     * @return 是否全部匹配
+     */
+    public static boolean isAllCharMatch(CharSequence value, Matcher<Character> matcher) {
+        if (StringUtils.isBlank(value)) {
+            return false;
+        }
+        int len = value.length();
+        boolean isAllMatch = true;
+        for (int i = 0; i < len; i++) {
+            isAllMatch &= matcher.match(value.charAt(i));
+        }
+        return isAllMatch;
     }
 }
