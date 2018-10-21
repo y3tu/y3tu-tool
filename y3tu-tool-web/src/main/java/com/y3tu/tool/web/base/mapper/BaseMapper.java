@@ -1,4 +1,4 @@
-package com.y3tu.tool.web.base.dao;
+package com.y3tu.tool.web.base.mapper;
 
 import com.baomidou.mybatisplus.plugins.Page;
 

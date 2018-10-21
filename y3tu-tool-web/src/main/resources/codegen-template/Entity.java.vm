@@ -1,6 +1,6 @@
 package ${package}.${moduleName}.entity;
 
-import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.Data;
@@ -30,9 +30,11 @@ public class ${className} extends BaseEntity<${className}> {
 	 * $column.comments
 	 */
 	#if($column.columnName == $pk.columnName)
-@TableId
+	@TableId
+	#elseif($column.columnName != $column.lowerAttrName)
+	@TableField("$column.columnName")
 	#end
-private $column.attrType $column.lowerAttrName;
+    private $column.attrType $column.lowerAttrName;
 #end
 
   /**
