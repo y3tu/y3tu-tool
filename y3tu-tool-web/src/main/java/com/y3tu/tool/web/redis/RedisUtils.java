@@ -1,6 +1,7 @@
 package com.y3tu.tool.web.redis;
 
 import com.y3tu.tool.core.util.JsonUtil;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
 
@@ -12,6 +13,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author y3tu
  */
+@Data
 public class RedisUtils {
     @Autowired
     private RedisTemplate redisTemplate;
@@ -33,6 +35,8 @@ public class RedisUtils {
      * 不设置过期时长
      */
     public final static long NOT_EXPIRE = -1;
+
+    public boolean aspectOpen = false;
 
     public void set(String key, Object value) {
         set(key, value, DEFAULT_EXPIRE);

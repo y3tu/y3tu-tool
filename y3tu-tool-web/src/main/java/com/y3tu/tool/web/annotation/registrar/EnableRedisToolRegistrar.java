@@ -1,0 +1,37 @@
+package com.y3tu.tool.web.annotation.registrar;
+
+import com.y3tu.tool.web.annotation.EnableRedisTool;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.context.ResourceLoaderAware;
+import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
+import org.springframework.core.annotation.AnnotationAttributes;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.type.AnnotationMetadata;
+
+/**
+ * Redis工具的bean登记类
+ * 主要功能获取注解的值
+ *
+ * @author y3tu
+ * @date 2018/10/22
+ */
+public class EnableRedisToolRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware {
+
+    private ResourceLoader resourceLoader;
+
+    /**
+     * 是否启用redis切面处理
+     */
+    public static boolean redisAspectOpen = false;
+
+    @Override
+    public void setResourceLoader(ResourceLoader resourceLoader) {
+
+    }
+
+    @Override
+    public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
+        AnnotationAttributes annoAttrs = AnnotationAttributes.fromMap(importingClassMetadata.getAnnotationAttributes(EnableRedisTool.class.getName()));
+        redisAspectOpen = annoAttrs.getBoolean("aspectOpen");
+    }
+}

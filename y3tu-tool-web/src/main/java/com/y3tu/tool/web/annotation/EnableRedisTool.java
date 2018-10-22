@@ -1,5 +1,7 @@
 package com.y3tu.tool.web.annotation;
 
+import com.y3tu.tool.web.annotation.registrar.EnableRedisToolRegistrar;
+import com.y3tu.tool.web.aspect.RedisAspect;
 import com.y3tu.tool.web.redis.RedisUtils;
 import org.springframework.context.annotation.Import;
 
@@ -15,6 +17,13 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented
-@Import(RedisUtils.class)
+@Import({EnableRedisToolRegistrar.class, RedisAspect.class, RedisUtils.class})
 public @interface EnableRedisTool {
+    /**
+     * 是否开始redis切面控制
+     * 默认开启
+     *
+     * @return
+     */
+    boolean aspectOpen() default true;
 }

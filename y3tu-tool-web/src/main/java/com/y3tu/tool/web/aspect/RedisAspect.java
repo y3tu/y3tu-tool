@@ -2,36 +2,28 @@ package com.y3tu.tool.web.aspect;
 
 
 import com.y3tu.tool.core.exception.BusinessException;
+import com.y3tu.tool.web.annotation.registrar.EnableRedisToolRegistrar;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 /**
  * Redis切面处理类
  *
- * @author chenshun
- * @email sunlightcs@gmail.com
- * @date 2017-07-17 23:30
+ * @author y3tu
+ * @date 2018/10/22
  */
 @Aspect
 @Component
 @Slf4j
-@ConditionalOnProperty(name = "y3tu-tool.redis.enable", havingValue = "true", matchIfMissing = false)
 public class RedisAspect {
-    /**
-     * 是否开启redis缓存  true开启   false关闭
-     */
-    @Value("${y3tu-tool.redis.open: false}")
-    private boolean open;
 
     @Around("execution(* com.y3tu.tool.web.redis.RedisUtils.*(..))")
     public Object around(ProceedingJoinPoint point) throws Throwable {
         Object result = null;
-        if (open) {
+        if (EnableRedisToolRegistrar.redisAspectOpen) {
             try {
                 result = point.proceed();
             } catch (Exception e) {
