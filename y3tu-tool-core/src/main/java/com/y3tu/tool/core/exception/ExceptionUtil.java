@@ -37,6 +37,21 @@ public class ExceptionUtil {
     }
 
     /**
+     * 根据异常获取异常信息
+     *
+     * @param e 当前异常
+     * @return 组装后的异常消息
+     */
+    public static String getFormatMessage(Exception e) {
+        StackTraceElement stackTraceElement = e.getStackTrace()[0];
+        String className = stackTraceElement.getClassName();
+        String methodName = stackTraceElement.getMethodName();
+        Integer lineNumber = stackTraceElement.getLineNumber();
+        return "异常发生处：" + className + "." + methodName + " 第" + lineNumber + " 行\n异常简要信息：" + e.getLocalizedMessage();
+    }
+
+
+    /**
      * 获得完整消息，包括异常名
      *
      * @param e
