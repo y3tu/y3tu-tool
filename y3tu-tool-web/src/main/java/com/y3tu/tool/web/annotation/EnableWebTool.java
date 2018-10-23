@@ -1,5 +1,6 @@
 package com.y3tu.tool.web.annotation;
 
+import com.y3tu.tool.web.aspect.ControllerAop;
 import com.y3tu.tool.web.util.SpringContextUtil;
 import org.springframework.context.annotation.Import;
 
@@ -14,6 +15,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented
-@Import(SpringContextUtil.class)
+@Import({SpringContextUtil.class, ControllerAop.class})
 public @interface EnableWebTool {
 }
