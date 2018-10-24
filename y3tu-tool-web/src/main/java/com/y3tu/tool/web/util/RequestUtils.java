@@ -1,7 +1,6 @@
 package com.y3tu.tool.web.util;
 
 import com.y3tu.tool.core.map.MapUtil;
-import com.y3tu.tool.http.IpUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -70,5 +69,16 @@ public class RequestUtils {
             dto.put(name, val);
         }
         return dto;
+    }
+
+    /**
+     * 判断是否为 AJAX 请求
+     *
+     * @param request HttpServletRequest
+     * @return boolean
+     */
+    public static boolean isAjaxRequest(HttpServletRequest request) {
+        return (request.getHeader("X-Requested-With") != null
+                && "XMLHttpRequest".equals(request.getHeader("X-Requested-With")));
     }
 }
