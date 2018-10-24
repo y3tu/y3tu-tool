@@ -1,19 +1,21 @@
 package com.y3tu.tool.web.util;
 
 import com.y3tu.tool.core.map.MapUtil;
-import org.apache.commons.lang3.StringUtils;
+import com.y3tu.tool.core.text.StringUtils;
+import org.springframework.http.HttpHeaders;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
- * HttpServletRequest帮助类
+ * Http与Servlet工具类.
  *
- * @author liuht
+ * @author ThinkGem
  * @date 2017/12/22 9:08
  */
 @SuppressWarnings("all")
-public class RequestUtils {
+public class ServletUtils {
 
     public static String getQueryString(HttpServletRequest request, String... exclude) {
         StringBuffer sb = new StringBuffer();
@@ -78,7 +80,62 @@ public class RequestUtils {
      * @return boolean
      */
     public static boolean isAjaxRequest(HttpServletRequest request) {
-        return (request.getHeader("X-Requested-With") != null
-                && "XMLHttpRequest".equals(request.getHeader("X-Requested-With")));
+        String accept = request.getHeader("accept");
+        if (accept != null && accept.indexOf("application/json") != -1) {
+            return true;
+        }
+
+        String xRequestedWith = request.getHeader("X-Requested-With");
+        if (xRequestedWith != null && xRequestedWith.indexOf("XMLHttpRequest") != -1) {
+            return true;
+        }
+
+        String uri = request.getRequestURI();
+        if (StringUtils.containsAnyIgnoreCase(uri, ".json", ".xml")) {
+            return true;
+        }
+
+        String ajax = request.getParameter("__ajax");
+        if (StringUtils.containsAnyIgnoreCase(ajax, "json", "xml")) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * 支持AJAX的页面跳转
+     */
+    public static void redirectUrl(HttpServletRequest request, HttpServletResponse response, String url) {
+        try {
+            if (ServletUtils.isAjaxRequest(request)) {
+                request.getRequestDispatcher(url).forward(request, response); // AJAX不支持Redirect改用Forward
+            } else {
+                response.sendRedirect(request.getContextPath() + url);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 设置客户端缓存过期时间 的Header.
+     */
+    public static void setExpiresHeader(HttpServletResponse response, long expiresSeconds) {
+        // Http 1.0 header, set a fix expires date.
+        response.setDateHeader(HttpHeaders.EXPIRES, System.currentTimeMillis() + expiresSeconds * 1000);
+        // Http 1.1 header, set a time after now.
+        response.setHeader(HttpHeaders.CACHE_CONTROL, "private, max-age=" + expiresSeconds);
+    }
+
+    /**
+     * 设置禁止客户端缓存的Header.
+     */
+    public static void setNoCacheHeader(HttpServletResponse response) {
+        // Http 1.0 header
+        response.setDateHeader(HttpHeaders.EXPIRES, 1L);
+        response.addHeader(HttpHeaders.PRAGMA, "no-cache");
+        // Http 1.1 header
+        response.setHeader(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, max-age=0");
     }
 }
