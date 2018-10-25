@@ -22,6 +22,7 @@
         <module>y3tu-tool-http</module>
         <module>y3tu-tool-aop</module>
         <module>y3tu-tool-db</module>
+        <module>y3tu-tool-report</module>
     </modules>
 
     <properties>
