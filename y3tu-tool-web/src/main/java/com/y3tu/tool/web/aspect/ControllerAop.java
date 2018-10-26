@@ -88,11 +88,11 @@ public class ControllerAop {
         } finally {
             long duration = timer.intervalMs();
             if (failed != null) {
-                log.error(pjp.getSignature() + " use time:" + duration);
+                log.error(pjp.getSignature() + " use time:" + duration + " ms");
             } else if (duration > threshold) {
-                log.warn(pjp.getSignature() + " use time:" + duration);
+                log.warn(pjp.getSignature() + " use time:" + duration + " ms");
             } else {
-                log.info(pjp.getSignature() + " use time:" + duration);
+                log.info(pjp.getSignature() + " use time:" + duration + " ms");
             }
         }
 

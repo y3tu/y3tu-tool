@@ -4,9 +4,12 @@ import com.y3tu.tool.core.date.DateUtil;
 import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IOUtil;
+import com.y3tu.tool.core.lang.Console;
+import com.y3tu.tool.core.lang.Platforms;
 import com.y3tu.tool.core.reflect.ReflectionUtil;
 import com.y3tu.tool.core.text.CharsetUtil;
 import com.y3tu.tool.core.text.StringUtils;
+import com.y3tu.tool.core.util.RuntimeUtil;
 import com.y3tu.tool.db.ds.DSFactory;
 import com.y3tu.tool.db.ds.DsFactoryEnum;
 import com.y3tu.tool.db.meta.Column;
@@ -154,7 +157,7 @@ public class GenUtils {
         map.put("pathName", tableEntity.getLowerClassName().toLowerCase());
         map.put("columns", tableEntity.getColumns());
         map.put("hasBigDecimal", hasBigDecimal);
-        map.put("hasDate",hasDate);
+        map.put("hasDate", hasDate);
         map.put("datetime", DateUtil.now());
 
         if (StringUtils.isNotBlank(genConfig.getComments())) {
@@ -283,11 +286,10 @@ public class GenUtils {
      * 程序手动调用生成代码
      * 读取配置文件里面数据库连接和配置
      *
-     * @param tableName     表名
      * @param setting       配置
      * @param dsFactoryEnum 指定数据源
      */
-    public static void startGeneratorCode(String tableName, Setting setting, DsFactoryEnum dsFactoryEnum) {
+    public static void startGeneratorCode(Setting setting, DsFactoryEnum dsFactoryEnum) {
 
         try {
             if (setting == null) {
@@ -304,9 +306,13 @@ public class GenUtils {
             }
 
             GenConfig genConfig = new GenConfig();
-            genConfig.setTableName(tableName);
+            genConfig.setModuleName(scanner("模块名"));
+            genConfig.setTableName(scanner("表名"));
 
-            File file = FileUtil.file(setting.getStr("zipCreatePath", "") + "code.zip");
+            String workingDir = Platforms.WORKING_DIR;
+            String targetDir = workingDir + "/target/";
+
+            File file = FileUtil.file(targetDir + "code.zip");
             OutputStream outputStream = FileUtil.asOututStream(file);
             ZipOutputStream zip = new ZipOutputStream(outputStream);
 
@@ -318,9 +324,47 @@ public class GenUtils {
             GenUtils.generatorCode(genConfig, setting, table, columns, zip);
             IOUtil.close(zip);
             outputStream.flush();
+            openDir(targetDir);
         } catch (Exception e) {
-            throw new UtilException("代码生成失败!" + e.getStackTrace());
+            throw new UtilException("代码生成失败!", e);
         }
 
+    }
+
+    /**
+     * <p>
+     * 读取控制台内容
+     * </p>
+     */
+    public static String scanner(String tip) {
+        Scanner scanner = Console.scanner();
+        StringBuilder help = new StringBuilder();
+        help.append("请输入" + tip + "：");
+        Console.log(help.toString());
+        if (scanner.hasNext()) {
+            String ipt = scanner.next();
+            if (StringUtils.isNotEmpty(ipt)) {
+                return ipt;
+            }
+        }
+        throw new UtilException("请输入正确的" + tip + "！");
+    }
+
+    /**
+     * 打开指定文件夹
+     *
+     * @param outputDir
+     */
+    public static void openDir(String outputDir) {
+        String osName = Platforms.OS_NAME;
+        if (osName != null) {
+            if (osName.contains("Mac")) {
+                RuntimeUtil.exec("open " + outputDir);
+            } else if (osName.contains("Windows")) {
+                RuntimeUtil.exec("cmd /c start " + outputDir);
+            } else {
+                log.debug("文件输出目录:" + outputDir);
+            }
+        }
     }
 }

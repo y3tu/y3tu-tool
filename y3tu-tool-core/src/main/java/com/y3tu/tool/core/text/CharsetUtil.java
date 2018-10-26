@@ -1,5 +1,7 @@
 package com.y3tu.tool.core.text;
 
+import com.y3tu.tool.core.io.FileUtil;
+
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
@@ -39,14 +41,6 @@ public class CharsetUtil {
      */
     public static final Charset CHARSET_GBK = Charset.forName(GBK);
 
-    /**
-     * 系统默认字符集编码
-     *
-     * @return 系统字符集编码
-     */
-    public static Charset defaultCharset() {
-        return Charset.defaultCharset();
-    }
 
     /**
      * 转换为Charset对象
@@ -57,6 +51,44 @@ public class CharsetUtil {
      */
     public static Charset charset(String charsetName) throws UnsupportedCharsetException {
         return StringUtils.isBlank(charsetName) ? Charset.defaultCharset() : Charset.forName(charsetName);
+    }
+
+    /**
+     * 系统字符集编码，如果是Windows，则默认为GBK编码，否则取 {@link CharsetUtil#defaultCharsetName()}
+     *
+     * @return 系统字符集编码
+     * @see CharsetUtil#defaultCharsetName()
+     */
+    public static String systemCharsetName() {
+        return systemCharset().name();
+    }
+
+    /**
+     * 系统字符集编码，如果是Windows，则默认为GBK编码，否则取 {@link CharsetUtil#defaultCharsetName()}
+     *
+     * @return 系统字符集编码
+     * @see CharsetUtil#defaultCharsetName()
+     */
+    public static Charset systemCharset() {
+        return FileUtil.isWindows() ? CHARSET_GBK : defaultCharset();
+    }
+
+    /**
+     * 系统默认字符集编码
+     *
+     * @return 系统字符集编码
+     */
+    public static String defaultCharsetName() {
+        return defaultCharset().name();
+    }
+
+    /**
+     * 系统默认字符集编码
+     *
+     * @return 系统字符集编码
+     */
+    public static Charset defaultCharset() {
+        return Charset.defaultCharset();
     }
 
 }
