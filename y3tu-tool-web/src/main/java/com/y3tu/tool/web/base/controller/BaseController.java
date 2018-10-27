@@ -7,10 +7,7 @@ import com.y3tu.tool.web.base.pojo.Query;
 import com.y3tu.tool.web.base.pojo.R;
 import com.y3tu.tool.web.base.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -37,6 +34,7 @@ public class BaseController<T extends BaseService, M extends BaseEntity> {
      * @return
      */
     @RequestMapping(value = "/getByPage", method = RequestMethod.GET)
+    @ResponseBody
     public R getByPage(@RequestParam Map<String, Object> params) {
         PageInfo pageInfo = new PageInfo(service.queryPage(new Query<M>(params).getPage(), params));
         return R.ok(pageInfo);
@@ -48,6 +46,7 @@ public class BaseController<T extends BaseService, M extends BaseEntity> {
      * @return
      */
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
+    @ResponseBody
     public R getAll() {
         return R.ok(service.selectList(null));
     }
@@ -59,6 +58,7 @@ public class BaseController<T extends BaseService, M extends BaseEntity> {
      * @return
      */
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
+    @ResponseBody
     public R get(@PathVariable String id) {
         return R.ok(service.selectById(id));
     }
@@ -70,6 +70,7 @@ public class BaseController<T extends BaseService, M extends BaseEntity> {
      * @return
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
+    @ResponseBody
     public R save(@RequestParam M entity) {
         service.insert(entity);
         return R.ok("保存成功!");
@@ -82,6 +83,7 @@ public class BaseController<T extends BaseService, M extends BaseEntity> {
      * @return
      */
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
+    @ResponseBody
     public R update(@RequestParam M entity) {
         service.updateById(entity);
         return R.ok("更新成功!");
@@ -94,6 +96,7 @@ public class BaseController<T extends BaseService, M extends BaseEntity> {
      * @return
      */
     @RequestMapping(value = "/delById/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
     public R delById(@PathVariable String id) {
         service.deleteById(id);
         return R.ok("删除成功!");
@@ -106,6 +109,7 @@ public class BaseController<T extends BaseService, M extends BaseEntity> {
      * @return
      */
     @RequestMapping(value = "/delByIds", method = RequestMethod.DELETE)
+    @ResponseBody
     public R delByIds(@RequestParam List<String> ids) {
         service.deleteBatchIds(ids);
         return R.ok("删除成功!");

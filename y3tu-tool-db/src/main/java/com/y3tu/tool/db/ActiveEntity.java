@@ -178,7 +178,7 @@ public class ActiveEntity extends Entity {
 	public ActiveEntity add() {
 		try {
 			db.insert(this);
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			throw new DbRuntimeException(e);
 		}
 		return this;

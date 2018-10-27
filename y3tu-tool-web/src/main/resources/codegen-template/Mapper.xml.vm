@@ -3,12 +3,25 @@
 
 <mapper namespace="${package}.${moduleName}.mapper.${className}Mapper">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="${package}.${moduleName}.entity.${className}" id="${classname}Map">
-#foreach($column in $columns)
-        <result property="${column.lowerAttrName}" column="${column.columnName}"/>
-#end
+        #foreach($column in $columns)
+            <result property="${column.lowerAttrName}" column="${column.columnName}"/>
+        #end
     </resultMap>
 
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+ #foreach($column in $columns)
+        ${column.columnName} as ${column.lowerAttrName},
+    #end
+    1=1
+    </sql>
 
+
+    <select id="queryPage" resultType="${package}.${moduleName}.entity.${className}">
+        select
+        <include refid="Base_Column_List"/>
+        from ${tableName}
+    </select>
 </mapper>
