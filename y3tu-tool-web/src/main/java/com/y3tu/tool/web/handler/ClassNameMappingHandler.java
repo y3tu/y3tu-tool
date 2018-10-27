@@ -1,6 +1,8 @@
 package com.y3tu.tool.web.handler;
 
+import com.y3tu.tool.core.collection.ArrayUtil;
 import com.y3tu.tool.core.collection.CollectionUtil;
+import com.y3tu.tool.core.collection.ListUtil;
 import com.y3tu.tool.core.text.CharUtil;
 import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.web.annotation.ClassNameMapping;
@@ -56,10 +58,23 @@ public class ClassNameMappingHandler extends RequestMappingHandlerMapping {
     }
 
     protected RequestMappingInfo createRequestMappingInfo(Method method, Class<?> handlerType, MethodMapping methodAnnotation) {
-        String mappingStr = calcRouterStrNew(handlerType.getName()) + "/" + method.getName();
 
+        RequestMapping requestMapping = AnnotationUtils.findAnnotation(handlerType, RequestMapping.class);
+
+        List<String> mappingStrList = ListUtil.newArrayList();
+        String mappingStr = "";
+        if (requestMapping != null) {
+            String[] strArr = requestMapping.value();
+            for (String str : strArr) {
+                mappingStrList.add(str + "/" + method.getName());
+            }
+        } else {
+            mappingStr = calcRouterStrNew(handlerType.getName()) + "/" + method.getName();
+            mappingStrList.add(mappingStr);
+        }
+        String[] mappingStrArr = ArrayUtil.toArray(mappingStrList, String.class);
         RequestMethodsRequestCondition methodMapping = new RequestMethodsRequestCondition(methodAnnotation.method());
-        return new RequestMappingInfo(new PatternsRequestCondition(new String[]{mappingStr}), methodMapping, null, null, null, null, null);
+        return new RequestMappingInfo(new PatternsRequestCondition(mappingStrArr), methodMapping, null, null, null, null, null);
     }
 
     protected RequestMappingInfo createPrimitiveRequestMappingInfo(Method method, Class<?> handlerType, RequestMapping requestMapping) {
