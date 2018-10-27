@@ -23,7 +23,7 @@ import java.util.Map;
 public class BaseController<T extends BaseService, M extends BaseEntity> {
 
     @Autowired
-    T service;
+    public T service;
 
     /**
      * 分页查询
