@@ -162,7 +162,6 @@ public class BeanDesc {
      *
      * @param field 字段
      * @return {@link PropDesc}
-     * @since 4.0.2
      */
     private PropDesc createProp(Field field) {
         final String fieldName = field.getName();
