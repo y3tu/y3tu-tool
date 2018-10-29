@@ -1,6 +1,6 @@
 package com.y3tu.tool.core.img;
 
-import com.y3tu.tool.core.io.FileUtil;
+import com.y3tu.tool.core.io.FilePathUtil;
 import com.y3tu.tool.core.io.IORuntimeException;
 import com.y3tu.tool.core.math.NumberUtil;
 import com.y3tu.tool.core.text.StringUtils;
@@ -393,7 +393,7 @@ public class Img {
      * @throws IORuntimeException IO异常
      */
     public void write(File targetFile) throws IORuntimeException {
-        String formatName = FileUtil.getFileExtension(targetFile);
+        String formatName = FilePathUtil.getFileExtension(targetFile);
         if (StringUtils.isBlank(formatName)) {
             formatName = ImageUtil.IMAGE_TYPE_JPG;
         }

@@ -9,6 +9,7 @@ import com.google.common.io.Files;
 import com.y3tu.tool.core.reflect.ClassUtil;
 import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.core.util.URLUtil;
+import org.apache.commons.lang3.Validate;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,10 +20,14 @@ import java.util.List;
 
 
 /**
+ * @author looly
  * 关于文件路径的工具集
  */
 public class FilePathUtil {
 
+    public static final String HTTP_PREFIX = "http://";
+    public static final String HTTPS_PREFIX = "https://";
+    public static final String DIR_SPLITER = "/";
 
     /**
      * 将路径整理，如 "a/../b"，整理成 "b"
@@ -450,5 +455,56 @@ public class FilePathUtil {
             return FileUtil.file(classPath).getParentFile().getParentFile();
         }
         return null;
+    }
+
+    /**
+     * 获取文件名(不包含路径)
+     *
+     * @param fullName 文件全名
+     */
+    public static String getFileName(String fullName) {
+        Validate.notEmpty(fullName);
+        int last = fullName.lastIndexOf(Platforms.FILE_PATH_SEPARATOR_CHAR);
+        return fullName.substring(last + 1);
+    }
+
+    /**
+     * 获取文件名的扩展名部分(不包含.)
+     *
+     * @param file 文件
+     * @see {@link com.google.common.io.Files#getFileExtension}
+     */
+    public static String getFileExtension(File file) {
+        return com.google.common.io.Files.getFileExtension(file.getName());
+    }
+
+    /**
+     * 获取文件名的扩展名部分(不包含.)
+     *
+     * @param fullName 文件全名
+     * @see {@link com.google.common.io.Files#getFileExtension}
+     */
+    public static String getFileExtension(String fullName) {
+        return com.google.common.io.Files.getFileExtension(fullName);
+    }
+
+    /**
+     * 返回主文件名
+     *
+     * @param fullName 文件全名
+     * @return 返回主文件名
+     */
+    public static String getNameWithoutExtension(String fullName) {
+        return com.google.common.io.Files.getNameWithoutExtension(fullName);
+    }
+
+    /**
+     * 返回主文件名
+     *
+     * @param file 文件
+     * @return 返回主文件名
+     */
+    public static String getNameWithoutExtension(File file) {
+        return com.google.common.io.Files.getNameWithoutExtension(file.getName());
     }
 }

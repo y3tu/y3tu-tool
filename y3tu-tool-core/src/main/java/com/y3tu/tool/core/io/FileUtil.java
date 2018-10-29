@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
 import com.y3tu.tool.core.annotation.NotNull;
 import com.y3tu.tool.core.collection.ArrayUtil;
 import com.y3tu.tool.core.lang.Assert;
-import com.y3tu.tool.core.lang.Platforms;
 import com.y3tu.tool.core.text.CharUtil;
 import com.y3tu.tool.core.text.CharsetUtil;
 import com.y3tu.tool.core.text.StringUtils;
@@ -631,7 +630,7 @@ public class FileUtil {
      */
     public static File rename(File file, String newName, boolean isRetainExt, boolean isOverride) {
         if (isRetainExt) {
-            newName = newName.concat(".").concat(FileUtil.getFileExtension(file));
+            newName = newName.concat(".").concat(FilePathUtil.getFileExtension(file));
         }
         final Path path = file.toPath();
         final CopyOption[] options = isOverride ? new CopyOption[]{StandardCopyOption.REPLACE_EXISTING} : new CopyOption[]{};
@@ -1067,54 +1066,4 @@ public class FileUtil {
         return Paths.get(filePath);
     }
 
-    /**
-     * 获取文件名(不包含路径)
-     *
-     * @param fullName 文件全名
-     */
-    public static String getFileName(String fullName) {
-        Validate.notEmpty(fullName);
-        int last = fullName.lastIndexOf(Platforms.FILE_PATH_SEPARATOR_CHAR);
-        return fullName.substring(last + 1);
-    }
-
-    /**
-     * 获取文件名的扩展名部分(不包含.)
-     *
-     * @param file 文件
-     * @see {@link com.google.common.io.Files#getFileExtension}
-     */
-    public static String getFileExtension(File file) {
-        return com.google.common.io.Files.getFileExtension(file.getName());
-    }
-
-    /**
-     * 获取文件名的扩展名部分(不包含.)
-     *
-     * @param fullName 文件全名
-     * @see {@link com.google.common.io.Files#getFileExtension}
-     */
-    public static String getFileExtension(String fullName) {
-        return com.google.common.io.Files.getFileExtension(fullName);
-    }
-
-    /**
-     * 返回主文件名
-     *
-     * @param fullName 文件全名
-     * @return 返回主文件名
-     */
-    public static String getNameWithoutExtension(String fullName) {
-        return com.google.common.io.Files.getNameWithoutExtension(fullName);
-    }
-
-    /**
-     * 返回主文件名
-     *
-     * @param file 文件
-     * @return 返回主文件名
-     */
-    public static String getNameWithoutExtension(File file) {
-        return com.google.common.io.Files.getNameWithoutExtension(file.getName());
-    }
 }

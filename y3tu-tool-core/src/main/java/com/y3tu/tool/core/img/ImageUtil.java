@@ -3,6 +3,7 @@ package com.y3tu.tool.core.img;
 import com.y3tu.tool.core.collection.ArrayUtil;
 import com.y3tu.tool.core.collection.ListUtil;
 import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.io.FilePathUtil;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IORuntimeException;
 import com.y3tu.tool.core.io.IOUtil;
@@ -455,8 +456,8 @@ public class ImageUtil {
         Assert.notNull(destImageFile);
         Assert.isFalse(srcImageFile.equals(destImageFile), "Src file is equals to dest file!");
 
-        final String srcExtName = FileUtil.getFileExtension(srcImageFile);
-        final String destExtName = FileUtil.getFileExtension(destImageFile);
+        final String srcExtName = FilePathUtil.getFileExtension(srcImageFile);
+        final String destExtName = FilePathUtil.getFileExtension(destImageFile);
         if (StringUtils.equalsIgnoreCase(srcExtName, destExtName)) {
             // 扩展名相同直接复制文件
             FileUtil.copy(srcImageFile, destImageFile);
@@ -1310,7 +1311,7 @@ public class ImageUtil {
      * @throws IORuntimeException IO异常
      */
     public static void write(Image image, File targetFile) throws IORuntimeException {
-        String formatName = FileUtil.getFileExtension(targetFile);
+        String formatName = FilePathUtil.getFileExtension(targetFile);
         if (StringUtils.isBlank(formatName)) {
             formatName = IMAGE_TYPE_JPG;
         }

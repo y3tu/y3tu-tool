@@ -23,6 +23,7 @@
         <module>y3tu-tool-aop</module>
         <module>y3tu-tool-db</module>
         <module>y3tu-tool-report</module>
+        <module>y3tu-tool-filesystem</module>
     </modules>
 
     <properties>

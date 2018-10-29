@@ -84,7 +84,7 @@ public class ZipUtil {
      * @throws UtilException IO异常
      */
     public static File zip(File srcFile, Charset charset) throws UtilException {
-        File zipFile = FileUtil.file(srcFile.getParentFile(), FileUtil.getNameWithoutExtension(srcFile) + ".zip");
+        File zipFile = FileUtil.file(srcFile.getParentFile(), FilePathUtil.getNameWithoutExtension(srcFile) + ".zip");
         zip(zipFile, charset, false, srcFile);
         return zipFile;
     }
@@ -328,7 +328,7 @@ public class ZipUtil {
      * @throws UtilException IO异常
      */
     public static File unzip(File zipFile, Charset charset) throws UtilException {
-        return unzip(zipFile, FileUtil.file(zipFile.getParentFile(), FileUtil.getNameWithoutExtension(zipFile)), charset);
+        return unzip(zipFile, FileUtil.file(zipFile.getParentFile(), FilePathUtil.getNameWithoutExtension(zipFile)), charset);
     }
 
     /**
