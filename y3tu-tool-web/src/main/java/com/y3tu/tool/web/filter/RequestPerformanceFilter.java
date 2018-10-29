@@ -3,7 +3,7 @@ package com.y3tu.tool.web.filter;
 import com.y3tu.tool.core.date.DateUtil;
 import com.y3tu.tool.core.date.TimeInterval;
 import com.y3tu.tool.core.text.StringUtils;
-import com.y3tu.tool.http.IpUtil;
+import com.y3tu.tool.http.IPUtil;
 import com.y3tu.tool.web.util.ServletUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -61,7 +61,7 @@ public class RequestPerformanceFilter extends OncePerRequestFilter implements Fi
      */
     private String dumpRequest(ServletRequest request) {
         HttpServletRequest req = (HttpServletRequest) request;
-        StringBuilder buffer = new StringBuilder(IpUtil.getIpAddr(req));
+        StringBuilder buffer = new StringBuilder(IPUtil.getIpAddr(req));
         buffer.append(" ").append(req.getMethod()).append("__").append(req.getRequestURI());
         if (includeQueryString) {
             String queryString = ServletUtils.getQueryString(req);

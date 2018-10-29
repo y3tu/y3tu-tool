@@ -18,6 +18,7 @@
 
     <properties>
         <okhttp-version>3.8.1</okhttp-version>
+        <ip2region-version>1.7</ip2region-version>
         <servlet-api.version>3.1.0</servlet-api.version>
     </properties>
 
@@ -32,6 +33,13 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>${servlet-api.version}</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- ip2region 获取ip地址的地理信息-->
+        <dependency>
+            <groupId>org.lionsoul</groupId>
+            <artifactId>ip2region</artifactId>
+            <version>${ip2region-version}</version>
         </dependency>
 
         <dependency>

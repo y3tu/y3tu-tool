@@ -11,7 +11,7 @@ import java.lang.annotation.*;
  * 在启动类上添加该注解来启用代码生成器
  * <p>
  * 注意:
- * 代码生成器需要mybatis-plus,velocity支持
+ * 代码生成器需要velocity支持
  * <p>
  * 访问：
  * /generator/page/ 获取数据源中表列表

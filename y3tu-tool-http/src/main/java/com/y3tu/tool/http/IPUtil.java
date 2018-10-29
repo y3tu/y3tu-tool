@@ -1,20 +1,37 @@
 package com.y3tu.tool.http;
 
 import com.alibaba.fastjson.JSONObject;
+import com.y3tu.tool.core.exception.BaseException;
+import com.y3tu.tool.core.exception.DefaultError;
+import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.io.FileUtil;
+import com.y3tu.tool.core.io.resource.ResourceUtil;
+import com.y3tu.tool.core.lang.Validator;
 import com.y3tu.tool.core.text.StringUtils;
+import com.y3tu.tool.core.util.ObjectUtil;
 import com.y3tu.tool.http.pojo.IpLocate;
 import lombok.extern.slf4j.Slf4j;
+import org.lionsoul.ip2region.DataBlock;
+import org.lionsoul.ip2region.DbConfig;
+import org.lionsoul.ip2region.DbSearcher;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Method;
 import java.net.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * ip工具类
+ *
+ * @author y3tu
+ */
 @Slf4j
-public class IpUtil {
+public class IPUtil {
     /**
      * http://www.mob.com/
      * 你的APPKEY mob官网注册申请即可
@@ -35,7 +52,7 @@ public class IpUtil {
      * 获取客户端IP地址
      *
      * @param request 请求
-     * @return
+     * @return ip地址
      */
     public static String getIpAddr(HttpServletRequest request) {
 
@@ -91,9 +108,9 @@ public class IpUtil {
      * 获取IP返回地理信息
      *
      * @param ip ip地址
-     * @return
+     * @return ip所在区域
      */
-    public static String getIpCity(String ip) {
+    private static String getIpCity(String ip) {
         if (null != ip) {
             String url = GET_IP_LOCATE + ip;
             String result = "未知";
@@ -116,7 +133,60 @@ public class IpUtil {
     }
 
     /**
+     * 获取IP返回地理信息
+     * 1.首先使用ip2region工具(https://gitee.com/lionsoul/ip2region)获取ip所在区域
+     * 2.如果1的工具获取不到信息，通过网络工具获取区域信息 {@link IPUtil#getIpCity(String)}
+     *
+     * @param ip ip地址
+     * @return ip所在区域
+     */
+    public static String getCityInfo(String ip) {
+        try {
+            URL url = ResourceUtil.asUrl("ip2region/ip2region.db");
+            File file = FileUtil.file(url);
+            if (!file.exists()) {
+                log.error("Error: Invalid ip2region.db file");
+            }
+            int algorithm = DbSearcher.BTREE_ALGORITHM;
+            DbConfig config = new DbConfig();
+            DbSearcher searcher = new DbSearcher(config, file.getPath());
+            Method method = null;
+            switch (algorithm) {
+                case DbSearcher.BTREE_ALGORITHM:
+                    method = searcher.getClass().getMethod("btreeSearch", String.class);
+                    break;
+                case DbSearcher.BINARY_ALGORITHM:
+                    method = searcher.getClass().getMethod("binarySearch", String.class);
+                    break;
+                case DbSearcher.MEMORY_ALGORITYM:
+                    method = searcher.getClass().getMethod("memorySearch", String.class);
+                    break;
+                default:
+                    method = searcher.getClass().getMethod("memorySearch", String.class);
+                    break;
+            }
+            DataBlock dataBlock = null;
+            if (!Validator.isIpv4(ip)) {
+                log.error("Error: Invalid ip address");
+                throw new UtilException("Error: Invalid ip address", DefaultError.INVALID_PARAMETER);
+            }
+            dataBlock = (DataBlock) method.invoke(searcher, ip);
+            if (ObjectUtil.isNull(dataBlock)) {
+                //如果查询不到就使用网络方式查询
+                return getIpCity(ip);
+            }
+            return dataBlock.getRegion();
+        } catch (BaseException e) {
+            throw e;
+        } catch (Exception e) {
+            log.error("获取地址信息异常", e);
+            throw new UtilException("获取地址信息异常：", e);
+        }
+    }
+
+    /**
      * 通过http://ip.chinaz.com 获取外网ip地址
+     *
      * @return
      */
     public static String getOutsideIp() {
@@ -149,7 +219,7 @@ public class IpUtil {
             }
         }
 
-        final Pattern p= Pattern.compile("\\<dd class\\=\"fz24\">(.*?)\\<\\/dd>");
+        final Pattern p = Pattern.compile("\\<dd class\\=\"fz24\">(.*?)\\<\\/dd>");
         Matcher m = p.matcher(inputLine.toString());
         if (m.find()) {
             String ipstr = m.group(1);
