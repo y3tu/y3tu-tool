@@ -1,5 +1,9 @@
 package com.y3tu.tool.http.callback;
 
+import com.y3tu.tool.core.exception.DefaultError;
+import com.y3tu.tool.core.io.FileUtil;
+import com.y3tu.tool.core.text.StringUtils;
+import com.y3tu.tool.http.HttpException;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -10,7 +14,7 @@ import java.io.*;
  *
  * @author y3tu
  */
-public abstract class FileCallBack extends CallBack<File> {
+public class FileCallBack extends CallBack<File> {
     /**
      * 目标文件夹地址
      */
@@ -25,13 +29,13 @@ public abstract class FileCallBack extends CallBack<File> {
      * @param destFileName：文件名
      */
     public FileCallBack(String destFileDir, String destFileName) {
-        destFileDir = destFileDir;
-        destFileName = destFileName;
+        this.destFileDir = destFileDir;
+        this.destFileName = destFileName;
     }
 
     @Override
     public void onFailure(Call call, IOException e) {
-
+        throw new HttpException("文件下载失败!", e, DefaultError.HTTP_ERROR);
     }
 
     @Override
@@ -55,7 +59,21 @@ public abstract class FileCallBack extends CallBack<File> {
             if (!dir.exists()) {
                 dir.mkdirs();
             }
-            File file = new File(dir, destFileName);
+
+            if (StringUtils.isEmpty(destFileName)) {
+                String disposition = response.header("Content-Disposition");
+                if (disposition != null) {
+                    int index = disposition.indexOf("filename=");
+                    if (index > 0) {
+                        destFileName = disposition.substring(index + 10,
+                                disposition.length() - 1);
+                    }
+                } else {
+                    destFileName = destFileDir.substring(destFileDir.lastIndexOf("/") + 1, destFileDir.length());
+                }
+            }
+
+            File file = FileUtil.file(destFileDir + destFileName);
             fos = new FileOutputStream(file);
             while ((len = is.read(buf)) != -1) {
                 sum += len;

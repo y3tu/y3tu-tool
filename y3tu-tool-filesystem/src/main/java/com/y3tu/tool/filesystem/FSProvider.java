@@ -1,11 +1,14 @@
 package com.y3tu.tool.filesystem;
 
+import java.io.Closeable;
+import java.util.Map;
+
 /**
  * 文件操作接口
  *
  * @author vakin
  */
-public interface FSProvider {
+public interface FSProvider extends Closeable {
 
     String name();
 
@@ -41,4 +44,12 @@ public interface FSProvider {
      * @return
      */
     String downloadAndSaveAs(String fileKey, String localSaveDir);
+
+    /**
+     * 连接文件服务器的token
+     *
+     * @param param
+     * @return
+     */
+    public Map<String, Object> createUploadToken(UploadTokenParam param);
 }
