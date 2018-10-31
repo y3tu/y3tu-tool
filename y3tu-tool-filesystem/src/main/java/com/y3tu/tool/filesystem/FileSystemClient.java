@@ -4,6 +4,7 @@ import com.y3tu.tool.filesystem.provider.ProviderTypeEnum;
 import com.y3tu.tool.filesystem.provider.aliyun.AliyunProvider;
 import com.y3tu.tool.filesystem.provider.fastdfs.FdfsProvider;
 import com.y3tu.tool.filesystem.provider.qiniu.QiniuProvider;
+import com.y3tu.tool.filesystem.provider.tencent.TencentProvider;
 import com.y3tu.tool.setting.Setting;
 
 import java.io.File;
@@ -39,17 +40,17 @@ public class FileSystemClient {
                 return client;
             }
             if (typeEnum == ProviderTypeEnum.ALIYUN) {
-                //阿里云
+                //阿里云oss
                 client = new FileSystemClient(AliyunProvider.createBySetting(setting));
             } else if (typeEnum == ProviderTypeEnum.QINIU) {
                 //七牛云
                 client = new FileSystemClient(QiniuProvider.createBySetting(setting));
             } else if (typeEnum == ProviderTypeEnum.FASTDFS) {
                 //fastDFS
-                client = new FileSystemClient(new FdfsProvider(setting.getProperties("")));
-            } else if(typeEnum==ProviderTypeEnum.TENCENT){
-                //todo 腾讯云
-
+                client = new FileSystemClient(new FdfsProvider(setting.getProperties("fastDFS")));
+            } else if (typeEnum == ProviderTypeEnum.TENCENT) {
+                //腾讯云cos
+                client = new FileSystemClient(TencentProvider.createBySetting(setting));
             }
             clients.put(typeEnum.getType(), client);
         }

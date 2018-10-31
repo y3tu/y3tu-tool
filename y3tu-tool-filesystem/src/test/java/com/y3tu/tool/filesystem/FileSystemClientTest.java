@@ -18,10 +18,21 @@ public class FileSystemClientTest {
 
     @Test
     public void getProvider() {
-        Setting setting = new Setting("fs.properties");
+        Setting setting = new Setting("fs.setting");
         FileSystemClient client = FileSystemClient.createClient(ProviderTypeEnum.QINIU, setting);
         File file = FileUtil.file("/Users/yxy/work/meizi.jpg");
         String path = client.upload(file);
         Console.log(path);
     }
+
+    @Test
+    public void TencentProvider() {
+        Setting setting = new Setting("fs.setting");
+        FileSystemClient client = FileSystemClient.createClient(ProviderTypeEnum.TENCENT, setting);
+        File file = FileUtil.file("/Users/yxy/work/meizi.jpg");
+        String path = client.upload(file);
+        Console.log(path);
+    }
+
+
 }

@@ -18,7 +18,9 @@
     <properties>
         <qiniu-java-sdk-version>7.2.14</qiniu-java-sdk-version>
         <aliyun-sdk-oss>2.8.3</aliyun-sdk-oss>
-        <fastdfs-client-java-version>1.26.3</fastdfs-client-java-version>
+        <qcloud-java-sdk>2.0.1</qcloud-java-sdk>
+        <cos_api>5.2.4</cos_api>
+        <fastdfs-client-java-version>1.27.0.0</fastdfs-client-java-version>
     </properties>
 
     <dependencies>
@@ -56,9 +58,24 @@
         </dependency>
 
         <dependency>
+            <groupId>com.qcloud</groupId>
+            <artifactId>cos_api</artifactId>
+            <version>5.2.4</version>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.qcloud</groupId>
+            <artifactId>qcloud-java-sdk</artifactId>
+            <version>${qcloud-java-sdk}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
             <groupId>net.oschina.zcx7878</groupId>
             <artifactId>fastdfs-client-java</artifactId>
-            <version>1.27.0.0</version>
+            <version>${fastdfs-client-java-version}</version>
+            <optional>true</optional>
         </dependency>
 
         <!--判断文件mime类型-->
