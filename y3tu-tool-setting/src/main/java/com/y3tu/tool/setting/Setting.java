@@ -178,7 +178,7 @@ public class Setting extends LinkedHashMap<String, String> {
     /**
      * 设置值
      *
-     * @param key 键
+     * @param key   键
      * @param value 值
      * @return this
      */
@@ -414,6 +414,15 @@ public class Setting extends LinkedHashMap<String, String> {
         return value;
     }
 
+    /**
+     * 获取波尔型属性值
+     *
+     * @param key 属性名
+     * @return 属性值
+     */
+    public Boolean getBool(String key) {
+        return getBool(key, DEFAULT_GROUP, null);
+    }
 
     /**
      * 获取波尔型属性值

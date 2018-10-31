@@ -16,6 +16,7 @@ import com.y3tu.tool.filesystem.FileSystemException;
 import com.y3tu.tool.filesystem.UploadObject;
 import com.y3tu.tool.filesystem.UploadTokenParam;
 import com.y3tu.tool.filesystem.provider.AbstractProvider;
+import com.y3tu.tool.setting.Setting;
 
 
 import java.io.IOException;
@@ -55,10 +56,10 @@ public class QiniuProvider extends AbstractProvider {
 
     public QiniuProvider(String urlprefix, String bucketName, String accessKey, String secretKey, boolean isPrivate) {
 
-        Assert.isNull(bucketName, "[bucketName] not defined");
-        Assert.isNull(accessKey, "[accessKey] not defined");
-        Assert.isNull(secretKey, "[secretKey] not defined");
-        Assert.isNull(urlprefix, "[urlprefix] not defined");
+        Assert.notBlank(bucketName, "[bucketName] not defined");
+        Assert.notBlank(accessKey, "[accessKey] not defined");
+        Assert.notBlank(secretKey, "[secretKey] not defined");
+        Assert.notBlank(urlprefix, "[urlprefix] not defined");
 
         this.urlprefix = urlprefix.endsWith(DIR_SPLITER) ? urlprefix : urlprefix + DIR_SPLITER;
         this.bucketName = bucketName;
@@ -71,6 +72,16 @@ public class QiniuProvider extends AbstractProvider {
 
         this.isPrivate = isPrivate;
         this.host = StringUtils.remove(urlprefix, "/").split(":")[1];
+    }
+
+    public static QiniuProvider createBySetting(Setting setting){
+        String urlprefix = setting.getStr("urlprefix", "qiniu", "");
+        String bucketName = setting.getStr("bucketName", "qiniu", "");
+        String accessKey = setting.getStr("accessKey", "qiniu", "");
+        String secretKey = setting.getStr("secretKey", "qiniu", "");
+        boolean isPrivate = setting.getBool("private", "qiniu");
+
+        return new QiniuProvider(urlprefix,bucketName,accessKey,secretKey,isPrivate);
     }
 
     @Override

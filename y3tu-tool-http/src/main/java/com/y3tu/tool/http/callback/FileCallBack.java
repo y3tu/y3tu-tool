@@ -60,6 +60,7 @@ public class FileCallBack extends CallBack<File> {
                 dir.mkdirs();
             }
 
+            //如果没有设置文件名，那么就取内容秒速里面的文件名
             if (StringUtils.isEmpty(destFileName)) {
                 String disposition = response.header("Content-Disposition");
                 if (disposition != null) {

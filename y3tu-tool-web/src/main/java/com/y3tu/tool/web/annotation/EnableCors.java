@@ -6,7 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 允许跨域访问
+ * 允许跨域访问，此注解作用于Controller方法上，允许该方法被跨域调用
+ * <p>
+ * 也可使用spring 自带的 {@link org.springframework.web.bind.annotation.CrossOrigin} 注解
+ * 也可使用自定义全局跨域配置 {@link com.y3tu.tool.web.config.CorsConfig}
  *
  * @author y3tu
  * @date 2018/10/30
