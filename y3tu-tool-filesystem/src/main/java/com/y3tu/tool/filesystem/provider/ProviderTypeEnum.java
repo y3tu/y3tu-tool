@@ -8,10 +8,21 @@ package com.y3tu.tool.filesystem.provider;
  */
 public enum ProviderTypeEnum {
     /**
-     * 提供者枚举
+     * 阿里云oss
      */
     ALIYUN("aliyun"),
-    QINIU("qiniu");
+    /**
+     * 七牛云
+     */
+    QINIU("qiniu"),
+    /**
+     * 腾讯云
+     */
+    TENCENT("tencent"),
+    /**
+     * fastFDS
+     */
+    FASTDFS("fastdfs");
 
     String type;
 

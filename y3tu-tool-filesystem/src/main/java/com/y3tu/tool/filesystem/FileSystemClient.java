@@ -2,6 +2,7 @@ package com.y3tu.tool.filesystem;
 
 import com.y3tu.tool.filesystem.provider.ProviderTypeEnum;
 import com.y3tu.tool.filesystem.provider.aliyun.AliyunProvider;
+import com.y3tu.tool.filesystem.provider.fastdfs.FdfsProvider;
 import com.y3tu.tool.filesystem.provider.qiniu.QiniuProvider;
 import com.y3tu.tool.setting.Setting;
 
@@ -41,7 +42,14 @@ public class FileSystemClient {
                 //阿里云
                 client = new FileSystemClient(AliyunProvider.createBySetting(setting));
             } else if (typeEnum == ProviderTypeEnum.QINIU) {
+                //七牛云
                 client = new FileSystemClient(QiniuProvider.createBySetting(setting));
+            } else if (typeEnum == ProviderTypeEnum.FASTDFS) {
+                //fastDFS
+                client = new FileSystemClient(new FdfsProvider(setting.getProperties("")));
+            } else if(typeEnum==ProviderTypeEnum.TENCENT){
+                //todo 腾讯云
+
             }
             clients.put(typeEnum.getType(), client);
         }
