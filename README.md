@@ -10,10 +10,12 @@ Java工具类,把平时工作学习中用的技术进行汇总，已供后续项
     </dependency>
     
 ## Todo
-1. 分布式定时任务  
-2. 消息队列集成
-3. ~~七牛云、腾讯云对象存储工具类~~ (完成)
-4. y3tu-tool-report 集成JasperReports
+
+1. 学习多级缓存，参考项目[layering-cache](https://github.com/xiaolyuh/layering-cache) 
+2. y3tu-tool-report 集成JasperReports
+
+## Done
+1. 文件系统工具(y3tu-tool-filesystem模块)
 
 ## Thanks 感谢
 
