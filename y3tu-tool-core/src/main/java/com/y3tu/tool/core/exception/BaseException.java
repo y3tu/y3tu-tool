@@ -12,8 +12,8 @@ import lombok.Data;
 @Data
 public class BaseException extends RuntimeException {
 
-    public IError error = DefaultError.SYSTEM_INTERNAL_ERROR;
-    public String errorMessage = DefaultError.SYSTEM_INTERNAL_ERROR.getErrorMessage();
+    public IError error = Error.SYSTEM_INTERNAL_ERROR;
+    public String errorMessage = Error.SYSTEM_INTERNAL_ERROR.getErrorMessage();
 
     public BaseException() {
         super();
@@ -43,25 +43,25 @@ public class BaseException extends RuntimeException {
         errorMessage = StringUtils.format(messageTemplate, params);
     }
 
-    public BaseException(IError error) {
+    public BaseException(Error error) {
         super();
         this.errorMessage = error.getErrorMessage();
         this.error = error;
     }
 
-    public BaseException(String message, IError error) {
+    public BaseException(String message, Error error) {
         this(message);
         this.errorMessage = message;
         this.error = error;
     }
 
-    public BaseException(String message, Throwable cause, IError error) {
+    public BaseException(String message, Throwable cause, Error error) {
         this(message, cause);
         this.errorMessage = message;
         this.error = error;
     }
 
-    public BaseException(Throwable cause, IError error) {
+    public BaseException(Throwable cause, Error error) {
         this(cause);
         this.errorMessage = error.getErrorMessage();
         this.error = error;

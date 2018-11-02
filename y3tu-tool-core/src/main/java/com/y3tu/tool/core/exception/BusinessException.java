@@ -31,20 +31,20 @@ public class BusinessException extends BaseException {
         super(throwable, messageTemplate, params);
     }
 
-    public BusinessException(IError error) {
+    public BusinessException(Error error) {
         super(error);
     }
 
-    public BusinessException(String message, IError error) {
-        super(message,error);
+    public BusinessException(String message, Error error) {
+        super(message, error);
     }
 
-    public BusinessException(String message, Throwable cause, IError error) {
-        super(message, cause,error);
+    public BusinessException(String message, Throwable cause, Error error) {
+        super(message, cause, error);
     }
 
-    public BusinessException(Throwable cause, IError error) {
-        super(cause,error);
+    public BusinessException(Throwable cause, Error error) {
+        super(cause, error);
     }
 
 }

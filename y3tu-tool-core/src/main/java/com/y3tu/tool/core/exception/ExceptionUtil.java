@@ -71,8 +71,8 @@ public class ExceptionUtil {
         if (throwable instanceof RuntimeException) {
             return (RuntimeException) throwable;
         }
-        if (throwable instanceof Error) {
-            throw (Error) throwable;
+        if (throwable instanceof java.lang.Error) {
+            throw new RuntimeException(throwable);
         }
         return new RuntimeException(throwable);
     }

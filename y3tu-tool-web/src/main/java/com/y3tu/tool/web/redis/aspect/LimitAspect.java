@@ -2,7 +2,6 @@ package com.y3tu.tool.web.redis.aspect;
 
 import com.google.common.collect.ImmutableList;
 import com.y3tu.tool.core.exception.BusinessException;
-import com.y3tu.tool.core.exception.DefaultError;
 import com.y3tu.tool.http.IPUtil;
 import com.y3tu.tool.web.redis.annotation.Limit;
 import com.y3tu.tool.web.redis.constant.LimitType;

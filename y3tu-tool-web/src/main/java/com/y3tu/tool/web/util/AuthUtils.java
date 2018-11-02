@@ -2,7 +2,7 @@ package com.y3tu.tool.web.util;
 
 import com.y3tu.tool.core.codec.Base64Util;
 import com.y3tu.tool.core.exception.BusinessException;
-import com.y3tu.tool.core.exception.DefaultError;
+import com.y3tu.tool.core.exception.Error;
 import com.y3tu.tool.core.text.CharsetUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +33,7 @@ public class AuthUtils {
         try {
             decoded = Base64Util.decode(base64Token);
         } catch (IllegalArgumentException e) {
-            throw new BusinessException("Failed to decode basic authentication token", DefaultError.PARAMETER_ANNOTATION_NOT_MATCH);
+            throw new BusinessException("Failed to decode basic authentication token", Error.PARAMETER_ANNOTATION_NOT_MATCH);
         }
 
         String token = new String(decoded, CharsetUtil.UTF_8);
@@ -41,7 +41,7 @@ public class AuthUtils {
         int delim = token.indexOf(":");
 
         if (delim == -1) {
-            throw new BusinessException("Invalid basic authentication token" + DefaultError.PARAMETER_NOT_MATCH_RULE);
+            throw new BusinessException("Invalid basic authentication token" + Error.PARAMETER_NOT_MATCH_RULE);
         }
         return new String[]{token.substring(0, delim), token.substring(delim + 1)};
     }
@@ -58,7 +58,7 @@ public class AuthUtils {
         String header = request.getHeader("Authorization");
 
         if (header == null || !header.startsWith(BASIC_)) {
-            throw new BusinessException("请求头中client信息为空" + DefaultError.PARAMETER_NOT_MATCH_RULE);
+            throw new BusinessException("请求头中client信息为空" + Error.PARAMETER_NOT_MATCH_RULE);
         }
 
         return extractAndDecodeHeader(header);

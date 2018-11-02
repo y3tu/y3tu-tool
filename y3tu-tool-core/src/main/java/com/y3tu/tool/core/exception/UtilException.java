@@ -32,19 +32,19 @@ public class UtilException extends BaseException {
         super(throwable, messageTemplate, params);
     }
 
-    public UtilException(IError error) {
+    public UtilException(Error error) {
         super(error);
     }
 
-    public UtilException(String message, IError error) {
+    public UtilException(String message, Error error) {
         super(message,error);
     }
 
-    public UtilException(String message, Throwable cause, IError error) {
+    public UtilException(String message, Throwable cause, Error error) {
         super(message, cause,error);
     }
 
-    public UtilException(Throwable cause, IError error) {
+    public UtilException(Throwable cause, Error error) {
         super(cause,error);
     }
 }

@@ -7,7 +7,7 @@ package com.y3tu.tool.core.exception;
  * @author zhangwei
  * @date 2017年11月18日23:45:26
  */
-public enum DefaultError implements IError {
+public enum Error implements IError {
     /**
      * 系统内部错误
      */
@@ -94,7 +94,7 @@ public enum DefaultError implements IError {
     String errorMessage;
     private static final String NS = "SYS";
 
-    DefaultError(String errorCode, String errorMessage) {
+    Error(String errorCode, String errorMessage) {
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
     }

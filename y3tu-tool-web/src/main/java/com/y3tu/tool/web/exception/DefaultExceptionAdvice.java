@@ -1,6 +1,7 @@
 package com.y3tu.tool.web.exception;
 
 import com.y3tu.tool.core.exception.*;
+import com.y3tu.tool.core.exception.Error;
 import com.y3tu.tool.web.annotation.EnableDefaultExceptionAdvice;
 import com.y3tu.tool.web.base.pojo.R;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +36,7 @@ public class DefaultExceptionAdvice {
     @ExceptionHandler({SQLException.class})
     public ResponseEntity handleSQLException(SQLException e) {
         log.error("服务运行SQLException异常", e);
-        R response = R.error(DefaultError.SQL_EXCEPTION);
+        R response = R.error(Error.SQL_EXCEPTION);
         response.setMessage(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -49,7 +50,7 @@ public class DefaultExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity handle(Throwable throwable) {
         RuntimeException runtimeException = ExceptionUtil.wrapRuntime(throwable);
-        R response = R.error(DefaultError.SYSTEM_INTERNAL_ERROR);
+        R response = R.error(Error.SYSTEM_INTERNAL_ERROR);
         response.setMessage(runtimeException.getMessage());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -75,7 +76,7 @@ public class DefaultExceptionAdvice {
             error = ((ServerException) e).getError();
             message = ((ServerException) e).getErrorMessage();
         } else {
-            error = DefaultError.SYSTEM_INTERNAL_ERROR;
+            error = Error.SYSTEM_INTERNAL_ERROR;
             message = e.getMessage();
         }
         R response = R.error(error);

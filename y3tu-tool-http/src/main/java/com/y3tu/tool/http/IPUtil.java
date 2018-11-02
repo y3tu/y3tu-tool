@@ -2,7 +2,7 @@ package com.y3tu.tool.http;
 
 import com.alibaba.fastjson.JSONObject;
 import com.y3tu.tool.core.exception.BaseException;
-import com.y3tu.tool.core.exception.DefaultError;
+import com.y3tu.tool.core.exception.Error;
 import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.resource.ResourceUtil;
@@ -168,7 +168,7 @@ public class IPUtil {
             DataBlock dataBlock = null;
             if (!Validator.isIpv4(ip)) {
                 log.error("Error: Invalid ip address");
-                throw new UtilException("Error: Invalid ip address", DefaultError.INVALID_PARAMETER);
+                throw new UtilException("Error: Invalid ip address", Error.INVALID_PARAMETER);
             }
             dataBlock = (DataBlock) method.invoke(searcher, ip);
             if (ObjectUtil.isNull(dataBlock)) {
