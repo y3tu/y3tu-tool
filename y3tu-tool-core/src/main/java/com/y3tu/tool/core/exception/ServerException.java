@@ -31,26 +31,18 @@ public class ServerException extends BaseException{
     }
 
     public ServerException(IError error) {
-        super();
-        this.errorMessage = null;
-        this.error = error;
+        super(error);
     }
 
     public ServerException(String message, IError error) {
-        this(message);
-        this.errorMessage = message;
-        this.error = error;
+        super(message,error);
     }
 
     public ServerException(String message, Throwable cause, IError error) {
-        this(message, cause);
-        this.errorMessage = message;
-        this.error = error;
+        super(message, cause,error);
     }
 
     public ServerException(Throwable cause, IError error) {
-        this(cause);
-        this.errorMessage = null;
-        this.error = error;
+        super(cause,error);
     }
 }

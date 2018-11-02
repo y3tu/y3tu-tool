@@ -21,6 +21,7 @@ public class BaseException extends RuntimeException {
 
     public BaseException(String message) {
         super(message);
+        errorMessage = message;
     }
 
     public BaseException(Throwable cause) {
@@ -29,19 +30,22 @@ public class BaseException extends RuntimeException {
 
     public BaseException(String message, Throwable cause) {
         super(message, cause);
+        errorMessage = message;
     }
 
     public BaseException(String messageTemplate, Object... params) {
         super(StringUtils.format(messageTemplate, params));
+        errorMessage = StringUtils.format(messageTemplate, params);
     }
 
     public BaseException(Throwable throwable, String messageTemplate, Object... params) {
         super(StringUtils.format(messageTemplate, params), throwable);
+        errorMessage = StringUtils.format(messageTemplate, params);
     }
 
     public BaseException(IError error) {
         super();
-        this.errorMessage = null;
+        this.errorMessage = error.getErrorMessage();
         this.error = error;
     }
 
@@ -59,7 +63,7 @@ public class BaseException extends RuntimeException {
 
     public BaseException(Throwable cause, IError error) {
         this(cause);
-        this.errorMessage = null;
+        this.errorMessage = error.getErrorMessage();
         this.error = error;
     }
 

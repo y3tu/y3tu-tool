@@ -13,6 +13,8 @@ Java工具类,把平时工作学习中用的技术进行汇总，已供后续项
 
 1. 学习多级缓存，参考项目[layering-cache](https://github.com/xiaolyuh/layering-cache) 
 2. y3tu-tool-report 集成JasperReports
+3. spring batch 批处理框架的使用
+4. 研究frp搭建内网穿透服务
 
 ## Done
 1. 文件系统工具(y3tu-tool-filesystem模块)

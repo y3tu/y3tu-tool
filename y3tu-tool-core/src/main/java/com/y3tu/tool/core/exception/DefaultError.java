@@ -11,15 +11,15 @@ public enum DefaultError implements IError {
     /**
      * 系统内部错误
      */
-    SYSTEM_INTERNAL_ERROR("0000", "System Internal Error"),
+    SYSTEM_INTERNAL_ERROR("0000", "系统内部错误"),
     /**
      * 无效参数
      */
-    INVALID_PARAMETER("0001", "Invalid Parameter"),
+    INVALID_PARAMETER("0001", "无效参数"),
     /**
      * 服务不存在
      */
-    SERVICE_NOT_FOUND("0002", "Service Not Found"),
+    SERVICE_NOT_FOUND("0002", "服务不存在"),
     /**
      * 参数不全
      */

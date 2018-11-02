@@ -33,26 +33,18 @@ public class UtilException extends BaseException {
     }
 
     public UtilException(IError error) {
-        super();
-        this.errorMessage = null;
-        this.error = error;
+        super(error);
     }
 
     public UtilException(String message, IError error) {
-        this(message);
-        this.errorMessage = message;
-        this.error = error;
+        super(message,error);
     }
 
     public UtilException(String message, Throwable cause, IError error) {
-        this(message, cause);
-        this.errorMessage = message;
-        this.error = error;
+        super(message, cause,error);
     }
 
     public UtilException(Throwable cause, IError error) {
-        this(cause);
-        this.errorMessage = null;
-        this.error = error;
+        super(cause,error);
     }
 }

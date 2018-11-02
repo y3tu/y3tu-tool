@@ -1,8 +1,9 @@
-package com.y3tu.tool.web.annotation.registrar;
+package com.y3tu.tool.web.redis.annotation.registrar;
 
-import com.y3tu.tool.web.annotation.EnableRedisTool;
+import com.y3tu.tool.web.redis.annotation.EnableRedisTool;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ResourceLoaderAware;
+import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.io.ResourceLoader;
@@ -33,5 +34,9 @@ public class EnableRedisToolRegistrar implements ImportBeanDefinitionRegistrar, 
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
         AnnotationAttributes annoAttrs = AnnotationAttributes.fromMap(importingClassMetadata.getAnnotationAttributes(EnableRedisTool.class.getName()));
         redisAspectOpen = annoAttrs.getBoolean("aspectOpen");
+
+        ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(registry);
+        //此处可以扫描工具包里面的包路径加载bean，作用同等于ComponentScan
+       // scanner.scan("");
     }
 }
