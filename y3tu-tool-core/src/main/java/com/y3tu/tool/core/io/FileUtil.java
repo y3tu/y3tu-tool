@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 
 import com.y3tu.tool.core.annotation.NotNull;
 import com.y3tu.tool.core.collection.ArrayUtil;
+import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.lang.Assert;
 import com.y3tu.tool.core.text.CharUtil;
 import com.y3tu.tool.core.text.CharsetUtil;
@@ -649,8 +650,12 @@ public class FileUtil {
      *
      * @see {@link Files#readAllBytes}
      */
-    public static byte[] toByteArray(final File file) throws IOException {
-        return Files.readAllBytes(file.toPath());
+    public static byte[] toByteArray(final File file) {
+        try {
+            return Files.readAllBytes(file.toPath());
+        } catch (IOException e) {
+            throw new UtilException(e);
+        }
     }
 
     /**
