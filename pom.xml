@@ -24,6 +24,7 @@
         <module>y3tu-tool-db</module>
         <module>y3tu-tool-report</module>
         <module>y3tu-tool-filesystem</module>
+        <module>y3tu-tool-cache</module>
     </modules>
 
     <properties>
