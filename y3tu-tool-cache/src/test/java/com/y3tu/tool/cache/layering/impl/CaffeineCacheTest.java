@@ -1,13 +1,12 @@
-package com.y3tu.tool.cache.layering.caffeine;
+package com.y3tu.tool.cache.layering.impl;
 
+import com.y3tu.tool.cache.layering.impl.CaffeineCache;
 import com.y3tu.tool.cache.layering.setting.FirstCacheSetting;
 import com.y3tu.tool.cache.layering.support.ExpireMode;
 import com.y3tu.tool.core.lang.Console;
 import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
-
-import static org.junit.Assert.*;
 
 /**
  * @author y3tu

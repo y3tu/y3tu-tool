@@ -52,22 +52,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!--Redis start-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-            <version>${spring-boot-version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>${redis-version}</version>
-        </dependency>
-
-        <!--Redis end-->
-
         <!--mybatis-plus 代码生成器需要的jar start-->
         <dependency>
             <groupId>com.baomidou</groupId>

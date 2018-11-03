@@ -21,7 +21,7 @@ import java.util.UUID;
 @Slf4j
 public class RedisDistributedLock extends AbstractDistributedLock {
 
-    private RedisTemplate<String, String> redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     private ThreadLocal<String> lockFlag = new ThreadLocal<>();
 
@@ -39,7 +39,7 @@ public class RedisDistributedLock extends AbstractDistributedLock {
                 "end ";
     }
 
-    public RedisDistributedLock(RedisTemplate<String, String> redisTemplate) {
+    public RedisDistributedLock(RedisTemplate<String, Object> redisTemplate) {
         super();
         this.redisTemplate = redisTemplate;
     }

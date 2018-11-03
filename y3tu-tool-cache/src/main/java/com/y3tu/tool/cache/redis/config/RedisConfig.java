@@ -67,7 +67,7 @@ public class RedisConfig extends CachingConfigurerSupport {
      */
     @Bean
     @ConditionalOnMissingBean
-    public RedisRepository redisRepository(RedisTemplate<String, String> redisTemplate) {
+    public RedisRepository redisRepository(RedisTemplate<String, Object> redisTemplate) {
         return new RedisRepository(redisTemplate);
     }
 
@@ -78,7 +78,7 @@ public class RedisConfig extends CachingConfigurerSupport {
      */
     @Bean
     @ConditionalOnMissingBean
-    public RedisDistributedLock redisDistributedLock(RedisTemplate<String, String> redisTemplate){
+    public RedisDistributedLock redisDistributedLock(RedisTemplate<String, Object> redisTemplate){
         return new RedisDistributedLock(redisTemplate);
     }
 
@@ -112,8 +112,8 @@ public class RedisConfig extends CachingConfigurerSupport {
     @Bean(name = "redisTemplate")
     @SuppressWarnings({"unchecked", "rawtypes"})
     @ConditionalOnMissingBean(name = "redisTemplate")
-    public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
-        RedisTemplate<Object, Object> template = new RedisTemplate<>();
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
         //使用 fastjson 序列化
         FastJsonRedisSerializer fastJsonRedisSerializer = new FastJsonRedisSerializer(Object.class);
         // value 值的序列化采用 fastJsonRedisSerializer

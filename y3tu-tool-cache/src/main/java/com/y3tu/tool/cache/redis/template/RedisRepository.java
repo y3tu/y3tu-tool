@@ -19,6 +19,7 @@ import java.util.*;
 /**
  * Redis Repository
  * redis 基本操作 可扩展,基本够用了
+ *
  * @author liuht
  */
 @Slf4j
@@ -37,14 +38,14 @@ public class RedisRepository {
     /**
      * value 序列化
      */
-    private  static final JdkSerializationRedisSerializer OBJECT_SERIALIZER = new JdkSerializationRedisSerializer();
+    private static final JdkSerializationRedisSerializer OBJECT_SERIALIZER = new JdkSerializationRedisSerializer();
 
     /**
      * Spring Redis Template
      */
-    private RedisTemplate<String, String> redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
-    public RedisRepository(RedisTemplate<String, String> redisTemplate) {
+    public RedisRepository(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
         this.redisTemplate.setKeySerializer(STRING_SERIALIZER);
         this.redisTemplate.setValueSerializer(OBJECT_SERIALIZER);
@@ -60,7 +61,7 @@ public class RedisRepository {
     /**
      * 获取 RedisTemplate对象
      */
-    public RedisTemplate<String, String> getRedisTemplate() {
+    public RedisTemplate<String, Object> getRedisTemplate() {
         return redisTemplate;
     }
 
@@ -394,7 +395,7 @@ public class RedisRepository {
      *
      * @return the list operations
      */
-    public ListOperations<String, String> opsForList() {
+    public ListOperations<String, Object> opsForList() {
         return redisTemplate.opsForList();
     }
 
@@ -415,7 +416,7 @@ public class RedisRepository {
      * @param key the key
      * @return the string
      */
-    public String leftPop(String key) {
+    public Object leftPop(String key) {
         return opsForList().leftPop(key);
     }
 
@@ -436,7 +437,7 @@ public class RedisRepository {
      * @param key the key
      * @return the string
      */
-    public String rightPop(String key) {
+    public Object rightPop(String key) {
         return opsForList().rightPop(key);
     }
 
@@ -482,7 +483,7 @@ public class RedisRepository {
      * @param end   the end
      * @return the list
      */
-    public List<String> getList(String key, int start, int end) {
+    public List<Object> getList(String key, int start, int end) {
         return opsForList().range(key, start, end);
     }
 

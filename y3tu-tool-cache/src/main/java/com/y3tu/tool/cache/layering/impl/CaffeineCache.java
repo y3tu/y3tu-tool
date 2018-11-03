@@ -1,4 +1,4 @@
-package com.y3tu.tool.cache.layering.caffeine;
+package com.y3tu.tool.cache.layering.impl;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
