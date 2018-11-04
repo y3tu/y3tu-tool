@@ -6,7 +6,7 @@ Java工具类,把平时工作学习中用的技术进行汇总，已供后续项
     <dependency>
       <groupId>com.y3tu</groupId>
       <artifactId>y3tu-tool-web</artifactId>
-      <version>1.4</version>
+      <version>2.0</version>
     </dependency>
     
 ## Todo
