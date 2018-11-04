@@ -26,6 +26,13 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.y3tu</groupId>
+            <artifactId>y3tu-tool-core</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -98,19 +105,6 @@
             <version>${jasypt-version}</version>
             <scope>provided</scope>
         </dependency>
-
-        <dependency>
-            <groupId>com.y3tu</groupId>
-            <artifactId>y3tu-tool-core</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.y3tu</groupId>
-            <artifactId>y3tu-tool-http</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-
 
     </dependencies>
 
