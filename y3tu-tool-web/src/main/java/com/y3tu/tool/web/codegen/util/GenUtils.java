@@ -1,32 +1,31 @@
 package com.y3tu.tool.web.codegen.util;
 
-import com.y3tu.tool.core.date.DateUtil;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.lang.Console;
+import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.ReflectUtil;
+import cn.hutool.core.util.RuntimeUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.db.ds.DSFactory;
+import cn.hutool.db.meta.Column;
+import cn.hutool.db.meta.MetaUtil;
+import cn.hutool.db.meta.Table;
+import cn.hutool.setting.Setting;
+import cn.hutool.system.SystemUtil;
 import com.y3tu.tool.core.exception.UtilException;
-import com.y3tu.tool.core.io.FileUtil;
-import com.y3tu.tool.core.io.IOUtil;
-import com.y3tu.tool.core.lang.Console;
-import com.y3tu.tool.core.lang.Platforms;
-import com.y3tu.tool.core.reflect.ReflectionUtil;
-import com.y3tu.tool.core.text.CharsetUtil;
-import com.y3tu.tool.core.text.StringUtils;
-import com.y3tu.tool.core.util.RuntimeUtil;
-import com.y3tu.tool.db.ds.DSFactory;
-import com.y3tu.tool.db.ds.DsFactoryEnum;
-import com.y3tu.tool.db.meta.Column;
-import com.y3tu.tool.db.meta.DataTypeEnum;
-import com.y3tu.tool.db.meta.MetaUtil;
-import com.y3tu.tool.db.meta.Table;
-import com.y3tu.tool.setting.Setting;
-import com.y3tu.tool.web.codegen.entity.ColumnEntity;
-import com.y3tu.tool.web.codegen.entity.GenConfig;
-import com.y3tu.tool.web.codegen.entity.TableEntity;
+import com.y3tu.tool.web.codegen.entity.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
 import javax.sql.DataSource;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.StringWriter;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -83,14 +82,14 @@ public class GenUtils {
         TableEntity tableEntity = new TableEntity();
         tableEntity.setTableName(table.getTableName());
 
-        if (StringUtils.isNotBlank(genConfig.getComments())) {
+        if (StrUtil.isNotBlank(genConfig.getComments())) {
             tableEntity.setComments(genConfig.getComments());
         } else {
-            tableEntity.setComments(table.getRemarks());
+            // tableEntity.setComments(table.getRemarks());
         }
 
         String tablePrefix;
-        if (StringUtils.isNotBlank(genConfig.getTablePrefix())) {
+        if (StrUtil.isNotBlank(genConfig.getTablePrefix())) {
             tablePrefix = genConfig.getTablePrefix();
         } else {
             tablePrefix = setting.getStr("tablePrefix");
@@ -99,7 +98,7 @@ public class GenUtils {
         //表名转换成Java类名
         String className = tableToJava(tableEntity.getTableName(), tablePrefix);
         tableEntity.setCaseClassName(className);
-        tableEntity.setLowerClassName(StringUtils.uncapitalize(className));
+        tableEntity.setLowerClassName(StrUtil.lowerFirst(className));
 
         //列信息
         List<ColumnEntity> columnList = new ArrayList<>();
@@ -107,20 +106,19 @@ public class GenUtils {
         for (String columnName : columns) {
             Column column = table.get(columnName);
 
-
             ColumnEntity columnEntity = new ColumnEntity();
             columnEntity.setColumnName(columnName);
-            columnEntity.setDataType(column.getTypeName());
+            columnEntity.setDataType(column.getType());
             columnEntity.setComments(column.getComment());
 
 
             //列名转换成Java属性名
             String attrName = columnToJava(columnEntity.getColumnName());
             columnEntity.setCaseAttrName(attrName);
-            columnEntity.setLowerAttrName(StringUtils.uncapitalize(attrName));
+            columnEntity.setLowerAttrName(StrUtil.lowerFirst(attrName));
 
             //列的数据类型，转换成Java类型
-            String attrType = DataTypeEnum.getJavaType(column.getTypeName());
+            String attrType = DataTypeEnum.getJavaType(column.getType());
             columnEntity.setAttrType(attrType);
             if (!hasBigDecimal && "BigDecimal".equals(attrType)) {
                 hasBigDecimal = true;
@@ -160,25 +158,25 @@ public class GenUtils {
         map.put("hasDate", hasDate);
         map.put("datetime", DateUtil.now());
 
-        if (StringUtils.isNotBlank(genConfig.getComments())) {
+        if (StrUtil.isNotBlank(genConfig.getComments())) {
             map.put("comments", genConfig.getComments());
         } else {
             map.put("comments", tableEntity.getComments());
         }
 
-        if (StringUtils.isNotBlank(genConfig.getAuthor())) {
+        if (StrUtil.isNotBlank(genConfig.getAuthor())) {
             map.put("author", genConfig.getAuthor());
         } else {
             map.put("author", setting.getStr("author"));
         }
 
-        if (StringUtils.isNotBlank(genConfig.getModuleName())) {
+        if (StrUtil.isNotBlank(genConfig.getModuleName())) {
             map.put("moduleName", genConfig.getModuleName());
         } else {
             map.put("moduleName", setting.getStr("moduleName"));
         }
 
-        if (StringUtils.isNotBlank(genConfig.getPackageName())) {
+        if (StrUtil.isNotBlank(genConfig.getPackageName())) {
             map.put("package", genConfig.getPackageName());
             map.put("mainPath", genConfig.getPackageName());
         } else {
@@ -200,8 +198,8 @@ public class GenUtils {
                 zip.putNextEntry(new ZipEntry(Objects
                         .requireNonNull(getFileName(template, tableEntity.getCaseClassName()
                                 , map.get("package").toString(), map.get("moduleName").toString()))));
-                IOUtil.write(zip, CharsetUtil.UTF_8, false, sw.toString());
-                IOUtil.close(sw);
+                IoUtil.write(zip, CharsetUtil.UTF_8, false, sw.toString());
+                IoUtil.close(sw);
                 zip.closeEntry();
             } catch (IOException e) {
                 throw new UtilException("渲染模板失败，表名：" + tableEntity.getTableName(), e);
@@ -214,14 +212,14 @@ public class GenUtils {
      * 列名转换成Java属性名
      */
     private static String columnToJava(String columnName) {
-        return StringUtils.upperFirst(StringUtils.toCamelCase(columnName));
+        return StrUtil.upperFirst(StrUtil.toCamelCase(columnName));
     }
 
     /**
      * 表名转换成Java类名
      */
     private static String tableToJava(String tableName, String tablePrefix) {
-        if (StringUtils.isNotBlank(tablePrefix)) {
+        if (StrUtil.isNotBlank(tablePrefix)) {
             tableName = tableName.replace(tablePrefix, "");
         }
         return columnToJava(tableName);
@@ -232,7 +230,7 @@ public class GenUtils {
      */
     private static String getFileName(String template, String className, String packageName, String moduleName) {
         String packagePath = "y3tu-tool" + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator;
-        if (StringUtils.isNotBlank(packageName)) {
+        if (StrUtil.isNotBlank(packageName)) {
             packagePath += packageName.replace(".", File.separator) + File.separator + moduleName + File.separator;
         }
 
@@ -302,18 +300,18 @@ public class GenUtils {
                 dataSource = DSFactory.create(setting).getDataSource();
             } else {
                 Class<DSFactory> clazz = dsFactoryEnum.getDsFactoryClass();
-                dataSource = ReflectionUtil.newInstance(clazz, setting).getDataSource();
+                dataSource = ReflectUtil.newInstance(clazz, setting).getDataSource();
             }
 
             GenConfig genConfig = new GenConfig();
             genConfig.setModuleName(scanner("模块名"));
             genConfig.setTableName(scanner("表名"));
 
-            String workingDir = Platforms.WORKING_DIR;
+            String workingDir = SystemUtil.USER_DIR;
             String targetDir = workingDir + "/target/";
 
             File file = FileUtil.file(targetDir + "code.zip");
-            OutputStream outputStream = FileUtil.asOututStream(file);
+            OutputStream outputStream = FileUtil.getOutputStream(file);
             ZipOutputStream zip = new ZipOutputStream(outputStream);
 
             //查询表信息
@@ -322,7 +320,7 @@ public class GenUtils {
             String[] columns = MetaUtil.getColumnNames(dataSource, table.getTableName());
             //生成代码
             GenUtils.generatorCode(genConfig, setting, table, columns, zip);
-            IOUtil.close(zip);
+            IoUtil.close(zip);
             outputStream.flush();
             openDir(targetDir);
         } catch (Exception e) {
@@ -343,7 +341,7 @@ public class GenUtils {
         Console.log(help.toString());
         if (scanner.hasNext()) {
             String ipt = scanner.next();
-            if (StringUtils.isNotEmpty(ipt)) {
+            if (StrUtil.isNotEmpty(ipt)) {
                 return ipt;
             }
         }
@@ -356,7 +354,7 @@ public class GenUtils {
      * @param outputDir
      */
     public static void openDir(String outputDir) {
-        String osName = Platforms.OS_NAME;
+        String osName = SystemUtil.OS_NAME;
         if (osName != null) {
             if (osName.contains("Mac")) {
                 RuntimeUtil.exec("open " + outputDir);

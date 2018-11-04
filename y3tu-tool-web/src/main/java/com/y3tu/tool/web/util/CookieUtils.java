@@ -1,6 +1,6 @@
 package com.y3tu.tool.web.util;
 
-import com.y3tu.tool.core.text.StringUtils;
+import cn.hutool.core.util.StrUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -60,7 +60,7 @@ public class CookieUtils {
      * @param path   路径
      */
     public static void setCookie(HttpServletResponse response, String name, String value, String path, int maxAge) {
-        if (StringUtils.isNotBlank(name)) {
+        if (StrUtil.isNotBlank(name)) {
             Cookie cookie = new Cookie(name, null);
             cookie.setPath(path);
             cookie.setMaxAge(maxAge);
@@ -117,7 +117,7 @@ public class CookieUtils {
      */
     public static String getCookie(HttpServletRequest request, HttpServletResponse response, String name, String path, boolean isRemove) {
         String value = null;
-        if (StringUtils.isNotBlank(name)) {
+        if (StrUtil.isNotBlank(name)) {
             Cookie[] cookies = request.getCookies();
             if (cookies != null) {
                 for (Cookie cookie : cookies) {

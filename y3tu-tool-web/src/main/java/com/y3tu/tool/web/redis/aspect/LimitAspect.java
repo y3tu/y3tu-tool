@@ -1,11 +1,11 @@
 package com.y3tu.tool.web.redis.aspect;
 
-import com.google.common.collect.ImmutableList;
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.StrUtil;
 import com.y3tu.tool.core.exception.BusinessException;
 import com.y3tu.tool.http.IPUtil;
 import com.y3tu.tool.web.redis.annotation.Limit;
 import com.y3tu.tool.web.redis.constant.LimitType;
-import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -24,6 +24,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -70,9 +71,9 @@ public class LimitAspect {
                 key = limitAnnotation.key();
                 break;
             default:
-                key = StringUtils.upperCase(method.getName());
+                key = StrUtil.toCamelCase(method.getName());
         }
-        ImmutableList<String> keys = ImmutableList.of(StringUtils.join(limitAnnotation.prefix() + "_", key + "_" + request.getRequestedSessionId()));
+        List<String> keys = CollectionUtil.list(false, StrUtil.join(limitAnnotation.prefix() + "_", key + "_" + request.getRequestedSessionId()));
         String luaScript = buildLuaScript();
         RedisScript<Number> redisScript = new DefaultRedisScript<>(luaScript, Number.class);
         Number count = limitRedisTemplate.execute(redisScript, keys, limitCount, limitPeriod);

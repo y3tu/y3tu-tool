@@ -1,9 +1,9 @@
 package com.y3tu.tool.web.util;
 
-import com.y3tu.tool.core.codec.Base64Util;
+import cn.hutool.core.codec.Base64;
+import cn.hutool.core.util.CharsetUtil;
 import com.y3tu.tool.core.exception.BusinessException;
 import com.y3tu.tool.core.exception.Error;
-import com.y3tu.tool.core.text.CharsetUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -31,7 +31,7 @@ public class AuthUtils {
         byte[] base64Token = header.substring(6).getBytes("UTF-8");
         byte[] decoded;
         try {
-            decoded = Base64Util.decode(base64Token);
+            decoded = Base64.decode(base64Token);
         } catch (IllegalArgumentException e) {
             throw new BusinessException("Failed to decode basic authentication token", Error.PARAMETER_ANNOTATION_NOT_MATCH);
         }

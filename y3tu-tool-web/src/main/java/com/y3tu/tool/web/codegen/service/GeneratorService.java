@@ -1,6 +1,6 @@
 package com.y3tu.tool.web.codegen.service;
 
-import com.y3tu.tool.db.meta.Table;
+import cn.hutool.db.meta.Table;
 import com.y3tu.tool.web.codegen.entity.GenConfig;
 
 import java.util.List;

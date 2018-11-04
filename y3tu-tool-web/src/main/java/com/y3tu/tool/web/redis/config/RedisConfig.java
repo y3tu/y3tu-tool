@@ -1,9 +1,9 @@
 package com.y3tu.tool.web.redis.config;
 
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.y3tu.tool.core.convert.ConvertUtil;
-import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.web.redis.lock.RedisDistributedLock;
 import com.y3tu.tool.web.redis.template.RedisRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -86,12 +86,12 @@ public class RedisConfig extends CachingConfigurerSupport {
 
     @Bean
     public JedisPool redisPoolFactory() {
-        timeout = ConvertUtil.toInt(StringUtils.subPre(timeoutStr, timeoutStr.indexOf("ms")), 1000);
-        maxWaitMillis = ConvertUtil.toInt(StringUtils.subPre(maxWaitMillisStr, maxWaitMillisStr.indexOf("ms")), 0);
+        timeout = Convert.toInt(StrUtil.subPre(timeoutStr, timeoutStr.indexOf("ms")), 1000);
+        maxWaitMillis = Convert.toInt(StrUtil.subPre(maxWaitMillisStr, maxWaitMillisStr.indexOf("ms")), 0);
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxIdle(maxIdle);
         jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
-        if (StringUtils.isNotBlank(password)) {
+        if (StrUtil.isNotBlank(password)) {
             return new JedisPool(jedisPoolConfig, host, port, timeout, password);
         } else {
             return new JedisPool(jedisPoolConfig, host, port, timeout);

@@ -1,9 +1,10 @@
 package com.y3tu.tool.core.exception;
 
-import com.y3tu.tool.core.io.FastByteArrayOutputStream;
-import com.y3tu.tool.core.map.MapUtil;
-import com.y3tu.tool.core.reflect.ReflectionUtil;
-import com.y3tu.tool.core.text.StringUtils;
+
+import cn.hutool.core.io.FastByteArrayOutputStream;
+import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.ReflectUtil;
+import cn.hutool.core.util.StrUtil;
 
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
@@ -33,7 +34,7 @@ public class ExceptionUtil {
         if (null == e) {
             return "";
         }
-        return StringUtils.format("{}: {}", e.getClass().getSimpleName(), e.getMessage());
+        return StrUtil.format("{}: {}", e.getClass().getSimpleName(), e.getMessage());
     }
 
     /**
@@ -89,7 +90,7 @@ public class ExceptionUtil {
         if (wrapThrowable.isInstance(throwable)) {
             return (T) throwable;
         }
-        return ReflectionUtil.newInstance(wrapThrowable, throwable);
+        return ReflectUtil.newInstance(wrapThrowable, throwable);
     }
 
     /**
@@ -158,9 +159,9 @@ public class ExceptionUtil {
      */
     public static String stacktraceToOneLineString(Throwable throwable, int limit) {
         Map<Character, String> replaceCharToStrMap = new HashMap<>();
-        replaceCharToStrMap.put(StringUtils.C_CR, StringUtils.SPACE);
-        replaceCharToStrMap.put(StringUtils.C_LF, StringUtils.SPACE);
-        replaceCharToStrMap.put(StringUtils.C_TAB, StringUtils.SPACE);
+        replaceCharToStrMap.put(StrUtil.C_CR, StrUtil.SPACE);
+        replaceCharToStrMap.put(StrUtil.C_LF, StrUtil.SPACE);
+        replaceCharToStrMap.put(StrUtil.C_TAB, StrUtil.SPACE);
 
         return stacktraceToString(throwable, limit, replaceCharToStrMap);
     }

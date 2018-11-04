@@ -1,7 +1,7 @@
 package com.y3tu.tool.http;
 
-import com.y3tu.tool.core.io.IORuntimeException;
-import com.y3tu.tool.core.text.StringUtils;
+import cn.hutool.core.io.IORuntimeException;
+import cn.hutool.core.util.StrUtil;
 import com.y3tu.tool.http.callback.CallBack;
 import lombok.Data;
 import okhttp3.*;
@@ -171,7 +171,7 @@ public class OkHttpUtil {
         /**
          * 首先判断mJsonStr是否为空，由于mJsonStr与mParamsMap不可能同时存在，所以先判断mJsonStr
          */
-        if (!StringUtils.isEmpty(jsonStr)) {
+        if (!StrUtil.isEmpty(jsonStr)) {
             //数据类型为json格式
             MediaType JSON = MediaType.parse("application/json; charset=utf-8");
             //json数据

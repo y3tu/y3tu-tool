@@ -1,8 +1,8 @@
 package com.y3tu.tool.web.codegen.service.impl;
 
-import com.y3tu.tool.core.io.IOUtil;
-import com.y3tu.tool.db.meta.MetaUtil;
-import com.y3tu.tool.db.meta.Table;
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.db.meta.MetaUtil;
+import cn.hutool.db.meta.Table;
 import com.y3tu.tool.web.codegen.entity.GenConfig;
 import com.y3tu.tool.web.codegen.service.GeneratorService;
 import com.y3tu.tool.web.codegen.util.GenUtils;
@@ -45,7 +45,7 @@ public class GeneratorServiceImpl implements GeneratorService {
         String[] columns = MetaUtil.getColumnNames(dataSource, table.getTableName());
         //生成代码
         GenUtils.generatorCode(genConfig, null, table, columns, zip);
-        IOUtil.close(zip);
+        IoUtil.close(zip);
         return outputStream.toByteArray();
     }
 

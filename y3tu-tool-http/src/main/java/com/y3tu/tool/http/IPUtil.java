@@ -1,14 +1,14 @@
 package com.y3tu.tool.http;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.resource.ResourceUtil;
+import cn.hutool.core.lang.Validator;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.y3tu.tool.core.exception.BaseException;
 import com.y3tu.tool.core.exception.Error;
 import com.y3tu.tool.core.exception.UtilException;
-import com.y3tu.tool.core.io.FileUtil;
-import com.y3tu.tool.core.io.resource.ResourceUtil;
-import com.y3tu.tool.core.lang.Validator;
-import com.y3tu.tool.core.text.StringUtils;
-import com.y3tu.tool.core.util.ObjectUtil;
 import com.y3tu.tool.http.pojo.IpLocate;
 import lombok.extern.slf4j.Slf4j;
 import org.lionsoul.ip2region.DataBlock;
@@ -96,7 +96,7 @@ public class IPUtil {
      */
     public static String getIpWeatherInfo(String ip) {
 
-        if (StringUtils.isNotBlank(ip)) {
+        if (StrUtil.isNotBlank(ip)) {
             String url = GET_IP_WEATHER + ip;
             Resp result = HttpUtil.getSync(url);
             return result.getData().toString();
@@ -118,7 +118,7 @@ public class IPUtil {
                 String json = HttpUtil.getSync(url).getData().toString();
                 IpLocate locate = JSONObject.parseObject(json, IpLocate.class);
                 if (("200").equals(locate.getRetCode())) {
-                    if (StringUtils.isNotBlank(locate.getResult().getProvince())) {
+                    if (StrUtil.isNotBlank(locate.getResult().getProvince())) {
                         result = locate.getResult().getProvince() + " " + locate.getResult().getCity();
                     } else {
                         result = locate.getResult().getCountry();
@@ -142,7 +142,7 @@ public class IPUtil {
      */
     public static String getCityInfo(String ip) {
         try {
-            URL url = ResourceUtil.asUrl("ip2region/ip2region.db");
+            URL url = ResourceUtil.getResource("ip2region/ip2region.db");
             File file = FileUtil.file(url);
             if (!file.exists()) {
                 log.error("Error: Invalid ip2region.db file");

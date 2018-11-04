@@ -1,10 +1,9 @@
 package com.y3tu.tool.web.handler;
 
-import com.y3tu.tool.core.collection.ArrayUtil;
-import com.y3tu.tool.core.collection.CollectionUtil;
-import com.y3tu.tool.core.collection.ListUtil;
-import com.y3tu.tool.core.text.CharUtil;
-import com.y3tu.tool.core.text.StringUtils;
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.text.StrSpliter;
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.CharUtil;
 import com.y3tu.tool.web.annotation.ClassNameMapping;
 import com.y3tu.tool.web.annotation.MethodMapping;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -61,7 +60,7 @@ public class ClassNameMappingHandler extends RequestMappingHandlerMapping {
 
         RequestMapping requestMapping = AnnotationUtils.findAnnotation(handlerType, RequestMapping.class);
 
-        List<String> mappingStrList = ListUtil.newArrayList();
+        List<String> mappingStrList = CollectionUtil.newArrayList();
         String mappingStr = "";
         if (requestMapping != null) {
             String[] strArr = requestMapping.value();
@@ -97,7 +96,7 @@ public class ClassNameMappingHandler extends RequestMappingHandlerMapping {
     }
 
     protected String calcRouterStrNew(String className) {
-        List<String> stringList = StringUtils.splitToList(className, CharUtil.DOT);
+        List<String> stringList = StrSpliter.split(className, CharUtil.DOT);
         className = CollectionUtil.getLast(stringList);
         return className;
     }

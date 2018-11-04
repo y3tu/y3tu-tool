@@ -1,10 +1,10 @@
 package com.y3tu.tool.http;
 
-import com.y3tu.tool.core.collection.IterUtil;
-import com.y3tu.tool.core.collection.ListUtil;
-import com.y3tu.tool.core.map.MapUtil;
-import com.y3tu.tool.core.text.CharsetUtil;
-import com.y3tu.tool.core.text.StringUtils;
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.collection.IterUtil;
+import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.StrUtil;
 import com.y3tu.tool.http.callback.CallBack;
 import okhttp3.Response;
 
@@ -370,13 +370,13 @@ public class HttpUtil {
     /**
      * 编码字符为 application/x-www-form-urlencoded
      *
-     * @param content 被编码内容
+     * @param content    被编码内容
      * @param charsetStr 编码
      * @return 编码后的字符
      * @throws HttpException 编码不支持
      */
     public static String encode(String content, String charsetStr) throws HttpException {
-        if (StringUtils.isBlank(content)) {
+        if (StrUtil.isBlank(content)) {
             return content;
         }
 
@@ -384,7 +384,7 @@ public class HttpUtil {
         try {
             encodeContent = URLEncoder.encode(content, charsetStr);
         } catch (UnsupportedEncodingException e) {
-            throw new HttpException(StringUtils.format("Unsupported encoding: [{}]", charsetStr), e);
+            throw new HttpException(StrUtil.format("Unsupported encoding: [{}]", charsetStr), e);
         }
         return encodeContent;
     }
@@ -403,19 +403,19 @@ public class HttpUtil {
     /**
      * 解码application/x-www-form-urlencoded字符
      *
-     * @param content 被解码内容
+     * @param content    被解码内容
      * @param charsetStr 编码
      * @return 编码后的字符
      */
     public static String decode(String content, String charsetStr) {
-        if (StringUtils.isBlank(content)) {
+        if (StrUtil.isBlank(content)) {
             return content;
         }
         String encodeContnt = null;
         try {
             encodeContnt = URLDecoder.decode(content, charsetStr);
         } catch (UnsupportedEncodingException e) {
-            throw new HttpException(StringUtils.format("Unsupported encoding: [{}]", charsetStr), e);
+            throw new HttpException(StrUtil.format("Unsupported encoding: [{}]", charsetStr), e);
         }
         return encodeContnt;
     }
@@ -433,7 +433,7 @@ public class HttpUtil {
         List<String> valueList;
         for (Map.Entry<String, List<String>> entry : paramsMap.entrySet()) {
             valueList = entry.getValue();
-            result.put(entry.getKey(), ListUtil.isEmpty(valueList) ? null : valueList.get(0));
+            result.put(entry.getKey(), CollectionUtil.isEmpty(valueList) ? null : valueList.get(0));
         }
         return result;
     }
@@ -446,14 +446,14 @@ public class HttpUtil {
      * @return 参数Map
      */
     public static Map<String, List<String>> decodeParams(String paramsStr, String charset) {
-        if (StringUtils.isBlank(paramsStr)) {
+        if (StrUtil.isBlank(paramsStr)) {
             return Collections.emptyMap();
         }
 
         // 去掉Path部分
         int pathEndPos = paramsStr.indexOf('?');
         if (pathEndPos > -1) {
-            paramsStr = StringUtils.subSuf(paramsStr, pathEndPos + 1);
+            paramsStr = StrUtil.subSuf(paramsStr, pathEndPos + 1);
         }
 
         final Map<String, List<String>> params = new LinkedHashMap<String, List<String>>();
@@ -473,7 +473,7 @@ public class HttpUtil {
             } else if (c == '&') { // 参数对的分界点
                 if (null == name && pos != i) {
                     // 对于像&a&这类无参数值的字符串，我们将name为a的值设为""
-                    addParam(params, paramsStr.substring(pos, i), StringUtils.EMPTY, charset);
+                    addParam(params, paramsStr.substring(pos, i), StrUtil.EMPTY, charset);
                 } else if (name != null) {
                     addParam(params, name, paramsStr.substring(pos, i), charset);
                     name = null;
@@ -485,12 +485,12 @@ public class HttpUtil {
         // 处理结尾
         if (pos != i) {
             if (name == null) {
-                addParam(params, paramsStr.substring(pos, i), StringUtils.EMPTY, charset);
+                addParam(params, paramsStr.substring(pos, i), StrUtil.EMPTY, charset);
             } else {
                 addParam(params, name, paramsStr.substring(pos, i), charset);
             }
         } else if (name != null) {
-            addParam(params, name, StringUtils.EMPTY, charset);
+            addParam(params, name, StrUtil.EMPTY, charset);
         }
 
         return params;
@@ -499,9 +499,9 @@ public class HttpUtil {
     /**
      * 将键值对加入到值为List类型的Map中
      *
-     * @param params 参数
-     * @param name key
-     * @param value value
+     * @param params  参数
+     * @param name    key
+     * @param value   value
      * @param charset 编码
      */
     private static void addParam(Map<String, List<String>> params, String name, String value, String charset) {
@@ -529,7 +529,7 @@ public class HttpUtil {
      * 将Map形式的Form表单数据转换为Url参数形式<br>
      * 编码键和值对
      *
-     * @param paramMap 表单数据
+     * @param paramMap    表单数据
      * @param charsetName 编码
      * @return url参数
      */
@@ -547,12 +547,12 @@ public class HttpUtil {
      * </pre>
      *
      * @param paramMap 表单数据
-     * @param charset 编码
+     * @param charset  编码
      * @return url参数
      */
     public static String toParams(Map<String, ?> paramMap, Charset charset) {
         if (MapUtil.isEmpty(paramMap)) {
-            return StringUtils.EMPTY;
+            return StrUtil.EMPTY;
         }
         if (null == charset) {// 默认编码为系统编码
             charset = CharsetUtil.CHARSET_UTF_8;
@@ -577,9 +577,9 @@ public class HttpUtil {
                 value = IterUtil.join((Iterator<?>) value, ",");
             }
             valueStr = String.valueOf(value);
-            if (StringUtils.isNotEmpty(key)) {
+            if (StrUtil.isNotEmpty(key)) {
                 sb.append(encode(key, charset)).append("=");
-                if (StringUtils.isNotEmpty(valueStr)) {
+                if (StrUtil.isNotEmpty(valueStr)) {
                     sb.append(encode(valueStr, charset));
                 }
             }

@@ -1,6 +1,9 @@
 package com.y3tu.tool.filesystem.provider.qiniu;
 
 
+import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.setting.Setting;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
@@ -9,21 +12,15 @@ import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
-import com.y3tu.tool.core.io.FilePathUtil;
-import com.y3tu.tool.core.lang.Assert;
-import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.filesystem.FileSystemException;
 import com.y3tu.tool.filesystem.UploadObject;
 import com.y3tu.tool.filesystem.UploadTokenParam;
 import com.y3tu.tool.filesystem.provider.AbstractProvider;
-import com.y3tu.tool.setting.Setting;
 
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.y3tu.tool.core.io.FilePathUtil.DIR_SPLITER;
 
 /**
  * 七牛文件服务
@@ -31,6 +28,8 @@ import static com.y3tu.tool.core.io.FilePathUtil.DIR_SPLITER;
  * @author vakin
  */
 public class QiniuProvider extends AbstractProvider {
+
+    public static final String DIR_SPLITER = "/";
 
     public static final String NAME = "qiniu";
     private static final String DEFAULT_CALLBACK_BODY = "filename=${fname}&size=${fsize}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}";
@@ -71,17 +70,17 @@ public class QiniuProvider extends AbstractProvider {
         bucketManager = new BucketManager(auth, c);
 
         this.isPrivate = isPrivate;
-        this.host = StringUtils.remove(urlprefix, "/").split(":")[1];
+        this.host = StrUtil.removePrefix(urlprefix, "/").split(":")[1];
     }
 
-    public static QiniuProvider createBySetting(Setting setting){
+    public static QiniuProvider createBySetting(Setting setting) {
         String urlprefix = setting.getStr("urlprefix", "qiniu", "");
         String bucketName = setting.getStr("bucketName", "qiniu", "");
         String accessKey = setting.getStr("accessKey", "qiniu", "");
         String secretKey = setting.getStr("secretKey", "qiniu", "");
         boolean isPrivate = setting.getBool("private", "qiniu");
 
-        return new QiniuProvider(urlprefix,bucketName,accessKey,secretKey,isPrivate);
+        return new QiniuProvider(urlprefix, bucketName, accessKey, secretKey, isPrivate);
     }
 
     @Override
@@ -92,8 +91,8 @@ public class QiniuProvider extends AbstractProvider {
     @Override
     public String upload(UploadObject object) {
         String fileName = object.getFileName();
-        if (StringUtils.isNotBlank(object.getCatalog())) {
-            fileName = object.getCatalog().concat(FilePathUtil.DIR_SPLITER).concat(fileName);
+        if (StrUtil.isNotBlank(object.getCatalog())) {
+            fileName = object.getCatalog().concat(DIR_SPLITER).concat(fileName);
         }
         try {
             Response res = null;
@@ -104,7 +103,7 @@ public class QiniuProvider extends AbstractProvider {
                 res = uploadManager.put(object.getBytes(), fileName, upToken);
             } else if (object.getInputStream() != null) {
                 res = uploadManager.put(object.getInputStream(), fileName, upToken, null, object.getMimeType());
-            } else if (StringUtils.isNotBlank(object.getUrl())) {
+            } else if (StrUtil.isNotBlank(object.getUrl())) {
                 return bucketManager.fetch(object.getUrl(), bucketName, fileName).key;
             } else {
                 throw new IllegalArgumentException("upload object is NULL");
@@ -142,11 +141,11 @@ public class QiniuProvider extends AbstractProvider {
     @Override
     public Map<String, Object> createUploadToken(UploadTokenParam param) {
 
-        if (StringUtils.isNotBlank(param.getCallbackUrl())) {
-            if (StringUtils.isBlank(param.getCallbackBody())) {
+        if (StrUtil.isNotBlank(param.getCallbackUrl())) {
+            if (StrUtil.isBlank(param.getCallbackBody())) {
                 param.setCallbackBody(DEFAULT_CALLBACK_BODY);
             }
-            if (StringUtils.isBlank(param.getCallbackHost())) {
+            if (StrUtil.isBlank(param.getCallbackHost())) {
                 param.setCallbackHost(host);
             }
         }

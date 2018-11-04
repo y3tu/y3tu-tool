@@ -16,7 +16,7 @@ public class ColumnEntity {
 	/**
 	 * 数据类型
 	 */
-	private String dataType;
+	private int dataType;
 	/**
 	 * 备注
 	 */

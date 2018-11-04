@@ -1,8 +1,8 @@
 package com.y3tu.tool.web.base.pojo;
 
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.web.xss.SqlFilter;
 
 import java.util.LinkedHashMap;
@@ -54,7 +54,7 @@ public class Query<T> extends LinkedHashMap<String, Object> {
         this.page = new Page<>(currPage, limit);
 
         //排序
-        if (StringUtils.isNotBlank(sidx) && StringUtils.isNotBlank(order)) {
+        if (StrUtil.isNotBlank(sidx) && StrUtil.isNotBlank(order)) {
             this.page.setOrderByField(sidx);
             this.page.setAsc("ASC".equalsIgnoreCase(order));
         }

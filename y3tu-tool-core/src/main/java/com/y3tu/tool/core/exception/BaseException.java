@@ -1,6 +1,6 @@
 package com.y3tu.tool.core.exception;
 
-import com.y3tu.tool.core.text.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import lombok.Data;
 
 /**
@@ -34,13 +34,13 @@ public class BaseException extends RuntimeException {
     }
 
     public BaseException(String messageTemplate, Object... params) {
-        super(StringUtils.format(messageTemplate, params));
-        errorMessage = StringUtils.format(messageTemplate, params);
+        super(StrUtil.format(messageTemplate, params));
+        errorMessage = StrUtil.format(messageTemplate, params);
     }
 
     public BaseException(Throwable throwable, String messageTemplate, Object... params) {
-        super(StringUtils.format(messageTemplate, params), throwable);
-        errorMessage = StringUtils.format(messageTemplate, params);
+        super(StrUtil.format(messageTemplate, params), throwable);
+        errorMessage = StrUtil.format(messageTemplate, params);
     }
 
     public BaseException(Error error) {

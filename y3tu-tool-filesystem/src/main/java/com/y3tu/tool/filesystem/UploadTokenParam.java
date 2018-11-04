@@ -1,7 +1,7 @@
 package com.y3tu.tool.filesystem;
 
 
-import com.y3tu.tool.core.text.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import com.y3tu.tool.core.util.JsonUtil;
 import lombok.Data;
 
@@ -47,7 +47,7 @@ public class UploadTokenParam {
     private Integer deleteAfterDays;
 
     public void setUploadDir(String uploadDir) {
-        this.uploadDir = StringUtils.trimToNull(uploadDir);
+        this.uploadDir = StrUtil.trimToNull(uploadDir);
         if (uploadDir != null) {
             if (!this.uploadDir.endsWith(PATH_SEPARATOR)) {
                 this.uploadDir = this.uploadDir.concat(PATH_SEPARATOR);
@@ -69,14 +69,14 @@ public class UploadTokenParam {
     }
 
     public String getFileKey() {
-        if (StringUtils.isBlank(uploadDir) || StringUtils.isBlank(fileName)) {
+        if (StrUtil.isBlank(uploadDir) || StrUtil.isBlank(fileName)) {
             return fileName;
         }
         return uploadDir.concat(fileName);
     }
 
     public String getCallbackRuleAsJson() {
-        if (StringUtils.isAnyBlank(callbackBody, callbackHost, callbackUrl)) {
+        if (StrUtil.hasBlank(callbackBody, callbackHost, callbackUrl)) {
             return null;
         }
         Map<String, String> map = new HashMap<>(4);

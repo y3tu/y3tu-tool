@@ -1,8 +1,8 @@
 package com.y3tu.tool.web.filter;
 
-import com.y3tu.tool.core.date.DateUtil;
-import com.y3tu.tool.core.date.TimeInterval;
-import com.y3tu.tool.core.text.StringUtils;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.date.TimeInterval;
+import cn.hutool.core.util.StrUtil;
 import com.y3tu.tool.http.IPUtil;
 import com.y3tu.tool.web.util.ServletUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -65,7 +65,7 @@ public class RequestPerformanceFilter extends OncePerRequestFilter implements Fi
         buffer.append(" ").append(req.getMethod()).append("__").append(req.getRequestURI());
         if (includeQueryString) {
             String queryString = ServletUtils.getQueryString(req);
-            if (!StringUtils.isEmpty(queryString)) {
+            if (!StrUtil.isEmpty(queryString)) {
                 buffer.append("?").append(queryString);
             }
         }
@@ -86,6 +86,6 @@ public class RequestPerformanceFilter extends OncePerRequestFilter implements Fi
 
     private String getFilterParameter(FilterConfig config, String key, String defaultValue) {
         String v = config.getInitParameter(key);
-        return StringUtils.isEmpty(v) ? defaultValue : v;
+        return StrUtil.isEmpty(v) ? defaultValue : v;
     }
 }

@@ -1,7 +1,7 @@
 package com.y3tu.tool.web.aspect;
 
-import com.y3tu.tool.core.date.DateUtil;
-import com.y3tu.tool.core.date.TimeInterval;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.date.TimeInterval;
 import com.y3tu.tool.core.exception.ExceptionUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;

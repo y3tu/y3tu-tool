@@ -1,10 +1,10 @@
 package com.y3tu.tool.filesystem;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.lang.UUID;
+import cn.hutool.core.util.StrUtil;
 import com.y3tu.tool.core.exception.UtilException;
-import com.y3tu.tool.core.io.FilePathUtil;
-import com.y3tu.tool.core.io.MimeTypeFileExtensionEnum;
-import com.y3tu.tool.core.lang.UUID;
-import com.y3tu.tool.core.text.StringUtils;
+import com.y3tu.tool.core.io.MimeTypeFileExtension;
 import net.sf.jmimemagic.Magic;
 import net.sf.jmimemagic.MagicMatch;
 
@@ -19,6 +19,10 @@ import java.util.Map;
  * @author vakin
  */
 public class UploadObject {
+
+    public static final String HTTP_PREFIX = "http://";
+    public static final String HTTPS_PREFIX = "https://";
+
     /**
      * 文件名
      */
@@ -55,9 +59,9 @@ public class UploadObject {
     private Map<String, Object> metadata = new HashMap<String, Object>();
 
     public UploadObject(String filePath) {
-        if (filePath.startsWith(FilePathUtil.HTTP_PREFIX) || filePath.startsWith(FilePathUtil.HTTPS_PREFIX)) {
+        if (filePath.startsWith(HTTP_PREFIX) || filePath.startsWith(HTTPS_PREFIX)) {
             this.url = filePath;
-            this.fileName = FilePathUtil.getFileName(this.url);
+            this.fileName = FileUtil.mainName(this.url);
         } else {
             this.file = new File(filePath);
             this.fileName = file.getName();
@@ -93,11 +97,11 @@ public class UploadObject {
     }
 
     public String getFileName() {
-        if (StringUtils.isBlank(fileName)) {
+        if (StrUtil.isBlank(fileName)) {
             fileName = UUID.randomUUID().toString().replaceAll("\\-", "");
         }
         if (mimeType != null && !fileName.contains(".")) {
-            String fileExtension = MimeTypeFileExtensionEnum.getFileExtension(mimeType);
+            String fileExtension = MimeTypeFileExtension.getFileExtension(mimeType);
             if (fileExtension != null) {
                 fileName = fileName + fileExtension;
             }

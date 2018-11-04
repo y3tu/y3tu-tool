@@ -1,8 +1,8 @@
 package com.y3tu.tool.web.xss;
 
-import com.y3tu.tool.core.io.IOUtil;
-import com.y3tu.tool.core.text.CharsetUtil;
-import com.y3tu.tool.core.text.StringUtils;
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
@@ -41,8 +41,8 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         }
 
         //为空，直接返回
-        String json = IOUtil.read(super.getInputStream(), CharsetUtil.UTF_8);
-        if (StringUtils.isBlank(json)) {
+        String json = IoUtil.read(super.getInputStream(), CharsetUtil.UTF_8);
+        if (StrUtil.isBlank(json)) {
             return super.getInputStream();
         }
 
@@ -74,7 +74,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     @Override
     public String getParameter(String name) {
         String value = super.getParameter(xssEncode(name));
-        if (StringUtils.isNotBlank(value)) {
+        if (StrUtil.isNotBlank(value)) {
             value = xssEncode(value);
         }
         return value;
@@ -110,7 +110,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     @Override
     public String getHeader(String name) {
         String value = super.getHeader(xssEncode(name));
-        if (StringUtils.isNotBlank(value)) {
+        if (StrUtil.isNotBlank(value)) {
             value = xssEncode(value);
         }
         return value;

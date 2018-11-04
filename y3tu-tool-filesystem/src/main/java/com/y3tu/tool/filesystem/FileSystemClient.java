@@ -1,11 +1,11 @@
 package com.y3tu.tool.filesystem;
 
+import cn.hutool.setting.Setting;
 import com.y3tu.tool.filesystem.provider.ProviderTypeEnum;
 import com.y3tu.tool.filesystem.provider.aliyun.AliyunProvider;
 import com.y3tu.tool.filesystem.provider.fastdfs.FdfsProvider;
 import com.y3tu.tool.filesystem.provider.qiniu.QiniuProvider;
 import com.y3tu.tool.filesystem.provider.tencent.TencentProvider;
-import com.y3tu.tool.setting.Setting;
 
 import java.io.File;
 import java.io.InputStream;

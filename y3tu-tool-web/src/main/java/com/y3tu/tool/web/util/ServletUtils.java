@@ -1,7 +1,8 @@
 package com.y3tu.tool.web.util;
 
-import com.y3tu.tool.core.map.MapUtil;
-import com.y3tu.tool.core.text.StringUtils;
+
+import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.http.HttpHeaders;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +26,7 @@ public class ServletUtils {
         String value;
         while (names.hasMoreElements()) {
             name = names.nextElement();
-            value = StringUtils.join(request.getParameterValues(name));
+            value = StrUtil.join("", request.getParameterValues(name));
             if (!excludeList.contains(name)) {
                 sb.append("&").append(name).append("=")
                         .append(value);
@@ -91,12 +92,12 @@ public class ServletUtils {
         }
 
         String uri = request.getRequestURI();
-        if (StringUtils.containsAnyIgnoreCase(uri, ".json", ".xml")) {
+        if (StrUtil.containsAnyIgnoreCase(uri, ".json", ".xml")) {
             return true;
         }
 
         String ajax = request.getParameter("__ajax");
-        if (StringUtils.containsAnyIgnoreCase(ajax, "json", "xml")) {
+        if (StrUtil.containsAnyIgnoreCase(ajax, "json", "xml")) {
             return true;
         }
 

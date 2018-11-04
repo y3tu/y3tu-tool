@@ -1,16 +1,16 @@
 package com.y3tu.tool.filesystem.provider.aliyun;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.setting.Setting;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSException;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.*;
-import com.y3tu.tool.core.date.DateUtil;
-import com.y3tu.tool.core.lang.Assert;
-import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.filesystem.UploadObject;
 import com.y3tu.tool.filesystem.UploadTokenParam;
 import com.y3tu.tool.filesystem.provider.AbstractProvider;
-import com.y3tu.tool.setting.Setting;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -52,7 +52,7 @@ public class AliyunProvider extends AbstractProvider {
         this.bucketName = bucketName;
         this.urlprefix = urlprefix.endsWith("/") ? urlprefix : (urlprefix + "/");
         this.isPrivate = isPrivate;
-        this.host = StringUtils.remove(urlprefix, "/").split(":")[1];
+        this.host = StrUtil.removePrefix(urlprefix, "/").split(":")[1];
         if (!ossClient.doesBucketExist(bucketName)) {
             System.out.println("Creating bucket " + bucketName + "\n");
             ossClient.createBucket(bucketName);
@@ -119,11 +119,11 @@ public class AliyunProvider extends AbstractProvider {
             policyConds.addConditionItem(MatchMode.StartWith, PolicyConditions.COND_KEY, param.getUploadDir());
         }
 
-        if (StringUtils.isBlank(param.getCallbackHost())) {
+        if (StrUtil.isBlank(param.getCallbackHost())) {
             param.setCallbackHost(host);
         }
 
-        if (StringUtils.isBlank(param.getCallbackBody())) {
+        if (StrUtil.isBlank(param.getCallbackBody())) {
             param.setCallbackBody(DEFAULT_CALLBACK_BODY);
         }
 

@@ -1,10 +1,10 @@
 package com.y3tu.tool.http;
 
 
+import cn.hutool.core.util.StrUtil;
 import com.y3tu.tool.core.exception.BaseException;
 import com.y3tu.tool.core.exception.ExceptionUtil;
 import com.y3tu.tool.core.exception.IError;
-import com.y3tu.tool.core.text.StringUtils;
 
 /**
  * Http异常
@@ -30,11 +30,11 @@ public class HttpException extends BaseException {
     }
 
     public HttpException(String messageTemplate, Object... params) {
-        super(StringUtils.format(messageTemplate, params));
+        super(StrUtil.format(messageTemplate, params));
     }
 
     public HttpException(Throwable throwable, String messageTemplate, Object... params) {
-        super(StringUtils.format(messageTemplate, params), throwable);
+        super(StrUtil.format(messageTemplate, params), throwable);
     }
 
     public HttpException(IError error) {

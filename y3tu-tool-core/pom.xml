@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.y3tu</groupId>
         <artifactId>y3tu-tool</artifactId>
-        <version>1.5</version>
+        <version>2.0</version>
     </parent>
 
     <groupId>com.y3tu</groupId>
@@ -15,55 +15,21 @@
     <name>${project.artifactId}</name>
     <description>y3tu-tool核心集合</description>
 
-    <properties>
-        <commons-lang3-version>3.7</commons-lang3-version>
-        <commons-io-version>2.6</commons-io-version>
-        <guava-version>20.0</guava-version>
-        <commons-beanutils-version>1.9.3</commons-beanutils-version>
-        <commons-codec-version>1.11</commons-codec-version>
-        <fastjson-version>1.2.47</fastjson-version>
-        <spring-beans-version>5.0.7.RELEASE</spring-beans-version>
-    </properties>
-
     <dependencies>
 
         <!--common工具类-->
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${guava-version}</version>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>4.1.19</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${commons-lang3-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>${commons-io-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>${commons-beanutils-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>${commons-codec-version}</version>
-        </dependency>
+
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>${fastjson-version}</version>
+            <version>1.2.47</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-            <version>5.0.7.RELEASE</version>
-            <optional>true</optional>
-        </dependency>
+
 
     </dependencies>
 

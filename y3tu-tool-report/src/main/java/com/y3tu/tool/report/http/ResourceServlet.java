@@ -1,9 +1,9 @@
 package com.y3tu.tool.report.http;
 
-import com.y3tu.tool.core.io.IOUtil;
-import com.y3tu.tool.core.io.resource.ResourceUtil;
-import com.y3tu.tool.core.text.CharsetUtil;
-import com.y3tu.tool.core.text.StringUtils;
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.io.resource.ResourceUtil;
+import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletException;
@@ -47,8 +47,8 @@ public abstract class ResourceServlet extends HttpServlet {
             response.setContentType("text/html; charset=utf-8");
         }
 
-        if (StringUtils.containsAnyIgnoreCase(fileName, ".jpg", ".png", ".woff", ".ttf")) {
-            byte[] bytes = IOUtil.readBytes(ResourceUtil.asStream(filePath));
+        if (StrUtil.containsAnyIgnoreCase(fileName, ".jpg", ".png", ".woff", ".ttf")) {
+            byte[] bytes = IoUtil.readBytes(ResourceUtil.getStream(filePath));
             if (bytes != null) {
                 response.getOutputStream().write(bytes);
             }
@@ -56,7 +56,7 @@ public abstract class ResourceServlet extends HttpServlet {
             return;
         }
 
-        String text = IOUtil.read(ResourceUtil.asStream(filePath), CharsetUtil.UTF_8);
+        String text = IoUtil.read(ResourceUtil.getStream(filePath), CharsetUtil.UTF_8);
         if (text == null) {
             response.sendRedirect(uri + "/index.html");
             return;

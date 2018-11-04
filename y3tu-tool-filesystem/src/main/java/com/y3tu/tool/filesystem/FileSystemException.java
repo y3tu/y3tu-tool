@@ -1,9 +1,9 @@
 package com.y3tu.tool.filesystem;
 
+import cn.hutool.core.util.StrUtil;
 import com.y3tu.tool.core.exception.BaseException;
 import com.y3tu.tool.core.exception.ExceptionUtil;
 import com.y3tu.tool.core.exception.IError;
-import com.y3tu.tool.core.text.StringUtils;
 
 /**
  * 文件服务器异常类
@@ -29,11 +29,11 @@ public class FileSystemException extends BaseException {
     }
 
     public FileSystemException(String messageTemplate, Object... params) {
-        super(StringUtils.format(messageTemplate, params));
+        super(StrUtil.format(messageTemplate, params));
     }
 
     public FileSystemException(Throwable throwable, String messageTemplate, Object... params) {
-        super(StringUtils.format(messageTemplate, params), throwable);
+        super(StrUtil.format(messageTemplate, params), throwable);
     }
 
     public FileSystemException(IError error) {

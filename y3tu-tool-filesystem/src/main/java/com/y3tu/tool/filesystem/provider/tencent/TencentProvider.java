@@ -1,5 +1,10 @@
 package com.y3tu.tool.filesystem.provider.tencent;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.lang.Assert;
+import cn.hutool.core.thread.ThreadUtil;
+import cn.hutool.setting.Setting;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.auth.BasicCOSCredentials;
@@ -10,14 +15,9 @@ import com.qcloud.cos.region.Region;
 import com.qcloud.cos.transfer.Download;
 import com.qcloud.cos.transfer.TransferManager;
 import com.qcloud.cos.transfer.Upload;
-import com.y3tu.tool.core.date.DateUtil;
-import com.y3tu.tool.core.io.FileUtil;
-import com.y3tu.tool.core.lang.Assert;
-import com.y3tu.tool.core.thread.ThreadUtil;
 import com.y3tu.tool.filesystem.UploadObject;
 import com.y3tu.tool.filesystem.UploadTokenParam;
 import com.y3tu.tool.filesystem.provider.AbstractProvider;
-import com.y3tu.tool.setting.Setting;
 
 import java.io.File;
 import java.io.IOException;

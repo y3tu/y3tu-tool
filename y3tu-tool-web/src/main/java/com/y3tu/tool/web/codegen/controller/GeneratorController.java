@@ -1,12 +1,13 @@
 package com.y3tu.tool.web.codegen.controller;
 
+import cn.hutool.core.io.IoUtil;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.y3tu.tool.core.io.IOUtil;
 import com.y3tu.tool.web.base.pojo.Query;
 import com.y3tu.tool.web.codegen.entity.GenConfig;
 import com.y3tu.tool.web.codegen.service.GeneratorService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -20,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/generator" )
+@RequestMapping("/generator")
 public class GeneratorController {
     private final GeneratorService sysGeneratorService;
 
@@ -30,7 +31,7 @@ public class GeneratorController {
      * @param params 参数集
      * @return 数据库表
      */
-    @GetMapping("/page" )
+    @GetMapping("/page")
     public Page list(@RequestParam Map<String, Object> params) {
         Query query = new Query(params);
         query.getPage().setRecords(sysGeneratorService.queryTableName());
@@ -40,15 +41,15 @@ public class GeneratorController {
     /**
      * 生成代码
      */
-    @PostMapping("/code" )
+    @PostMapping("/code")
     public void code(@RequestBody GenConfig genConfig, HttpServletResponse response) throws IOException {
         byte[] data = sysGeneratorService.generatorCode(genConfig);
 
         response.reset();
         response.setHeader("Content-Disposition", String.format("attachment; filename=%s.zip", genConfig.getTableName()));
         response.addHeader("Content-Length", "" + data.length);
-        response.setContentType("application/octet-stream; charset=UTF-8" );
+        response.setContentType("application/octet-stream; charset=UTF-8");
 
-        IOUtil.write(response.getOutputStream(), Boolean.TRUE, data);
+        IoUtil.write(response.getOutputStream(), Boolean.TRUE, data);
     }
 }

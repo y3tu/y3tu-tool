@@ -1,8 +1,8 @@
 package com.y3tu.tool.http.callback;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.StrUtil;
 import com.y3tu.tool.core.exception.Error;
-import com.y3tu.tool.core.io.FileUtil;
-import com.y3tu.tool.core.text.StringUtils;
 import com.y3tu.tool.http.HttpException;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -61,7 +61,7 @@ public class FileCallBack extends CallBack<File> {
             }
 
             //如果没有设置文件名，那么就取内容秒速里面的文件名
-            if (StringUtils.isEmpty(destFileName)) {
+            if (StrUtil.isEmpty(destFileName)) {
                 String disposition = response.header("Content-Disposition");
                 if (disposition != null) {
                     int index = disposition.indexOf("filename=");

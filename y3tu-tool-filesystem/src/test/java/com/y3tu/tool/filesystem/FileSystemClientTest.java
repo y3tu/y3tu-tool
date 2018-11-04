@@ -1,9 +1,10 @@
 package com.y3tu.tool.filesystem;
 
-import com.y3tu.tool.core.io.FileUtil;
-import com.y3tu.tool.core.lang.Console;
+
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.lang.Console;
+import cn.hutool.setting.Setting;
 import com.y3tu.tool.filesystem.provider.ProviderTypeEnum;
-import com.y3tu.tool.setting.Setting;
 import org.junit.Test;
 
 import java.io.File;
