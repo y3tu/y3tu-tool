@@ -74,7 +74,6 @@ public class BeetlEngine implements Engine {
             case STRING:
                 return createGroupTemplate(new StringTemplateResourceLoader());
             case COMPOSITE:
-                //TODO 需要定义复合资源加载器
                 return createGroupTemplate(new CompositeResourceLoader());
             default:
                 return new GroupTemplate();

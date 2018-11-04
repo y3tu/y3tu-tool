@@ -1,5 +1,5 @@
 # y3tu-tool
-Java工具类,把平时工作学习中用的技术进行汇总，已供后续项目使用
+Java工具类,把平时工作学习中用的技术进行汇总，用于学习使用。
 
 ## 使用
 
@@ -11,19 +11,15 @@ Java工具类,把平时工作学习中用的技术进行汇总，已供后续项
     
 ## Todo
 
-1. 学习多级缓存，参考项目[layering-cache](https://github.com/xiaolyuh/layering-cache) 
-2. y3tu-tool-report 集成JasperReports
-3. spring batch 批处理框架的使用
-4. 研究frp搭建内网穿透服务
-
-## Done
-1. 文件系统工具(y3tu-tool-filesystem模块)
+1. y3tu-tool-report 集成JasperReports
+2. spring batch 批处理框架的使用
+3. 研究frp搭建内网穿透服务
 
 ## Thanks 感谢
 
 代码参考以下优秀的开源项目：
 
-- [hutool](https://gitee.com/loolly/hutool)：优秀的Java工具集
-- [vjtools](https://github.com/vipshop/vjtools)：The vip.com's java coding standard, libraries and tools
+- [hutool](https://gitee.com/loolly/hutool)
+- [layering-cache](https://github.com/xiaolyuh/layering-cache) 
 
 
