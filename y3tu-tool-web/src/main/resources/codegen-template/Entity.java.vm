@@ -6,13 +6,14 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-#if(${hasBigDecimal})
-import java.math.BigDecimal;
-#end
-#if(${hasDate})
-import java.util.Date;
-#end
+    #if(${hasBigDecimal})
+    import java.math.BigDecimal;
+    #end
+    #if(${hasDate})
+    import java.util.Date;
+    #end
 import java.io.Serializable;
+
 import com.y3tu.tool.web.base.entity.BaseEntity;
 
 
@@ -26,25 +27,25 @@ import com.y3tu.tool.web.base.entity.BaseEntity;
 @EqualsAndHashCode(callSuper = true)
 @TableName("${tableName}")
 public class ${className} extends BaseEntity<${className}> {
-	private static final long serialVersionUID = 1L;
+private static final long serialVersionUID=1L;
 
 #foreach ($column in $columns)
-	/**
-	 * $column.comments
-	 */
-	#if($column.columnName == $pk.columnName)
-	@TableId(value="$column.columnName",type = IdType.AUTO)
-	#elseif($column.columnName != $column.lowerAttrName)
-	@TableField("$column.columnName")
-	#end
-    private $column.attrType $column.lowerAttrName;
+/**
+ * $column.comments
+ */
+    #if($column.columnName == $pk.columnName)
+    @TableId(value = "$column.columnName", type = IdType.AUTO)
+    #elseif($column.columnName != $column.lowerAttrName)
+    @TableField("$column.columnName")
+    #end
+private $column.attrType $column.lowerAttrName;
 #end
 
-  /**
-   * 主键值
-   */
-  @Override
-  protected Serializable pkVal() {
-    return this.$pk.lowerAttrName;
-  }
-}
+/**
+ * 主键值
+ */
+@Override
+protected Serializable pkVal(){
+        return this.$pk.lowerAttrName;
+        }
+        }

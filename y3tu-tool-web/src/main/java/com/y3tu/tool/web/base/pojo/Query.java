@@ -1,8 +1,8 @@
 package com.y3tu.tool.web.base.pojo;
 
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.web.xss.SqlFilter;
 
 import java.util.LinkedHashMap;

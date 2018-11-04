@@ -37,6 +37,6 @@ public class EnableRedisToolRegistrar implements ImportBeanDefinitionRegistrar, 
 
         ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(registry);
         //此处可以扫描工具包里面的包路径加载bean，作用同等于ComponentScan
-       // scanner.scan("");
+        // scanner.scan("");
     }
 }

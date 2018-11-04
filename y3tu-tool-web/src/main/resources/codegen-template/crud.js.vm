@@ -1,19 +1,19 @@
 export const tableOption = {
-  'border': true,
-  'index': true,
-  'stripe': true,
-  'menuAlign': "center",
-  'align': "center",
-  'editBtn': false,
-  'delBtn': false,
-  'addBtn': false,
-  'dic': [],
-  'column': [
-#foreach ($column in $columns)
-	  {
-      label: '$column.comments',
-      prop: '$column.lowerAttrName'
-    },
-#end
-  ]
+    'border': true,
+    'index': true,
+    'stripe': true,
+    'menuAlign': "center",
+    'align': "center",
+    'editBtn': false,
+    'delBtn': false,
+    'addBtn': false,
+    'dic': [],
+    'column': [
+        #foreach ($column in $columns)
+            {
+                label: '$column.comments',
+                prop: '$column.lowerAttrName'
+            },
+        #end
+    ]
 }

@@ -1,7 +1,7 @@
 package com.y3tu.tool.web.codegen.controller;
 
-import cn.hutool.core.io.IoUtil;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.y3tu.tool.core.io.IoUtil;
 import com.y3tu.tool.web.base.pojo.Query;
 import com.y3tu.tool.web.codegen.entity.GenConfig;
 import com.y3tu.tool.web.codegen.service.GeneratorService;

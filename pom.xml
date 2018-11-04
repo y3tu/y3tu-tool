@@ -14,9 +14,8 @@
     <modules>
         <module>y3tu-tool-core</module>
         <module>y3tu-tool-web</module>
-        <module>y3tu-tool-http</module>
         <module>y3tu-tool-report</module>
-        <module>y3tu-tool-filesystem</module>
+        <module>y3tu-tool-layer-cache</module>
     </modules>
 
     <properties>

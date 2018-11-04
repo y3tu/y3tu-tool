@@ -1,6 +1,6 @@
 package com.y3tu.tool.web.redis.template;
 
-import cn.hutool.core.collection.CollectionUtil;
+import com.y3tu.tool.core.collection.CollectionUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.RedisClusterNode;
 import org.springframework.data.redis.connection.RedisConnectionFactory;

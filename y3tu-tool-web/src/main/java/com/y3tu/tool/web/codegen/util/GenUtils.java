@@ -1,20 +1,22 @@
 package com.y3tu.tool.web.codegen.util;
 
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.lang.Console;
-import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.core.util.ReflectUtil;
-import cn.hutool.core.util.RuntimeUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.db.ds.DSFactory;
-import cn.hutool.db.meta.Column;
-import cn.hutool.db.meta.MetaUtil;
-import cn.hutool.db.meta.Table;
-import cn.hutool.setting.Setting;
-import cn.hutool.system.SystemUtil;
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.date.DateUtil;
+import com.y3tu.tool.core.exceptions.UtilException;
+import com.y3tu.tool.core.io.FileUtil;
+import com.y3tu.tool.core.io.IoUtil;
+import com.y3tu.tool.core.lang.Console;
+import com.y3tu.tool.core.util.CharsetUtil;
+import com.y3tu.tool.core.util.ReflectUtil;
+import com.y3tu.tool.core.util.RuntimeUtil;
+import com.y3tu.tool.core.util.StrUtil;
+import com.y3tu.tool.db.ds.DSFactory;
+import com.y3tu.tool.db.ds.DsFactoryEnum;
+import com.y3tu.tool.db.meta.Column;
+import com.y3tu.tool.db.meta.DataTypeEnum;
+import com.y3tu.tool.db.meta.MetaUtil;
+import com.y3tu.tool.db.meta.Table;
+import com.y3tu.tool.setting.Setting;
+import com.y3tu.tool.system.SystemUtil;
 import com.y3tu.tool.web.codegen.entity.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.velocity.Template;
@@ -108,7 +110,7 @@ public class GenUtils {
 
             ColumnEntity columnEntity = new ColumnEntity();
             columnEntity.setColumnName(columnName);
-            columnEntity.setDataType(column.getType());
+            columnEntity.setDataType(column.getTypeName());
             columnEntity.setComments(column.getComment());
 
 
@@ -118,7 +120,7 @@ public class GenUtils {
             columnEntity.setLowerAttrName(StrUtil.lowerFirst(attrName));
 
             //列的数据类型，转换成Java类型
-            String attrType = DataTypeEnum.getJavaType(column.getType());
+            String attrType = DataTypeEnum.getJavaType(column.getTypeName());
             columnEntity.setAttrType(attrType);
             if (!hasBigDecimal && "BigDecimal".equals(attrType)) {
                 hasBigDecimal = true;
@@ -307,7 +309,7 @@ public class GenUtils {
             genConfig.setModuleName(scanner("模块名"));
             genConfig.setTableName(scanner("表名"));
 
-            String workingDir = SystemUtil.USER_DIR;
+            String workingDir = SystemUtil.get(SystemUtil.USER_DIR);
             String targetDir = workingDir + "/target/";
 
             File file = FileUtil.file(targetDir + "code.zip");
@@ -354,7 +356,7 @@ public class GenUtils {
      * @param outputDir
      */
     public static void openDir(String outputDir) {
-        String osName = SystemUtil.OS_NAME;
+        String osName = SystemUtil.get(SystemUtil.OS_NAME);
         if (osName != null) {
             if (osName.contains("Mac")) {
                 RuntimeUtil.exec("open " + outputDir);

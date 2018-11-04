@@ -14,6 +14,6 @@ public class GenUtilsTest {
 
     @Test
     public void startGeneratorCode() throws IOException {
-        GenUtils.startGeneratorCode(null,null);
+        GenUtils.startGeneratorCode(null, null);
     }
 }

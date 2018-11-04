@@ -1,8 +1,8 @@
 package com.y3tu.tool.web.xss;
 
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.core.util.StrUtil;
+import com.y3tu.tool.core.io.IoUtil;
+import com.y3tu.tool.core.util.CharsetUtil;
+import com.y3tu.tool.core.util.StrUtil;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 

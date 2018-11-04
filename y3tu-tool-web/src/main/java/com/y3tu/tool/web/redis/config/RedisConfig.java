@@ -1,16 +1,16 @@
 package com.y3tu.tool.web.redis.config;
 
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.StrUtil;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.y3tu.tool.core.convert.Convert;
+import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.web.redis.lock.RedisDistributedLock;
 import com.y3tu.tool.web.redis.template.RedisRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
-import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheManager;
@@ -20,7 +20,6 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -129,7 +128,8 @@ public class RedisConfig extends CachingConfigurerSupport {
         return template;
     }
 
-    //缓存管理器
+    //
+//    //缓存管理器
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
         RedisCacheManager.RedisCacheManagerBuilder builder = RedisCacheManager
@@ -138,28 +138,29 @@ public class RedisConfig extends CachingConfigurerSupport {
         return builder.build();
     }
 
-    @Bean
-    @ConditionalOnMissingBean(StringRedisTemplate.class)
-    public StringRedisTemplate stringRedisTemplate(
-            RedisConnectionFactory redisConnectionFactory) {
-        StringRedisTemplate template = new StringRedisTemplate();
-        template.setConnectionFactory(redisConnectionFactory);
-        return template;
-    }
-
-    @Bean
-    public KeyGenerator wiselyKeyGenerator() {
-        return (target, method, params) -> {
-            StringBuilder sb = new StringBuilder();
-            sb.append(target.getClass().getName());
-            sb.append(method.getName());
-            for (Object obj : params) {
-                sb.append(obj.toString());
-            }
-            return sb.toString();
-        };
-    }
-
+    //
+//    @Bean
+//    @ConditionalOnMissingBean(StringRedisTemplate.class)
+//    public StringRedisTemplate stringRedisTemplate(
+//            RedisConnectionFactory redisConnectionFactory) {
+//        StringRedisTemplate template = new StringRedisTemplate();
+//        template.setConnectionFactory(redisConnectionFactory);
+//        return template;
+//    }
+//
+//    @Bean
+//    public KeyGenerator wiselyKeyGenerator() {
+//        return (target, method, params) -> {
+//            StringBuilder sb = new StringBuilder();
+//            sb.append(target.getClass().getName());
+//            sb.append(method.getName());
+//            for (Object obj : params) {
+//                sb.append(obj.toString());
+//            }
+//            return sb.toString();
+//        };
+//    }
+//
     @Bean
     public RedisTemplate<String, Serializable> limitRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Serializable> template = new RedisTemplate<>();

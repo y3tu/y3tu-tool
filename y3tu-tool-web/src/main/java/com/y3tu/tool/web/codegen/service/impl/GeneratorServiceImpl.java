@@ -1,8 +1,8 @@
 package com.y3tu.tool.web.codegen.service.impl;
 
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.db.meta.MetaUtil;
-import cn.hutool.db.meta.Table;
+import com.y3tu.tool.core.io.IoUtil;
+import com.y3tu.tool.db.meta.MetaUtil;
+import com.y3tu.tool.db.meta.Table;
 import com.y3tu.tool.web.codegen.entity.GenConfig;
 import com.y3tu.tool.web.codegen.service.GeneratorService;
 import com.y3tu.tool.web.codegen.util.GenUtils;

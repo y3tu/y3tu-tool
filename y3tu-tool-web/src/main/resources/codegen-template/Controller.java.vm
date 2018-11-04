@@ -8,7 +8,6 @@ import ${package}.${moduleName}.entity.${className};
 import ${package}.${moduleName}.service.${className}Service;
 
 
-
 /**
  * ${comments}
  *

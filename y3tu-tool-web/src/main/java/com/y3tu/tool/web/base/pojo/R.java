@@ -1,6 +1,6 @@
 package com.y3tu.tool.web.base.pojo;
 
-import com.y3tu.tool.core.exception.IError;
+import com.y3tu.tool.core.exceptions.IError;
 import lombok.Data;
 
 import java.io.Serializable;
