@@ -39,7 +39,6 @@ import java.util.UUID;
  *
  * @author yuhao.wangwang
  * @version 1.0
- * @since 2017年11月3日 上午10:21:27
  */
 public class Lock {
 

@@ -12,7 +12,7 @@ import org.springframework.data.redis.core.RedisTemplate;
  * @author yuhao.wang
  */
 public class LayeringCacheManager extends AbstractCacheManager {
-        public LayeringCacheManager(RedisTemplate<String, Object> redisTemplate) {
+    public LayeringCacheManager(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
         cacheManagers.add(this);
     }

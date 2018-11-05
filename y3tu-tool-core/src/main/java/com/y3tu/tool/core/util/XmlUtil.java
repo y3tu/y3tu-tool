@@ -43,7 +43,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import com.y3tu.tool.core.exceptions.UtilException;
+import com.y3tu.tool.core.exception.UtilException;
 
 /**
  * XML工具类<br>

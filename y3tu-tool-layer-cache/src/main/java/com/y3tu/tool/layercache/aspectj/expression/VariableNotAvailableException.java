@@ -9,20 +9,19 @@ import org.springframework.expression.EvaluationException;
  * used in the expression is not available in the context.
  *
  * @author Stephane Nicoll
- * @since 4.0.6
  */
 @SuppressWarnings("serial")
 class VariableNotAvailableException extends EvaluationException {
 
-	private final String name;
+    private final String name;
 
-	public VariableNotAvailableException(String name) {
-		super("Variable '" + name + "' is not available");
-		this.name = name;
-	}
+    public VariableNotAvailableException(String name) {
+        super("Variable '" + name + "' is not available");
+        this.name = name;
+    }
 
 
-	public String getName() {
-		return this.name;
-	}
+    public String getName() {
+        return this.name;
+    }
 }

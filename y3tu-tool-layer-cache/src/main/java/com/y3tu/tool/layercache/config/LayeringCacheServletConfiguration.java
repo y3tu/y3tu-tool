@@ -22,7 +22,7 @@ public class LayeringCacheServletConfiguration {
         registrationBean.addUrlMappings(!StringUtils.isEmpty(properties.getUrlPattern()) ? properties.getUrlPattern() : "/layering-cache/*");
         registrationBean.addInitParameter("loginUsername", StringUtils.isEmpty(properties.getLoginUsername()) ? "admin" : properties.getLoginUsername());
         registrationBean.addInitParameter("loginPassword", StringUtils.isEmpty(properties.getLoginPassword()) ? "admin" : properties.getLoginPassword());
-        registrationBean.addInitParameter("enableUpdate", properties.isEnableUpdate()+"");
+        registrationBean.addInitParameter("enableUpdate", properties.isEnableUpdate() + "");
         if (!StringUtils.isEmpty(properties.getAllow())) {
             registrationBean.addInitParameter("allow", properties.getAllow());
         }

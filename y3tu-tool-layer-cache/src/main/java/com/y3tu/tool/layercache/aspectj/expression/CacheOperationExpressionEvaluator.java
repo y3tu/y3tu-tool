@@ -20,7 +20,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Phillip Webb
  * @author Sam Brannen
  * @author Stephane Nicoll
- * @since 3.1
  */
 public class CacheOperationExpressionEvaluator extends CachedExpressionEvaluator {
 

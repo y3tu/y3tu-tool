@@ -7,7 +7,7 @@ import com.mongodb.MongoClientOptions.Builder;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.y3tu.tool.core.exceptions.NotInitedException;
+import com.y3tu.tool.core.exception.NotInitedException;
 import com.y3tu.tool.core.util.NetUtil;
 import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.db.DbRuntimeException;

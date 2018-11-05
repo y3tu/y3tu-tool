@@ -1,6 +1,6 @@
 package com.y3tu.tool.core.io.resource;
 
-import com.y3tu.tool.core.exceptions.ExceptionUtil;
+import com.y3tu.tool.core.exception.ExceptionUtil;
 import com.y3tu.tool.core.io.IORuntimeException;
 import com.y3tu.tool.core.util.StrUtil;
 

@@ -1,6 +1,6 @@
 package com.y3tu.tool.extra.template;
 
-import com.y3tu.tool.core.exceptions.ExceptionUtil;
+import com.y3tu.tool.core.exception.ExceptionUtil;
 import com.y3tu.tool.core.util.StrUtil;
 
 /**

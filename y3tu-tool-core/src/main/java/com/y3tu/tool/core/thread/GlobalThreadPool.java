@@ -4,7 +4,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-import com.y3tu.tool.core.exceptions.UtilException;
+import com.y3tu.tool.core.exception.UtilException;
 
 /**
  * 全局公共线程池

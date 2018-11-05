@@ -1,4 +1,4 @@
-package com.y3tu.tool.core.exceptions;
+package com.y3tu.tool.core.exception;
 
 /**
  * 业务异常

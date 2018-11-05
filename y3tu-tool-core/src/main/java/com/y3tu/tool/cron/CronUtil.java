@@ -1,7 +1,7 @@
 
 package com.y3tu.tool.cron;
 
-import com.y3tu.tool.core.exceptions.UtilException;
+import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.io.resource.NoResourceException;
 import com.y3tu.tool.cron.pattern.CronPattern;
 import com.y3tu.tool.cron.task.Task;

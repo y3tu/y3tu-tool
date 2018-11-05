@@ -16,7 +16,7 @@ import java.net.URLStreamHandler;
 import java.nio.charset.Charset;
 import java.util.jar.JarFile;
 
-import com.y3tu.tool.core.exceptions.UtilException;
+import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IORuntimeException;
 import com.y3tu.tool.core.io.IoUtil;

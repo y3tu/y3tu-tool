@@ -19,7 +19,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
-import com.y3tu.tool.core.exceptions.UtilException;
+import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.io.FastByteArrayOutputStream;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IORuntimeException;

@@ -15,7 +15,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import com.y3tu.tool.core.date.DateTime;
 import com.y3tu.tool.core.date.DateUtil;
-import com.y3tu.tool.core.exceptions.UtilException;
+import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.lang.UUID;
 import com.y3tu.tool.core.lang.WeightRandom;
 

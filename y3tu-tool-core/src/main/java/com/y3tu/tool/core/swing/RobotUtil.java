@@ -6,7 +6,7 @@ import java.awt.Robot;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-import com.y3tu.tool.core.exceptions.UtilException;
+import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.util.ImageUtil;
 
 /**

@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Bean 工厂类
+ *
  * @author yuhao.wang3
  */
 public class BeanFactory {

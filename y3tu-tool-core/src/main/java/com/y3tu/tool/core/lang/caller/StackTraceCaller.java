@@ -1,6 +1,6 @@
 package com.y3tu.tool.core.lang.caller;
 
-import com.y3tu.tool.core.exceptions.UtilException;
+import com.y3tu.tool.core.exception.UtilException;
 
 /**
  * 通过StackTrace方式获取调用者。此方式效率最低，不推荐使用

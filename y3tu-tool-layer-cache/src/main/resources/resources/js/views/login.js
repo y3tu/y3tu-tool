@@ -6,7 +6,7 @@
     };
 
     var bindEvent = {
-        bindLogin:function () {
+        bindLogin: function () {
             $(constant.LOGIN_BUTTON).on("click", function () {
                 $.ajax({
                     type: 'POST',

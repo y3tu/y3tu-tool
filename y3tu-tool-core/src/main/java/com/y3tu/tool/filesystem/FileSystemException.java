@@ -1,9 +1,9 @@
 package com.y3tu.tool.filesystem;
 
 
-import com.y3tu.tool.core.exceptions.BaseException;
-import com.y3tu.tool.core.exceptions.ExceptionUtil;
-import com.y3tu.tool.core.exceptions.IError;
+import com.y3tu.tool.core.exception.BaseException;
+import com.y3tu.tool.core.exception.ExceptionUtil;
+import com.y3tu.tool.core.exception.IError;
 import com.y3tu.tool.core.util.StrUtil;
 
 /**

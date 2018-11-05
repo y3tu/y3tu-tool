@@ -12,7 +12,6 @@ import java.util.Arrays;
  *
  * @author Phillip Webb
  * @see SimpleKeyGenerator
- * @since 4.0
  */
 public class SimpleKey implements Serializable {
 

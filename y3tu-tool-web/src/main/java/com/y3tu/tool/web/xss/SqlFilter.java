@@ -1,7 +1,7 @@
 package com.y3tu.tool.web.xss;
 
 
-import com.y3tu.tool.core.exceptions.BusinessException;
+import com.y3tu.tool.core.exception.BusinessException;
 import com.y3tu.tool.core.util.StrUtil;
 
 /**

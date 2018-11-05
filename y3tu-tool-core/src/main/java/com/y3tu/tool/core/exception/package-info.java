@@ -3,4 +3,4 @@
  *
  * @author looly
  */
-package com.y3tu.tool.core.exceptions;
+package com.y3tu.tool.core.exception;

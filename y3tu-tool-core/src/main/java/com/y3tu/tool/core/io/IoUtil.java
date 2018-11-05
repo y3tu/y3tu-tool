@@ -35,7 +35,7 @@ import java.util.zip.CheckedInputStream;
 import java.util.zip.Checksum;
 
 import com.y3tu.tool.core.convert.Convert;
-import com.y3tu.tool.core.exceptions.UtilException;
+import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.lang.Assert;
 import com.y3tu.tool.core.util.CharsetUtil;
 import com.y3tu.tool.core.util.HexUtil;

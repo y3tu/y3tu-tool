@@ -1,7 +1,7 @@
 package com.y3tu.tool.web.codegen.util;
 
 import com.y3tu.tool.core.date.DateUtil;
-import com.y3tu.tool.core.exceptions.UtilException;
+import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IoUtil;
 import com.y3tu.tool.core.lang.Console;

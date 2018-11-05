@@ -42,6 +42,7 @@ public interface CacheManager {
 
     /**
      * 获取缓存命中率统计信息
+     *
      * @param cacheName 缓存名称，为Blank则查询全部
      * @return List&lt;CacheStatsInfo&gt;
      */

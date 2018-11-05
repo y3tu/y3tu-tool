@@ -11,7 +11,6 @@ import java.lang.reflect.Method;
  *
  * @author Costin Leau
  * @author Sam Brannen
- * @since 3.1
  */
 class CacheExpressionRootObject {
 

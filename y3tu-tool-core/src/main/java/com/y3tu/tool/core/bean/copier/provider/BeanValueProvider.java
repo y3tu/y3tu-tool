@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.y3tu.tool.core.bean.BeanUtil;
 import com.y3tu.tool.core.bean.copier.ValueProvider;
-import com.y3tu.tool.core.exceptions.UtilException;
+import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.core.bean.BeanDesc;
 

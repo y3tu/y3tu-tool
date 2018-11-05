@@ -4,7 +4,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
-import com.y3tu.tool.core.exceptions.NotInitedException;
+import com.y3tu.tool.core.exception.NotInitedException;
 
 /**
  * 线程同步结束器<br>

@@ -1,4 +1,4 @@
-package com.y3tu.tool.core.exceptions;
+package com.y3tu.tool.core.exception;
 
 import com.y3tu.tool.core.util.StrUtil;
 import lombok.Data;

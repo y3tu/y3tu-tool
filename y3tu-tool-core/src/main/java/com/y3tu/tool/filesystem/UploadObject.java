@@ -1,6 +1,6 @@
 package com.y3tu.tool.filesystem;
 
-import com.y3tu.tool.core.exceptions.UtilException;
+import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.MimeTypeFileExtension;
 import com.y3tu.tool.core.lang.UUID;

@@ -1,6 +1,6 @@
 package com.y3tu.tool.cron.task;
 
-import com.y3tu.tool.core.exceptions.UtilException;
+import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.util.ClassLoaderUtil;
 import com.y3tu.tool.core.util.ClassUtil;
 import com.y3tu.tool.core.util.ReflectUtil;

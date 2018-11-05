@@ -29,7 +29,7 @@ import javax.imageio.stream.ImageOutputStream;
 
 import com.y3tu.tool.core.codec.Base64;
 import com.y3tu.tool.core.convert.Convert;
-import com.y3tu.tool.core.exceptions.UtilException;
+import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.img.Img;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IORuntimeException;

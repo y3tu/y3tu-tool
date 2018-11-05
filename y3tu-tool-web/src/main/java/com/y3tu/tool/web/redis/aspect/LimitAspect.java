@@ -1,7 +1,7 @@
 package com.y3tu.tool.web.redis.aspect;
 
 import com.y3tu.tool.core.collection.CollectionUtil;
-import com.y3tu.tool.core.exceptions.BusinessException;
+import com.y3tu.tool.core.exception.BusinessException;
 import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.http.IPUtil;
 import com.y3tu.tool.web.redis.annotation.Limit;

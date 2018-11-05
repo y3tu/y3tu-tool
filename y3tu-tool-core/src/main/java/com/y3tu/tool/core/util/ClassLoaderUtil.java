@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.y3tu.tool.core.convert.BasicType;
-import com.y3tu.tool.core.exceptions.UtilException;
+import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.lang.Assert;
 import com.y3tu.tool.core.lang.SimpleCache;
 

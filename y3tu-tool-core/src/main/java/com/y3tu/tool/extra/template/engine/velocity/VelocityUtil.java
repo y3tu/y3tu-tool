@@ -1,7 +1,7 @@
 package com.y3tu.tool.extra.template.engine.velocity;
 
-import com.y3tu.tool.core.exceptions.NotInitedException;
-import com.y3tu.tool.core.exceptions.UtilException;
+import com.y3tu.tool.core.exception.NotInitedException;
+import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IORuntimeException;
 import com.y3tu.tool.core.io.IoUtil;

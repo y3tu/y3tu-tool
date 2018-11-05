@@ -110,13 +110,13 @@
             $.each(cacheStats, function (i, cs) {
                 cs.hitRate = cs.hitRate().toFixed(2) + "%";
                 if (cs.firstCacheRequestCount() > 0) {
-                    cs.firstHitRate = ((cs.firstCacheRequestCount() - cs.firstCacheMissCount()) / cs.firstCacheRequestCount() * 100 ).toFixed(2) + "%";
+                    cs.firstHitRate = ((cs.firstCacheRequestCount() - cs.firstCacheMissCount()) / cs.firstCacheRequestCount() * 100).toFixed(2) + "%";
                 } else {
                     cs.firstHitRate = (0).toFixed(2) + "%";
                 }
 
                 if (cs.secondCacheRequestCount() > 0) {
-                    cs.secondHitRate = ((cs.secondCacheRequestCount() - cs.secondCacheMissCount()) / cs.secondCacheRequestCount() * 100 ).toFixed(2) + "%";
+                    cs.secondHitRate = ((cs.secondCacheRequestCount() - cs.secondCacheMissCount()) / cs.secondCacheRequestCount() * 100).toFixed(2) + "%";
                 } else {
                     cs.secondHitRate = (0).toFixed(2) + "%";
                 }

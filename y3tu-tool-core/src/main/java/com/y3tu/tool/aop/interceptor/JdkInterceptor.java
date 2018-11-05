@@ -1,7 +1,7 @@
 package com.y3tu.tool.aop.interceptor;
 
 import com.y3tu.tool.aop.aspects.Aspect;
-import com.y3tu.tool.core.exceptions.UtilException;
+import com.y3tu.tool.core.exception.UtilException;
 import com.y3tu.tool.core.util.ReflectUtil;
 
 import java.lang.reflect.InvocationHandler;
