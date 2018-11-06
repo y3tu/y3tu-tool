@@ -1,11 +1,13 @@
 package com.y3tu.tool.layercache.properties;
 
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * @author yuhao.wang3
  */
-@ConfigurationProperties("spring.layering-cache")
+@Data
+@ConfigurationProperties("spring.y3tu.layer-cache")
 public class LayeringCacheProperties {
 
     /**
@@ -21,7 +23,7 @@ public class LayeringCacheProperties {
     /**
      * 启动 LayeringCacheServlet.
      */
-    private boolean layeringCacheServletEnabled = true;
+    private boolean servletEnable = true;
 
     /**
      * contextPath
@@ -53,75 +55,4 @@ public class LayeringCacheProperties {
      */
     private boolean enableUpdate = true;
 
-    public boolean isLayeringCacheServletEnabled() {
-        return layeringCacheServletEnabled;
-    }
-
-    public void setLayeringCacheServletEnabled(boolean layeringCacheServletEnabled) {
-        this.layeringCacheServletEnabled = layeringCacheServletEnabled;
-    }
-
-    public String getUrlPattern() {
-        return urlPattern;
-    }
-
-    public void setUrlPattern(String urlPattern) {
-        this.urlPattern = urlPattern;
-    }
-
-    public String getAllow() {
-        return allow;
-    }
-
-    public void setAllow(String allow) {
-        this.allow = allow;
-    }
-
-    public String getDeny() {
-        return deny;
-    }
-
-    public void setDeny(String deny) {
-        this.deny = deny;
-    }
-
-    public String getLoginUsername() {
-        return loginUsername;
-    }
-
-    public void setLoginUsername(String loginUsername) {
-        this.loginUsername = loginUsername;
-    }
-
-    public String getLoginPassword() {
-        return loginPassword;
-    }
-
-    public void setLoginPassword(String loginPassword) {
-        this.loginPassword = loginPassword;
-    }
-
-    public boolean isStats() {
-        return stats;
-    }
-
-    public void setStats(boolean stats) {
-        this.stats = stats;
-    }
-
-    public String getNamespace() {
-        return namespace;
-    }
-
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
-    }
-
-    public boolean isEnableUpdate() {
-        return enableUpdate;
-    }
-
-    public void setEnableUpdate(boolean enableUpdate) {
-        this.enableUpdate = enableUpdate;
-    }
 }
