@@ -1,4 +1,4 @@
-package com.y3tu.tool.report.http;
+package com.y3tu.tool.http.servlet;
 
 import com.y3tu.tool.core.io.IoUtil;
 import com.y3tu.tool.core.io.resource.ResourceUtil;
@@ -24,8 +24,14 @@ public abstract class ResourceServlet extends HttpServlet {
      */
     protected final String resourcePath;
 
-    public ResourceServlet(String resourcePath) {
+    /**
+     * 拦截前缀地址
+     */
+    protected final String prefixPath;
+
+    public ResourceServlet(String resourcePath, String prefixPath) {
         this.resourcePath = resourcePath;
+        this.prefixPath = prefixPath;
     }
 
     @Override
@@ -87,9 +93,9 @@ public abstract class ResourceServlet extends HttpServlet {
 
         if ("".equals(path)) {
             if (contextPath.equals("") || contextPath.equals("/")) {
-                response.sendRedirect("/report-tool/index.html");
+                response.sendRedirect("/" + prefixPath + "/index.html");
             } else {
-                response.sendRedirect("report-tool/index.html");
+                response.sendRedirect(prefixPath + "/index.html");
             }
             return;
         }

@@ -21,7 +21,7 @@ public class LayeringCacheProperties {
     private String namespace;
 
     /**
-     * 启动 LayeringCacheServlet.
+     * 启动 LayerCacheViewServlet.
      */
     private boolean servletEnable = true;
 

@@ -1,18 +1,17 @@
-package com.y3tu.tool.report.http;
+package com.y3tu.tool.layercache.web.servlet;
 
 import com.y3tu.tool.http.servlet.ResourceServlet;
-
 import javax.servlet.ServletException;
 
+
 /**
- * @author y3tu
- * @date 2018/10/25
+ * 统计的Servlet
+ *
+ * @author yuhao.wang3
  */
-public class ReportViewServlet extends ResourceServlet {
-
-
-    public ReportViewServlet() {
-        super("report","y3tu-report");
+public class LayerCacheViewServlet extends ResourceServlet {
+    public LayerCacheViewServlet() {
+        super("http/resources", "layer-cache");
     }
 
     @Override
