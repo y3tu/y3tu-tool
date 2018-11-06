@@ -1,351 +1,134 @@
-<!doctype html>
-<html class="no-js">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Layering Cache</title>
-    <meta name="description" content="这是一个 table 页面">
-    <meta name="keywords" content="table">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="Cache-Control" content="no-siteapp"/>
-    <link rel="icon" type="image/png" href="i/favicon.png">
-    <link rel="apple-touch-icon-precomposed" href="i/app-icon72x72@2x.png">
-    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
-    <link rel="stylesheet" href="css/amazeui.min.css"/>
-    <link rel="stylesheet" href="css/admin.css">
-</head>
-<body>
-<!--[if lte IE 9]>
-<p class="browsehappy">你正在使用<strong>过时</strong>的浏览器，Amaze UI 暂不支持。 请 <a href="http://browsehappy.com/" target="_blank">升级浏览器</a>
-    以获得更好的体验！</p>
-<![endif]-->
-
-<header class="am-topbar am-topbar-inverse admin-header">
-    <div class="am-topbar-brand">
-        <strong>Layering Cache</strong>
-        <small>监控统计</small>
-    </div>
-
-    <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only"
-            data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span
-            class="am-icon-bars"></span></button>
-
-    <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
-
-        <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
-            <li id="login-out"><a href="javascript:;"><span class="am-icon-power-off"></span> 退出 </a></li>
-            <li class="am-hide-sm-only">
-                <a href="javascript:;" id="admin-fullscreen">
-                    <span class="am-icon-arrows-alt"></span>
-                    <span class="admin-fullText">开启全屏</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-</header>
-
-<div class="am-cf admin-main">
-    <!-- sidebar start -->
-    <div class="admin-sidebar am-offcanvas" id="admin-offcanvas">
-        <div class="am-offcanvas-bar admin-offcanvas-bar">
-            <ul class="am-list admin-sidebar-list">
-                <li><a href="index.html"><span class="am-icon-home"></span> 监控管理</a></li>
-                <!--<li><a href="cache.html"><span class="am-icon-pencil-square-o"></span> 缓存查看</a></li>
-                <li><a href="admin-form.html"><span class="am-icon-pencil-square-o"></span> redis工具</a></li>
-                <li><a href="admin-table.html"><span class="am-icon-puzzle-piece"></span> 帮助</a></li>-->
-            </ul>
-
-            <div class="am-panel am-panel-default admin-sidebar-panel">
-                <div class="am-panel-bd">
-                    <p><span class="am-icon-bookmark"></span> 联系方式</p>
-                    <p>xiaolyuh@163.com</p>
-                </div>
-            </div>
-
-            <div class="am-panel am-panel-default admin-sidebar-panel">
-                <div class="am-panel-bd">
-                    <p><span class="am-icon-tag"></span> Bug 反馈</p>
-                    <p><a href="https://github.com/xiaolyuh/layering-cache/issues">GitHub Issue</a></p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- sidebar end -->
-
-    <!-- content start -->
-    <div class="admin-content">
-        <div class="admin-content-body">
-            <div class="am-cf am-padding am-padding-bottom-0">
-                <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">Layering Cache</strong> /
-                    <small>监控统计</small>
-                </div>
-            </div>
-
-            <hr>
-
-            <div class="am-g">
-                <div class="am-u-sm-12 am-u-md-3">
-                    <div class="am-input-group am-input-group-sm">
-                        <input type="text" class="am-form-field bind-search-input" placeholder="请输入缓存名称">
-                        <span class="am-input-group-btn"><button class="am-btn am-btn-default bind-search-button"
-                                                                 type="button">搜索</button></span>
-                    </div>
-                </div>
-
-                <div class="am-u-sm-12 am-u-md-2">
-                    <div class="am-btn-toolbar">
-                        <div class="am-btn-group am-btn-group-xs">
-                            <button type="button" class="am-btn am-btn-default bind-reset-stats-button"><span
-                                    class="am-icon-trash-o"></span> 重置统计数据
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="am-g">
-                <div class="am-u-sm-12">
-                    <form class="am-form">
-                        <table class="am-table am-table-striped am-table-hover table-main">
-                            <thead>
-                            <tr>
-                                <th class="table-name">名称</th>
-                                <th class="table-internalKey">内部缓存名</th>
-                                <th class="table-internalKey">描述</th>
-                                <th class="table-request-count">请求总数</th>
-                                <th class="table-miss-count">未命中总数</th>
-                                <th class="table-hit-rate am-hide-sm-only">命中率</th>
-                                <th class="table-first-hit-rate am-hide-sm-only">一级缓存命中率</th>
-                                <th class="table-second-hit-rate am-hide-sm-only">二级缓存命中率</th>
-                                <th class="table-total-load-time am-hide-sm-only">加载缓存平均耗时</th>
-                                <th class="table-set">操作</th>
-                            </tr>
-                            </thead>
-                            <tbody data-bind="foreach: { data: cacheStats, as: 'stats' }">
-                            <tr>
-                                <td class="am-hide-sm-only" data-bind="text:stats.cacheName()"></td>
-                                <td class="am-hide-sm-only" data-bind="text:stats.internalKey()">5555-5555-5555</td>
-                                <td class="am-hide-sm-only" data-bind="text:stats.depict()">测试</td>
-                                <td class="am-hide-sm-only" data-bind="text:stats.requestCount()">10</td>
-                                <td class="am-hide-sm-only" data-bind="text:stats.missCount()">2</td>
-                                <td class="am-hide-sm-only" data-bind="text:stats.hitRate">80%</td>
-                                <td class="am-hide-sm-only" data-bind="text:stats.firstHitRate">70%</td>
-                                <td class="am-hide-sm-only" data-bind="text:stats.secondHitRate">50%</td>
-                                <td class="am-hide-sm-only" data-bind="text:stats.averageTotalLoadTime">58</td>
-                                <td>
-                                    <div class="am-btn-toolbar">
-                                        <div class="am-btn-group am-btn-group-xs">
-                                            <button class="am-btn am-btn-default am-btn-xs am-text-secondary"
-                                                    data-bind="click: detail">
-                                                <span class="am-icon-pencil-square-o"></span> 详情
-                                            </button>
-                                            <button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"
-                                                    data-bind="click: deleteCache">
-                                                <span class="am-icon-trash-o"></span> 删除
-                                            </button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <div class="am-cf">
-                            共 <span data-bind="text: cacheStats().length"></span> 条记录
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-
-        <footer class="admin-content-footer">
-            <hr>
-            <p class="am-padding-left">© 2014 AllMobilize, Inc. Licensed under MIT license.</p>
-        </footer>
-    </div>
-    <!-- content end -->
-</div>
-
-<a href="#" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu"
-   data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
-
-<footer>
-    <hr>
-    <p class="am-padding-left">© 2014 AllMobilize, Inc. Licensed under MIT license.</p>
-</footer>
-
-
-<div class="am-modal am-modal-confirm" tabindex="-1" id="reset-confirm">
-    <div class="am-modal-dialog">
-        <div class="am-modal-hd">警告！</div>
-        <div class="am-modal-bd">
-            你，要执行该操作吗？
-        </div>
-        <div class="am-modal-footer">
-            <span class="am-modal-btn" data-am-modal-cancel>取消</span>
-            <span class="am-modal-btn" data-am-modal-confirm>确定</span>
-        </div>
-    </div>
-</div>
-
-<div class="am-modal am-modal-confirm" tabindex="-1" id="delete-confirm">
-    <div class="am-modal-dialog">
-        <div class="am-modal-hd">警告！</div>
-        <div class="am-modal-bd">
-            你，要执行该操作吗？
-        </div>
-        <div class="am-modal-footer">
-            <span class="am-modal-btn" data-am-modal-cancel>取消</span>
-            <span class="am-modal-btn" data-am-modal-confirm>确定</span>
-        </div>
-    </div>
-</div>
-
-<div class="am-modal am-modal-prompt" tabindex="-1" id="delete-prompt">
-    <div class="am-modal-dialog">
-        <div class="am-modal-hd">删除缓存</div>
-        <div class="am-modal-bd">
-            <div class="am-alert am-alert-danger" data-am-alert>
-                <button type="button" class="am-close">&times;</button>
-                <p>如果不输入则是清空缓存</p>
-            </div>
-            <input type="text" class="am-modal-prompt-input" id="delete-cache-key-input" placeholder="请输入缓存key">
-        </div>
-        <div class="am-modal-footer">
-            <span class="am-modal-btn" data-am-modal-cancel>取消</span>
-            <span class="am-modal-btn" data-am-modal-confirm>提交</span>
-        </div>
-    </div>
-</div>
-
-<div class="am-modal am-modal-no-btn" tabindex="-1" id="detail-modal">
-    <div class="am-modal-dialog">
-        <div class="am-modal-hd">详情
-            <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
-        </div>
-        <div class="am-modal-bd" style="height: 550px;overflow: auto">
-            <table class="am-table am-table-bordered am-table-striped">
-
-                <tr>
-                    <td rowspan="3" class="am-text-middle">缓存基本信息</td>
-                    <td>缓存名称</td>
-                    <td class="am-primary" data-bind="text:detailCacheStats().cacheName"></td>
-                </tr>
-                <tr>
-                    <td>内部缓存名</td>
-                    <td class="am-primary" data-bind="text:detailCacheStats().internalKey"></td>
-                </tr>
-                <tr>
-                    <td>描述</td>
-                    <td class="am-primary" data-bind="text:detailCacheStats().depict"></td>
-                </tr>
-
-
-                <tr>
-                    <td rowspan="4" class="am-text-middle">缓存统计信息</td>
-                    <td>请求总数</td>
-                    <td class="am-primary" data-bind="text:detailCacheStats().requestCount"></td>
-                </tr>
-                <tr>
-                    <td>未命中总数</td>
-                    <td class="am-primary" data-bind="text:detailCacheStats().missCount"></td>
-                </tr>
-                <tr>
-                    <td>命中率</td>
-                    <td class="am-primary" data-bind="text:detailCacheStats().hitRate"></td>
-                </tr>
-                <tr>
-                    <td>加载缓存平均耗时</td>
-                    <td class="am-primary" data-bind="text:detailCacheStats().averageTotalLoadTime"></td>
-                </tr>
-
-                <tr>
-                    <td rowspan="3" class="am-text-middle">一级缓存统计信息</td>
-                    <td>请求总数</td>
-                    <td class="am-primary" data-bind="text:detailCacheStats().firstCacheRequestCount"></td>
-                </tr>
-                <tr>
-                    <td>未命中总数</td>
-                    <td class="am-primary" data-bind="text:detailCacheStats().firstCacheMissCount"></td>
-                </tr>
-                <tr>
-                    <td>缓存命中率</td>
-                    <td class="am-primary" data-bind="text:detailCacheStats().firstHitRate"></td>
-                </tr>
-
-                <tr>
-                    <td rowspan="5" class="am-text-middle">一级缓配置计信息</td>
-                    <td>初始Size</td>
-                    <td class="am-primary" data-bind="text:fcs().initialCapacity"></td>
-                </tr>
-                <tr>
-                    <td>最大Size</td>
-                    <td class="am-primary" data-bind="text:fcs().maximumSize"></td>
-                </tr>
-                <tr>
-                    <td>失效模式</td>
-                    <td class="am-primary" data-bind="text:fcs().expireMode"></td>
-                </tr>
-                <tr>
-                    <td>失效时间</td>
-                    <td class="am-primary" data-bind="text:fcs().expireTime"></td>
-                </tr>
-                <tr>
-                    <td>时间单位</td>
-                    <td class="am-primary" data-bind="text:fcs().timeUnit"></td>
-                </tr>
-
-                <tr>
-                    <td rowspan="3" class="am-text-middle">二级缓存统计信息</td>
-                    <td>请求总数</td>
-                    <td class="am-primary" data-bind="text:detailCacheStats().secondCacheRequestCount"></td>
-                </tr>
-                <tr>
-                    <td>未命中总数</td>
-                    <td class="am-primary" data-bind="text:detailCacheStats().secondCacheMissCount"></td>
-                </tr>
-                <tr>
-                    <td>缓存命中率</td>
-                    <td class="am-primary" data-bind="text:detailCacheStats().secondHitRate"></td>
-                </tr>
-
-                <tr>
-                    <td rowspan="4" class="am-text-middle">二级缓配置计信息</td>
-                    <td>失效时间</td>
-                    <td class="am-primary" data-bind="text:scs().expiration"></td>
-                </tr>
-                <tr>
-                    <td>自动刷新时间</td>
-                    <td class="am-primary" data-bind="text:scs().preloadTime"></td>
-                </tr>
-
-                <tr>
-                    <td>时间单位</td>
-                    <td class="am-primary" data-bind="text:scs().timeUnit"></td>
-                </tr>
-                <tr>
-                    <td>是否强刷新</td>
-                    <td class="am-primary" data-bind="text:scs().forceRefresh"></td>
-                </tr>
-            </table>
-        </div>
-    </div>
-</div>
-
-<!--[if lt IE 9]>
-<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
-<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
-<script src="js/amazeui.ie8polyfill.min.js"></script>
-<![endif]-->
-
-<!--[if (gte IE 9)|!(IE)]><!-->
-<script src="js/lib/jquery.min.js"></script>
-<!--<![endif]-->
-<script src="js/lib/amazeui.min.js"></script>
-<script src="js/lib/app.js"></script>
-<script src="js/lib/knockout-3.3.0.js"></script>
-<script src="js/lib/knockout.mapping.js"></script>
-<script src="js/views/index.js"></script>
-</body>
-</html>
+<!DOCTYPE html><html><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><link rel=icon href=./favicon.ico><title>Y3tu blog</title><style>html, body, #app {
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+    }
+    .d2-app-loading-group {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.15) 100%), radial-gradient(at top center, rgba(255, 255, 255, 0.40) 0%, rgba(0, 0, 0, 0.40) 120%) #989898;
+      background-blend-mode: multiply, multiply;
+    }
+    .d2-app-loading-title {
+      color: #FFF;
+      font-weight: bold;
+      font-size: 14px;
+      margin-top: 40px;
+      margin-bottom: 10px;
+      letter-spacing: 0.2em;
+    }
+    .d2-app-loading-sub-title {
+      color: #FFF;
+      font-size: 10px;
+      margin-bottom: 10px;
+    }
+    .d2-app-loading-sub-info {
+      color: #FFF;
+      font-size: 10px;
+      opacity: .8;
+      margin-bottom: 4px;
+    }
+    .d2-app-loading-btn {
+      text-decoration: none;
+      display: inline-block;
+      line-height: 1;
+      white-space: nowrap;
+      cursor: pointer;
+      background: #fff;
+      border: 1px solid #dcdfe6;
+      border-color: #dcdfe6;
+      color: #606266;
+      -webkit-appearance: none;
+      text-align: center;
+      box-sizing: border-box;
+      outline: none;
+      margin: 0;
+      transition: .1s;
+      font-weight: 500;
+      -moz-user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      padding: 12px 20px;
+      font-size: 14px;
+      border-radius: 4px;
+      /* 圆角 */
+      padding: 7px 15px;
+      border-radius: 20px;
+      font-size: 12px;
+    }
+    .d2-app-loading-grid {
+      width: 30px;
+      height: 30px;
+    }
+    .d2-app-loading-grid .d2-app-loading {
+      width: 10px;
+      height: 10px;
+      background-color: #FFF;
+      float: left;
+      -webkit-animation: d2-app-loading-grid-scale-delay 1.3s infinite ease-in-out;
+      animation: d2-app-loading-grid-scale-delay 1.3s infinite ease-in-out;
+    }
+    .d2-app-loading-grid .d2-app-loading1 {
+      border-top-left-radius: 4px;
+      -webkit-animation-delay: 0.2s;
+      animation-delay: 0.2s;
+    }
+    .d2-app-loading-grid .d2-app-loading2 {
+      -webkit-animation-delay: 0.3s;
+      animation-delay: 0.3s;
+    }
+    .d2-app-loading-grid .d2-app-loading3 {
+      border-top-right-radius: 4px;
+      -webkit-animation-delay: 0.4s;
+      animation-delay: 0.4s;
+    }
+    .d2-app-loading-grid .d2-app-loading4 {
+      -webkit-animation-delay: 0.1s;
+      animation-delay: 0.1s;
+    }
+    .d2-app-loading-grid .d2-app-loading5 {
+      -webkit-animation-delay: 0.2s;
+      animation-delay: 0.2s;
+    }
+    .d2-app-loading-grid .d2-app-loading6 {
+      -webkit-animation-delay: 0.3s;
+      animation-delay: 0.3s;
+    }
+    .d2-app-loading-grid .d2-app-loading7 {
+      border-bottom-left-radius: 4px;
+      -webkit-animation-delay: 0s;
+      animation-delay: 0s;
+    }
+    .d2-app-loading-grid .d2-app-loading8 {
+      -webkit-animation-delay: 0.1s;
+      animation-delay: 0.1s;
+    }
+    .d2-app-loading-grid .d2-app-loading9 {
+      border-bottom-right-radius: 4px;
+      -webkit-animation-delay: 0.2s;
+      animation-delay: 0.2s;
+    }
+    @-webkit-keyframes d2-app-loading-grid-scale-delay {
+      0%, 70%, 100% {
+        -webkit-transform: scale3D(1, 1, 1);
+        transform: scale3D(1, 1, 1);
+      }
+      35% {
+        -webkit-transform: scale3D(0, 0, 1);
+        transform: scale3D(0, 0, 1);
+      }
+    }
+    @keyframes d2-app-loading-grid-scale-delay {
+      0%, 70%, 100% {
+        -webkit-transform: scale3D(1, 1, 1);
+        transform: scale3D(1, 1, 1);
+      }
+      35% {
+        -webkit-transform: scale3D(0, 0, 1);
+        transform: scale3D(0, 0, 1);
+      }
+    }</style><link href=css/chunk-1ae0780b.0e433876.css rel=prefetch><link href=css/chunk-52ebdf33.96e1be88.css rel=prefetch><link href=js/chunk-1ae0780b.abaee25b.js rel=prefetch><link href=js/chunk-2d0e8c7f.aad0c000.js rel=prefetch><link href=js/chunk-52ebdf33.6e07e9cb.js rel=prefetch><link href=css/chunk-vendors.ea3fa8e3.css rel=preload as=style><link href=js/app.60f32ce9.js rel=preload as=script><link href=js/chunk-vendors.5d385bbe.js rel=preload as=script><link href=css/chunk-vendors.ea3fa8e3.css rel=stylesheet></head><body><noscript><strong>We're sorry for doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id=app><div class=d2-app-loading-group><div class=d2-app-loading-grid><div class="d2-app-loading d2-app-loading1"></div><div class="d2-app-loading d2-app-loading2"></div><div class="d2-app-loading d2-app-loading3"></div><div class="d2-app-loading d2-app-loading4"></div><div class="d2-app-loading d2-app-loading5"></div><div class="d2-app-loading d2-app-loading6"></div><div class="d2-app-loading d2-app-loading7"></div><div class="d2-app-loading d2-app-loading8"></div><div class="d2-app-loading d2-app-loading9"></div></div><div class=d2-app-loading-title>加载中</div><div style="margin-top: 10px;"><a class=d2-app-loading-btn href=https://github.com/y3tu target=blank>Github</a></div></div></div><script src=js/chunk-vendors.5d385bbe.js></script><script src=js/app.60f32ce9.js></script></body></html>
