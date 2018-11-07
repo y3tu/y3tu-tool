@@ -1,4 +1,4 @@
-package com.y3tu.tool.web.base.pojo;
+package com.y3tu.tool.core.pojo;
 
 import lombok.Data;
 

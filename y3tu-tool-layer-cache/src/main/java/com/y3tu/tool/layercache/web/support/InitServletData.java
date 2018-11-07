@@ -17,7 +17,7 @@ public class InitServletData {
     public static final String PARAM_NAME_DENY = "deny";
     public static final String PARAM_NAME_ENABLE_UPDATE = "enableUpdate";
 
-    public static final String RESOURCE_PATH = "http/resources";
+    static final String RESOURCE_PATH = "http/resources";
     /**
      * 登录用户名
      */

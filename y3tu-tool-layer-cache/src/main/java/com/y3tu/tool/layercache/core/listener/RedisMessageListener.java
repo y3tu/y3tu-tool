@@ -2,7 +2,7 @@ package com.y3tu.tool.layercache.core.listener;
 
 import com.alibaba.fastjson.JSON;
 import com.y3tu.tool.layercache.core.cache.Cache;
-import com.y3tu.tool.layercache.core.cache.LayeringCache;
+import com.y3tu.tool.layercache.core.cache.LayerCache;
 import com.y3tu.tool.layercache.core.manager.AbstractCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,17 +36,17 @@ public class RedisMessageListener extends MessageListenerAdapter {
         Collection<Cache> caches = cacheManager.getCache(redisPubSubMessage.getCacheName());
         for (Cache cache : caches) {
             // 判断缓存是否是多级缓存
-            if (cache != null && cache instanceof LayeringCache) {
+            if (cache != null && cache instanceof LayerCache) {
                 switch (redisPubSubMessage.getMessageType()) {
                     case EVICT:
                         // 获取一级缓存，并删除一级缓存数据
-                        ((LayeringCache) cache).getFirstCache().evict(redisPubSubMessage.getKey());
+                        ((LayerCache) cache).getFirstCache().evict(redisPubSubMessage.getKey());
                         log.info("删除一级缓存{}数据,key={}", redisPubSubMessage.getCacheName(), redisPubSubMessage.getKey());
                         break;
 
                     case CLEAR:
                         // 获取一级缓存，并删除一级缓存数据
-                        ((LayeringCache) cache).getFirstCache().clear();
+                        ((LayerCache) cache).getFirstCache().clear();
                         log.info("清除一级缓存{}数据", redisPubSubMessage.getCacheName());
                         break;
 

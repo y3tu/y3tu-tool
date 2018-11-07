@@ -9,7 +9,7 @@ import java.io.Serializable;
  *
  * @author yuhao.wang
  */
-public class LayeringCacheSetting implements Serializable {
+public class LayerCacheSetting implements Serializable {
     private static final String SPLIT = "-";
     /**
      * 内部缓存名，由[一级缓存有效时间-二级缓存有效时间-二级缓存自动刷新时间]组成
@@ -36,10 +36,10 @@ public class LayeringCacheSetting implements Serializable {
      */
     private SecondaryCacheSetting secondaryCacheSetting;
 
-    public LayeringCacheSetting() {
+    public LayerCacheSetting() {
     }
 
-    public LayeringCacheSetting(FirstCacheSetting firstCacheSetting, SecondaryCacheSetting secondaryCacheSetting, String depict) {
+    public LayerCacheSetting(FirstCacheSetting firstCacheSetting, SecondaryCacheSetting secondaryCacheSetting, String depict) {
         this.firstCacheSetting = firstCacheSetting;
         this.secondaryCacheSetting = secondaryCacheSetting;
         this.depict = depict;

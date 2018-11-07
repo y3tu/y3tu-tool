@@ -2,7 +2,7 @@ package com.y3tu.tool.layercache.core.manager;
 
 import com.y3tu.tool.layercache.core.cache.Cache;
 import com.y3tu.tool.layercache.core.listener.RedisMessageListener;
-import com.y3tu.tool.layercache.core.setting.LayeringCacheSetting;
+import com.y3tu.tool.layercache.core.setting.LayerCacheSetting;
 import com.y3tu.tool.layercache.core.stats.CacheStatsInfo;
 import com.y3tu.tool.layercache.core.stats.StatsService;
 import com.y3tu.tool.layercache.core.util.BeanFactory;
@@ -81,14 +81,14 @@ public abstract class AbstractCacheManager implements CacheManager, Initializing
 
     // Lazy cache initialization on access
     @Override
-    public Cache getCache(String name, LayeringCacheSetting layeringCacheSetting) {
+    public Cache getCache(String name, LayerCacheSetting layerCacheSetting) {
         // 第一次获取缓存Cache，如果有直接返回,如果没有加锁往容器里里面放Cache
         ConcurrentMap<String, Cache> cacheMap = this.cacheContainer.get(name);
         if (!CollectionUtils.isEmpty(cacheMap)) {
             if (cacheMap.size() > 1) {
                 logger.warn("缓存名称为 {} 的缓存,存在两个不同的过期时间配置，请一定注意保证缓存的key唯一性，否则会出现缓存过期时间错乱的情况", name);
             }
-            Cache cache = cacheMap.get(layeringCacheSetting.getInternalKey());
+            Cache cache = cacheMap.get(layerCacheSetting.getInternalKey());
             if (cache != null) {
                 return cache;
             }
@@ -99,7 +99,7 @@ public abstract class AbstractCacheManager implements CacheManager, Initializing
             cacheMap = this.cacheContainer.get(name);
             if (!CollectionUtils.isEmpty(cacheMap)) {
                 // 从容器中获取缓存
-                Cache cache = cacheMap.get(layeringCacheSetting.getInternalKey());
+                Cache cache = cacheMap.get(layerCacheSetting.getInternalKey());
                 if (cache != null) {
                     return cache;
                 }
@@ -113,12 +113,12 @@ public abstract class AbstractCacheManager implements CacheManager, Initializing
             }
 
             // 新建一个Cache对象
-            Cache cache = getMissingCache(name, layeringCacheSetting);
+            Cache cache = getMissingCache(name, layerCacheSetting);
             if (cache != null) {
                 // 装饰Cache对象
                 cache = decorateCache(cache);
                 // 将新的Cache对象放到容器
-                cacheMap.put(layeringCacheSetting.getInternalKey(), cache);
+                cacheMap.put(layerCacheSetting.getInternalKey(), cache);
                 if (cacheMap.size() > 1) {
                     logger.warn("缓存名称为 {} 的缓存,存在两个不同的过期时间配置，请一定注意保证缓存的key唯一性，否则会出现缓存过期时间错乱的情况", name);
                 }
@@ -157,10 +157,10 @@ public abstract class AbstractCacheManager implements CacheManager, Initializing
      * 根据缓存名称在CacheManager中没有找到对应Cache时，通过该方法新建一个对应的Cache实例
      *
      * @param name                 缓存名称
-     * @param layeringCacheSetting 缓存配置
+     * @param layerCacheSetting 缓存配置
      * @return {@link Cache}
      */
-    protected abstract Cache getMissingCache(String name, LayeringCacheSetting layeringCacheSetting);
+    protected abstract Cache getMissingCache(String name, LayerCacheSetting layerCacheSetting);
 
     /**
      * 获取缓存容器

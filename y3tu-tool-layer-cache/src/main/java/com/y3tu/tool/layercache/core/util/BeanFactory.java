@@ -1,5 +1,6 @@
 package com.y3tu.tool.layercache.core.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,8 +11,8 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author yuhao.wang3
  */
+@Slf4j
 public class BeanFactory {
-    private static Logger logger = LoggerFactory.getLogger(BeanFactory.class);
 
     /**
      * bean 容器
@@ -23,7 +24,7 @@ public class BeanFactory {
             try {
                 return aClass1.newInstance();
             } catch (Exception e) {
-                logger.error(e.getMessage(), e);
+                log.error(e.getMessage(), e);
             }
             return null;
         });

@@ -1,7 +1,7 @@
 package com.y3tu.tool.layercache.core.stats;
 
 
-import com.y3tu.tool.layercache.core.setting.LayeringCacheSetting;
+import com.y3tu.tool.layercache.core.setting.LayerCacheSetting;
 
 /**
  * 缓存命中率统计实体类
@@ -68,7 +68,7 @@ public class CacheStatsInfo {
     /**
      * 缓存配置
      */
-    private LayeringCacheSetting layeringCacheSetting;
+    private LayerCacheSetting layerCacheSetting;
 
 
     public String getCacheName() {
@@ -143,12 +143,12 @@ public class CacheStatsInfo {
         this.internalKey = internalKey;
     }
 
-    public LayeringCacheSetting getLayeringCacheSetting() {
-        return layeringCacheSetting;
+    public LayerCacheSetting getLayerCacheSetting() {
+        return layerCacheSetting;
     }
 
-    public void setLayeringCacheSetting(LayeringCacheSetting layeringCacheSetting) {
-        this.layeringCacheSetting = layeringCacheSetting;
+    public void setLayerCacheSetting(LayerCacheSetting layerCacheSetting) {
+        this.layerCacheSetting = layerCacheSetting;
     }
 
     public String getDepict() {

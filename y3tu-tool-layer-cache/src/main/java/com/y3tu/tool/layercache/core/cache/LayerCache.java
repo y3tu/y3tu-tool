@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.y3tu.tool.layercache.core.listener.RedisPubSubMessage;
 import com.y3tu.tool.layercache.core.listener.RedisPubSubMessageType;
 import com.y3tu.tool.layercache.core.listener.RedisPublisher;
-import com.y3tu.tool.layercache.core.setting.LayeringCacheSetting;
+import com.y3tu.tool.layercache.core.setting.LayerCacheSetting;
 import com.y3tu.tool.layercache.core.stats.CacheStats;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +18,8 @@ import java.util.concurrent.Callable;
  *
  * @author yuhao.wang
  */
-public class LayeringCache extends AbstractValueAdaptingCache {
-    Logger logger = LoggerFactory.getLogger(LayeringCache.class);
+public class LayerCache extends AbstractValueAdaptingCache {
+    Logger logger = LoggerFactory.getLogger(LayerCache.class);
 
     /**
      * redis 客户端
@@ -40,7 +40,7 @@ public class LayeringCache extends AbstractValueAdaptingCache {
     /**
      * 多级缓存配置
      */
-    private LayeringCacheSetting layeringCacheSetting;
+    private LayerCacheSetting layerCacheSetting;
 
     /**
      * 是否使用一级缓存， 默认true
@@ -54,10 +54,10 @@ public class LayeringCache extends AbstractValueAdaptingCache {
      * @param firstCache           一级缓存
      * @param secondCache          二级缓存
      * @param stats                是否开启统计
-     * @param layeringCacheSetting 多级缓存配置
+     * @param layerCacheSetting 多级缓存配置
      */
-    public LayeringCache(RedisTemplate<String, Object> redisTemplate, Cache firstCache, Cache secondCache, boolean stats, LayeringCacheSetting layeringCacheSetting) {
-        this(redisTemplate, firstCache, secondCache, true, stats, secondCache.getName(), layeringCacheSetting);
+    public LayerCache(RedisTemplate<String, Object> redisTemplate, Cache firstCache, Cache secondCache, boolean stats, LayerCacheSetting layerCacheSetting) {
+        this(redisTemplate, firstCache, secondCache, true, stats, secondCache.getName(), layerCacheSetting);
     }
 
     /**
@@ -67,19 +67,19 @@ public class LayeringCache extends AbstractValueAdaptingCache {
      * @param useFirstCache        是否使用一级缓存，默认是
      * @param stats                是否开启统计，默认否
      * @param name                 缓存名称
-     * @param layeringCacheSetting 多级缓存配置
+     * @param layerCacheSetting 多级缓存配置
      */
-    public LayeringCache(RedisTemplate<String, Object> redisTemplate, Cache firstCache, Cache secondCache, boolean useFirstCache, boolean stats, String name, LayeringCacheSetting layeringCacheSetting) {
+    public LayerCache(RedisTemplate<String, Object> redisTemplate, Cache firstCache, Cache secondCache, boolean useFirstCache, boolean stats, String name, LayerCacheSetting layerCacheSetting) {
         super(true, stats, name);
         this.redisTemplate = redisTemplate;
         this.firstCache = firstCache;
         this.secondCache = secondCache;
         this.useFirstCache = useFirstCache;
-        this.layeringCacheSetting = layeringCacheSetting;
+        this.layerCacheSetting = layerCacheSetting;
     }
 
     @Override
-    public LayeringCache getNativeCache() {
+    public LayerCache getNativeCache() {
         return this;
     }
 
@@ -213,7 +213,7 @@ public class LayeringCache extends AbstractValueAdaptingCache {
         return cacheStats;
     }
 
-    public LayeringCacheSetting getLayeringCacheSetting() {
-        return layeringCacheSetting;
+    public LayerCacheSetting getLayerCacheSetting() {
+        return layerCacheSetting;
     }
 }

@@ -3,7 +3,7 @@ package com.y3tu.tool.web.exception;
 import com.y3tu.tool.core.exception.*;
 import com.y3tu.tool.core.exception.Error;
 import com.y3tu.tool.web.annotation.EnableDefaultExceptionAdvice;
-import com.y3tu.tool.web.base.pojo.R;
+import com.y3tu.tool.core.pojo.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,14 +1,15 @@
 package com.y3tu.tool.report.http;
 
-import com.y3tu.tool.http.servlet.ResourceServlet;
+import com.y3tu.tool.http.servlet.AbstractResourceServlet;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author y3tu
  * @date 2018/10/25
  */
-public class ReportViewServlet extends ResourceServlet {
+public class ReportViewServlet extends AbstractResourceServlet {
 
 
     public ReportViewServlet() {
@@ -16,12 +17,12 @@ public class ReportViewServlet extends ResourceServlet {
     }
 
     @Override
-    protected String process(String url) {
-        return null;
+    public void init() throws ServletException {
+        super.init();
     }
 
     @Override
-    public void init() throws ServletException {
-        super.init();
+    protected String process(HttpServletRequest request, String url) {
+        return null;
     }
 }

@@ -3,13 +3,12 @@ package com.y3tu.tool.layercache.core.stats;
 import com.alibaba.fastjson.JSON;
 import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.layercache.core.cache.Cache;
-import com.y3tu.tool.layercache.core.cache.LayeringCache;
+import com.y3tu.tool.layercache.core.cache.LayerCache;
 import com.y3tu.tool.layercache.core.manager.AbstractCacheManager;
 import com.y3tu.tool.layercache.core.manager.CacheManager;
-import com.y3tu.tool.layercache.core.setting.LayeringCacheSetting;
+import com.y3tu.tool.layercache.core.setting.LayerCacheSetting;
 import com.y3tu.tool.layercache.core.support.Lock;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.*;
@@ -22,8 +21,8 @@ import java.util.stream.Collectors;
  *
  * @author yuhao.wang3
  */
+@Slf4j
 public class StatsService {
-    private static Logger logger = LoggerFactory.getLogger(StatsService.class);
 
     /**
      * 缓存统计数据前缀
@@ -47,7 +46,7 @@ public class StatsService {
      * @return List&lt;CacheStatsInfo&gt;
      */
     public List<CacheStatsInfo> listCacheStats(String cacheNameParam) {
-        logger.debug("获取缓存统计数据");
+        log.debug("获取缓存统计数据");
 
         List<CacheStatsInfo> statsList = new ArrayList<>();
         Collection<String> cacheNames = cacheManager.getCacheNames();
@@ -59,10 +58,10 @@ public class StatsService {
             // 获取Cache
             Collection<Cache> caches = cacheManager.getCache(cacheName);
             for (Cache cache : caches) {
-                LayeringCache layeringCache = (LayeringCache) cache;
-                LayeringCacheSetting layeringCacheSetting = layeringCache.getLayeringCacheSetting();
+                LayerCache layerCache = (LayerCache) cache;
+                LayerCacheSetting layerCacheSetting = layerCache.getLayerCacheSetting();
                 // 加锁并增量缓存统计数据，缓存key=固定前缀 + 缓存名称加 + 内部缓存名
-                String redisKey = CACHE_STATS_KEY_PREFIX + cacheName + layeringCacheSetting.getInternalKey();
+                String redisKey = CACHE_STATS_KEY_PREFIX + cacheName + layerCacheSetting.getInternalKey();
                 CacheStatsInfo cacheStats = (CacheStatsInfo) cacheManager.getRedisTemplate().opsForValue().get(redisKey);
                 if (!Objects.isNull(cacheStats)) {
                     statsList.add(cacheStats);
@@ -81,7 +80,7 @@ public class StatsService {
         // 清空统计数据
         resetCacheStat();
         executor.scheduleWithFixedDelay(() -> {
-            logger.debug("执行缓存统计数据采集定时任务");
+            log.debug("执行缓存统计数据采集定时任务");
             Set<AbstractCacheManager> cacheManagers = AbstractCacheManager.getCacheManager();
             for (AbstractCacheManager abstractCacheManager : cacheManagers) {
                 // 获取CacheManager
@@ -91,10 +90,10 @@ public class StatsService {
                     // 获取Cache
                     Collection<Cache> caches = cacheManager.getCache(cacheName);
                     for (Cache cache : caches) {
-                        LayeringCache layeringCache = (LayeringCache) cache;
-                        LayeringCacheSetting layeringCacheSetting = layeringCache.getLayeringCacheSetting();
+                        LayerCache layerCache = (LayerCache) cache;
+                        LayerCacheSetting layerCacheSetting = layerCache.getLayerCacheSetting();
                         // 加锁并增量缓存统计数据，缓存key=固定前缀 +缓存名称加 + 内部缓存名
-                        String redisKey = CACHE_STATS_KEY_PREFIX + cacheName + layeringCacheSetting.getInternalKey();
+                        String redisKey = CACHE_STATS_KEY_PREFIX + cacheName + layerCacheSetting.getInternalKey();
                         Lock lock = new Lock(redisTemplate, redisKey, 60, 5000);
                         try {
                             if (lock.tryLock()) {
@@ -105,16 +104,16 @@ public class StatsService {
 
                                 // 设置缓存唯一标示
                                 cacheStats.setCacheName(cacheName);
-                                cacheStats.setInternalKey(layeringCacheSetting.getInternalKey());
+                                cacheStats.setInternalKey(layerCacheSetting.getInternalKey());
 
-                                cacheStats.setDepict(layeringCacheSetting.getDepict());
+                                cacheStats.setDepict(layerCacheSetting.getDepict());
                                 // 设置缓存配置信息
-                                cacheStats.setLayeringCacheSetting(layeringCacheSetting);
+                                cacheStats.setLayerCacheSetting(layerCacheSetting);
 
                                 // 设置缓存统计数据
-                                CacheStats layeringCacheStats = layeringCache.getCacheStats();
-                                CacheStats firstCacheStats = layeringCache.getFirstCache().getCacheStats();
-                                CacheStats secondCacheStats = layeringCache.getSecondCache().getCacheStats();
+                                CacheStats layeringCacheStats = layerCache.getCacheStats();
+                                CacheStats firstCacheStats = layerCache.getFirstCache().getCacheStats();
+                                CacheStats secondCacheStats = layerCache.getSecondCache().getCacheStats();
 
                                 // 清空加载缓存时间
                                 firstCacheStats.getAndResetCachedMethodRequestTime();
@@ -134,10 +133,10 @@ public class StatsService {
                                 // 将缓存统计数据写到redis
                                 redisTemplate.opsForValue().set(redisKey, cacheStats, 1, TimeUnit.HOURS);
 
-                                logger.info("Layering Cache 统计信息：{}", JSON.toJSONString(cacheStats));
+                                log.info("Layering Cache 统计信息：{}", JSON.toJSONString(cacheStats));
                             }
                         } catch (Exception e) {
-                            logger.error(e.getMessage(), e);
+                            log.error(e.getMessage(), e);
                         } finally {
                             lock.unlock();
                         }

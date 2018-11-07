@@ -8,7 +8,7 @@ import com.y3tu.tool.layercache.aspectj.support.SimpleKeyGenerator;
 import com.y3tu.tool.layercache.core.cache.Cache;
 import com.y3tu.tool.layercache.core.manager.CacheManager;
 import com.y3tu.tool.layercache.core.setting.FirstCacheSetting;
-import com.y3tu.tool.layercache.core.setting.LayeringCacheSetting;
+import com.y3tu.tool.layercache.core.setting.LayerCacheSetting;
 import com.y3tu.tool.layercache.core.setting.SecondaryCacheSetting;
 import com.y3tu.tool.layercache.core.support.SerializationException;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -181,10 +181,10 @@ public class LayeringAspect {
 
         SecondaryCacheSetting secondaryCacheSetting = new SecondaryCacheSetting(secondaryCache.expireTime(),
                 secondaryCache.preloadTime(), secondaryCache.timeUnit(), secondaryCache.forceRefresh());
-        LayeringCacheSetting layeringCacheSetting = new LayeringCacheSetting(firstCacheSetting, secondaryCacheSetting, cacheable.depict());
+        LayerCacheSetting layerCacheSetting = new LayerCacheSetting(firstCacheSetting, secondaryCacheSetting, cacheable.depict());
 
         // 通过cacheName和缓存配置获取Cache
-        Cache cache = cacheManager.getCache(cacheName, layeringCacheSetting);
+        Cache cache = cacheManager.getCache(cacheName, layerCacheSetting);
 
         // 通Cache获取值
         return cache.get(key, () -> invoker.invoke());
@@ -271,14 +271,14 @@ public class LayeringAspect {
 
         SecondaryCacheSetting secondaryCacheSetting = new SecondaryCacheSetting(secondaryCache.expireTime(),
                 secondaryCache.preloadTime(), secondaryCache.timeUnit(), secondaryCache.forceRefresh());
-        LayeringCacheSetting layeringCacheSetting = new LayeringCacheSetting(firstCacheSetting, secondaryCacheSetting, cachePut.depict());
+        LayerCacheSetting layerCacheSetting = new LayerCacheSetting(firstCacheSetting, secondaryCacheSetting, cachePut.depict());
 
         // 指定调用方法获取缓存值
         Object result = invoker.invoke();
 
         for (String cacheName : cacheNames) {
             // 通过cacheName和缓存配置获取Cache
-            Cache cache = cacheManager.getCache(cacheName, layeringCacheSetting);
+            Cache cache = cacheManager.getCache(cacheName, layerCacheSetting);
             cache.put(key, result);
         }
 

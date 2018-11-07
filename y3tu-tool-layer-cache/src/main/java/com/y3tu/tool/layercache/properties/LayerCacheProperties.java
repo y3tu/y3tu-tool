@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Data
 @ConfigurationProperties("spring.y3tu.layer-cache")
-public class LayeringCacheProperties {
+public class LayerCacheProperties {
 
     /**
      * 是否开启缓存统计

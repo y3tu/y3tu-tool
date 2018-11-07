@@ -3,7 +3,7 @@ package com.y3tu.tool.layercache.web.service;
 import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.layercache.core.cache.Cache;
 import com.y3tu.tool.layercache.core.manager.AbstractCacheManager;
-import com.y3tu.tool.layercache.core.setting.LayeringCacheSetting;
+import com.y3tu.tool.layercache.core.setting.LayerCacheSetting;
 
 import java.util.Set;
 
@@ -29,9 +29,9 @@ public class CacheService {
         if (StrUtil.isBlank(key)) {
             // 清空缓存
             for (AbstractCacheManager cacheManager : cacheManagers) {
-                LayeringCacheSetting layeringCacheSetting = new LayeringCacheSetting();
-                layeringCacheSetting.setInternalKey(internalKey);
-                Cache cache = cacheManager.getCache(cacheName, layeringCacheSetting);
+                LayerCacheSetting layerCacheSetting = new LayerCacheSetting();
+                layerCacheSetting.setInternalKey(internalKey);
+                Cache cache = cacheManager.getCache(cacheName, layerCacheSetting);
                 cache.clear();
             }
 
@@ -40,9 +40,9 @@ public class CacheService {
 
         // 删除指定key
         for (AbstractCacheManager cacheManager : cacheManagers) {
-            LayeringCacheSetting layeringCacheSetting = new LayeringCacheSetting();
-            layeringCacheSetting.setInternalKey(internalKey);
-            Cache cache = cacheManager.getCache(cacheName, layeringCacheSetting);
+            LayerCacheSetting layerCacheSetting = new LayerCacheSetting();
+            layerCacheSetting.setInternalKey(internalKey);
+            Cache cache = cacheManager.getCache(cacheName, layerCacheSetting);
             cache.evict(key);
         }
     }

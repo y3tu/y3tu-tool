@@ -1,4 +1,4 @@
-package com.y3tu.tool.web.base.pojo;
+package com.y3tu.tool.core.pojo;
 
 import com.y3tu.tool.core.exception.IError;
 import lombok.Data;
@@ -39,6 +39,9 @@ public class R implements Serializable {
     public static R ok(Object result) {
         R r = new R();
         r.setStatus(Status.OK);
+        if(result instanceof String){
+            r.setMessage(result.toString());
+        }
         r.setResult(result);
         return r;
     }
@@ -60,6 +63,9 @@ public class R implements Serializable {
     public static R warn(Object result) {
         R r = new R();
         r.setStatus(Status.WARN);
+        if(result instanceof String){
+            r.setMessage(result.toString());
+        }
         r.setResult(result);
         return r;
     }
@@ -81,6 +87,9 @@ public class R implements Serializable {
     public static R error(Object result) {
         R r = new R();
         r.setStatus(Status.ERROR);
+        if(result instanceof String){
+            r.setMessage(result.toString());
+        }
         r.setResult(result);
         return r;
     }

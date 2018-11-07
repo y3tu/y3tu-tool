@@ -2,8 +2,8 @@ package com.y3tu.tool.layercache.config;
 
 import com.y3tu.tool.layercache.aspectj.aspect.LayeringAspect;
 import com.y3tu.tool.layercache.core.manager.CacheManager;
-import com.y3tu.tool.layercache.core.manager.LayeringCacheManager;
-import com.y3tu.tool.layercache.properties.LayeringCacheProperties;
+import com.y3tu.tool.layercache.core.manager.LayerCacheManager;
+import com.y3tu.tool.layercache.properties.LayerCacheProperties;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -24,14 +24,14 @@ import org.springframework.data.redis.core.RedisTemplate;
 @ConditionalOnBean(RedisTemplate.class)
 @AutoConfigureAfter({RedisAutoConfiguration.class})
 @EnableAspectJAutoProxy
-@EnableConfigurationProperties({LayeringCacheProperties.class})
-@Import({LayeringCacheServletConfiguration.class})
-public class LayeringCacheAutoConfig {
+@EnableConfigurationProperties({LayerCacheProperties.class})
+@Import({LayerCacheServletConfig.class})
+public class LayerCacheAutoConfig {
 
     @Bean
     @ConditionalOnMissingBean(CacheManager.class)
-    public CacheManager cacheManager(RedisTemplate redisTemplate, LayeringCacheProperties properties) {
-        LayeringCacheManager layeringCacheManager = new LayeringCacheManager(redisTemplate);
+    public CacheManager cacheManager(RedisTemplate redisTemplate, LayerCacheProperties properties) {
+        LayerCacheManager layeringCacheManager = new LayerCacheManager(redisTemplate);
         // 默认开启统计功能
         layeringCacheManager.setStats(properties.isStats());
         return layeringCacheManager;

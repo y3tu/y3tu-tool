@@ -1,7 +1,7 @@
 package com.y3tu.tool.layercache.config;
 
 
-import com.y3tu.tool.layercache.properties.LayeringCacheProperties;
+import com.y3tu.tool.layercache.properties.LayerCacheProperties;
 import com.y3tu.tool.layercache.web.servlet.LayerCacheViewServlet;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -14,9 +14,9 @@ import org.springframework.util.StringUtils;
  */
 @ConditionalOnWebApplication
 @ConditionalOnProperty(name = "spring.y3tu.layer-cache.servlet-enable", havingValue = "true", matchIfMissing = false)
-public class LayeringCacheServletConfiguration {
+public class LayerCacheServletConfig {
     @Bean
-    public ServletRegistrationBean statViewServletRegistrationBean(LayeringCacheProperties properties) {
+    public ServletRegistrationBean statViewServletRegistrationBean(LayerCacheProperties properties) {
         ServletRegistrationBean registrationBean = new ServletRegistrationBean();
         registrationBean.setServlet(new LayerCacheViewServlet());
         registrationBean.addUrlMappings(!StringUtils.isEmpty(properties.getUrlPattern()) ? properties.getUrlPattern() : "/layer-cache/*");

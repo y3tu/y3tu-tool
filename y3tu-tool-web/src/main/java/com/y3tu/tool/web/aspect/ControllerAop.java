@@ -33,7 +33,7 @@ public class ControllerAop {
      */
     private int threshold = 3000;
 
-    @Pointcut("execution(public com.y3tu.tool.web.base.pojo.R *(..))")
+    @Pointcut("execution(public com.y3tu.tool.core.pojo.R *(..))")
     public void pointCutR() {
     }
 

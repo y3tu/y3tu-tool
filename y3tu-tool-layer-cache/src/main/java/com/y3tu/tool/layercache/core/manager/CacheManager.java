@@ -2,7 +2,7 @@ package com.y3tu.tool.layercache.core.manager;
 
 
 import com.y3tu.tool.layercache.core.cache.Cache;
-import com.y3tu.tool.layercache.core.setting.LayeringCacheSetting;
+import com.y3tu.tool.layercache.core.setting.LayerCacheSetting;
 import com.y3tu.tool.layercache.core.stats.CacheStatsInfo;
 
 import java.util.Collection;
@@ -28,10 +28,10 @@ public interface CacheManager {
      * 根据缓存名称返回对应的{@link Cache}，如果没有找到就新建一个并放到容器
      *
      * @param name                 缓存名称
-     * @param layeringCacheSetting 多级缓存配置
+     * @param layerCacheSetting 多级缓存配置
      * @return {@link Cache}
      */
-    Cache getCache(String name, LayeringCacheSetting layeringCacheSetting);
+    Cache getCache(String name, LayerCacheSetting layerCacheSetting);
 
     /**
      * 获取所有缓存名称的集合
