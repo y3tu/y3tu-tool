@@ -27,7 +27,7 @@ public class StatsService {
     /**
      * 缓存统计数据前缀
      */
-    private static final String CACHE_STATS_KEY_PREFIX = "layering-cache:cache_stats_info:xiaolyuh:";
+    private static final String CACHE_STATS_KEY_PREFIX = "layering-cache:cache_stats_info:y3tu:";
 
     /**
      * 定时任务线程池

@@ -180,7 +180,7 @@ public class RedisCache extends AbstractValueAdaptingCache {
      * @return RedisCacheKey
      */
     public RedisCacheKey getRedisCacheKey(Object key) {
-        return new RedisCacheKey(key, redisTemplate.getKeySerializer()).cacheName(getName()).usePrefix(usePrefix);
+        return new RedisCacheKey(key, redisTemplate.getHashKeySerializer()).cacheName(getName()).usePrefix(usePrefix);
     }
 
     /**
