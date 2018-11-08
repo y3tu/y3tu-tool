@@ -1,4 +1,4 @@
-package com.y3tu.tool.web.util;
+package com.y3tu.tool.core.util;
 
 
 import com.y3tu.tool.core.pojo.Tree;

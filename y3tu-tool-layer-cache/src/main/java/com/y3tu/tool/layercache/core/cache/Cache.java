@@ -1,7 +1,5 @@
 package com.y3tu.tool.layercache.core.cache;
 
-
-import com.y3tu.tool.layercache.core.manager.CacheManager;
 import com.y3tu.tool.layercache.core.stats.CacheStats;
 
 import java.util.concurrent.Callable;
@@ -75,11 +73,6 @@ public interface Cache {
      *     return existingValue;
      * }
      * </code></pre>
-     * except that the action is performed atomically. While all out-of-the-box
-     * {@link CacheManager} implementations are able to perform the put atomically,
-     * the operation may also be implemented in two steps, e.g. with a check for
-     * presence and a subsequent put, in a non-atomic way. Check the documentation
-     * of the native cache implementation that you are using for more details.
      *
      * @param key   缓存key
      * @param value 缓存key对应的值

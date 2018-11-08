@@ -1,6 +1,6 @@
 package com.y3tu.tool.layercache.core.cache;
 
-import com.alibaba.fastjson.JSON;
+import com.y3tu.tool.core.util.JsonUtil;
 import com.y3tu.tool.layercache.core.stats.CacheStats;
 import com.y3tu.tool.layercache.core.support.NullValue;
 import org.springframework.util.Assert;
@@ -71,11 +71,10 @@ public abstract class AbstractValueAdaptingCache implements Cache {
     }
 
     /**
-     * Convert the given value from the internal store to a user value
-     * returned from the get method (adapting {@code null}).
+     * NullValue转换为null
      *
-     * @param storeValue the store value
-     * @return the value to return to the user
+     * @param storeValue 需要转换的
+     * @return 转换后的
      */
     protected Object fromStoreValue(Object storeValue) {
         if (this.allowNullValues && storeValue instanceof NullValue) {
@@ -85,11 +84,10 @@ public abstract class AbstractValueAdaptingCache implements Cache {
     }
 
     /**
-     * Convert the given user value, as passed into the put method,
-     * to a value in the internal store (adapting {@code null}).
+     * null转换为NullValue
      *
-     * @param userValue the given user value
-     * @return the value to store
+     * @param userValue 需要转换的
+     * @return 转换后的
      */
     protected Object toStoreValue(Object userValue) {
         if (this.allowNullValues && userValue == null) {
@@ -107,7 +105,7 @@ public abstract class AbstractValueAdaptingCache implements Cache {
         private final Object key;
 
         public LoaderCacheValueException(Object key, Throwable ex) {
-            super(String.format("加载key为 %s 的缓存数据,执行被缓存方法异常", JSON.toJSONString(key)), ex);
+            super(String.format("加载key为 %s 的缓存数据,执行被缓存方法异常", JsonUtil.toJson(key)), ex);
             this.key = key;
         }
 

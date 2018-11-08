@@ -1,13 +1,12 @@
 package com.y3tu.tool.layercache.core.cache;
 
-import com.alibaba.fastjson.JSON;
+import com.y3tu.tool.core.util.JsonUtil;
 import com.y3tu.tool.layercache.core.listener.RedisPubSubMessage;
 import com.y3tu.tool.layercache.core.listener.RedisPubSubMessageType;
 import com.y3tu.tool.layercache.core.listener.RedisPublisher;
 import com.y3tu.tool.layercache.core.setting.LayerCacheSetting;
 import com.y3tu.tool.layercache.core.stats.CacheStats;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 
@@ -18,8 +17,8 @@ import java.util.concurrent.Callable;
  *
  * @author yuhao.wang
  */
+@Slf4j
 public class LayerCache extends AbstractValueAdaptingCache {
-    Logger logger = LoggerFactory.getLogger(LayerCache.class);
 
     /**
      * redis 客户端
@@ -50,10 +49,10 @@ public class LayerCache extends AbstractValueAdaptingCache {
     /**
      * 创建一个多级缓存对象
      *
-     * @param redisTemplate        redisTemplate
-     * @param firstCache           一级缓存
-     * @param secondCache          二级缓存
-     * @param stats                是否开启统计
+     * @param redisTemplate     redisTemplate
+     * @param firstCache        一级缓存
+     * @param secondCache       二级缓存
+     * @param stats             是否开启统计
      * @param layerCacheSetting 多级缓存配置
      */
     public LayerCache(RedisTemplate<String, Object> redisTemplate, Cache firstCache, Cache secondCache, boolean stats, LayerCacheSetting layerCacheSetting) {
@@ -61,12 +60,12 @@ public class LayerCache extends AbstractValueAdaptingCache {
     }
 
     /**
-     * @param redisTemplate        redisTemplate
-     * @param firstCache           一级缓存
-     * @param secondCache          二级缓存
-     * @param useFirstCache        是否使用一级缓存，默认是
-     * @param stats                是否开启统计，默认否
-     * @param name                 缓存名称
+     * @param redisTemplate     redisTemplate
+     * @param firstCache        一级缓存
+     * @param secondCache       二级缓存
+     * @param useFirstCache     是否使用一级缓存，默认是
+     * @param stats             是否开启统计，默认否
+     * @param name              缓存名称
      * @param layerCacheSetting 多级缓存配置
      */
     public LayerCache(RedisTemplate<String, Object> redisTemplate, Cache firstCache, Cache secondCache, boolean useFirstCache, boolean stats, String name, LayerCacheSetting layerCacheSetting) {
@@ -88,12 +87,12 @@ public class LayerCache extends AbstractValueAdaptingCache {
         Object result = null;
         if (useFirstCache) {
             result = firstCache.get(key);
-            logger.debug("查询一级缓存。 key={},返回值是:{}", key, JSON.toJSONString(result));
+            log.debug("查询一级缓存。 key={},返回值是:{}", key, JsonUtil.toJson(result));
         }
         if (result == null) {
             result = secondCache.get(key);
             firstCache.putIfAbsent(key, result);
-            logger.debug("查询二级缓存,并将数据放到一级缓存。 key={},返回值是:{}", key, JSON.toJSONString(result));
+            log.debug("查询二级缓存,并将数据放到一级缓存。 key={},返回值是:{}", key, JsonUtil.toJson(result));
         }
         return fromStoreValue(result);
     }
@@ -102,7 +101,7 @@ public class LayerCache extends AbstractValueAdaptingCache {
     public <T> T get(Object key, Class<T> type) {
         if (useFirstCache) {
             Object result = firstCache.get(key, type);
-            logger.debug("查询一级缓存。 key={},返回值是:{}", key, JSON.toJSONString(result));
+            log.debug("查询一级缓存。 key={},返回值是:{}", key, JsonUtil.toJson(result));
             if (result != null) {
                 return (T) fromStoreValue(result);
             }
@@ -110,7 +109,7 @@ public class LayerCache extends AbstractValueAdaptingCache {
 
         T result = secondCache.get(key, type);
         firstCache.putIfAbsent(key, result);
-        logger.debug("查询二级缓存,并将数据放到一级缓存。 key={},返回值是:{}", key, JSON.toJSONString(result));
+        log.debug("查询二级缓存,并将数据放到一级缓存。 key={},返回值是:{}", key, JsonUtil.toJson(result));
         return result;
     }
 
@@ -118,14 +117,14 @@ public class LayerCache extends AbstractValueAdaptingCache {
     public <T> T get(Object key, Callable<T> valueLoader) {
         if (useFirstCache) {
             Object result = firstCache.get(key);
-            logger.debug("查询一级缓存。 key={},返回值是:{}", key, JSON.toJSONString(result));
+            log.debug("查询一级缓存。 key={},返回值是:{}", key, JsonUtil.toJson(result));
             if (result != null) {
                 return (T) fromStoreValue(result);
             }
         }
         T result = secondCache.get(key, valueLoader);
         firstCache.putIfAbsent(key, result);
-        logger.debug("查询二级缓存,并将数据放到一级缓存。 key={},返回值是:{}", key, JSON.toJSONString(result));
+        log.debug("查询二级缓存,并将数据放到一级缓存。 key={},返回值是:{}", key, JsonUtil.toJson(result));
         return result;
     }
 

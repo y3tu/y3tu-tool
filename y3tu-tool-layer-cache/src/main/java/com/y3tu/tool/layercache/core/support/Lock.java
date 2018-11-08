@@ -38,7 +38,6 @@ import java.util.UUID;
  * 如果服务器返回 NIL ，那么客户端获取锁失败，可以在稍后再重试。
  *
  * @author yuhao.wangwang
- * @version 1.0
  */
 public class Lock {
 

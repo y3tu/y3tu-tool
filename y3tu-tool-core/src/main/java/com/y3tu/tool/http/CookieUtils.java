@@ -1,15 +1,14 @@
-package com.y3tu.tool.web.util;
+package com.y3tu.tool.http;
 
 
 import com.y3tu.tool.core.util.StrUtil;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 
 /**

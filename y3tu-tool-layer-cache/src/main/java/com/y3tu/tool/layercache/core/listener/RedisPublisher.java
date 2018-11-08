@@ -1,7 +1,6 @@
 package com.y3tu.tool.layercache.core.listener;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 
@@ -10,8 +9,8 @@ import org.springframework.data.redis.listener.ChannelTopic;
  *
  * @author yuhao.wang
  */
+@Slf4j
 public class RedisPublisher {
-    private static final Logger logger = LoggerFactory.getLogger(RedisPublisher.class);
 
     private RedisPublisher() {
     }
@@ -25,6 +24,6 @@ public class RedisPublisher {
      */
     public static void publisher(RedisTemplate<String, Object> redisTemplate, ChannelTopic channelTopic, Object message) {
         redisTemplate.convertAndSend(channelTopic.toString(), message);
-        logger.debug("redis消息发布者向频道【{}】发布了【{}】消息", channelTopic.toString(), message.toString());
+        log.debug("redis消息发布者向频道【{}】发布了【{}】消息", channelTopic.toString(), message.toString());
     }
 }

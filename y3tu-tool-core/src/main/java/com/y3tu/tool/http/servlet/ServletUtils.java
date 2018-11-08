@@ -1,8 +1,8 @@
-package com.y3tu.tool.web.util;
+package com.y3tu.tool.http.servlet;
 
 import com.y3tu.tool.core.map.MapUtil;
 import com.y3tu.tool.core.util.StrUtil;
-import org.springframework.http.HttpHeaders;
+import com.y3tu.tool.http.Header;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,9 +14,9 @@ import java.util.*;
  * @author ThinkGem
  * @date 2017/12/22 9:08
  */
-@SuppressWarnings("all")
 public class ServletUtils {
 
+    @SuppressWarnings(value = "all")
     public static String getQueryString(HttpServletRequest request, String... exclude) {
         StringBuffer sb = new StringBuffer();
         List<String> excludeList = Arrays.asList(exclude);
@@ -109,7 +109,8 @@ public class ServletUtils {
     public static void redirectUrl(HttpServletRequest request, HttpServletResponse response, String url) {
         try {
             if (ServletUtils.isAjaxRequest(request)) {
-                request.getRequestDispatcher(url).forward(request, response); // AJAX不支持Redirect改用Forward
+                // AJAX不支持Redirect改用Forward
+                request.getRequestDispatcher(url).forward(request, response);
             } else {
                 response.sendRedirect(request.getContextPath() + url);
             }
@@ -123,9 +124,9 @@ public class ServletUtils {
      */
     public static void setExpiresHeader(HttpServletResponse response, long expiresSeconds) {
         // Http 1.0 header, set a fix expires date.
-        response.setDateHeader(HttpHeaders.EXPIRES, System.currentTimeMillis() + expiresSeconds * 1000);
+        response.setDateHeader(Header.EXPIRES.toString(), System.currentTimeMillis() + expiresSeconds * 1000);
         // Http 1.1 header, set a time after now.
-        response.setHeader(HttpHeaders.CACHE_CONTROL, "private, max-age=" + expiresSeconds);
+        response.setHeader(Header.CACHE_CONTROL.toString(), "private, max-age=" + expiresSeconds);
     }
 
     /**
@@ -133,9 +134,9 @@ public class ServletUtils {
      */
     public static void setNoCacheHeader(HttpServletResponse response) {
         // Http 1.0 header
-        response.setDateHeader(HttpHeaders.EXPIRES, 1L);
-        response.addHeader(HttpHeaders.PRAGMA, "no-cache");
+        response.setDateHeader(Header.EXPIRES.toString(), 1L);
+        response.addHeader(Header.PRAGMA.toString(), "no-cache");
         // Http 1.1 header
-        response.setHeader(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, max-age=0");
+        response.setHeader(Header.CACHE_CONTROL.toString(), "no-cache, no-store, max-age=0");
     }
 }

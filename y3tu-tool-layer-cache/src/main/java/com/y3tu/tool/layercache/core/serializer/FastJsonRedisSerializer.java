@@ -51,7 +51,7 @@ public class FastJsonRedisSerializer<T> implements RedisSerializer<T> {
         super();
         this.clazz = clazz;
         try {
-            ParserConfig.getGlobalInstance().addAccept("com.github.xiaolyuh.");
+            ParserConfig.getGlobalInstance().addAccept("com.y3tu.tool.");
             if (packages != null && packages.length > 0) {
                 for (String packageName : packages) {
                     ParserConfig.getGlobalInstance().addAccept(packageName);

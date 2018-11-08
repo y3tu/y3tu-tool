@@ -1,6 +1,5 @@
 package com.y3tu.tool.layercache.aspectj.annotation;
 
-import com.y3tu.tool.layercache.aspectj.support.KeyGenerator;
 import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.*;
@@ -32,16 +31,6 @@ public @interface CacheEvict {
 
     /**
      * 缓存key，支持SpEL表达式
-     * <ul>
-     * <li>{@code #root.method}, {@code #root.target}, and {@code #root.caches} for
-     * references to the {@link java.lang.reflect.Method method}, target object, and
-     * affected cache(s) respectively.</li>
-     * <li>Shortcuts for the method name ({@code #root.methodName}) and target class
-     * ({@code #root.targetClass}) are also available.
-     * <li>Method arguments can be accessed by index. For instance the second argument
-     * can be accessed via {@code #root.args[1]}, {@code #p1} or {@code #a1}. Arguments
-     * can also be accessed by name if that information is available.</li>
-     * </ul>
      *
      * @return String
      */
@@ -55,16 +44,6 @@ public @interface CacheEvict {
      * @return boolean
      */
     boolean ignoreException() default true;
-
-    /**
-     * The bean name of the custom {@link KeyGenerator}
-     * to use.
-     * <p>Mutually exclusive with the {@link #key} attribute.
-     *
-     * @return String
-     */
-    @Deprecated
-    String keyGenerator() default "";
 
     /**
      * 是否删除缓存中所有数据

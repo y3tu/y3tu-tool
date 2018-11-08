@@ -38,7 +38,7 @@ import java.util.Objects;
  * @author yuhao.wang
  */
 @Aspect
-public class LayeringAspect {
+public class LayerCacheAspect {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private static final String CACHE_KEY_ERROR_MESSAGE = "缓存Key %s 不能为NULL";

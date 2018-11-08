@@ -4,11 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
+import com.y3tu.tool.core.date.DateUtil;
+import com.y3tu.tool.core.date.TimeInterval;
 import com.y3tu.tool.layercache.core.cache.AbstractValueAdaptingCache;
 import com.y3tu.tool.layercache.core.setting.FirstCacheSetting;
 import com.y3tu.tool.layercache.core.support.ExpireMode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 
 import java.util.concurrent.Callable;
@@ -18,8 +19,8 @@ import java.util.concurrent.Callable;
  *
  * @author yuhao.wang
  */
+@Slf4j
 public class CaffeineCache extends AbstractValueAdaptingCache {
-    protected static final Logger logger = LoggerFactory.getLogger(CaffeineCache.class);
 
     /**
      * 缓存对象
@@ -60,9 +61,10 @@ public class CaffeineCache extends AbstractValueAdaptingCache {
 
     @Override
     public Object get(Object key) {
-        logger.debug("caffeine缓存 key={} 获取缓存", JSON.toJSONString(key));
+        log.debug("caffeine缓存 key={} 获取缓存", JSON.toJSONString(key));
 
         if (isStats()) {
+            //调用缓存请求次数+1
             getCacheStats().addCacheRequestCount(1);
         }
 
@@ -74,9 +76,10 @@ public class CaffeineCache extends AbstractValueAdaptingCache {
 
     @Override
     public <T> T get(Object key, Callable<T> valueLoader) {
-        logger.debug("caffeine缓存 key={} 获取缓存， 如果没有命中就走库加载缓存", JSON.toJSONString(key));
+        log.debug("caffeine缓存 key={} 获取缓存， 如果没有命中就走库加载缓存", JSON.toJSONString(key));
 
         if (isStats()) {
+            //调用缓存请求次数+1
             getCacheStats().addCacheRequestCount(1);
         }
 
@@ -86,26 +89,26 @@ public class CaffeineCache extends AbstractValueAdaptingCache {
 
     @Override
     public void put(Object key, Object value) {
-        logger.debug("caffeine缓存 key={} put缓存，缓存值：{}", JSON.toJSONString(key), JSON.toJSONString(value));
+        log.debug("caffeine缓存 key={} put缓存，缓存值：{}", JSON.toJSONString(key), JSON.toJSONString(value));
         this.cache.put(key, toStoreValue(value));
     }
 
     @Override
     public Object putIfAbsent(Object key, Object value) {
-        logger.debug("caffeine缓存 key={} putIfAbsent 缓存，缓存值：{}", JSON.toJSONString(key), JSON.toJSONString(value));
+        log.debug("caffeine缓存 key={} putIfAbsent 缓存，缓存值：{}", JSON.toJSONString(key), JSON.toJSONString(value));
         Object result = this.cache.get(key, k -> toStoreValue(value));
         return fromStoreValue(result);
     }
 
     @Override
     public void evict(Object key) {
-        logger.debug("caffeine缓存 key={} 清除缓存", JSON.toJSONString(key));
+        log.debug("caffeine缓存 key={} 清除缓存", JSON.toJSONString(key));
         this.cache.invalidate(key);
     }
 
     @Override
     public void clear() {
-        logger.debug("caffeine缓存 key={} 清空缓存");
+        log.debug("caffeine缓存 key={} 清空缓存");
         this.cache.invalidateAll();
     }
 
@@ -113,21 +116,24 @@ public class CaffeineCache extends AbstractValueAdaptingCache {
      * 加载数据
      */
     private <T> Object loaderValue(Object key, Callable<T> valueLoader) {
-        long start = System.currentTimeMillis();
+        TimeInterval timer = DateUtil.timer();
+
         if (isStats()) {
+            //调用被缓存的方法次数+1
             getCacheStats().addCachedMethodRequestCount(1);
         }
 
         try {
+            //调用被缓存的方法
             T t = valueLoader.call();
-            logger.debug("caffeine缓存 key={} 从库加载缓存", JSON.toJSONString(key), JSON.toJSONString(t));
+            log.debug("caffeine缓存 key={} 从库加载缓存", JSON.toJSONString(key), JSON.toJSONString(t));
 
             if (isStats()) {
-                getCacheStats().addCachedMethodRequestTime(System.currentTimeMillis() - start);
+                getCacheStats().addCachedMethodRequestTime(timer.intervalMs());
             }
             return toStoreValue(t);
         } catch (Exception e) {
-            logger.error("加载缓存数据异常,{}", e.getMessage(), e);
+            log.error("加载缓存数据异常,{}", e.getMessage(), e);
             throw new LoaderCacheValueException(key, e);
         }
 

@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
  * @author y3tu
  */
 @Slf4j
-public class IPUtil {
+public class IpUtil {
     /**
      * http://www.mob.com/
      * 你的APPKEY mob官网注册申请即可
@@ -135,7 +135,7 @@ public class IPUtil {
     /**
      * 获取IP返回地理信息
      * 1.首先使用ip2region工具(https://gitee.com/lionsoul/ip2region)获取ip所在区域
-     * 2.如果1的工具获取不到信息，通过网络工具获取区域信息 {@link IPUtil#getIpCity(String)}
+     * 2.如果1的工具获取不到信息，通过网络工具获取区域信息 {@link IpUtil#getIpCity(String)}
      *
      * @param ip ip地址
      * @return ip所在区域

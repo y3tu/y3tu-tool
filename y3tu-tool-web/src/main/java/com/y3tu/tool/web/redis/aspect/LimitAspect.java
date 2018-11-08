@@ -3,7 +3,7 @@ package com.y3tu.tool.web.redis.aspect;
 import com.y3tu.tool.core.collection.CollectionUtil;
 import com.y3tu.tool.core.exception.BusinessException;
 import com.y3tu.tool.core.util.StrUtil;
-import com.y3tu.tool.http.IPUtil;
+import com.y3tu.tool.http.IpUtil;
 import com.y3tu.tool.web.redis.annotation.Limit;
 import com.y3tu.tool.web.redis.constant.LimitType;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -65,7 +65,7 @@ public class LimitAspect {
         int limitCount = limitAnnotation.count();
         switch (limitType) {
             case IP:
-                key = IPUtil.getIpAddr(request);
+                key = IpUtil.getIpAddr(request);
                 break;
             case CUSTOMER:
                 key = limitAnnotation.key();

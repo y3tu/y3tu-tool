@@ -4,8 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.y3tu.tool.layercache.core.cache.Cache;
 import com.y3tu.tool.layercache.core.cache.LayerCache;
 import com.y3tu.tool.layercache.core.manager.AbstractCacheManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 
@@ -16,8 +15,8 @@ import java.util.Collection;
  *
  * @author yuhao.wang
  */
+@Slf4j
 public class RedisMessageListener extends MessageListenerAdapter {
-    private static final Logger log = LoggerFactory.getLogger(RedisPublisher.class);
 
     /**
      * 缓存管理器
