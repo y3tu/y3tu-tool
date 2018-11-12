@@ -20,7 +20,7 @@ public class ToolAdminAutoConfig {
     public ServletRegistrationBean statViewServletRegistrationBean() {
         ServletRegistrationBean registrationBean = new ServletRegistrationBean();
         registrationBean.setServlet(new ToolAdminViewServlet());
-        registrationBean.addUrlMappings(!StringUtils.isEmpty("/y3tu-tool/*");
+        registrationBean.addUrlMappings("/y3tu-tool/*");
         return registrationBean;
     }
 }
