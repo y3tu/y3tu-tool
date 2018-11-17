@@ -1,6 +1,7 @@
 package com.y3tu.tool.web.base.controller;
 
 
+import com.y3tu.tool.web.annotation.MethodMapping;
 import com.y3tu.tool.web.base.entity.BaseEntity;
 import com.y3tu.tool.web.base.pojo.PageInfo;
 import com.y3tu.tool.web.base.pojo.Query;
@@ -33,8 +34,7 @@ public class BaseController<T extends BaseService, M extends BaseEntity> {
      *               查询条件的key要和mapper.xml文件里面的key保持一致
      * @return
      */
-    @RequestMapping(value = "/getByPage", method = RequestMethod.GET)
-    @ResponseBody
+    @MethodMapping
     public R getByPage(@RequestParam Map<String, Object> params) {
         PageInfo pageInfo = new PageInfo(service.queryPage(new Query<M>(params).getPage(), params));
         return R.ok(pageInfo);
@@ -45,8 +45,7 @@ public class BaseController<T extends BaseService, M extends BaseEntity> {
      *
      * @return
      */
-    @RequestMapping(value = "/getAll", method = RequestMethod.GET)
-    @ResponseBody
+    @MethodMapping
     public R getAll() {
         return R.ok(service.selectList(null));
     }
@@ -57,8 +56,7 @@ public class BaseController<T extends BaseService, M extends BaseEntity> {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
-    @ResponseBody
+    @MethodMapping(value = "/get/{id}")
     public R get(@PathVariable String id) {
         return R.ok(service.selectById(id));
     }
@@ -69,8 +67,7 @@ public class BaseController<T extends BaseService, M extends BaseEntity> {
      * @param entity 保存的数据
      * @return
      */
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    @ResponseBody
+    @MethodMapping(method = RequestMethod.POST)
     public R save(@RequestParam M entity) {
         service.insert(entity);
         return R.ok("保存成功!");
@@ -82,8 +79,7 @@ public class BaseController<T extends BaseService, M extends BaseEntity> {
      * @param entity 更新的数据
      * @return
      */
-    @RequestMapping(value = "/update", method = RequestMethod.PUT)
-    @ResponseBody
+    @MethodMapping(method = RequestMethod.PUT)
     public R update(@RequestParam M entity) {
         service.updateById(entity);
         return R.ok("更新成功!");
@@ -95,8 +91,7 @@ public class BaseController<T extends BaseService, M extends BaseEntity> {
      * @param id 主键
      * @return
      */
-    @RequestMapping(value = "/delById/{id}", method = RequestMethod.DELETE)
-    @ResponseBody
+    @MethodMapping(value = "/delById/{id}", method = RequestMethod.DELETE)
     public R delById(@PathVariable String id) {
         service.deleteById(id);
         return R.ok("删除成功!");
@@ -108,8 +103,7 @@ public class BaseController<T extends BaseService, M extends BaseEntity> {
      * @param ids 主键集合
      * @return
      */
-    @RequestMapping(value = "/delByIds", method = RequestMethod.DELETE)
-    @ResponseBody
+    @MethodMapping(method = RequestMethod.DELETE)
     public R delByIds(@RequestParam List<String> ids) {
         service.deleteBatchIds(ids);
         return R.ok("删除成功!");

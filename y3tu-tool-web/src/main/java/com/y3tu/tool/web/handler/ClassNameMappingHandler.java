@@ -5,6 +5,7 @@ import com.y3tu.tool.core.collection.CollectionUtil;
 import com.y3tu.tool.core.text.StrSpliter;
 import com.y3tu.tool.core.util.ArrayUtil;
 import com.y3tu.tool.core.util.CharUtil;
+import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.web.annotation.ClassNameMapping;
 import com.y3tu.tool.web.annotation.MethodMapping;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -65,11 +66,15 @@ public class ClassNameMappingHandler extends RequestMappingHandlerMapping {
         String mappingStr = "";
         if (requestMapping != null) {
             String[] strArr = requestMapping.value();
+            String methodValue = methodAnnotation.value();
+            methodValue =  handlePathStr(method.getName(),methodValue);
             for (String str : strArr) {
-                mappingStrList.add(str + "/" + method.getName());
+                mappingStrList.add(str + "/" + methodValue);
             }
         } else {
-            mappingStr = calcRouterStrNew(handlerType.getName()) + "/" + method.getName();
+            String methodValue = methodAnnotation.value();
+            methodValue = handlePathStr(method.getName(),methodValue);
+            mappingStr = calcRouterStrNew(handlerType.getName()+"/"+methodValue);
             mappingStrList.add(mappingStr);
         }
         String[] mappingStrArr = ArrayUtil.toArray(mappingStrList, String.class);
@@ -100,5 +105,16 @@ public class ClassNameMappingHandler extends RequestMappingHandlerMapping {
         List<String> stringList = StrSpliter.splitTrim(className, CharUtil.DOT, true);
         className = CollectionUtil.getLast(stringList);
         return className;
+    }
+
+    private String handlePathStr(String methodName,String methValue){
+        if (StrUtil.isNotEmpty(methValue)) {
+            if(!StrUtil.startWith(methValue,"/")){
+                methValue = "/"+methValue;
+            }
+            return methValue;
+        }else {
+            return methodName;
+        }
     }
 }

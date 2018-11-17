@@ -24,5 +24,11 @@ public @interface MethodMapping {
      *
      * @return
      */
-    public abstract RequestMethod[] method() default RequestMethod.POST;
+    public abstract RequestMethod[] method() default RequestMethod.GET;
+
+    /**
+     * 请求地址 用于类似/get/{id}这种
+     * @return
+     */
+    String value() default "";
 }
