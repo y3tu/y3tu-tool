@@ -1,6 +1,7 @@
 package com.y3tu.tool.web.base.mapper;
 
-import com.baomidou.mybatisplus.plugins.Page;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +11,7 @@ import java.util.Map;
  *
  * @author y3tu
  */
-public interface BaseMapper<T> extends com.baomidou.mybatisplus.mapper.BaseMapper<T> {
+public interface BaseMapper<T> extends com.baomidou.mybatisplus.core.mapper.BaseMapper<T> {
 
     /**
      * 根据查询条件查询表中记录并分页

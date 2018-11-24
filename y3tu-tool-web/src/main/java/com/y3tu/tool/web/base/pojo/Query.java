@@ -1,7 +1,7 @@
 package com.y3tu.tool.web.base.pojo;
 
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.web.xss.SqlFilter;
 
@@ -55,8 +55,7 @@ public class Query<T> extends LinkedHashMap<String, Object> {
 
         //排序
         if (StrUtil.isNotBlank(sidx) && StrUtil.isNotBlank(order)) {
-            this.page.setOrderByField(sidx);
-            this.page.setAsc("ASC".equalsIgnoreCase(order));
+            this.page.setAsc(order);
         }
 
     }

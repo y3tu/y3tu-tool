@@ -1,7 +1,7 @@
 package com.y3tu.tool.web.base.entity;
 
-import com.baomidou.mybatisplus.activerecord.Model;
 
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 /**
  * 实体基类

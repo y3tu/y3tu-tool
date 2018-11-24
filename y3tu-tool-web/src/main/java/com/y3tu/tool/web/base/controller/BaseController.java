@@ -47,7 +47,7 @@ public class BaseController<T extends BaseService, M extends BaseEntity> {
      */
     @MethodMapping
     public R getAll() {
-        return R.ok(service.selectList(null));
+        return R.ok(service.list(null));
     }
 
     /**
@@ -58,7 +58,7 @@ public class BaseController<T extends BaseService, M extends BaseEntity> {
      */
     @MethodMapping(value = "/get/{id}")
     public R get(@PathVariable String id) {
-        return R.ok(service.selectById(id));
+        return R.ok(service.getById(id));
     }
 
     /**
@@ -69,7 +69,7 @@ public class BaseController<T extends BaseService, M extends BaseEntity> {
      */
     @MethodMapping(method = RequestMethod.POST)
     public R save(@RequestParam M entity) {
-        service.insert(entity);
+        service.save(entity);
         return R.ok("保存成功!");
     }
 
@@ -93,7 +93,7 @@ public class BaseController<T extends BaseService, M extends BaseEntity> {
      */
     @MethodMapping(value = "/delById/{id}", method = RequestMethod.DELETE)
     public R delById(@PathVariable String id) {
-        service.deleteById(id);
+        service.removeById(id);
         return R.ok("删除成功!");
     }
 
@@ -105,7 +105,7 @@ public class BaseController<T extends BaseService, M extends BaseEntity> {
      */
     @MethodMapping(method = RequestMethod.DELETE)
     public R delByIds(@RequestParam List<String> ids) {
-        service.deleteBatchIds(ids);
+        service.removeByIds(ids);
         return R.ok("删除成功!");
     }
 

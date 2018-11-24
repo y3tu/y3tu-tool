@@ -49,7 +49,7 @@ public class ControllerAop {
     }
 
 
-    @Pointcut("execution(public com.baomidou.mybatisplus.plugins.Page *(..))")
+    @Pointcut("execution(public com.baomidou.mybatisplus.extension.plugins.pagination.Page *(..))")
     public void pointCutPage() {
     }
 

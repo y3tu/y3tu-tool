@@ -1,6 +1,6 @@
 package com.y3tu.tool.web.base.pojo;
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Data;
 
 import java.util.List;
@@ -18,27 +18,27 @@ public class PageInfo {
     //总记录数
     private long totalCount;
     //每页记录数
-    private int pageSize;
+    private long pageSize;
     //总页数
     private long totalPage;
     //当前页数
-    private int currPage;
+    private long currentPage;
     //列表数据
     private List<?> list;
 
     /**
      * 分页
      *
-     * @param list       列表数据
-     * @param totalCount 总记录数
-     * @param pageSize   每页记录数
-     * @param currPage   当前页数
+     * @param list        列表数据
+     * @param totalCount  总记录数
+     * @param pageSize    每页记录数
+     * @param currentPage 当前页数
      */
-    public PageInfo(List<?> list, long totalCount, int pageSize, int currPage) {
+    public PageInfo(List<?> list, long totalCount, int pageSize, int currentPage) {
         this.list = list;
         this.totalCount = totalCount;
         this.pageSize = pageSize;
-        this.currPage = currPage;
+        this.currentPage = currentPage;
         this.totalPage = (long) Math.ceil((double) totalCount / pageSize);
     }
 
@@ -49,7 +49,7 @@ public class PageInfo {
         this.list = page.getRecords();
         this.totalCount = page.getTotal();
         this.pageSize = page.getSize();
-        this.currPage = page.getCurrent();
+        this.currentPage = page.getCurrent();
         this.totalPage = page.getPages();
     }
 

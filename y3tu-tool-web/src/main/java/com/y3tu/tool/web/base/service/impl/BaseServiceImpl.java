@@ -1,7 +1,7 @@
 package com.y3tu.tool.web.base.service.impl;
 
-import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.y3tu.tool.web.base.mapper.BaseMapper;
 import com.y3tu.tool.web.base.service.BaseService;
 
