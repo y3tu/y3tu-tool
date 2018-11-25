@@ -69,12 +69,12 @@ public class ClassNameMappingHandler extends RequestMappingHandlerMapping {
             String methodValue = methodAnnotation.value();
             methodValue =  handlePathStr(method.getName(),methodValue);
             for (String str : strArr) {
-                mappingStrList.add(str + "/" + methodValue);
+                mappingStrList.add(str+ methodValue);
             }
         } else {
             String methodValue = methodAnnotation.value();
             methodValue = handlePathStr(method.getName(),methodValue);
-            mappingStr = calcRouterStrNew(handlerType.getName()+"/"+methodValue);
+            mappingStr = calcRouterStrNew(handlerType.getName()+methodValue);
             mappingStrList.add(mappingStr);
         }
         String[] mappingStrArr = ArrayUtil.toArray(mappingStrList, String.class);
@@ -107,14 +107,14 @@ public class ClassNameMappingHandler extends RequestMappingHandlerMapping {
         return className;
     }
 
-    private String handlePathStr(String methodName,String methValue){
-        if (StrUtil.isNotEmpty(methValue)) {
-            if(!StrUtil.startWith(methValue,"/")){
-                methValue = "/"+methValue;
+    private String handlePathStr(String methodName,String methodValue){
+        if (StrUtil.isNotEmpty(methodValue)) {
+            if(!StrUtil.startWith(methodValue,"/")){
+                methodValue = "/"+methodValue;
             }
-            return methValue;
+            return methodValue;
         }else {
-            return methodName;
+            return "/"+methodName;
         }
     }
 }
