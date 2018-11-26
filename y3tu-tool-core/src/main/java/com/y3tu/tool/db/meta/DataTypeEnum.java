@@ -14,7 +14,10 @@ public enum DataTypeEnum {
     VARCHAR("VARCHAR", "String"),
     TIMESTAMP("TIMESTAMP", "Date"),
     CHAR("CHAR", "String"),
-    DATE("DATE", "Date");
+    DATE("DATE", "Date"),
+    DATETIME("DATETIME","Date"),
+    BIT("BIT","Integer"),
+    DECIMAL("DECIMAL","BigDecimal");
 
     private String dataType;
     private String javaType;
