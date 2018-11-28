@@ -18,7 +18,7 @@ import java.util.Map;
  *
  * @author y3tu
  */
-public class BaseController<T extends BaseService, M extends BaseEntity> {
+public abstract class BaseController<T extends BaseService, M extends BaseEntity> {
 
     @Autowired
     public T service;

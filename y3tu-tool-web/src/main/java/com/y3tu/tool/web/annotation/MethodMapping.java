@@ -3,10 +3,7 @@ package com.y3tu.tool.web.annotation;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * 该注解用于Controller的方法上，把方法名映射为请求路径
@@ -16,6 +13,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
+@Inherited
 @ResponseBody
 public @interface MethodMapping {
 
