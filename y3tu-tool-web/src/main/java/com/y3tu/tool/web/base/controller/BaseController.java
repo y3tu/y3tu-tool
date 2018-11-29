@@ -36,7 +36,7 @@ public abstract class BaseController<T extends BaseService, M extends BaseEntity
      */
     @MethodMapping
     public R getByPage(@RequestParam Map<String, Object> params) {
-        PageInfo pageInfo = new PageInfo(service.queryPage(new Query<M>(params).getPage(), params));
+        PageInfo<M> pageInfo = new PageInfo<M>(service.queryPage(new Query<M>(params).getPage(), params));
         return R.ok(pageInfo);
     }
 

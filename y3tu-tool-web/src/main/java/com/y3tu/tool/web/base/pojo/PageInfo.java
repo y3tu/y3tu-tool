@@ -12,19 +12,29 @@ import java.util.List;
  * @date 2018/3/1
  */
 @Data
-public class PageInfo {
+public class PageInfo<T> {
 
     private static final long serialVersionUID = 1L;
-    //总记录数
+    /**
+     * 总记录数
+     */
     private long totalCount;
-    //每页记录数
+    /**
+     * 每页记录数
+     */
     private long pageSize;
-    //总页数
+    /**
+     * 总页数
+     */
     private long totalPage;
-    //当前页数
+    /**
+     * 当前页数
+     */
     private long currentPage;
-    //列表数据
-    private List<?> list;
+    /**
+     * 分页列表数据
+     */
+    private List<T> list;
 
     /**
      * 分页
@@ -34,7 +44,7 @@ public class PageInfo {
      * @param pageSize    每页记录数
      * @param currentPage 当前页数
      */
-    public PageInfo(List<?> list, long totalCount, int pageSize, int currentPage) {
+    public PageInfo(List<T> list, long totalCount, int pageSize, int currentPage) {
         this.list = list;
         this.totalCount = totalCount;
         this.pageSize = pageSize;
@@ -45,7 +55,7 @@ public class PageInfo {
     /**
      * 分页
      */
-    public PageInfo(Page<?> page) {
+    public PageInfo(Page<T> page) {
         this.list = page.getRecords();
         this.totalCount = page.getTotal();
         this.pageSize = page.getSize();
