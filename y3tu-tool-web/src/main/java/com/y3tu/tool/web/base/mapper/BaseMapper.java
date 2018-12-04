@@ -20,7 +20,7 @@ public interface BaseMapper<T> extends com.baomidou.mybatisplus.core.mapper.Base
      * @param queryMap 实体对象的查询条件
      * @return
      */
-    List<T> queryPage(Page page, Map<String, Object> queryMap);
+    Page<T> queryPage(Page page, Map<String, Object> queryMap);
 
     /**
      * 根据查询条件查询表中记录 不分页，查全量数据

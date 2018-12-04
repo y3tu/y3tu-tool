@@ -4,7 +4,6 @@ package com.y3tu.tool.web.base.controller;
 import com.y3tu.tool.web.annotation.MethodMapping;
 import com.y3tu.tool.web.base.entity.BaseEntity;
 import com.y3tu.tool.web.base.pojo.PageInfo;
-import com.y3tu.tool.web.base.pojo.Query;
 import com.y3tu.tool.core.pojo.R;
 import com.y3tu.tool.web.base.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +28,15 @@ public abstract class BaseController<T extends BaseService, M extends BaseEntity
      * @param params 查询参数 包含分页信息和查询条件
      *               前台传入参数params封装规则
      *               page：当前页
-     *               limit：每页条数
-     *               order：排序
+     *               pageSize：每页条数
+     *               ascs:升序排列的字段 字符串数组
+     *               descs:降序排列的字段 字符串数组
      *               查询条件的key要和mapper.xml文件里面的key保持一致
      * @return
      */
     @MethodMapping
     public R getByPage(@RequestParam Map<String, Object> params) {
-        PageInfo<M> pageInfo = new PageInfo<M>(service.queryPage(new Query<M>(params).getPage(), params));
+        PageInfo<T> pageInfo = service.queryPage(PageInfo.mapToPageInfo(params), params);
         return R.ok(pageInfo);
     }
 

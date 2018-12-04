@@ -1,9 +1,13 @@
 package com.y3tu.tool.web.base.pojo;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.y3tu.tool.core.map.MapUtil;
+import com.y3tu.tool.core.util.ArrayUtil;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 分页实体
@@ -12,9 +16,11 @@ import java.util.List;
  * @date 2018/3/1
  */
 @Data
-public class PageInfo<T> {
+public class PageInfo<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    private static String PAGE = "page";
+    private static String PAGE_SIZE = "pageSize";
     /**
      * 总记录数
      */
@@ -37,6 +43,14 @@ public class PageInfo<T> {
     private List<T> list;
 
     /**
+     * mybatis-plus page
+     */
+    private Page<T> page;
+
+    public PageInfo() {
+    }
+
+    /**
      * 分页
      *
      * @param list        列表数据
@@ -52,15 +66,30 @@ public class PageInfo<T> {
         this.totalPage = (long) Math.ceil((double) totalCount / pageSize);
     }
 
-    /**
-     * 分页
-     */
-    public PageInfo(Page<T> page) {
-        this.list = page.getRecords();
-        this.totalCount = page.getTotal();
-        this.pageSize = page.getSize();
-        this.currentPage = page.getCurrent();
-        this.totalPage = page.getPages();
+    public static <T> PageInfo mapToPageInfo(Map<String, Object> params) {
+
+        PageInfo<T> pageInfo = new PageInfo();
+        //分页参数
+        pageInfo.currentPage = MapUtil.getInt(params, PAGE);
+        pageInfo.pageSize = MapUtil.getInt(params, PAGE_SIZE);
+
+        //mybatis-plus分页
+        Page page = new Page<>(pageInfo.currentPage, pageInfo.pageSize);
+
+        //排序
+        String[] ascs = MapUtil.get(params, "ascs", String[].class);
+        String[] descs = MapUtil.get(params, "descs", String[].class);
+        if (ArrayUtil.isNotEmpty(ascs)) {
+            page.setAsc(ascs);
+        }
+        if (ArrayUtil.isNotEmpty(descs)) {
+            page.setDesc(descs);
+        }
+
+        pageInfo.setPage(page);
+        return pageInfo;
+
     }
+
 
 }
