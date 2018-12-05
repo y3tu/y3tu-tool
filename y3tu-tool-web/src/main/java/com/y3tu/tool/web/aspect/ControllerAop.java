@@ -76,6 +76,7 @@ public class ControllerAop {
         log.info("IP : " + request.getRemoteAddr());
         log.info("CLASS_METHOD : " + pjp.getSignature().getDeclaringTypeName() + "." + pjp.getSignature().getName());
         log.info("ARGS : " + Arrays.toString(pjp.getArgs()));
+        log.info("---------------------------");
 
         Object result;
 
