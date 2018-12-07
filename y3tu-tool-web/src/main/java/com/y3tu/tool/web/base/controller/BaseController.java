@@ -68,7 +68,7 @@ public abstract class BaseController<T extends BaseService, M extends BaseEntity
      * @return
      */
     @MethodMapping(method = RequestMethod.POST)
-    public R save(@RequestParam M entity) {
+    public R save(@RequestBody M entity) {
         service.save(entity);
         return R.ok("保存成功!");
     }
@@ -80,7 +80,7 @@ public abstract class BaseController<T extends BaseService, M extends BaseEntity
      * @return
      */
     @MethodMapping(method = RequestMethod.PUT)
-    public R update(@RequestParam M entity) {
+    public R update(@RequestBody M entity) {
         service.updateById(entity);
         return R.ok("更新成功!");
     }
