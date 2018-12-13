@@ -1,6 +1,8 @@
 package com.y3tu.tool.web.base.controller;
 
 
+import com.y3tu.tool.core.collection.CollectionUtil;
+import com.y3tu.tool.core.util.ArrayUtil;
 import com.y3tu.tool.web.annotation.MethodMapping;
 import com.y3tu.tool.web.base.entity.BaseEntity;
 import com.y3tu.tool.web.base.pojo.PageInfo;
@@ -103,9 +105,9 @@ public abstract class BaseController<T extends BaseService, M extends BaseEntity
      * @param ids 主键集合
      * @return
      */
-    @MethodMapping(method = RequestMethod.DELETE)
-    public R delByIds(@RequestParam List<String> ids) {
-        service.removeByIds(ids);
+    @MethodMapping(value = "/delByIds/{ids}", method = RequestMethod.DELETE)
+    public R delByIds(@PathVariable String[] ids) {
+        service.removeByIds(CollectionUtil.toList(ids));
         return R.ok("删除成功!");
     }
 

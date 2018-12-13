@@ -5,6 +5,7 @@ package com.y3tu.tool.core.lang;
  *
  * @author Looly
  */
+@FunctionalInterface
 public interface Filter<T> {
     /**
      * 是否接受对象

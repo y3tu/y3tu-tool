@@ -1,8 +1,8 @@
 package com.y3tu.tool.web.codegen.controller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.y3tu.tool.core.io.IoUtil;
-import com.y3tu.tool.web.base.pojo.Query;
+import com.y3tu.tool.core.pojo.R;
+import com.y3tu.tool.web.base.pojo.PageInfo;
 import com.y3tu.tool.web.codegen.entity.GenConfig;
 import com.y3tu.tool.web.codegen.service.GeneratorService;
 import lombok.AllArgsConstructor;
@@ -32,10 +32,10 @@ public class GeneratorController {
      * @return 数据库表
      */
     @GetMapping("/page")
-    public Page list(@RequestParam Map<String, Object> params) {
-        Query query = new Query(params);
-        query.getPage().setRecords(sysGeneratorService.queryTableName());
-        return query.getPage();
+    public R list(@RequestParam Map<String, Object> params) {
+        PageInfo pageInfo = PageInfo.mapToPageInfo(params);
+        pageInfo.setList(sysGeneratorService.queryTableName());
+        return R.ok(pageInfo);
     }
 
     /**
