@@ -3620,4 +3620,52 @@ public class StrUtil {
         }
         return sb.toString();
     }
+
+    /**
+     * 给定字符串中的字母是否全部为大写，判断依据如下：
+     *
+     * <pre>
+     * 1. 大写字母包括A-Z
+     * 2. 其它非字母的Unicode符都算作大写
+     * </pre>
+     *
+     * @param str 被检查的字符串
+     * @return 是否全部为大写
+     */
+    public static boolean isUpperCase(CharSequence str) {
+        if (null == str) {
+            return false;
+        }
+        final int len = str.length();
+        for (int i = 0; i < len; i++) {
+            if (Character.isLowerCase(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 给定字符串中的字母是否全部为小写，判断依据如下：
+     *
+     * <pre>
+     * 1. 小写字母包括a-z
+     * 2. 其它非字母的Unicode符都算作小写
+     * </pre>
+     *
+     * @param str 被检查的字符串
+     * @return 是否全部为小写
+     */
+    public static boolean isLowerCase(CharSequence str) {
+        if (null == str) {
+            return false;
+        }
+        final int len = str.length();
+        for (int i = 0; i < len; i++) {
+            if (Character.isUpperCase(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

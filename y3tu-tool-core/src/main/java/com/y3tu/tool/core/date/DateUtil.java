@@ -67,6 +67,15 @@ public class DateUtil {
     }
 
     /**
+     * 根据已有{@link Date} 产生新的{@link DateTime}对象
+     * @param date Date对象
+     * @return {@link DateTime}对象
+     */
+    public static DateTime dateNew(Date date) {
+        return new DateTime(date);
+    }
+
+    /**
      * 转换为Calendar对象
      *
      * @param date 日期对象

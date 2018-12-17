@@ -48,6 +48,7 @@
         <qcloud-java-sdk>2.0.1</qcloud-java-sdk>
         <cos_api>5.2.4</cos_api>
         <fastdfs-client-java-version>1.27.0.0</fastdfs-client-java-version>
+        <emoji-java.version>4.0.0</emoji-java.version>
     </properties>
     <dependencies>
 
@@ -265,6 +266,14 @@
             </exclusions>
         </dependency>
 
+        <!-- Emoji工具依赖 -->
+        <dependency>
+            <groupId>com.vdurmont</groupId>
+            <artifactId>emoji-java</artifactId>
+            <version>${emoji-java.version}</version>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
 
         <!-- 测试用依赖 -->
         <dependency>
