@@ -7,6 +7,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.stream.Stream;
 
 import com.y3tu.tool.core.collection.CollectionUtil;
 import com.y3tu.tool.core.collection.EnumerationIter;
@@ -148,6 +149,27 @@ public class ResourceUtil {
      */
     public static URL getResource(String resource, Class<?> baseClass) {
         return (null != baseClass) ? baseClass.getResource(resource) : ClassLoaderUtil.getClassLoader().getResource(resource);
+    }
+
+    /**
+     * 获得资源相对路径对应的URL
+     *
+     * @param resource  资源相对路径
+     * @return {@link URL}
+     */
+    public static InputStream getResourceAsStream(String resource){
+        return getResourceAsStream(resource,null);
+    }
+
+    /**
+     * 获得资源相对路径对应的URL
+     *
+     * @param resource  资源相对路径
+     * @param baseClass 基准Class，获得的相对路径相对于此Class所在路径，如果为{@code null}则相对ClassPath
+     * @return {@link URL}
+     */
+    public static InputStream getResourceAsStream(String resource, Class<?> baseClass){
+        return (null != baseClass) ? baseClass.getResourceAsStream(resource) : ClassLoaderUtil.getClassLoader().getResourceAsStream(resource);
     }
 
     /**

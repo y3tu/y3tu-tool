@@ -10,16 +10,14 @@ import com.y3tu.tool.core.lang.Validator;
 import com.y3tu.tool.core.util.ObjectUtil;
 import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.http.pojo.IpLocate;
+import com.y3tu.tool.system.SystemUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.lionsoul.ip2region.DataBlock;
 import org.lionsoul.ip2region.DbConfig;
 import org.lionsoul.ip2region.DbSearcher;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.net.*;
 import java.util.regex.Matcher;
@@ -32,6 +30,21 @@ import java.util.regex.Pattern;
  */
 @Slf4j
 public class IpUtil {
+
+    public static String ipFileTempPath = SystemUtil.get(SystemUtil.TMPDIR) + "ip2region.db";
+
+    static {
+        try {
+            //第一次加载时清除ip2region.db文件
+            File file = FileUtil.file(ipFileTempPath);
+            if (file.exists() == true) {
+                FileUtil.del(ipFileTempPath);
+            }
+        } catch (Exception e) {
+            throw new UtilException("ip2region.db文件异常", e);
+        }
+    }
+
     /**
      * http://www.mob.com/
      * 你的APPKEY mob官网注册申请即可
@@ -142,10 +155,10 @@ public class IpUtil {
      */
     public static String getCityInfo(String ip) {
         try {
-            URL url = ResourceUtil.getResource("ip2region/ip2region.db");
-            File file = FileUtil.file(url);
-            if (!file.exists()) {
-                log.error("Error: Invalid ip2region.db file");
+            File file = new File(ipFileTempPath);
+            if (file.exists() == false) {
+                InputStream inputStream = ResourceUtil.getResourceAsStream("ip2region/ip2region.db");
+                file = FileUtil.writeFromStream(inputStream, file);
             }
             int algorithm = DbSearcher.BTREE_ALGORITHM;
             DbConfig config = new DbConfig();
