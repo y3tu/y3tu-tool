@@ -3,6 +3,7 @@ package com.y3tu.tool.web.base.pojo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.y3tu.tool.core.map.MapUtil;
 import com.y3tu.tool.core.util.ArrayUtil;
+import com.y3tu.tool.core.util.StrUtil;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -79,6 +80,16 @@ public class PageInfo<T> implements Serializable {
         //排序
         String[] ascs = MapUtil.get(params, "ascs", String[].class);
         String[] descs = MapUtil.get(params, "descs", String[].class);
+        String order = MapUtil.getStr(params, "order");
+        String sort = MapUtil.getStr(params, "sort");
+        if (StrUtil.isNotEmpty(sort)) {
+            if ("desc".equals(order)) {
+                page.setDesc(sort);
+            } else if ("asc".equals(order)) {
+                page.setAsc(sort);
+            }
+        }
+
         if (ArrayUtil.isNotEmpty(ascs)) {
             page.setAsc(ascs);
         }
