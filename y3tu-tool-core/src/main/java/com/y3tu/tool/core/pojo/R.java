@@ -15,11 +15,12 @@ import java.io.Serializable;
 public class R implements Serializable {
 
     private static final long serialVersionUID = -5359531292427290394L;
-    private String errorCode;
-    private String errorMessage;
+
     private String message;
     private Object result;
     private R.Status status;
+    private String errorCode;
+    private String errorMessage;
 
     public R() {
     }
