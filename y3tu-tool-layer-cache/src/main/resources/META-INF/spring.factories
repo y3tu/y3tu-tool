@@ -1,2 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.y3tu.tool.layercache.config.LayerCacheAutoConfig
