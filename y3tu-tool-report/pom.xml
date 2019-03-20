@@ -7,7 +7,7 @@
     <packaging>jar</packaging>
 
     <name>y3tu-tool-report</name>
-    <description>通用报表工具</description>
+    <description>基于Jasper6.5、DynamicJasper和常用表格的通用报表工具</description>
 
     <parent>
         <groupId>com.y3tu</groupId>
@@ -54,6 +54,26 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- http://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports -->
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>6.5.1</version>
+        </dependency>
+
+        <!-- http://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports-fonts -->
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports-fonts</artifactId>
+            <version>6.0.0</version>
+        </dependency>
+
+        <!-- http://mvnrepository.com/artifact/ar.com.fdvs/DynamicJasper -->
+        <dependency>
+            <groupId>ar.com.fdvs</groupId>
+            <artifactId>DynamicJasper</artifactId>
+            <version>5.1.1</version>
+        </dependency>
 
     </dependencies>
 
