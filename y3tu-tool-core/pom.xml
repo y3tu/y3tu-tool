@@ -52,12 +52,14 @@
     </properties>
     <dependencies>
 
+        <!--json工具-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>${fastjson.version}</version>
         </dependency>
 
+        <!--servlet support-->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -119,11 +121,20 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- SSH安全连接所使用的类库 -->
+        <!-- SSH安全连接所使用的类库 可用于sftp传输-->
         <dependency>
             <groupId>com.jcraft</groupId>
             <artifactId>jsch</artifactId>
             <version>${jsch.version}</version>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <!--ftp传输-->
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>${net.version}</version>
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
@@ -137,14 +148,7 @@
             <optional>true</optional>
         </dependency>
 
-        <dependency>
-            <groupId>commons-net</groupId>
-            <artifactId>commons-net</artifactId>
-            <version>${net.version}</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-
+        <!--动态代理实现-->
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
@@ -152,7 +156,6 @@
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
-
 
         <!-- 数据库连接池 -->
         <dependency>
@@ -205,6 +208,7 @@
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
             <version>${okhttp-version}</version>
+            <optional>true</optional>
         </dependency>
 
         <!-- ip2region 获取ip地址的地理信息-->
@@ -212,8 +216,10 @@
             <groupId>org.lionsoul</groupId>
             <artifactId>ip2region</artifactId>
             <version>${ip2region-version}</version>
+            <optional>true</optional>
         </dependency>
 
+        <!--七牛云sdk-->
         <dependency>
             <groupId>com.qiniu</groupId>
             <artifactId>qiniu-java-sdk</artifactId>
@@ -221,6 +227,7 @@
             <optional>true</optional>
         </dependency>
 
+        <!--阿里云oss-->
         <dependency>
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
@@ -228,6 +235,7 @@
             <optional>true</optional>
         </dependency>
 
+        <!--腾讯云api-->
         <dependency>
             <groupId>com.qcloud</groupId>
             <artifactId>cos_api</artifactId>
@@ -235,6 +243,7 @@
             <optional>true</optional>
         </dependency>
 
+        <!--腾讯云sdk-->
         <dependency>
             <groupId>com.qcloud</groupId>
             <artifactId>qcloud-java-sdk</artifactId>
@@ -242,6 +251,7 @@
             <optional>true</optional>
         </dependency>
 
+        <!--fastdfs客户端-->
         <dependency>
             <groupId>net.oschina.zcx7878</groupId>
             <artifactId>fastdfs-client-java</artifactId>
@@ -282,19 +292,22 @@
             <version>${sqlite.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!--oracle数据库驱动-->
         <dependency>
             <groupId>org.zenframework.z8.dependencies.commons</groupId>
             <artifactId>ojdbc6</artifactId>
             <version>2.0</version>
             <scope>test</scope>
         </dependency>
+
+        <!--mysql数据库驱动-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.41</version>
             <scope>test</scope>
         </dependency>
-
 
     </dependencies>
 

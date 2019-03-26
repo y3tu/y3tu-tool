@@ -87,7 +87,6 @@
         <url>git@github.com:y3tu/y3tu-tool.git</url>
     </scm>
 
-
     <build>
         <plugins>
             <plugin>
@@ -104,13 +103,12 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.20.1</version>
                 <configuration>
-                    <!-- 不指定单元测试 -->
+                    <!-- 跳过单元测试 -->
                     <skipTests>true</skipTests>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
 
     <profiles>
         <profile>
@@ -159,6 +157,5 @@
             </build>
         </profile>
     </profiles>
-
 
 </project>

@@ -24,8 +24,8 @@ public class LimitScriptUtil {
     public static String getScript(String path) {
         StringBuilder sb = new StringBuilder();
         InputStream stream = LimitScriptUtil.class.getClassLoader().getResourceAsStream(path);
-        BufferedReader br = new BufferedReader(new InputStreamReader(stream));
         try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(stream));
             String str;
             while ((str = br.readLine()) != null) {
                 sb.append(str).append(System.lineSeparator());
