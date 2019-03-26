@@ -554,7 +554,8 @@ public class HttpUtil {
         if (MapUtil.isEmpty(paramMap)) {
             return StrUtil.EMPTY;
         }
-        if (null == charset) {// 默认编码为系统编码
+        if (null == charset) {
+            //默认编码为系统编码
             charset = CharsetUtil.CHARSET_UTF_8;
         }
 

@@ -2593,6 +2593,34 @@ public class StrUtil {
     }
 
     /**
+     * 补充字符串以满足最小长度
+     *
+     * <pre>
+     * StrUtil.padAfter(null, *, *);//null
+     * StrUtil.padAfter("1", 3, '0');//"100"
+     * StrUtil.padAfter("123", 2, '0');//"23"
+     * </pre>
+     *
+     * @param str 字符串，如果为<code>null</code>，按照空串处理
+     * @param minLength 最小长度
+     * @param padChar 补充的字符
+     * @return 补充后的字符串
+     */
+    public static String padAfter(CharSequence str, int minLength, char padChar) {
+        if (null == str) {
+            return null;
+        }
+        final int strLen = str.length();
+        if (strLen == minLength) {
+            return str.toString();
+        } else if (strLen > minLength) {
+            return sub(str, strLen - minLength, strLen);
+        }
+
+        return str.toString().concat(repeat(padChar, minLength - strLen));
+    }
+
+    /**
      * 补充字符串以满足最小长度 StrUtil.padEnd("1", 3, '0');//"100"
      *
      * @param str       字符串，如果为<code>null</code>，按照空串处理
@@ -3668,4 +3696,6 @@ public class StrUtil {
         }
         return true;
     }
+
+
 }

@@ -1,6 +1,7 @@
 package com.y3tu.tool.captcha.generator;
 
 import com.y3tu.tool.core.util.RandomUtil;
+import com.y3tu.tool.core.util.StrUtil;
 
 /**
  * 随机字符验证码生成器<br>
@@ -8,16 +9,7 @@ import com.y3tu.tool.core.util.RandomUtil;
  *
  * @author looly
  */
-public class RandomGenerator implements CodeGenerator {
-
-    /**
-     * 基础字符集合，用于随机获取字符串的字符集合
-     */
-    private String baseStr;
-    /**
-     * 验证码长度
-     */
-    private int length;
+public class RandomGenerator extends AbstractGenerator {
 
     /**
      * 构造，使用字母+数字做为基础
@@ -25,7 +17,7 @@ public class RandomGenerator implements CodeGenerator {
      * @param count 生成验证码长度
      */
     public RandomGenerator(int count) {
-        this(RandomUtil.BASE_CHAR_NUMBER, count);
+        super(count);
     }
 
     /**
@@ -35,8 +27,7 @@ public class RandomGenerator implements CodeGenerator {
      * @param length  生成验证码长度
      */
     public RandomGenerator(String baseStr, int length) {
-        this.baseStr = baseStr;
-        this.length = length;
+        super(baseStr, length);
     }
 
     @Override
@@ -45,8 +36,11 @@ public class RandomGenerator implements CodeGenerator {
     }
 
     @Override
-    public int getLength() {
-        return this.length;
+    public boolean verify(String code, String userInputCode) {
+        if (StrUtil.isNotBlank(userInputCode)) {
+            return StrUtil.equalsIgnoreCase(code, userInputCode);
+        }
+        return false;
     }
 
 }
