@@ -1,4 +1,4 @@
-package com.y3tu.tool.web.redis.lock;
+package com.y3tu.tool.cache.redis.lock;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisCallback;

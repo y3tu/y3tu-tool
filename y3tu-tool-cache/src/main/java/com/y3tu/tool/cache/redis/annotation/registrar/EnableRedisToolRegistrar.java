@@ -1,6 +1,6 @@
-package com.y3tu.tool.web.redis.annotation.registrar;
+package com.y3tu.tool.cache.redis.annotation.registrar;
 
-import com.y3tu.tool.web.redis.annotation.EnableRedisTool;
+import com.y3tu.tool.cache.redis.annotation.EnableRedisTool;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;

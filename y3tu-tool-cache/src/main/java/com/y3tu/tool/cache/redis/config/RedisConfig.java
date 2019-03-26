@@ -1,10 +1,10 @@
-package com.y3tu.tool.web.redis.config;
+package com.y3tu.tool.cache.redis.config;
 
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.y3tu.tool.web.redis.lock.RedisDistributedLock;
-import com.y3tu.tool.web.redis.template.RedisRepository;
+import com.y3tu.tool.cache.redis.lock.RedisDistributedLock;
+import com.y3tu.tool.cache.redis.template.RedisRepository;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.context.annotation.Bean;

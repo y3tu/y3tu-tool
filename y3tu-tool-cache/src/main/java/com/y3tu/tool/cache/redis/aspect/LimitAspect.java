@@ -1,11 +1,11 @@
-package com.y3tu.tool.web.redis.aspect;
+package com.y3tu.tool.cache.redis.aspect;
 
+import com.y3tu.tool.cache.redis.annotation.Limit;
+import com.y3tu.tool.cache.redis.constant.LimitType;
 import com.y3tu.tool.core.collection.CollectionUtil;
 import com.y3tu.tool.core.exception.BusinessException;
 import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.http.IpUtil;
-import com.y3tu.tool.web.redis.annotation.Limit;
-import com.y3tu.tool.web.redis.constant.LimitType;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;

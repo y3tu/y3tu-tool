@@ -1,4 +1,4 @@
-package com.y3tu.tool.web.redis.lock;
+package com.y3tu.tool.cache.redis.lock;
 
 /**
  * 分布式锁顶级接口

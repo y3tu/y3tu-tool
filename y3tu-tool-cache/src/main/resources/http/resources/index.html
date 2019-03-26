@@ -1,134 +1,222 @@
-<!DOCTYPE html><html><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><link rel=icon href=./favicon.ico><title>Y3tu blog</title><style>html, body, #app {
-      height: 100%;
-      margin: 0px;
-      padding: 0px;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <title>redis监控</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+</head>
+<body id="app">
+<style>
+    tr {
+        border-top: 1px solid #eee;
+        font-size: 1rem
     }
-    .d2-app-loading-group {
-      height: 100%;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.15) 100%), radial-gradient(at top center, rgba(255, 255, 255, 0.40) 0%, rgba(0, 0, 0, 0.40) 120%) #989898;
-      background-blend-mode: multiply, multiply;
+
+    tr:last-child {
+        border-bottom: 1px solid #eee
     }
-    .d2-app-loading-title {
-      color: #FFF;
-      font-weight: bold;
-      font-size: 14px;
-      margin-top: 40px;
-      margin-bottom: 10px;
-      letter-spacing: 0.2em;
+
+    tr:hover {
+        background: #fafafa !important
     }
-    .d2-app-loading-sub-title {
-      color: #FFF;
-      font-size: 10px;
-      margin-bottom: 10px;
-    }
-    .d2-app-loading-sub-info {
-      color: #FFF;
-      font-size: 10px;
-      opacity: .8;
-      margin-bottom: 4px;
-    }
-    .d2-app-loading-btn {
-      text-decoration: none;
-      display: inline-block;
-      line-height: 1;
-      white-space: nowrap;
-      cursor: pointer;
-      background: #fff;
-      border: 1px solid #dcdfe6;
-      border-color: #dcdfe6;
-      color: #606266;
-      -webkit-appearance: none;
-      text-align: center;
-      box-sizing: border-box;
-      outline: none;
-      margin: 0;
-      transition: .1s;
-      font-weight: 500;
-      -moz-user-select: none;
-      -webkit-user-select: none;
-      -ms-user-select: none;
-      padding: 12px 20px;
-      font-size: 14px;
-      border-radius: 4px;
-      /* 圆角 */
-      padding: 7px 15px;
-      border-radius: 20px;
-      font-size: 12px;
-    }
-    .d2-app-loading-grid {
-      width: 30px;
-      height: 30px;
-    }
-    .d2-app-loading-grid .d2-app-loading {
-      width: 10px;
-      height: 10px;
-      background-color: #FFF;
-      float: left;
-      -webkit-animation: d2-app-loading-grid-scale-delay 1.3s infinite ease-in-out;
-      animation: d2-app-loading-grid-scale-delay 1.3s infinite ease-in-out;
-    }
-    .d2-app-loading-grid .d2-app-loading1 {
-      border-top-left-radius: 4px;
-      -webkit-animation-delay: 0.2s;
-      animation-delay: 0.2s;
-    }
-    .d2-app-loading-grid .d2-app-loading2 {
-      -webkit-animation-delay: 0.3s;
-      animation-delay: 0.3s;
-    }
-    .d2-app-loading-grid .d2-app-loading3 {
-      border-top-right-radius: 4px;
-      -webkit-animation-delay: 0.4s;
-      animation-delay: 0.4s;
-    }
-    .d2-app-loading-grid .d2-app-loading4 {
-      -webkit-animation-delay: 0.1s;
-      animation-delay: 0.1s;
-    }
-    .d2-app-loading-grid .d2-app-loading5 {
-      -webkit-animation-delay: 0.2s;
-      animation-delay: 0.2s;
-    }
-    .d2-app-loading-grid .d2-app-loading6 {
-      -webkit-animation-delay: 0.3s;
-      animation-delay: 0.3s;
-    }
-    .d2-app-loading-grid .d2-app-loading7 {
-      border-bottom-left-radius: 4px;
-      -webkit-animation-delay: 0s;
-      animation-delay: 0s;
-    }
-    .d2-app-loading-grid .d2-app-loading8 {
-      -webkit-animation-delay: 0.1s;
-      animation-delay: 0.1s;
-    }
-    .d2-app-loading-grid .d2-app-loading9 {
-      border-bottom-right-radius: 4px;
-      -webkit-animation-delay: 0.2s;
-      animation-delay: 0.2s;
-    }
-    @-webkit-keyframes d2-app-loading-grid-scale-delay {
-      0%, 70%, 100% {
-        -webkit-transform: scale3D(1, 1, 1);
-        transform: scale3D(1, 1, 1);
-      }
-      35% {
-        -webkit-transform: scale3D(0, 0, 1);
-        transform: scale3D(0, 0, 1);
-      }
-    }
-    @keyframes d2-app-loading-grid-scale-delay {
-      0%, 70%, 100% {
-        -webkit-transform: scale3D(1, 1, 1);
-        transform: scale3D(1, 1, 1);
-      }
-      35% {
-        -webkit-transform: scale3D(0, 0, 1);
-        transform: scale3D(0, 0, 1);
-      }
-    }</style><link href=css/chunk-1ae0780b.0e433876.css rel=prefetch><link href=css/chunk-52ebdf33.96e1be88.css rel=prefetch><link href=js/chunk-1ae0780b.abaee25b.js rel=prefetch><link href=js/chunk-2d0e8c7f.aad0c000.js rel=prefetch><link href=js/chunk-52ebdf33.6e07e9cb.js rel=prefetch><link href=css/chunk-vendors.ea3fa8e3.css rel=preload as=style><link href=js/app.60f32ce9.js rel=preload as=script><link href=js/chunk-vendors.5d385bbe.js rel=preload as=script><link href=css/chunk-vendors.ea3fa8e3.css rel=stylesheet></head><body><noscript><strong>We're sorry for doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id=app><div class=d2-app-loading-group><div class=d2-app-loading-grid><div class="d2-app-loading d2-app-loading1"></div><div class="d2-app-loading d2-app-loading2"></div><div class="d2-app-loading d2-app-loading3"></div><div class="d2-app-loading d2-app-loading4"></div><div class="d2-app-loading d2-app-loading5"></div><div class="d2-app-loading d2-app-loading6"></div><div class="d2-app-loading d2-app-loading7"></div><div class="d2-app-loading d2-app-loading8"></div><div class="d2-app-loading d2-app-loading9"></div></div><div class=d2-app-loading-title>加载中</div><div style="margin-top: 10px;"><a class=d2-app-loading-btn href=https://github.com/y3tu target=blank>Github</a></div></div></div><script src=js/chunk-vendors.5d385bbe.js></script><script src=js/app.60f32ce9.js></script></body></html>
+</style>
+<div class="card">
+    <div class="card-header">
+    </div>
+    <div class="card-block">
+        <div id="container" style="height:300px"></div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title"></h2>
+    </div>
+    <div class="card-block">
+        <div id="keysChart" style="height:300px"></div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title" style="padding:1rem 0">Redis 详细信息：</h2>
+    </div>
+    <div class="card-block">
+        <table class="table table-condensed table-hover"
+               style="word-break: break-all; word-wrap: break-word;">
+            <tbody>
+            <tr v-for="info in infoList">
+                <td style="width:30%;font-weight:bold">{{info.key}}</td>
+                <td style="width:40%">{{info.description}}</td>
+                <td style="width:30%">{{info.value}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.8/dist/vue.js"></script>
+<script src="https://unpkg.com/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.highcharts.com.cn/highcharts/highcharts.js"></script>
+
+<script type="text/javascript">
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            infoList: ''
+        },
+        beforeCreate: function () {
+            if (self != top) {
+                top.location.href = self.location.href;
+            }
+        },
+        created: function () {
+
+        },
+        mounted: function () {
+            $("#container").highcharts({
+                chart: {
+                    type: "spline",
+                    animation: Highcharts.svg,
+                    marginRight: 0,
+                    events: {
+                        load: function () {
+                            var series = this.series[0];
+                            rediskeysSizeInterval = setInterval(function () {
+                                $.getJSON(ctx + "redis/memoryInfo", function (data) {
+                                    var x = data.create_time,
+                                        y = data.used_memory / 1024;
+                                    series.addPoint([x, y], true, true);
+                                });
+                            }, 3e3);
+                        }
+                    }
+                },
+                title: {
+                    text: "Redis 内存实时占用情况",
+                    style: {
+                        "font-size": "1.2rem"
+                    }
+                },
+                xAxis: {
+                    type: "datetime",
+                    tickPixelInterval: 150
+                },
+                yAxis: {
+                    title: {
+                        text: "kb"
+                    },
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: "#808080"
+                    }]
+                },
+                plotOptions: {
+                    spline: {
+                        color: theme_color
+                    }
+                },
+                credits: {
+                    enabled: false
+                },
+                tooltip: {
+                    formatter: function () {
+                        return "<b>" + this.series.name + "</b><br/>" + Highcharts.dateFormat("%Y-%m-%d %H:%M:%S", this.x) + "<br/>" + Highcharts.numberFormat(this.y, 2);
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                exporting: {
+                    enabled: false
+                },
+                series: [{
+                    name: "内存占用（kb）",
+                    data: function () {
+                        var data = [], time = new Date().getTime(), i;
+                        for (i = -19; i <= 0; i++) {
+                            data.push({
+                                x: time + i * 1e3,
+                                y: Math.random() * (1e3 - 800) + 800
+                            });
+                        }
+                        return data;
+                    }()
+                }]
+            });
+            $("#keysChart").highcharts({
+                chart: {
+                    type: "spline",
+                    animation: Highcharts.svg,
+                    marginRight: 10,
+                    events: {
+                        load: function () {
+                            var series = this.series[0];
+                            redisMemoryInfoInterval = setInterval(function () {
+                                $.getJSON(ctx + "redis/keysSize", function (data) {
+                                    var x = data.create_time,
+                                        y = data.dbSize;
+                                    series.addPoint([x, y], true, true);
+                                });
+                            }, 3e3);
+                        }
+                    }
+                },
+                title: {
+                    text: "Redis key的实时数量",
+                    style: {
+                        "font-size": "1.2rem"
+                    }
+                },
+                xAxis: {
+                    type: "datetime",
+                    tickPixelInterval: 150
+                },
+                yAxis: {
+                    title: {
+                        text: ""
+                    },
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: "#808080"
+                    }]
+                },
+                plotOptions: {
+                    spline: {
+                        color: theme_color
+                    }
+                },
+                tooltip: {
+                    formatter: function () {
+                        return "<b>" + this.series.name + "</b><br/>" + Highcharts.dateFormat("%Y-%m-%d %H:%M:%S", this.x) + "<br/>" + Highcharts.numberFormat(this.y, 2);
+                    }
+                },
+                credits: {
+                    enabled: false
+                },
+                legend: {
+                    enabled: false
+                },
+                exporting: {
+                    enabled: false
+                },
+                series: [{
+                    name: "keys",
+                    data: function () {
+                        var data = [], time = new Date().getTime(), i;
+                        for (i = -19; i <= 0; i++) {
+                            data.push({
+                                x: time + i * 1e3,
+                                y: 0
+                            });
+                        }
+                        return data;
+                    }()
+                }]
+            });
+        }
+    });
+</script>
+</body>
+</html>

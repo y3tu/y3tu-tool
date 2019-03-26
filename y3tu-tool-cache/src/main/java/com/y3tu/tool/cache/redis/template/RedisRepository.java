@@ -1,4 +1,4 @@
-package com.y3tu.tool.web.redis.template;
+package com.y3tu.tool.cache.redis.template;
 
 import com.y3tu.tool.core.collection.CollectionUtil;
 import lombok.extern.slf4j.Slf4j;

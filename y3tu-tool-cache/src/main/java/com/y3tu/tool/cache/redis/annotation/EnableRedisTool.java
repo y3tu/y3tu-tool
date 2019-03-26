@@ -1,11 +1,10 @@
-package com.y3tu.tool.web.redis.annotation;
+package com.y3tu.tool.cache.redis.annotation;
 
-
-import com.y3tu.tool.web.redis.annotation.registrar.EnableRedisToolRegistrar;
-import com.y3tu.tool.web.redis.aspect.LimitAspect;
-import com.y3tu.tool.web.redis.aspect.RedisAspect;
-import com.y3tu.tool.web.redis.config.RedisConfig;
-import com.y3tu.tool.web.redis.template.RedisRepository;
+import com.y3tu.tool.cache.redis.annotation.registrar.EnableRedisToolRegistrar;
+import com.y3tu.tool.cache.redis.aspect.LimitAspect;
+import com.y3tu.tool.cache.redis.aspect.RedisAspect;
+import com.y3tu.tool.cache.redis.config.RedisConfig;
+import com.y3tu.tool.cache.redis.template.RedisRepository;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
