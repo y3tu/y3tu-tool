@@ -74,7 +74,6 @@ public enum GlobalHeaders {
      *
      * @param name Header名
      * @return Header值
-     * @since 3.1.1
      */
     public List<String> headerList(String name) {
         if (StrUtil.isBlank(name)) {
