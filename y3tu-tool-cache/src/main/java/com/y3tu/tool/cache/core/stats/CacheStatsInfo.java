@@ -2,12 +2,14 @@ package com.y3tu.tool.cache.core.stats;
 
 
 import com.y3tu.tool.cache.core.setting.LayerCacheSetting;
+import lombok.Data;
 
 /**
  * 缓存命中率统计实体类
  *
  * @author yuhao.wang3
  */
+@Data
 public class CacheStatsInfo {
 
     /**
@@ -70,102 +72,6 @@ public class CacheStatsInfo {
      */
     private LayerCacheSetting layerCacheSetting;
 
-
-    public String getCacheName() {
-        return cacheName;
-    }
-
-    public void setCacheName(String cacheName) {
-        this.cacheName = cacheName;
-    }
-
-    public long getRequestCount() {
-        return requestCount;
-    }
-
-    public void setRequestCount(long requestCount) {
-        this.requestCount = requestCount;
-    }
-
-    public long getMissCount() {
-        return missCount;
-    }
-
-    public void setMissCount(long missCount) {
-        this.missCount = missCount;
-    }
-
-    public long getFirstCacheRequestCount() {
-        return firstCacheRequestCount;
-    }
-
-    public void setFirstCacheRequestCount(long firstCacheRequestCount) {
-        this.firstCacheRequestCount = firstCacheRequestCount;
-    }
-
-    public long getFirstCacheMissCount() {
-        return firstCacheMissCount;
-    }
-
-    public void setFirstCacheMissCount(long firstCacheMissCount) {
-        this.firstCacheMissCount = firstCacheMissCount;
-    }
-
-    public long getSecondCacheRequestCount() {
-        return secondCacheRequestCount;
-    }
-
-    public void setSecondCacheRequestCount(long secondCacheRequestCount) {
-        this.secondCacheRequestCount = secondCacheRequestCount;
-    }
-
-    public long getSecondCacheMissCount() {
-        return secondCacheMissCount;
-    }
-
-    public void setSecondCacheMissCount(long secondCacheMissCount) {
-        this.secondCacheMissCount = secondCacheMissCount;
-    }
-
-    public long getTotalLoadTime() {
-        return totalLoadTime;
-    }
-
-    public void setTotalLoadTime(long totalLoadTime) {
-        this.totalLoadTime = totalLoadTime;
-    }
-
-    public String getInternalKey() {
-        return internalKey;
-    }
-
-    public void setInternalKey(String internalKey) {
-        this.internalKey = internalKey;
-    }
-
-    public LayerCacheSetting getLayerCacheSetting() {
-        return layerCacheSetting;
-    }
-
-    public void setLayerCacheSetting(LayerCacheSetting layerCacheSetting) {
-        this.layerCacheSetting = layerCacheSetting;
-    }
-
-    public String getDepict() {
-        return depict;
-    }
-
-    public void setDepict(String depict) {
-        this.depict = depict;
-    }
-
-    public double getHitRate() {
-        return hitRate;
-    }
-
-    public void setHitRate(double hitRate) {
-        this.hitRate = hitRate;
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -1,6 +1,7 @@
 package com.y3tu.tool.cache.core.setting;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -9,6 +10,7 @@ import java.io.Serializable;
  *
  * @author yuhao.wang
  */
+@Data
 public class LayerCacheSetting implements Serializable {
     private static final String SPLIT = "-";
     /**
@@ -62,47 +64,4 @@ public class LayerCacheSetting implements Serializable {
         internalKey = sb.toString();
     }
 
-    public FirstCacheSetting getFirstCacheSetting() {
-        return firstCacheSetting;
-    }
-
-    public SecondaryCacheSetting getSecondaryCacheSetting() {
-        return secondaryCacheSetting;
-    }
-
-    public String getInternalKey() {
-        return internalKey;
-    }
-
-    public void internalKey(String internalKey) {
-        this.internalKey = internalKey;
-    }
-
-    public boolean isUseFirstCache() {
-        return useFirstCache;
-    }
-
-    public void setUseFirstCache(boolean useFirstCache) {
-        this.useFirstCache = useFirstCache;
-    }
-
-    public void setFirstCacheSetting(FirstCacheSetting firstCacheSetting) {
-        this.firstCacheSetting = firstCacheSetting;
-    }
-
-    public void setSecondaryCacheSetting(SecondaryCacheSetting secondaryCacheSetting) {
-        this.secondaryCacheSetting = secondaryCacheSetting;
-    }
-
-    public void setInternalKey(String internalKey) {
-        this.internalKey = internalKey;
-    }
-
-    public String getDepict() {
-        return depict;
-    }
-
-    public void setDepict(String depict) {
-        this.depict = depict;
-    }
 }

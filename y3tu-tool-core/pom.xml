@@ -208,7 +208,6 @@
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
             <version>${okhttp-version}</version>
-            <optional>true</optional>
         </dependency>
 
         <!-- ip2region 获取ip地址的地理信息-->
@@ -216,7 +215,6 @@
             <groupId>org.lionsoul</groupId>
             <artifactId>ip2region</artifactId>
             <version>${ip2region-version}</version>
-            <optional>true</optional>
         </dependency>
 
         <!--七牛云sdk-->

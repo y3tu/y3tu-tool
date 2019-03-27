@@ -10,15 +10,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.util.StringUtils;
 
 /**
+ * 根据配置开启多级缓存Servlet界面功能
+ *
  * @author yuhao.wang3
  */
 @ConditionalOnWebApplication
-@ConditionalOnProperty(name = "spring.y3tu.layer-cache.servlet-enable", havingValue = "true", matchIfMissing = false)
+@ConditionalOnProperty(name = "y3tu-tool-cache.servlet-enable", havingValue = "true", matchIfMissing = false)
 public class LayerCacheServletConfig {
     @Bean
     public ServletRegistrationBean statViewServletRegistrationBean(LayerCacheProperties properties) {
         ServletRegistrationBean registrationBean = new ServletRegistrationBean();
+        //设置拦截url后的处理servlet
         registrationBean.setServlet(new LayerCacheViewServlet());
+        //设置需要拦截的url
         registrationBean.addUrlMappings(!StringUtils.isEmpty(properties.getUrlPattern()) ? properties.getUrlPattern() : "/layer-cache/*");
         return registrationBean;
     }

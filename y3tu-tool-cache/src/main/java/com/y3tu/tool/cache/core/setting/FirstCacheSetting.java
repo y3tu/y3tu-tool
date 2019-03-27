@@ -2,6 +2,7 @@ package com.y3tu.tool.cache.core.setting;
 
 
 import com.y3tu.tool.cache.core.support.ExpireMode;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
@@ -11,6 +12,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author yuhao.wang
  */
+@Data
 public class FirstCacheSetting implements Serializable {
 
     /**
@@ -62,51 +64,4 @@ public class FirstCacheSetting implements Serializable {
         this.allowNullValues = true;
     }
 
-    public int getInitialCapacity() {
-        return initialCapacity;
-    }
-
-    public void setInitialCapacity(int initialCapacity) {
-        this.initialCapacity = initialCapacity;
-    }
-
-    public int getMaximumSize() {
-        return maximumSize;
-    }
-
-    public void setMaximumSize(int maximumSize) {
-        this.maximumSize = maximumSize;
-    }
-
-    public int getExpireTime() {
-        return expireTime;
-    }
-
-    public void setExpireTime(int expireTime) {
-        this.expireTime = expireTime;
-    }
-
-    public TimeUnit getTimeUnit() {
-        return timeUnit;
-    }
-
-    public void setTimeUnit(TimeUnit timeUnit) {
-        this.timeUnit = timeUnit;
-    }
-
-    public ExpireMode getExpireMode() {
-        return expireMode;
-    }
-
-    public void setExpireMode(ExpireMode expireMode) {
-        this.expireMode = expireMode;
-    }
-
-    public boolean isAllowNullValues() {
-        return allowNullValues;
-    }
-
-    public void setAllowNullValues(boolean allowNullValues) {
-        this.allowNullValues = allowNullValues;
-    }
 }

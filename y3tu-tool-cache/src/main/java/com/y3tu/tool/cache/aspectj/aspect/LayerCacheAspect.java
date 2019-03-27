@@ -11,13 +11,12 @@ import com.y3tu.tool.cache.core.setting.FirstCacheSetting;
 import com.y3tu.tool.cache.core.setting.LayerCacheSetting;
 import com.y3tu.tool.cache.core.setting.SecondaryCacheSetting;
 import com.y3tu.tool.cache.core.support.SerializationException;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.expression.AnnotatedElementKey;
@@ -38,8 +37,8 @@ import java.util.Objects;
  * @author yuhao.wang
  */
 @Aspect
+@Slf4j
 public class LayerCacheAspect {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private static final String CACHE_KEY_ERROR_MESSAGE = "缓存Key %s 不能为NULL";
     private static final String CACHE_NAME_ERROR_MESSAGE = "缓存名称不能为NULL";
@@ -87,20 +86,20 @@ public class LayerCacheAspect {
 
             // 忽略操作缓存过程中遇到的异常
             if (cacheable.ignoreException()) {
-                logger.warn(e.getMessage(), e);
+                log.warn(e.getMessage(), e);
                 return aopAllianceInvoker.invoke();
             }
 
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw e;
         } catch (Exception e) {
             // 忽略操作缓存过程中遇到的异常
             if (cacheable.ignoreException()) {
-                logger.warn(e.getMessage(), e);
+                log.warn(e.getMessage(), e);
                 return aopAllianceInvoker.invoke();
             }
 
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw e;
         }
     }
@@ -120,11 +119,11 @@ public class LayerCacheAspect {
         } catch (Exception e) {
             // 忽略操作缓存过程中遇到的异常
             if (cacheEvict.ignoreException()) {
-                logger.warn(e.getMessage(), e);
+                log.warn(e.getMessage(), e);
                 return aopAllianceInvoker.invoke();
             }
 
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw e;
         }
     }
@@ -144,11 +143,11 @@ public class LayerCacheAspect {
         } catch (Exception e) {
             // 忽略操作缓存过程中遇到的异常
             if (cacheEvict.ignoreException()) {
-                logger.warn(e.getMessage(), e);
+                log.warn(e.getMessage(), e);
                 return aopAllianceInvoker.invoke();
             }
 
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw e;
         }
     }
@@ -290,7 +289,7 @@ public class LayerCacheAspect {
             try {
                 return joinPoint.proceed();
             } catch (Throwable ex) {
-                logger.error(ex.getMessage(), ex);
+                log.error(ex.getMessage(), ex);
                 throw new CacheOperationInvoker.ThrowableWrapperException(ex);
             }
         };

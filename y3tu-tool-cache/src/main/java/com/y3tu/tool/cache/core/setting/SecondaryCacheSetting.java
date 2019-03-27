@@ -1,5 +1,7 @@
 package com.y3tu.tool.cache.core.setting;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
@@ -8,6 +10,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author yuhao.wang
  */
+@Data
 public class SecondaryCacheSetting implements Serializable {
     /**
      * 缓存有效时间
@@ -57,51 +60,4 @@ public class SecondaryCacheSetting implements Serializable {
         this.allowNullValues = true;
     }
 
-    public long getExpiration() {
-        return expiration;
-    }
-
-    public void setExpiration(long expiration) {
-        this.expiration = expiration;
-    }
-
-    public long getPreloadTime() {
-        return preloadTime;
-    }
-
-    public void setPreloadTime(long preloadTime) {
-        this.preloadTime = preloadTime;
-    }
-
-    public TimeUnit getTimeUnit() {
-        return timeUnit;
-    }
-
-    public void setTimeUnit(TimeUnit timeUnit) {
-        this.timeUnit = timeUnit;
-    }
-
-    public boolean isForceRefresh() {
-        return forceRefresh;
-    }
-
-    public void setForceRefresh(boolean forceRefresh) {
-        this.forceRefresh = forceRefresh;
-    }
-
-    public boolean isUsePrefix() {
-        return usePrefix;
-    }
-
-    public void setUsePrefix(boolean usePrefix) {
-        this.usePrefix = usePrefix;
-    }
-
-    public boolean isAllowNullValues() {
-        return allowNullValues;
-    }
-
-    public void setAllowNullValues(boolean allowNullValues) {
-        this.allowNullValues = allowNullValues;
-    }
 }

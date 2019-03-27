@@ -1,5 +1,7 @@
 package com.y3tu.tool.cache.core.stats;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.concurrent.atomic.LongAdder;
 
@@ -8,6 +10,7 @@ import java.util.concurrent.atomic.LongAdder;
  *
  * @author yuhao.wang3
  */
+@Data
 public final class CacheStats implements Serializable {
     /**
      * 请求缓存总数
@@ -56,31 +59,6 @@ public final class CacheStats implements Serializable {
     public void addCachedMethodRequestTime(long time) {
         cachedMethodRequestTime.add(time);
     }
-
-    public LongAdder getCacheRequestCount() {
-        return cacheRequestCount;
-    }
-
-    public void setCacheRequestCount(LongAdder cacheRequestCount) {
-        this.cacheRequestCount = cacheRequestCount;
-    }
-
-    public LongAdder getCachedMethodRequestCount() {
-        return cachedMethodRequestCount;
-    }
-
-    public void setCachedMethodRequestCount(LongAdder cachedMethodRequestCount) {
-        this.cachedMethodRequestCount = cachedMethodRequestCount;
-    }
-
-    public LongAdder getCachedMethodRequestTime() {
-        return cachedMethodRequestTime;
-    }
-
-    public void setCachedMethodRequestTime(LongAdder cachedMethodRequestTime) {
-        this.cachedMethodRequestTime = cachedMethodRequestTime;
-    }
-
 
     public long getAndResetCacheRequestCount() {
         long lodValue = cacheRequestCount.longValue();

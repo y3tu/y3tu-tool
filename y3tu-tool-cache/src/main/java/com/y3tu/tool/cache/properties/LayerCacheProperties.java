@@ -4,10 +4,11 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
+ * 多级缓存配置
  * @author yuhao.wang3
  */
 @Data
-@ConfigurationProperties("spring.y3tu.layer-cache")
+@ConfigurationProperties("y3tu-tool-cache")
 public class LayerCacheProperties {
 
     /**
