@@ -44,6 +44,7 @@ public class LayerCacheAutoConfig {
     }
 
     @Bean(name = "cacheRedisTemplate")
+    @ConditionalOnBean(RedisConnectionFactory.class)
     public RedisTemplate<String, Object> cacheRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);

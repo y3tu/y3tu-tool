@@ -1,12 +1,12 @@
 package com.y3tu.tool.cache.web.servlet;
 
+import com.y3tu.tool.core.bean.BeanCache;
 import com.y3tu.tool.core.pojo.R;
 import com.y3tu.tool.core.util.JsonUtil;
 import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.http.servlet.AbstractResourceServlet;
 import com.y3tu.tool.cache.core.manager.AbstractCacheManager;
 import com.y3tu.tool.cache.core.stats.CacheStatsInfo;
-import com.y3tu.tool.cache.core.util.BeanFactory;
 import com.y3tu.tool.cache.web.service.CacheService;
 import com.y3tu.tool.cache.web.support.URLConstant;
 import lombok.extern.slf4j.Slf4j;
@@ -72,7 +72,7 @@ public class LayerCacheViewServlet extends AbstractResourceServlet {
                 String cacheNameParam = request.getParameter("cacheName");
                 String internalKey = request.getParameter("internalKey");
                 String key = request.getParameter("key");
-                BeanFactory.getBean(CacheService.class).deleteCache(cacheNameParam, internalKey, key);
+                BeanCache.getBean(CacheService.class).deleteCache(cacheNameParam, internalKey, key);
                 return JsonUtil.toJson(R.ok());
             }
         } catch (Exception e) {

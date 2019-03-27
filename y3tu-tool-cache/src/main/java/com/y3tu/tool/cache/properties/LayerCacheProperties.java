@@ -27,7 +27,7 @@ public class LayerCacheProperties {
     private boolean servletEnable = true;
 
     /**
-     * contextPath
+     * 设置拦截的url
      */
     private String urlPattern;
 
