@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * bean实例缓存,反正重复创建bean实例
+ * bean实例缓存,防止重复创建bean实例
  *
  * @author y3tu
  * @date 2019-03-27

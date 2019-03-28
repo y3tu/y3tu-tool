@@ -27,7 +27,7 @@ import java.util.Set;
 @Slf4j
 public class LayerCacheViewServlet extends AbstractResourceServlet {
     public LayerCacheViewServlet() {
-        super("http/resources", "layer-cache");
+        super("http/resources", "y3tu-tool-cache");
     }
 
     /**

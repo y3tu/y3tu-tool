@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.y3tu.tool.admin.config.ToolAdminAutoConfig
+com.y3tu.tool.ui.config.UiAutoConfiguration

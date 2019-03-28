@@ -23,7 +23,7 @@ public class LayerCacheServletConfig {
         //设置拦截url后的处理servlet
         registrationBean.setServlet(new LayerCacheViewServlet());
         //设置需要拦截的url
-        registrationBean.addUrlMappings(!StringUtils.isEmpty(properties.getUrlPattern()) ? properties.getUrlPattern() : "/layer-cache/*");
+        registrationBean.addUrlMappings(!StringUtils.isEmpty(properties.getUrlPattern()) ? properties.getUrlPattern() : "/y3tu-tool-cache/*");
         return registrationBean;
     }
 }

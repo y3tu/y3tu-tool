@@ -6,8 +6,7 @@ import com.y3tu.tool.cache.core.setting.LayerCacheSetting;
 import com.y3tu.tool.cache.core.stats.CacheStatsInfo;
 import com.y3tu.tool.cache.core.stats.StatsService;
 import com.y3tu.tool.core.bean.BeanCache;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -26,8 +25,8 @@ import java.util.concurrent.ConcurrentMap;
  *
  * @author yuhao.wang3
  */
+@Slf4j
 public abstract class AbstractCacheManager implements CacheManager, InitializingBean, DisposableBean, BeanNameAware, SmartLifecycle {
-    private Logger logger = LoggerFactory.getLogger(AbstractCacheManager.class);
 
     /**
      * redis pub/sub 容器
@@ -57,7 +56,7 @@ public abstract class AbstractCacheManager implements CacheManager, Initializing
     static Set<AbstractCacheManager> cacheManagers = new LinkedHashSet<>();
 
     /**
-     * 是否开启统计
+     * 是否开启统计 默认开启
      */
     private boolean stats = true;
 
@@ -66,6 +65,11 @@ public abstract class AbstractCacheManager implements CacheManager, Initializing
      */
     RedisTemplate<String, Object> redisTemplate;
 
+    /**
+     * 获取CacheManager容器
+     *
+     * @return
+     */
     public static Set<AbstractCacheManager> getCacheManager() {
         return cacheManagers;
     }
@@ -86,7 +90,7 @@ public abstract class AbstractCacheManager implements CacheManager, Initializing
         ConcurrentMap<String, Cache> cacheMap = this.cacheContainer.get(name);
         if (!CollectionUtils.isEmpty(cacheMap)) {
             if (cacheMap.size() > 1) {
-                logger.warn("缓存名称为 {} 的缓存,存在两个不同的过期时间配置，请一定注意保证缓存的key唯一性，否则会出现缓存过期时间错乱的情况", name);
+                log.warn("缓存名称为 {} 的缓存,存在两个不同的过期时间配置，请一定注意保证缓存的key唯一性，否则会出现缓存过期时间错乱的情况", name);
             }
             Cache cache = cacheMap.get(layerCacheSetting.getInternalKey());
             if (cache != null) {
@@ -120,7 +124,7 @@ public abstract class AbstractCacheManager implements CacheManager, Initializing
                 // 将新的Cache对象放到容器
                 cacheMap.put(layerCacheSetting.getInternalKey(), cache);
                 if (cacheMap.size() > 1) {
-                    logger.warn("缓存名称为 {} 的缓存,存在两个不同的过期时间配置，请一定注意保证缓存的key唯一性，否则会出现缓存过期时间错乱的情况", name);
+                    log.warn("缓存名称为 {} 的缓存,存在两个不同的过期时间配置，请一定注意保证缓存的key唯一性，否则会出现缓存过期时间错乱的情况", name);
                 }
             }
 
@@ -156,7 +160,7 @@ public abstract class AbstractCacheManager implements CacheManager, Initializing
     /**
      * 根据缓存名称在CacheManager中没有找到对应Cache时，通过该方法新建一个对应的Cache实例
      *
-     * @param name                 缓存名称
+     * @param name              缓存名称
      * @param layerCacheSetting 缓存配置
      * @return {@link Cache}
      */
