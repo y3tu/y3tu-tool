@@ -15,8 +15,8 @@ import '@/icons' // icon
 
 Vue.use(Admin);
 
+import '@/styles/index.scss' // global css
 
-/* eslint-disable no-new */
 new Vue({
     el: '#app',
     router,
