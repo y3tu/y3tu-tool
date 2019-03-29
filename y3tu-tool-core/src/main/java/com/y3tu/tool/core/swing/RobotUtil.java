@@ -6,7 +6,7 @@ import java.awt.Robot;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.util.ImageUtil;
 
 /**
@@ -21,7 +21,7 @@ public class RobotUtil {
         try {
             robot = new Robot();
         } catch (AWTException e) {
-            throw new UtilException(e);
+            throw new ToolException(e);
         }
     }
 

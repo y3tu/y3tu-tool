@@ -9,7 +9,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.List;
 
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IoUtil;
 import com.y3tu.tool.core.util.ClassUtil;
@@ -43,9 +43,9 @@ public class JarClassLoader extends URLClassLoader {
      *
      * @param loader  {@link URLClassLoader}
      * @param jarFile 被加载的jar
-     * @throws UtilException IO异常包装和执行异常
+     * @throws ToolException IO异常包装和执行异常
      */
-    public static void loadJar(URLClassLoader loader, File jarFile) throws UtilException {
+    public static void loadJar(URLClassLoader loader, File jarFile) throws ToolException {
         try {
             final Method method = ClassUtil.getDeclaredMethod(URLClassLoader.class, "addURL", URL.class);
             if (null != method) {
@@ -56,7 +56,7 @@ public class JarClassLoader extends URLClassLoader {
                 }
             }
         } catch (IOException e) {
-            throw new UtilException(e);
+            throw new ToolException(e);
         }
     }
 
@@ -104,7 +104,7 @@ public class JarClassLoader extends URLClassLoader {
                 super.addURL(jar.toURI().toURL());
             }
         } catch (MalformedURLException e) {
-            throw new UtilException(e);
+            throw new ToolException(e);
         }
         return this;
     }

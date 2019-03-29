@@ -1,7 +1,7 @@
 package com.y3tu.tool.aop.interceptor;
 
 import com.y3tu.tool.aop.aspects.Aspect;
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.util.ReflectUtil;
 
 import java.lang.reflect.InvocationHandler;
@@ -41,7 +41,7 @@ public class JdkInterceptor implements InvocationHandler {
         if (aspect.before(target, method, args)) {
             try {
                 result = ReflectUtil.invoke(target, method, args);
-            } catch (UtilException e) {
+            } catch (ToolException e) {
                 final Throwable cause = e.getCause();
                 if (e.getCause() instanceof InvocationTargetException) {
                     aspect.afterException(target, method, args, ((InvocationTargetException) cause).getTargetException());

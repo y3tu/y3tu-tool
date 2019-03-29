@@ -15,7 +15,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import com.y3tu.tool.core.date.DateTime;
 import com.y3tu.tool.core.date.DateUtil;
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.lang.UUID;
 import com.y3tu.tool.core.lang.WeightRandom;
 
@@ -58,7 +58,7 @@ public class RandomUtil {
         try {
             return SecureRandom.getInstance("SHA1PRNG");
         } catch (NoSuchAlgorithmException e) {
-            throw new UtilException(e);
+            throw new ToolException(e);
         }
     }
 

@@ -1,6 +1,6 @@
 package com.y3tu.tool.filesystem;
 
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.MimeTypeFileExtension;
 import com.y3tu.tool.core.lang.UUID;
@@ -170,7 +170,7 @@ public class UploadObject {
             String mimeType = match.getMimeType();
             return mimeType;
         } catch (Exception e) {
-            throw new UtilException("获取Mime类型失败！", e);
+            throw new ToolException("获取Mime类型失败！", e);
         }
     }
 

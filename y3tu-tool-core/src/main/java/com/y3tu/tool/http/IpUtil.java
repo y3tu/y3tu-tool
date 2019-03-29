@@ -3,7 +3,7 @@ package com.y3tu.tool.http;
 import com.alibaba.fastjson.JSONObject;
 import com.y3tu.tool.core.exception.BaseException;
 import com.y3tu.tool.core.exception.Error;
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.resource.ResourceUtil;
 import com.y3tu.tool.core.lang.Validator;
@@ -41,7 +41,7 @@ public class IpUtil {
                 FileUtil.del(ipFileTempPath);
             }
         } catch (Exception e) {
-            throw new UtilException("ip2region.db文件异常", e);
+            throw new ToolException("ip2region.db文件异常", e);
         }
     }
 
@@ -181,7 +181,7 @@ public class IpUtil {
             DataBlock dataBlock = null;
             if (!Validator.isIpv4(ip)) {
                 log.error("Error: Invalid ip address");
-                throw new UtilException("Error: Invalid ip address", Error.INVALID_PARAMETER);
+                throw new ToolException("Error: Invalid ip address", Error.INVALID_PARAMETER);
             }
             dataBlock = (DataBlock) method.invoke(searcher, ip);
             if (ObjectUtil.isNull(dataBlock)) {
@@ -193,7 +193,7 @@ public class IpUtil {
             throw e;
         } catch (Exception e) {
             log.error("获取地址信息异常", e);
-            throw new UtilException("获取地址信息异常：", e);
+            throw new ToolException("获取地址信息异常：", e);
         }
     }
 

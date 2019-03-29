@@ -1,6 +1,6 @@
 package com.y3tu.tool.core.lang.caller;
 
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 
 /**
  * 通过StackTrace方式获取调用者。此方式效率最低，不推荐使用
@@ -20,7 +20,7 @@ public class StackTraceCaller implements Caller {
         try {
             return Class.forName(className);
         } catch (ClassNotFoundException e) {
-            throw new UtilException(e, "[{}] not found!", className);
+            throw new ToolException(e, "[{}] not found!", className);
         }
     }
 
@@ -34,7 +34,7 @@ public class StackTraceCaller implements Caller {
         try {
             return Class.forName(className);
         } catch (ClassNotFoundException e) {
-            throw new UtilException(e, "[{}] not found!", className);
+            throw new ToolException(e, "[{}] not found!", className);
         }
     }
 
@@ -48,7 +48,7 @@ public class StackTraceCaller implements Caller {
         try {
             return Class.forName(className);
         } catch (ClassNotFoundException e) {
-            throw new UtilException(e, "[{}] not found!", className);
+            throw new ToolException(e, "[{}] not found!", className);
         }
     }
 

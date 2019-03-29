@@ -30,7 +30,7 @@ import javax.imageio.stream.ImageOutputStream;
 
 import com.y3tu.tool.core.codec.Base64;
 import com.y3tu.tool.core.convert.Convert;
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.img.Img;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IORuntimeException;
@@ -1292,7 +1292,7 @@ public class ImageUtil {
             try {
                 return Font.createFont(Font.TYPE1_FONT, fontFile);
             } catch (Exception e1) {
-                throw new UtilException(e);
+                throw new ToolException(e);
             }
         } catch (IOException e) {
             throw new IORuntimeException(e);
@@ -1315,7 +1315,7 @@ public class ImageUtil {
             try {
                 return Font.createFont(Font.TYPE1_FONT, fontStream);
             } catch (Exception e1) {
-                throw new UtilException(e1);
+                throw new ToolException(e1);
             }
         } catch (IOException e) {
             throw new IORuntimeException(e);

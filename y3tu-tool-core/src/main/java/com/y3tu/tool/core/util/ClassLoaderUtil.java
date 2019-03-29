@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.y3tu.tool.core.convert.BasicType;
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.lang.Assert;
 import com.y3tu.tool.core.lang.SimpleCache;
 
@@ -111,9 +111,9 @@ public class ClassLoaderUtil {
      *
      * @param name 类名
      * @return 类名对应的类
-     * @throws UtilException 包装{@link ClassNotFoundException}，没有类名对应的类时抛出此异常
+     * @throws ToolException 包装{@link ClassNotFoundException}，没有类名对应的类时抛出此异常
      */
-    public static Class<?> loadClass(String name) throws UtilException {
+    public static Class<?> loadClass(String name) throws ToolException {
         return loadClass(name, true);
     }
 
@@ -130,9 +130,9 @@ public class ClassLoaderUtil {
      * @param name          类名
      * @param isInitialized 是否初始化类（调用static模块内容和初始化static属性）
      * @return 类名对应的类
-     * @throws UtilException 包装{@link ClassNotFoundException}，没有类名对应的类时抛出此异常
+     * @throws ToolException 包装{@link ClassNotFoundException}，没有类名对应的类时抛出此异常
      */
-    public static Class<?> loadClass(String name, boolean isInitialized) throws UtilException {
+    public static Class<?> loadClass(String name, boolean isInitialized) throws ToolException {
         return loadClass(name, null, isInitialized);
     }
 
@@ -152,9 +152,9 @@ public class ClassLoaderUtil {
      * @param classLoader   {@link ClassLoader}，{@code null} 则使用系统默认ClassLoader
      * @param isInitialized 是否初始化类（调用static模块内容和初始化static属性）
      * @return 类名对应的类
-     * @throws UtilException 包装{@link ClassNotFoundException}，没有类名对应的类时抛出此异常
+     * @throws ToolException 包装{@link ClassNotFoundException}，没有类名对应的类时抛出此异常
      */
-    public static Class<?> loadClass(String name, ClassLoader classLoader, boolean isInitialized) throws UtilException {
+    public static Class<?> loadClass(String name, ClassLoader classLoader, boolean isInitialized) throws ToolException {
         Assert.notNull(name, "Name must not be null");
 
         // 加载原始类型和缓存中的类
@@ -199,7 +199,7 @@ public class ClassLoaderUtil {
                         // 尝试获取内部类失败时，忽略之。
                     }
                 }
-                throw new UtilException(ex);
+                throw new ToolException(ex);
             }
         }
 

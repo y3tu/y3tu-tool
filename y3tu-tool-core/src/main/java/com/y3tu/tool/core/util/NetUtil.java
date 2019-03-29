@@ -18,7 +18,7 @@ import java.util.Enumeration;
 import java.util.LinkedHashSet;
 
 import com.y3tu.tool.core.collection.CollectionUtil;
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.io.IORuntimeException;
 import com.y3tu.tool.core.io.IoUtil;
 import com.y3tu.tool.core.lang.Validator;
@@ -141,7 +141,7 @@ public class NetUtil {
             URL absoluteUrl = new URL(absoluteBasePath);
             return new URL(absoluteUrl, relativePath).toString();
         } catch (Exception e) {
-            throw new UtilException(e, "To absolute url [{}] base [{}] error!", relativePath, absoluteBasePath);
+            throw new ToolException(e, "To absolute url [{}] base [{}] error!", relativePath, absoluteBasePath);
         }
     }
 
@@ -235,11 +235,11 @@ public class NetUtil {
         try {
             networkInterfaces = NetworkInterface.getNetworkInterfaces();
         } catch (SocketException e) {
-            throw new UtilException(e);
+            throw new ToolException(e);
         }
 
         if (networkInterfaces == null) {
-            throw new UtilException("Get network interface error!");
+            throw new ToolException("Get network interface error!");
         }
 
         final LinkedHashSet<String> ipSet = new LinkedHashSet<>();
@@ -353,7 +353,7 @@ public class NetUtil {
         try {
             mac = NetworkInterface.getByInetAddress(inetAddress).getHardwareAddress();
         } catch (SocketException e) {
-            throw new UtilException(e);
+            throw new ToolException(e);
         }
         if (null != mac) {
             final StringBuilder sb = new StringBuilder();

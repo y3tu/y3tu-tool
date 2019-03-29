@@ -69,9 +69,9 @@ public class DefaultExceptionAdvice {
         if (e instanceof BusinessException) {
             error = ((BusinessException) e).getError();
             message = ((BusinessException) e).getErrorMessage();
-        } else if (e instanceof UtilException) {
-            error = ((UtilException) e).getError();
-            message = ((UtilException) e).getErrorMessage();
+        } else if (e instanceof ToolException) {
+            error = ((ToolException) e).getError();
+            message = ((ToolException) e).getErrorMessage();
         } else if (e instanceof ServerException) {
             error = ((ServerException) e).getError();
             message = ((ServerException) e).getErrorMessage();

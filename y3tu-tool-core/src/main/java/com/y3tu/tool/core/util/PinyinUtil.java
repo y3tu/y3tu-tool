@@ -1,6 +1,6 @@
 package com.y3tu.tool.core.util;
 
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.text.StrBuilder;
 
 /**
@@ -196,7 +196,7 @@ public class PinyinUtil {
                 asc = (256 * hightByte + lowByte) - 256 * 256;
                 break;
             default:
-                throw new UtilException("Illegal resource string");
+                throw new ToolException("Illegal resource string");
         }
         return asc;
     }

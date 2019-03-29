@@ -1,6 +1,6 @@
 package com.y3tu.tool.cron.task;
 
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.util.ClassLoaderUtil;
 import com.y3tu.tool.core.util.ClassUtil;
 import com.y3tu.tool.core.util.ReflectUtil;
@@ -33,7 +33,7 @@ public class InvokeTask implements Task {
             splitIndex = classNameWithMethodName.lastIndexOf('.');
         }
         if (splitIndex <= 0) {
-            throw new UtilException("Invalid classNameWithMethodName [{}]!", classNameWithMethodName);
+            throw new ToolException("Invalid classNameWithMethodName [{}]!", classNameWithMethodName);
         }
 
         //类
@@ -62,7 +62,7 @@ public class InvokeTask implements Task {
     public void execute() {
         try {
             ReflectUtil.invoke(this.obj, this.method, new Object[]{});
-        } catch (UtilException e) {
+        } catch (ToolException e) {
             throw new CronException(e.getCause());
         }
     }

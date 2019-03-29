@@ -10,7 +10,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 
 /**
  * 系统剪贴板工具类
@@ -70,7 +70,7 @@ public class ClipboardUtil {
             try {
                 return content.getTransferData(flavor);
             } catch (UnsupportedFlavorException | IOException e) {
-                throw new UtilException(e);
+                throw new ToolException(e);
             }
         }
         return null;

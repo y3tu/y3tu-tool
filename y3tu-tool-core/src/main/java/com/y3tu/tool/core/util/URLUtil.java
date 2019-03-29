@@ -16,7 +16,7 @@ import java.net.URLStreamHandler;
 import java.nio.charset.Charset;
 import java.util.jar.JarFile;
 
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IORuntimeException;
 import com.y3tu.tool.core.io.IoUtil;
@@ -116,7 +116,7 @@ public class URLUtil {
             try {
                 return new File(url).toURI().toURL();
             } catch (MalformedURLException ex2) {
-                throw new UtilException(e);
+                throw new ToolException(e);
             }
         }
     }
@@ -173,14 +173,14 @@ public class URLUtil {
      *
      * @param file URL对应的文件对象
      * @return URL
-     * @throws UtilException MalformedURLException
+     * @throws ToolException MalformedURLException
      */
     public static URL getURL(File file) {
         Assert.notNull(file, "File is null !");
         try {
             return file.toURI().toURL();
         } catch (MalformedURLException e) {
-            throw new UtilException(e, "Error occured when get URL!");
+            throw new ToolException(e, "Error occured when get URL!");
         }
     }
 
@@ -189,7 +189,7 @@ public class URLUtil {
      *
      * @param files URL对应的文件对象
      * @return URL
-     * @throws UtilException MalformedURLException
+     * @throws ToolException MalformedURLException
      */
     public static URL[] getURLs(File... files) {
         final URL[] urls = new URL[files.length];
@@ -198,7 +198,7 @@ public class URLUtil {
                 urls[i] = files[i].toURI().toURL();
             }
         } catch (MalformedURLException e) {
-            throw new UtilException(e, "Error occured when get URL!");
+            throw new ToolException(e, "Error occured when get URL!");
         }
 
         return urls;
@@ -221,7 +221,7 @@ public class URLUtil {
      * @param baseUrl      基准URL
      * @param relativePath 相对URL
      * @return 相对路径
-     * @throws UtilException MalformedURLException
+     * @throws ToolException MalformedURLException
      */
     public static String complateUrl(String baseUrl, String relativePath) {
         baseUrl = formatUrl(baseUrl);
@@ -234,7 +234,7 @@ public class URLUtil {
             final URL parseUrl = new URL(absoluteUrl, relativePath);
             return parseUrl.toString();
         } catch (MalformedURLException e) {
-            throw new UtilException(e);
+            throw new ToolException(e);
         }
     }
 
@@ -244,9 +244,9 @@ public class URLUtil {
      *
      * @param url URL
      * @return 编码后的URL
-     * @throws UtilException UnsupportedEncodingException
+     * @throws ToolException UnsupportedEncodingException
      */
-    public static String encode(String url) throws UtilException {
+    public static String encode(String url) throws ToolException {
         return encode(url, CharsetUtil.UTF_8);
     }
 
@@ -257,13 +257,13 @@ public class URLUtil {
      * @param url     URL
      * @param charset 编码
      * @return 编码后的URL
-     * @throws UtilException UnsupportedEncodingException
+     * @throws ToolException UnsupportedEncodingException
      */
-    public static String encode(String url, String charset) throws UtilException {
+    public static String encode(String url, String charset) throws ToolException {
         try {
             return URLEncoder.encode(url, charset);
         } catch (UnsupportedEncodingException e) {
-            throw new UtilException(e);
+            throw new ToolException(e);
         }
     }
 
@@ -273,9 +273,9 @@ public class URLUtil {
      *
      * @param url URL
      * @return 解码后的URL
-     * @throws UtilException UnsupportedEncodingException
+     * @throws ToolException UnsupportedEncodingException
      */
-    public static String decode(String url) throws UtilException {
+    public static String decode(String url) throws ToolException {
         return decode(url, CharsetUtil.UTF_8);
     }
 
@@ -286,13 +286,13 @@ public class URLUtil {
      * @param url     URL
      * @param charset 编码
      * @return 解码后的URL
-     * @throws UtilException UnsupportedEncodingException
+     * @throws ToolException UnsupportedEncodingException
      */
-    public static String decode(String url, String charset) throws UtilException {
+    public static String decode(String url, String charset) throws ToolException {
         try {
             return URLDecoder.decode(url, charset);
         } catch (UnsupportedEncodingException e) {
-            throw new UtilException(e);
+            throw new ToolException(e);
         }
     }
 
@@ -301,14 +301,14 @@ public class URLUtil {
      *
      * @param uriStr URI路径
      * @return path
-     * @throws UtilException 包装URISyntaxException
+     * @throws ToolException 包装URISyntaxException
      */
     public static String getPath(String uriStr) {
         URI uri = null;
         try {
             uri = new URI(uriStr);
         } catch (URISyntaxException e) {
-            throw new UtilException(e);
+            throw new ToolException(e);
         }
         return uri.getPath();
     }
@@ -330,7 +330,7 @@ public class URLUtil {
         try {
             // URL对象的getPath方法对于包含中文或空格的问题
             path = URLUtil.toURI(url).getPath();
-        } catch (UtilException e) {
+        } catch (ToolException e) {
             // ignore
         }
         return (null != path) ? path : url.getPath();
@@ -341,16 +341,16 @@ public class URLUtil {
      *
      * @param url URL
      * @return URI
-     * @throws UtilException 包装URISyntaxException
+     * @throws ToolException 包装URISyntaxException
      */
-    public static URI toURI(URL url) throws UtilException {
+    public static URI toURI(URL url) throws ToolException {
         if (null == url) {
             return null;
         }
         try {
             return url.toURI();
         } catch (URISyntaxException e) {
-            throw new UtilException(e);
+            throw new ToolException(e);
         }
     }
 
@@ -359,13 +359,13 @@ public class URLUtil {
      *
      * @param location 字符串路径
      * @return URI
-     * @throws UtilException 包装URISyntaxException
+     * @throws ToolException 包装URISyntaxException
      */
-    public static URI toURI(String location) throws UtilException {
+    public static URI toURI(String location) throws ToolException {
         try {
             return new URI(location.replace(" ", "%20"));
         } catch (URISyntaxException e) {
-            throw new UtilException(e);
+            throw new ToolException(e);
         }
     }
 

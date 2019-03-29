@@ -1,7 +1,7 @@
 package com.y3tu.tool.extra.template.engine.velocity;
 
 import com.y3tu.tool.core.exception.NotInitedException;
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IORuntimeException;
 import com.y3tu.tool.core.io.IoUtil;
@@ -170,7 +170,7 @@ public class VelocityUtil {
             writer = FileUtil.getPrintWriter(destPath, Velocity.getProperty(Velocity.OUTPUT_ENCODING).toString(), false);
             merge(template, context, writer);
         } catch (IORuntimeException e) {
-            throw new UtilException(e, "Write Velocity content to [{}] error!", destPath);
+            throw new ToolException(e, "Write Velocity content to [{}] error!", destPath);
         } finally {
             IoUtil.close(writer);
         }
@@ -223,7 +223,7 @@ public class VelocityUtil {
             writer = response.getWriter();
             toWriter(templateFileName, context, writer);
         } catch (Exception e) {
-            throw new UtilException(e, "Write Velocity content template by [{}] to response error!", templateFileName);
+            throw new ToolException(e, "Write Velocity content template by [{}] to response error!", templateFileName);
         } finally {
             IoUtil.close(writer);
         }
@@ -241,7 +241,7 @@ public class VelocityUtil {
         try {
             Velocity.evaluate(context, writer, IdUtil.randomUUID(), templateContent);
         } catch (Exception e) {
-            throw new UtilException(e);
+            throw new ToolException(e);
         }
         return writer.toString();
     }
@@ -255,7 +255,7 @@ public class VelocityUtil {
      */
     public static void merge(Template template, VelocityContext context, Writer writer) {
         if (template == null) {
-            throw new UtilException("Template is null");
+            throw new ToolException("Template is null");
         }
         if (context == null) {
             context = new VelocityContext(globalContext);

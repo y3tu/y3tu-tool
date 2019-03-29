@@ -15,7 +15,7 @@ import java.util.TreeMap;
 
 import com.y3tu.tool.core.collection.CollectionUtil;
 import com.y3tu.tool.core.convert.Convert;
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.lang.Editor;
 import com.y3tu.tool.core.lang.Filter;
 import com.y3tu.tool.core.util.ArrayUtil;
@@ -152,7 +152,7 @@ public class MapUtil {
             try {
                 return (Map<K, V>) ReflectUtil.newInstance(mapType);
             } catch (Exception e) {
-                throw new UtilException(e);
+                throw new ToolException(e);
             }
         }
     }

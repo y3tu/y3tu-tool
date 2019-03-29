@@ -46,7 +46,7 @@ public class LimitAspect {
         this.limitRedisTemplate = limitRedisTemplate;
     }
 
-    @Pointcut("@annotation(com.y3tu.tool.web.redis.annotation.Limit)")
+    @Pointcut("@annotation(com.y3tu.tool.cache.redis.annotation.Limit)")
     public void pointcut() {
         // do nothing
     }

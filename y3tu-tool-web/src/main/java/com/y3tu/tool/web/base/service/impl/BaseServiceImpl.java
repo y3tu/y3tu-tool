@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.toolkit.TableInfoHelper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.y3tu.tool.core.collection.CollectionUtil;
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.lang.Editor;
 import com.y3tu.tool.core.util.IdUtil;
 import com.y3tu.tool.core.util.StrUtil;
@@ -99,13 +99,13 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
                             long id = IdUtil.createSnowflake(1, 1).nextId();
                             f.set(entity, String.valueOf(id));
                         } else {
-                            throw new UtilException("主键类型不可用：" + f.getType().getName());
+                            throw new ToolException("主键类型不可用：" + f.getType().getName());
                         }
                     }
                 } catch (NoSuchFieldException e) {
-                    throw new UtilException("没有主键：" + tableInfo.getKeyProperty());
+                    throw new ToolException("没有主键：" + tableInfo.getKeyProperty());
                 } catch (IllegalAccessException e) {
-                    throw new UtilException("主键不可访问：" + tableInfo.getKeyProperty());
+                    throw new ToolException("主键不可访问：" + tableInfo.getKeyProperty());
                 }
             }
         }

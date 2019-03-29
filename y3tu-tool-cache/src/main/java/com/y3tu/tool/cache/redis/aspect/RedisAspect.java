@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class RedisAspect {
 
-    @Around("execution(* com.y3tu.tool.web.redis.template.RedisRepository.*(..))")
+    @Around("execution(* com.y3tu.tool.cache.redis.template.RedisRepository.*(..))")
     public Object around(ProceedingJoinPoint point) throws Throwable {
         Object result = null;
         if (EnableRedisToolRegistrar.redisAspectOpen) {

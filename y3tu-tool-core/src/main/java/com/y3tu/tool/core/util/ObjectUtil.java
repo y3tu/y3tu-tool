@@ -12,7 +12,7 @@ import java.util.Map;
 
 import com.y3tu.tool.core.bean.BeanUtil;
 import com.y3tu.tool.core.comparator.CompareUtil;
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.io.FastByteArrayOutputStream;
 import com.y3tu.tool.core.io.IoUtil;
 
@@ -261,7 +261,7 @@ public class ObjectUtil {
      * @param <T> 对象类型
      * @param obj 被克隆对象
      * @return 克隆后的对象
-     * @throws UtilException IO异常和ClassNotFoundException封装
+     * @throws ToolException IO异常和ClassNotFoundException封装
      */
     @SuppressWarnings("unchecked")
     public static <T> T cloneByStream(T obj) {
@@ -277,7 +277,7 @@ public class ObjectUtil {
             final ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(byteOut.toByteArray()));
             return (T) in.readObject();
         } catch (Exception e) {
-            throw new UtilException(e);
+            throw new ToolException(e);
         } finally {
             IoUtil.close(out);
         }
@@ -303,7 +303,7 @@ public class ObjectUtil {
             oos.writeObject(obj);
             oos.flush();
         } catch (Exception e) {
-            throw new UtilException(e);
+            throw new ToolException(e);
         } finally {
             IoUtil.close(oos);
         }
@@ -326,7 +326,7 @@ public class ObjectUtil {
             ois = new ObjectInputStream(bais);
             return (T) ois.readObject();
         } catch (Exception e) {
-            throw new UtilException(e);
+            throw new ToolException(e);
         }
     }
 

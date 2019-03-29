@@ -1,7 +1,7 @@
 package com.y3tu.tool.web.codegen.util;
 
 import com.y3tu.tool.core.date.DateUtil;
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IoUtil;
 import com.y3tu.tool.core.lang.Console;
@@ -204,7 +204,7 @@ public class GenUtils {
                 IoUtil.close(sw);
                 zip.closeEntry();
             } catch (IOException e) {
-                throw new UtilException("渲染模板失败，表名：" + tableEntity.getTableName(), e);
+                throw new ToolException("渲染模板失败，表名：" + tableEntity.getTableName(), e);
             }
         }
     }
@@ -326,7 +326,7 @@ public class GenUtils {
             outputStream.flush();
             openDir(targetDir);
         } catch (Exception e) {
-            throw new UtilException("代码生成失败!", e);
+            throw new ToolException("代码生成失败!", e);
         }
 
     }
@@ -347,7 +347,7 @@ public class GenUtils {
                 return ipt;
             }
         }
-        throw new UtilException("请输入正确的" + tip + "！");
+        throw new ToolException("请输入正确的" + tip + "！");
     }
 
     /**

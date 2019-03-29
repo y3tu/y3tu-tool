@@ -14,7 +14,7 @@ import java.util.Set;
 
 import com.y3tu.tool.core.collection.CollUtil;
 import com.y3tu.tool.core.collection.CollectionUtil;
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.lang.Assert;
 import com.y3tu.tool.core.lang.Filter;
 import com.y3tu.tool.core.lang.SimpleCache;
@@ -173,9 +173,9 @@ public class ReflectUtil {
      * @param obj       对象
      * @param fieldName 字段名
      * @return 字段值
-     * @throws UtilException 包装IllegalAccessException异常
+     * @throws ToolException 包装IllegalAccessException异常
      */
-    public static Object getFieldValue(Object obj, String fieldName) throws UtilException {
+    public static Object getFieldValue(Object obj, String fieldName) throws ToolException {
         if (null == obj || StrUtil.isBlank(fieldName)) {
             return null;
         }
@@ -188,9 +188,9 @@ public class ReflectUtil {
      * @param obj   对象
      * @param field 字段
      * @return 字段值
-     * @throws UtilException 包装IllegalAccessException异常
+     * @throws ToolException 包装IllegalAccessException异常
      */
-    public static Object getFieldValue(Object obj, Field field) throws UtilException {
+    public static Object getFieldValue(Object obj, Field field) throws ToolException {
         if (null == obj || null == field) {
             return null;
         }
@@ -199,7 +199,7 @@ public class ReflectUtil {
         try {
             result = field.get(obj);
         } catch (IllegalAccessException e) {
-            throw new UtilException(e, "IllegalAccess for {}.{}", obj.getClass(), field.getName());
+            throw new ToolException(e, "IllegalAccess for {}.{}", obj.getClass(), field.getName());
         }
         return result;
     }
@@ -230,9 +230,9 @@ public class ReflectUtil {
      * @param obj       对象
      * @param fieldName 字段名
      * @param value     值，值类型必须与字段类型匹配，不会自动转换对象类型
-     * @throws UtilException 包装IllegalAccessException异常
+     * @throws ToolException 包装IllegalAccessException异常
      */
-    public static void setFieldValue(Object obj, String fieldName, Object value) throws UtilException {
+    public static void setFieldValue(Object obj, String fieldName, Object value) throws ToolException {
         Assert.notNull(obj);
         Assert.notBlank(fieldName);
         setFieldValue(obj, getField(obj.getClass(), fieldName), value);
@@ -244,9 +244,9 @@ public class ReflectUtil {
      * @param obj   对象
      * @param field 字段
      * @param value 值，值类型必须与字段类型匹配，不会自动转换对象类型
-     * @throws UtilException UtilException 包装IllegalAccessException异常
+     * @throws ToolException ToolException 包装IllegalAccessException异常
      */
-    public static void setFieldValue(Object obj, Field field, Object value) throws UtilException {
+    public static void setFieldValue(Object obj, Field field, Object value) throws ToolException {
         Assert.notNull(obj);
         Assert.notNull(field);
         field.setAccessible(true);
@@ -254,7 +254,7 @@ public class ReflectUtil {
         try {
             field.set(obj, value);
         } catch (IllegalAccessException e) {
-            throw new UtilException(e, "IllegalAccess for {}.{}", obj.getClass(), field.getName());
+            throw new ToolException(e, "IllegalAccess for {}.{}", obj.getClass(), field.getName());
         }
     }
 
@@ -566,14 +566,14 @@ public class ReflectUtil {
      * @param <T>   对象类型
      * @param clazz 类名
      * @return 对象
-     * @throws UtilException 包装各类异常
+     * @throws ToolException 包装各类异常
      */
     @SuppressWarnings("unchecked")
-    public static <T> T newInstance(String clazz) throws UtilException {
+    public static <T> T newInstance(String clazz) throws ToolException {
         try {
             return (T) Class.forName(clazz).newInstance();
         } catch (Exception e) {
-            throw new UtilException(e, "Instance class [{}] error!", clazz);
+            throw new ToolException(e, "Instance class [{}] error!", clazz);
         }
     }
 
@@ -584,10 +584,10 @@ public class ReflectUtil {
      * @param clazz  类
      * @param params 构造函数参数
      * @return 对象
-     * @throws UtilException 包装各类异常
+     * @throws ToolException 包装各类异常
      */
     @SuppressWarnings("unchecked")
-    public static <T> T newInstance(Class<T> clazz, Object... params) throws UtilException {
+    public static <T> T newInstance(Class<T> clazz, Object... params) throws ToolException {
         if (ArrayUtil.isEmpty(params)) {
             if (Map.class.isAssignableFrom(clazz)) {
                 // Map
@@ -613,19 +613,19 @@ public class ReflectUtil {
             try {
                 return constructor.newInstance();
             } catch (Exception e) {
-                throw new UtilException(e, "Instance class [{}] error!", clazz);
+                throw new ToolException(e, "Instance class [{}] error!", clazz);
             }
         }
 
         final Class<?>[] paramTypes = ClassUtil.getClasses(params);
         final Constructor<T> constructor = getConstructor(clazz, paramTypes);
         if (null == constructor) {
-            throw new UtilException("No Constructor matched for parameter types: [{}]", new Object[]{paramTypes});
+            throw new ToolException("No Constructor matched for parameter types: [{}]", new Object[]{paramTypes});
         }
         try {
             return constructor.newInstance(params);
         } catch (Exception e) {
-            throw new UtilException(e, "Instance class [{}] error!", clazz);
+            throw new ToolException(e, "Instance class [{}] error!", clazz);
         }
     }
 
@@ -672,9 +672,9 @@ public class ReflectUtil {
      * @param method 方法（对象方法或static方法都可）
      * @param args   参数对象
      * @return 结果
-     * @throws UtilException 多种异常包装
+     * @throws ToolException 多种异常包装
      */
-    public static <T> T invokeStatic(Method method, Object... args) throws UtilException {
+    public static <T> T invokeStatic(Method method, Object... args) throws ToolException {
         return invoke(null, method, args);
     }
 
@@ -692,9 +692,9 @@ public class ReflectUtil {
      * @param method 方法（对象方法或static方法都可）
      * @param args   参数对象
      * @return 结果
-     * @throws UtilException 一些列异常的包装
+     * @throws ToolException 一些列异常的包装
      */
-    public static <T> T invokeWithCheck(Object obj, Method method, Object... args) throws UtilException {
+    public static <T> T invokeWithCheck(Object obj, Method method, Object... args) throws ToolException {
         final Class<?>[] types = method.getParameterTypes();
         if (null != types && null != args) {
             Assert.isTrue(args.length == types.length, "Params length [{}] is not fit for param length [{}] of method !", args.length, types.length);
@@ -719,10 +719,10 @@ public class ReflectUtil {
      * @param method 方法（对象方法或static方法都可）
      * @param args   参数对象
      * @return 结果
-     * @throws UtilException 一些列异常的包装
+     * @throws ToolException 一些列异常的包装
      */
     @SuppressWarnings("unchecked")
-    public static <T> T invoke(Object obj, Method method, Object... args) throws UtilException {
+    public static <T> T invoke(Object obj, Method method, Object... args) throws ToolException {
         if (false == method.isAccessible()) {
             method.setAccessible(true);
         }
@@ -730,7 +730,7 @@ public class ReflectUtil {
         try {
             return (T) method.invoke(ClassUtil.isStatic(method) ? null : obj, args);
         } catch (Exception e) {
-            throw new UtilException(e);
+            throw new ToolException(e);
         }
     }
 
@@ -742,12 +742,12 @@ public class ReflectUtil {
      * @param methodName 方法名
      * @param args       参数列表
      * @return 执行结果
-     * @throws UtilException IllegalAccessException包装
+     * @throws ToolException IllegalAccessException包装
      */
-    public static <T> T invoke(Object obj, String methodName, Object... args) throws UtilException {
+    public static <T> T invoke(Object obj, String methodName, Object... args) throws ToolException {
         final Method method = getMethodOfObj(obj, methodName, args);
         if (null == method) {
-            throw new UtilException(StrUtil.format("No such method: [{}]", methodName));
+            throw new ToolException(StrUtil.format("No such method: [{}]", methodName));
         }
         return invoke(obj, method, args);
     }

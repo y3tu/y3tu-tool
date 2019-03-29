@@ -34,6 +34,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IoUtil;
 import com.y3tu.tool.core.lang.Assert;
@@ -42,8 +43,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-
-import com.y3tu.tool.core.exception.UtilException;
 
 /**
  * XML工具类<br>
@@ -70,10 +69,10 @@ public class XmlUtil {
     public static Document readXML(File file) {
         Assert.notNull(file, "Xml file is null !");
         if (false == file.exists()) {
-            throw new UtilException("File [{}] not a exist!", file.getAbsolutePath());
+            throw new ToolException("File [{}] not a exist!", file.getAbsolutePath());
         }
         if (false == file.isFile()) {
-            throw new UtilException("[{}] not a file!", file.getAbsolutePath());
+            throw new ToolException("[{}] not a file!", file.getAbsolutePath());
         }
 
         try {
@@ -112,9 +111,9 @@ public class XmlUtil {
      *
      * @param inputStream XML流
      * @return XML文档对象
-     * @throws UtilException IO异常或转换异常
+     * @throws ToolException IO异常或转换异常
      */
-    public static Document readXML(InputStream inputStream) throws UtilException {
+    public static Document readXML(InputStream inputStream) throws ToolException {
         return readXML(new InputSource(inputStream));
     }
 
@@ -123,9 +122,9 @@ public class XmlUtil {
      *
      * @param reader XML流
      * @return XML文档对象
-     * @throws UtilException IO异常或转换异常
+     * @throws ToolException IO异常或转换异常
      */
-    public static Document readXML(Reader reader) throws UtilException {
+    public static Document readXML(Reader reader) throws ToolException {
         return readXML(new InputSource(reader));
     }
 
@@ -141,7 +140,7 @@ public class XmlUtil {
         try {
             return builder.parse(source);
         } catch (Exception e) {
-            throw new UtilException(e, "Parse XML from stream error!");
+            throw new ToolException(e, "Parse XML from stream error!");
         }
     }
 
@@ -230,7 +229,7 @@ public class XmlUtil {
         try {
             write(doc, writer, isPretty);
         } catch (Exception e) {
-            throw new UtilException(e, "Trans xml document to string error!");
+            throw new ToolException(e, "Trans xml document to string error!");
         }
         return writer.toString();
     }
@@ -249,7 +248,7 @@ public class XmlUtil {
         try {
             write(doc, out, charset, isPretty);
         } catch (Exception e) {
-            throw new UtilException(e, "Trans xml document to string error!");
+            throw new ToolException(e, "Trans xml document to string error!");
         }
         return out.toString();
     }
@@ -330,7 +329,7 @@ public class XmlUtil {
             }
             xformer.transform(source, result);
         } catch (Exception e) {
-            throw new UtilException(e, "Trans xml document to string error!");
+            throw new ToolException(e, "Trans xml document to string error!");
         }
     }
 
@@ -358,7 +357,7 @@ public class XmlUtil {
         try {
             builder = dbf.newDocumentBuilder();
         } catch (Exception e) {
-            throw new UtilException(e, "Create xml document error!");
+            throw new ToolException(e, "Create xml document error!");
         }
         return builder;
     }
@@ -581,7 +580,7 @@ public class XmlUtil {
                 return xPath.evaluate(expression, source, returnType);
             }
         } catch (XPathExpressionException e) {
-            throw new UtilException(e);
+            throw new ToolException(e);
         }
     }
 

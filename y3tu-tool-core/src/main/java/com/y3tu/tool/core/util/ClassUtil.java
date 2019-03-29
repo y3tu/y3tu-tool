@@ -16,7 +16,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import com.y3tu.tool.core.convert.BasicType;
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IORuntimeException;
 import com.y3tu.tool.core.io.resource.ResourceUtil;
@@ -394,7 +394,7 @@ public class ClassUtil {
         try {
             resources = getClassLoader().getResources(packagePath);
         } catch (IOException e) {
-            throw new UtilException(e, "Loading classPath [{}] error!", packagePath);
+            throw new ToolException(e, "Loading classPath [{}] error!", packagePath);
         }
         final Set<String> paths = new HashSet<String>();
         String path;
@@ -605,7 +605,7 @@ public class ClassUtil {
      */
     public static <T> T invoke(String classNameWithMethodName, boolean isSingleton, Object... args) {
         if (StrUtil.isBlank(classNameWithMethodName)) {
-            throw new UtilException("Blank classNameDotMethodName!");
+            throw new ToolException("Blank classNameDotMethodName!");
         }
 
         int splitIndex = classNameWithMethodName.lastIndexOf('#');
@@ -613,7 +613,7 @@ public class ClassUtil {
             splitIndex = classNameWithMethodName.lastIndexOf('.');
         }
         if (splitIndex <= 0) {
-            throw new UtilException("Invalid classNameWithMethodName [{}]!", classNameWithMethodName);
+            throw new ToolException("Invalid classNameWithMethodName [{}]!", classNameWithMethodName);
         }
 
         final String className = classNameWithMethodName.substring(0, splitIndex);
@@ -663,7 +663,7 @@ public class ClassUtil {
                 return ReflectUtil.invoke(isSingleton ? Singleton.get(clazz) : clazz.newInstance(), method, args);
             }
         } catch (Exception e) {
-            throw new UtilException(e);
+            throw new ToolException(e);
         }
     }
 

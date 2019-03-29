@@ -3,7 +3,7 @@ package com.y3tu.tool.extra.servlet;
 import com.y3tu.tool.core.bean.BeanUtil;
 import com.y3tu.tool.core.bean.copier.CopyOptions;
 import com.y3tu.tool.core.bean.copier.ValueProvider;
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IORuntimeException;
 import com.y3tu.tool.core.io.IoUtil;
@@ -255,7 +255,7 @@ public class ServletUtil {
             try {
                 return new String(header.getBytes(CharsetUtil.ISO_8859_1), charset);
             } catch (UnsupportedEncodingException e) {
-                throw new UtilException(StrUtil.format("Error charset {} for http request header.", charset));
+                throw new ToolException(StrUtil.format("Error charset {} for http request header.", charset));
             }
         }
         return null;
@@ -441,7 +441,7 @@ public class ServletUtil {
             writer.write(text);
             writer.flush();
         } catch (IOException e) {
-            throw new UtilException(e);
+            throw new ToolException(e);
         } finally {
             IoUtil.close(writer);
         }
@@ -515,7 +515,7 @@ public class ServletUtil {
             out = response.getOutputStream();
             IoUtil.copy(in, out, bufferSize);
         } catch (IOException e) {
-            throw new UtilException(e);
+            throw new ToolException(e);
         } finally {
             IoUtil.close(out);
             IoUtil.close(in);

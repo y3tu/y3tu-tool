@@ -3,6 +3,8 @@ package com.y3tu.tool.core.util;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.sql.Struct;
+
 
 /**
  * @author y3tu
@@ -15,5 +17,11 @@ public class StrUtilTest {
         String name = "谭美丽";
         String hideName = StrUtil.hide(name, 1, 4);
         Assert.assertEquals("谭**", hideName);
+    }
+
+    @Test
+    public void sub(){
+        String str = "/yxy/*";
+        Assert.assertEquals("yxy",StrUtil.sub(str,1,-2));
     }
 }

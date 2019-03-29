@@ -10,7 +10,7 @@ import java.util.Map;
 
 import com.y3tu.tool.core.collection.CollectionUtil;
 import com.y3tu.tool.core.collection.IterUtil;
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.lang.Editor;
 import com.y3tu.tool.core.lang.Filter;
 
@@ -55,7 +55,7 @@ public class ArrayUtil {
         } else if (isArray(array)) {
             return 0 == Array.getLength(array);
         }
-        throw new UtilException("Object to provide is not a Array !");
+        throw new ToolException("Object to provide is not a Array !");
     }
 
     /**
@@ -1683,7 +1683,7 @@ public class ArrayUtil {
      *
      * @param obj 对象，可以是对象数组或者基本类型数组
      * @return 包装类型数组或对象数组
-     * @throws UtilException 对象为非数组
+     * @throws ToolException 对象为非数组
      */
     public static Object[] wrap(Object obj) {
         if (null == obj) {
@@ -1712,11 +1712,11 @@ public class ArrayUtil {
                     case "double":
                         return wrap((double[]) obj);
                     default:
-                        throw new UtilException(e);
+                        throw new ToolException(e);
                 }
             }
         }
-        throw new UtilException(StrUtil.format("[{}] is not Array!", obj.getClass()));
+        throw new ToolException(StrUtil.format("[{}] is not Array!", obj.getClass()));
     }
 
     /**
@@ -1854,7 +1854,7 @@ public class ArrayUtil {
                     case "double":
                         return Arrays.toString((double[]) obj);
                     default:
-                        throw new UtilException(e);
+                        throw new ToolException(e);
                 }
             }
         }
@@ -2164,13 +2164,13 @@ public class ArrayUtil {
                     case "double":
                         return join((double[]) array, conjunction);
                     default:
-                        throw new UtilException("Unknown primitive type: [{}]", componentTypeName);
+                        throw new ToolException("Unknown primitive type: [{}]", componentTypeName);
                 }
             } else {
                 return join((Object[]) array, conjunction);
             }
         }
-        throw new UtilException(StrUtil.format("[{}] is not a Array!", array.getClass()));
+        throw new ToolException(StrUtil.format("[{}] is not a Array!", array.getClass()));
     }
 
     /**

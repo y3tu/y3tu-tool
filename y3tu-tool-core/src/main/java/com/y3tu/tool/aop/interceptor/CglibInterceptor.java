@@ -1,7 +1,7 @@
 package com.y3tu.tool.aop.interceptor;
 
 import com.y3tu.tool.aop.aspects.Aspect;
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
@@ -39,7 +39,7 @@ public class CglibInterceptor implements MethodInterceptor {
             try {
                 // result = ReflectUtil.invoke(target, method, args);
                 result = proxy.invokeSuper(obj, args);
-            } catch (UtilException e) {
+            } catch (ToolException e) {
                 final Throwable cause = e.getCause();
                 if (e.getCause() instanceof InvocationTargetException) {
                     aspect.afterException(target, method, args, ((InvocationTargetException) cause).getTargetException());

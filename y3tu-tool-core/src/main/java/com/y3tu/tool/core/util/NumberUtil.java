@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.lang.Assert;
 
 /**
@@ -1207,7 +1207,7 @@ public class NumberUtil {
         }
         // 加入逻辑判断，确保begin<end并且size不能大于该表示范围
         if ((end - begin) < size) {
-            throw new UtilException("Size is larger than range between begin and end!");
+            throw new ToolException("Size is larger than range between begin and end!");
         }
         // 种子你可以随意生成，但不能重复
         int[] seed = new int[end - begin];
@@ -1245,7 +1245,7 @@ public class NumberUtil {
         }
         // 加入逻辑判断，确保begin<end并且size不能大于该表示范围
         if ((end - begin) < size) {
-            throw new UtilException("Size is larger than range between begin and end!");
+            throw new ToolException("Size is larger than range between begin and end!");
         }
 
         Random ran = new Random();
@@ -2119,7 +2119,7 @@ public class NumberUtil {
         try {
             return NumberFormat.getInstance().parse(numberStr);
         } catch (ParseException e) {
-            throw new UtilException(e);
+            throw new ToolException(e);
         }
     }
 

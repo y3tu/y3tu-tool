@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.y3tu.tool.core.bean.BeanUtil;
 import com.y3tu.tool.core.bean.copier.ValueProvider;
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.core.bean.BeanDesc;
 
@@ -49,7 +49,7 @@ public class BeanValueProvider implements ValueProvider<String> {
                     return getter.invoke(source);
                 } catch (Exception e) {
                     if (false == ignoreError) {
-                        throw new UtilException(e, "Inject [{}] error!", key);
+                        throw new ToolException(e, "Inject [{}] error!", key);
                     }
                 }
             }

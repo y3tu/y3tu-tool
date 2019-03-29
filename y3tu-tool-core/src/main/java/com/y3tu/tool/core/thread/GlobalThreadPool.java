@@ -4,7 +4,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 
 /**
  * 全局公共线程池
@@ -64,7 +64,7 @@ public class GlobalThreadPool {
         try {
             executor.execute(runnable);
         } catch (Exception e) {
-            throw new UtilException(e, "Exception when running task!");
+            throw new ToolException(e, "Exception when running task!");
         }
     }
 

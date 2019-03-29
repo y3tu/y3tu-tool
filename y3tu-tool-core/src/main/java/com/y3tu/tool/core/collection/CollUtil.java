@@ -33,7 +33,7 @@ import com.y3tu.tool.core.comparator.PinyinComparator;
 import com.y3tu.tool.core.comparator.PropertyComparator;
 import com.y3tu.tool.core.convert.Convert;
 import com.y3tu.tool.core.convert.ConverterRegistry;
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.lang.Editor;
 import com.y3tu.tool.core.lang.Filter;
 import com.y3tu.tool.core.lang.Matcher;
@@ -746,7 +746,7 @@ public class CollUtil {
             try {
                 list = (Collection<T>) ReflectUtil.newInstance(collectionType);
             } catch (Exception e) {
-                throw new UtilException(e);
+                throw new ToolException(e);
             }
         }
         return list;
@@ -1629,7 +1629,7 @@ public class CollUtil {
         } else if (ArrayUtil.isArray(value)) {
             iter = new ArrayIter<>(value);
         } else {
-            throw new UtilException("Unsupport value type [] !", value.getClass());
+            throw new ToolException("Unsupport value type [] !", value.getClass());
         }
 
         final ConverterRegistry convert = ConverterRegistry.getInstance();

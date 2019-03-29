@@ -35,7 +35,7 @@ import java.util.zip.CheckedInputStream;
 import java.util.zip.Checksum;
 
 import com.y3tu.tool.core.convert.Convert;
-import com.y3tu.tool.core.exception.UtilException;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.lang.Assert;
 import com.y3tu.tool.core.util.CharsetUtil;
 import com.y3tu.tool.core.util.HexUtil;
@@ -552,9 +552,9 @@ public class IoUtil {
      * @param in  输入流
      * @return 输出流
      * @throws IORuntimeException IO异常
-     * @throws UtilException      ClassNotFoundException包装
+     * @throws ToolException      ClassNotFoundException包装
      */
-    public static <T> T readObj(InputStream in) throws IORuntimeException, UtilException {
+    public static <T> T readObj(InputStream in) throws IORuntimeException, ToolException {
         if (in == null) {
             throw new IllegalArgumentException("The InputStream must not be null");
         }
@@ -567,7 +567,7 @@ public class IoUtil {
         } catch (IOException e) {
             throw new IORuntimeException(e);
         } catch (ClassNotFoundException e) {
-            throw new UtilException(e);
+            throw new ToolException(e);
         }
     }
 
