@@ -48,56 +48,6 @@ public abstract class AbstractResourceServlet extends HttpServlet {
      * @return
      */
     protected abstract String process(HttpServletRequest request, String url);
-
-    /**
-     * 进行一些登录校验处理，由子类实现
-     * @param request
-     * @param response
-     */
-    protected abstract void beforeService(HttpServletRequest request, HttpServletResponse response,String uri,String path) throws IOException;
-    /**
-     * 请求处理
-     *
-     * @param request
-     * @param response
-     * @throws IOException
-     */
-    @Override
-    public void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-
-        String contextPath = request.getContextPath();
-        String servletPath = request.getServletPath();
-        String requestURI = request.getRequestURI();
-
-        response.setCharacterEncoding("utf-8");
-
-        if (contextPath == null) {
-            contextPath = "";
-        }
-        String uri = contextPath + servletPath;
-        String path = requestURI.substring(contextPath.length() + servletPath.length());
-
-        beforeService(request,response,uri,path);
-
-
-        //默认进入首页
-        if ("/".equals(path)) {
-            response.sendRedirect("index.html");
-            return;
-        }
-
-        //请求路径包含.json表示这是一个获取数据的请求
-        if (path.contains(".json")) {
-            response.setContentType("application/json; charset=utf-8");
-            response.getWriter().print(process(request, path));
-            return;
-        }
-
-        //查找到资源文件并返回给前台
-        returnResourceFile(path, uri, response);
-    }
-
     /**
      * 返回页面资源
      *
@@ -111,7 +61,7 @@ public abstract class AbstractResourceServlet extends HttpServlet {
         if (filePath.endsWith(".html")) {
             response.setContentType("text/html; charset=utf-8");
         }
-        if (StrUtil.containsAnyIgnoreCase(fileName, ".jpg", ".png", ".woff", ".ttf")) {
+        if (StrUtil.containsAnyIgnoreCase(fileName, ".jpg", ".png", ".woff", ".ttf",".gif")) {
             byte[] bytes = IoUtil.readBytes(ResourceUtil.getStream(filePath));
             if (bytes != null) {
                 response.getOutputStream().write(bytes);

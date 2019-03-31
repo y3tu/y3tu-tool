@@ -5,7 +5,7 @@ import 'nprogress/nprogress.css'// Progress 进度条样式
 import { Message } from 'element-ui'
 import { getToken } from '@/utils/auth' // 验权
 
-const whiteList = ['/login'] // 不重定向白名单
+const whiteList = ['/login','/401','/404'] // 不重定向白名单
 router.beforeEach((to, from, next) => {
   NProgress.start()
   if (getToken()) {
@@ -27,6 +27,7 @@ router.beforeEach((to, from, next) => {
       }
     }
   } else {
+    debugger;
     if (whiteList.indexOf(to.path) !== -1) {
       next()
     } else {

@@ -4,6 +4,7 @@ import com.y3tu.tool.core.bean.BeanCache;
 import com.y3tu.tool.core.pojo.R;
 import com.y3tu.tool.core.util.JsonUtil;
 import com.y3tu.tool.core.util.StrUtil;
+import com.y3tu.tool.http.CookieUtils;
 import com.y3tu.tool.http.ip.IPRange;
 import com.y3tu.tool.http.servlet.AbstractResourceServlet;
 import com.y3tu.tool.ui.service.AuthService;
@@ -30,20 +31,48 @@ public class UiViewServlet extends AbstractResourceServlet {
         super("y3tu-tool-ui");
     }
 
+
     @Override
-    protected void beforeService(HttpServletRequest request, HttpServletResponse response,String uri,String path) throws IOException {
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        String contextPath = request.getContextPath();
+        String servletPath = request.getServletPath();
+        String requestURI = request.getRequestURI();
+
+        response.setCharacterEncoding("utf-8");
+
+        if (contextPath == null) {
+            contextPath = "";
+        }
+        String uri = contextPath + servletPath;
+        String path = requestURI.substring(contextPath.length() + servletPath.length());
+
         // 权限校验
         String ip = request.getRemoteAddr();
         boolean security = BeanCache.getBean(AuthService.class).checkSecurity(initServletData,ip,path);
         if (!security) {
-            response.sendRedirect("/401");
+            response.sendRedirect(uri+"/index.html#/401");
             return;
         }
         boolean checkLogin = checkLoginParam(request);
-        if(!checkLogin){
-            response.sendRedirect("/login");
+        if(checkLogin){
+
+        }
+        //默认进入首页
+        if ("/".equals(path)) {
+            response.sendRedirect(uri+"/index.html");
             return;
         }
+
+        //请求路径包含.json表示这是一个获取数据的请求
+        if (path.contains(".json")) {
+            response.setContentType("application/json; charset=utf-8");
+            response.getWriter().print(process(request, path));
+            return;
+        }
+        //查找到资源文件并返回给前台
+        returnResourceFile(path, uri, response);
+
     }
 
     /**
@@ -126,8 +155,8 @@ public class UiViewServlet extends AbstractResourceServlet {
     public boolean checkLoginParam(HttpServletRequest request) {
         String usernameParam = request.getParameter(InitServletData.PARAM_NAME_USERNAME);
         String passwordParam = request.getParameter(InitServletData.PARAM_NAME_PASSWORD);
-        if(null ==  this.initServletData.getUsername() || null ==  this.initServletData.getPassword()){
-            return false;
+        if(null ==  this.initServletData.getUsername()&& null ==  this.initServletData.getPassword()){
+            return true;
         } else if (this.initServletData.getUsername().equals(usernameParam) && this.initServletData.getPassword().equals(passwordParam)) {
             return true;
         }

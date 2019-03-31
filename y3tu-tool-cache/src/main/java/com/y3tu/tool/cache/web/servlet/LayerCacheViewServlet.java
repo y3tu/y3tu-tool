@@ -27,7 +27,7 @@ import java.util.Set;
 @Slf4j
 public class LayerCacheViewServlet extends AbstractResourceServlet {
     public LayerCacheViewServlet() {
-        super("http/resources", "y3tu-tool-cache");
+        super("http/resources");
     }
 
     /**
@@ -81,6 +81,7 @@ public class LayerCacheViewServlet extends AbstractResourceServlet {
         }
         return JsonUtil.toJson(R.warn("服务端没有找到匹配的url:"+url));
     }
+
 
     @Override
     public void init() throws ServletException {

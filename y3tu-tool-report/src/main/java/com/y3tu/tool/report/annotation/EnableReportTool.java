@@ -1,6 +1,5 @@
 package com.y3tu.tool.report.annotation;
 
-import com.y3tu.tool.report.config.ReportViewServletConfiguration;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
@@ -14,6 +13,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented
-@Import({ReportViewServletConfiguration.class, EnableReportToolRegistrar.class})
+@Import({EnableReportToolRegistrar.class})
 public @interface EnableReportTool {
 }
