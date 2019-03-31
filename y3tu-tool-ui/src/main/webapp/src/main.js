@@ -17,6 +17,9 @@ Vue.use(Admin);
 
 import '@/styles/index.scss' // global css
 
+import '@/permission' // permission control
+
+
 new Vue({
     el: '#app',
     router,

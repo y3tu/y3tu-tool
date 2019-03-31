@@ -1,9 +1,9 @@
 
 // 基础路径 注意发布之前要先修改这里
 //打包使用
-//const baseUrl = './';
+const baseUrl = './';
 //测试使用
-const baseUrl = '';
+//const baseUrl = '';
 
 
 module.exports = {

@@ -27,14 +27,8 @@ public abstract class AbstractResourceServlet extends HttpServlet {
      */
     protected final String resourcePath;
 
-    /**
-     * 拦截前缀地址
-     */
-    protected final String prefixPath;
-
-    public AbstractResourceServlet(String resourcePath, String prefixPath) {
+    public AbstractResourceServlet(String resourcePath) {
         this.resourcePath = resourcePath;
-        this.prefixPath = prefixPath;
     }
 
     @Override
@@ -56,6 +50,12 @@ public abstract class AbstractResourceServlet extends HttpServlet {
     protected abstract String process(HttpServletRequest request, String url);
 
     /**
+     * 进行一些登录校验处理，由子类实现
+     * @param request
+     * @param response
+     */
+    protected abstract void beforeService(HttpServletRequest request, HttpServletResponse response,String uri,String path) throws IOException;
+    /**
      * 请求处理
      *
      * @param request
@@ -64,6 +64,8 @@ public abstract class AbstractResourceServlet extends HttpServlet {
      */
     @Override
     public void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+
         String contextPath = request.getContextPath();
         String servletPath = request.getServletPath();
         String requestURI = request.getRequestURI();
@@ -76,15 +78,10 @@ public abstract class AbstractResourceServlet extends HttpServlet {
         String uri = contextPath + servletPath;
         String path = requestURI.substring(contextPath.length() + servletPath.length());
 
+        beforeService(request,response,uri,path);
+
+
         //默认进入首页
-        if ("".equals(path)) {
-            if (contextPath.equals("") || contextPath.equals("/")) {
-                response.sendRedirect("/" + prefixPath + "/index.html");
-            } else {
-                response.sendRedirect(prefixPath + "/index.html");
-            }
-            return;
-        }
         if ("/".equals(path)) {
             response.sendRedirect("index.html");
             return;
