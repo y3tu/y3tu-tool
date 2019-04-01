@@ -2,7 +2,7 @@ import Cookies from 'js-cookie'
 import setting from '@/setting.js'
 
 
-const cookies = {}
+const cookies = {};
 
 /**
  * @description 存储 cookie 值
@@ -11,34 +11,34 @@ const cookies = {}
  * @param {Object} setting cookie setting
  */
 cookies.set = function (name = 'default', value = '', cookieSetting = {}) {
-  let currentCookieSetting = {
-    expires: 1
-  }
-  Object.assign(currentCookieSetting, cookieSetting)
-  Cookies.set(`admin-${setting.releases.version}-${name}`, value, currentCookieSetting)
-}
+    let currentCookieSetting = {
+        expires: 1
+    }
+    Object.assign(currentCookieSetting, cookieSetting)
+    Cookies.set(`${setting.releases.name}-${setting.releases.version}-${name}`, value, currentCookieSetting)
+};
 
 /**
  * @description 拿到 cookie 值
  * @param {String} name cookie name
  */
 cookies.get = function (name = 'default') {
-  return Cookies.get(`admin-${setting.releases.version}-${name}`)
-}
+    return Cookies.get(`${setting.releases.name}-${setting.releases.version}-${name}`)
+};
 
 /**
  * @description 拿到 cookie 全部的值
  */
 cookies.getAll = function () {
-  return Cookies.get()
-}
+    return Cookies.get()
+};
 
 /**
  * @description 删除 cookie
  * @param {String} name cookie name
  */
 cookies.remove = function (name = 'default') {
-  return Cookies.remove(`admin-${setting.releases.version}-${name}`)
-}
+    return Cookies.remove(`${setting.releases.name}-${setting.releases.version}-${name}`)
+};
 
 export default cookies

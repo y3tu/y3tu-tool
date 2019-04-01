@@ -3,7 +3,7 @@
 const baseUrl = '';
 
 module.exports = {
-    baseUrl: baseUrl, // 根据你的实际情况更改这里
+    publicPath: baseUrl,
     lintOnSave: true,
     devServer: {
         // host: '127.0.0.1',
@@ -18,7 +18,6 @@ module.exports = {
         //     }
         // },
         disableHostCheck: true,
-        publicPath: baseUrl // 和 baseUrl 保持一致
     },
     // 打包时不生成.map文件 避免看到源码
     productionSourceMap: false

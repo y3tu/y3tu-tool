@@ -24,18 +24,22 @@ export const constantRouterMap = [
     {
         path: '/monitor',
         component: Layout,
-        redirect: '/monitor',
+        redirect: '/monitor/home',
         name: 'monitor',
-        meta: {title: '监控', icon: 'product'},
+        meta: {title: '监控', icon: 'eye'},
         children: [
             {
-                path: 'monitor',
-                name: 'monitor',
-                //component: () => import('@/views/login/index'),
-                meta: {title: 'redis监控', icon: 'product-list'}
+                path: 'redisMonitor',
+                name: 'redisMonitor',
+                component: () => import('@/views/monitor/redisMonitor'),
+                meta: {title: 'redis监控', icon: 'random'}
             },
-
-
+            {
+                path: 'memoryMonitor',
+                name: 'memoryMonitor',
+                component: () => import('@/views/monitor/memoryMonitor'),
+                meta: {title: '内存监控', icon: 'camera'}
+            },
         ]
     },
 

@@ -48,6 +48,44 @@ public abstract class AbstractResourceServlet extends HttpServlet {
      * @return
      */
     protected abstract String process(HttpServletRequest request, String url);
+
+    /**
+     * 请求处理
+     *
+     * @param request
+     * @param response
+     * @throws IOException
+     */
+    @Override
+    public void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String contextPath = request.getContextPath();
+        String servletPath = request.getServletPath();
+        String requestURI = request.getRequestURI();
+        response.setCharacterEncoding("utf-8");
+        if (contextPath == null) {
+            contextPath = "";
+        }
+
+        String uri = contextPath + servletPath;
+        String path = requestURI.substring(contextPath.length() + servletPath.length());
+
+        //默认进入首页
+        if ("/".equals(path)) {
+            response.sendRedirect("index.html");
+            return;
+        }
+
+        //请求路径包含.json表示这是一个获取数据的请求
+        if (path.contains(".json")) {
+            response.setContentType("application/json; charset=utf-8");
+            response.getWriter().print(process(request, path));
+            return;
+        }
+
+        //查找到资源文件并返回给前台
+        returnResourceFile(path, uri, response);
+    }
+
     /**
      * 返回页面资源
      *

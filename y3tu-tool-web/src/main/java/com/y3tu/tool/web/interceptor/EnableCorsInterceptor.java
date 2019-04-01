@@ -1,6 +1,6 @@
 package com.y3tu.tool.web.interceptor;
 
-import com.y3tu.tool.web.annotation.EnableCors;
+import com.y3tu.tool.web.annotation.EnableMethodCors;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -26,7 +26,7 @@ public class EnableCorsInterceptor implements HandlerInterceptor {
 
         if (handler instanceof HandlerMethod) {
             HandlerMethod method = (HandlerMethod) handler;
-            EnableCors config = method.getMethod().getAnnotation(EnableCors.class);
+            EnableMethodCors config = method.getMethod().getAnnotation(EnableMethodCors.class);
             if (config != null) {
                 response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, allowOrigin);
                 response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, allowMethods);

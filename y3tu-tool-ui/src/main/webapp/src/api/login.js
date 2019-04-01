@@ -1,26 +1,17 @@
 import request from '@/plugin/axios'
+import Qs from 'qs'
 
 export function login(username, password) {
+
+    let data = {
+        loginUsername: username,
+        loginPassword: password
+    };
+
     return request({
-        url: '/admin/login',
+        url: 'login.json',
         method: 'post',
-        data: {
-            username,
-            password
-        }
+        data: Qs.stringify(data)
     })
 }
 
-export function getInfo() {
-    return request({
-        url: '/admin/info',
-        method: 'get',
-    })
-}
-
-export function logout() {
-    return request({
-        url: '/admin/logout',
-        method: 'post'
-    })
-}

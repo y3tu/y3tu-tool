@@ -7,7 +7,7 @@
                ref="loginForm"
                label-position="left">
         <div style="text-align: center">
-          <svg-icon icon-class="login-mall" style="width: 56px;height: 56px;color: #409EFF"></svg-icon>
+          <icon name="cloud" style="width: 56px;height: 56px;color: #409EFF"></icon>
         </div>
         <h2 class="login-title color-main">Y3tu Tool UI</h2>
         <el-form-item prop="username">
@@ -17,7 +17,7 @@
                     autoComplete="on"
                     placeholder="请输入用户名">
           <span slot="prefix">
-            <svg-icon icon-class="user" class="color-main"></svg-icon>
+              <icon name="address-book"></icon>
           </span>
           </el-input>
         </el-form-item>
@@ -29,10 +29,10 @@
                     autoComplete="on"
                     placeholder="请输入密码">
           <span slot="prefix">
-            <svg-icon icon-class="password" class="color-main"></svg-icon>
+              <icon name="lock"></icon>
           </span>
             <span slot="suffix" @click="showPwd">
-            <svg-icon icon-class="eye" class="color-main"></svg-icon>
+                <icon name="eye"></icon>
           </span>
           </el-input>
         </el-form-item>

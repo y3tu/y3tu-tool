@@ -25,8 +25,14 @@
     import {mapGetters} from 'vuex'
     import Breadcrumb from '@/views/components/Breadcrumb'
     import Hamburger from '@/views/components/Hamburger'
+    import avatar from '@/assets/images/avatar.jpg'
 
     export default {
+        data: function () {
+            return {
+                avatar: avatar
+            }
+        },
         components: {
             Breadcrumb,
             Hamburger
@@ -34,7 +40,6 @@
         computed: {
             ...mapGetters([
                 'sidebar',
-                'avatar'
             ])
         },
         methods: {
@@ -42,9 +47,7 @@
                 this.$store.dispatch('ToggleSideBar')
             },
             logout() {
-                this.$store.dispatch('LogOut').then(() => {
-                    location.reload() // 为了重新实例化vue-router对象 避免bug
-                })
+                this.$store.dispatch('LogOut');
             }
         }
     }

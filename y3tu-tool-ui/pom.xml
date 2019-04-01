@@ -29,8 +29,9 @@
 
         <dependency>
             <groupId>com.y3tu</groupId>
-            <artifactId>y3tu-tool-core</artifactId>
+            <artifactId>y3tu-tool-web</artifactId>
             <version>${parent.version}</version>
+            <optional>true</optional>
         </dependency>
 
     </dependencies>

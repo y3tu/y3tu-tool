@@ -1,10 +1,10 @@
 package com.y3tu.tool.ui.web;
 
 import com.y3tu.tool.core.bean.BeanCache;
+import com.y3tu.tool.core.lang.UUID;
 import com.y3tu.tool.core.pojo.R;
 import com.y3tu.tool.core.util.JsonUtil;
 import com.y3tu.tool.core.util.StrUtil;
-import com.y3tu.tool.http.CookieUtils;
 import com.y3tu.tool.http.ip.IPRange;
 import com.y3tu.tool.http.servlet.AbstractResourceServlet;
 import com.y3tu.tool.ui.service.AuthService;
@@ -33,7 +33,7 @@ public class UiViewServlet extends AbstractResourceServlet {
 
 
     @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String contextPath = request.getContextPath();
         String servletPath = request.getServletPath();
@@ -49,25 +49,20 @@ public class UiViewServlet extends AbstractResourceServlet {
 
         // 权限校验
         String ip = request.getRemoteAddr();
-        boolean security = BeanCache.getBean(AuthService.class).checkSecurity(initServletData,ip,path);
+        boolean security = BeanCache.getBean(AuthService.class).checkSecurity(initServletData, ip, path);
         if (!security) {
-            response.sendRedirect(uri+"/index.html#/401");
+            response.sendRedirect(uri + "/nopermit.html");
             return;
-        }
-        boolean checkLogin = checkLoginParam(request);
-        if(checkLogin){
-
         }
         //默认进入首页
         if ("/".equals(path)) {
-            response.sendRedirect(uri+"/index.html");
+            response.sendRedirect(uri + "/index.html");
             return;
         }
-
         //请求路径包含.json表示这是一个获取数据的请求
         if (path.contains(".json")) {
             response.setContentType("application/json; charset=utf-8");
-            response.getWriter().print(process(request, path));
+            response.getWriter().write(process(request, path));
             return;
         }
         //查找到资源文件并返回给前台
@@ -86,12 +81,14 @@ public class UiViewServlet extends AbstractResourceServlet {
         try {
 
             //登录
-            if (StrUtil.startWith(url, URLConstant.USER_LOGIN_PAGE)) {
-                //todo
-            }
-            //退出
-            if (StrUtil.startWith(url, URLConstant.USER_LOGIN_OUT)) {
-                //todo
+            if (StrUtil.startWith(url, URLConstant.URL_LOGIN)) {
+                if (checkLoginParam(request)) {
+                    //登录成功
+                    String token = UUID.randomUUID().toString();
+                    return JsonUtil.toJson(R.ok(token));
+                } else {
+                    return JsonUtil.toJson(R.error("用户名密码错误!"));
+                }
             }
 
 
@@ -113,7 +110,7 @@ public class UiViewServlet extends AbstractResourceServlet {
      */
     private void initAuthEnv() {
         String paramUserName = getInitParameter(InitServletData.PARAM_NAME_USERNAME);
-        if(StrUtil.isNotEmpty(paramUserName)){
+        if (StrUtil.isNotEmpty(paramUserName)) {
             this.initServletData.setUsername(paramUserName);
         }
         String paramPassword = getInitParameter(InitServletData.PARAM_NAME_PASSWORD);
@@ -121,11 +118,11 @@ public class UiViewServlet extends AbstractResourceServlet {
             this.initServletData.setPassword(paramPassword);
         }
         String paramAllow = getInitParameter(InitServletData.PARAM_NAME_ALLOW);
-        if(StrUtil.isNotEmpty(paramAllow)){
+        if (StrUtil.isNotEmpty(paramAllow)) {
             this.initServletData.setAllowList(parseStringToIP(paramAllow));
         }
         String paramDeny = getInitParameter(InitServletData.PARAM_NAME_DENY);
-        if(StrUtil.isNotEmpty(paramDeny)){
+        if (StrUtil.isNotEmpty(paramDeny)) {
             this.initServletData.setDenyList(parseStringToIP(paramDeny));
         }
     }
@@ -149,13 +146,14 @@ public class UiViewServlet extends AbstractResourceServlet {
 
     /**
      * 校验登录用户名密码
+     *
      * @param request
      * @return
      */
     public boolean checkLoginParam(HttpServletRequest request) {
         String usernameParam = request.getParameter(InitServletData.PARAM_NAME_USERNAME);
         String passwordParam = request.getParameter(InitServletData.PARAM_NAME_PASSWORD);
-        if(null ==  this.initServletData.getUsername()&& null ==  this.initServletData.getPassword()){
+        if (null == this.initServletData.getUsername() && null == this.initServletData.getPassword()) {
             return true;
         } else if (this.initServletData.getUsername().equals(usernameParam) && this.initServletData.getPassword().equals(passwordParam)) {
             return true;

@@ -9,11 +9,10 @@ import router from './router'
 import store from './store/index'
 
 // 核心插件
-import Admin from '@/plugin/admin'
+import common from '@/plugin/common'
 
-import '@/icons' // icon
 
-Vue.use(Admin);
+Vue.use(common);
 
 import '@/styles/index.scss' // global css
 
