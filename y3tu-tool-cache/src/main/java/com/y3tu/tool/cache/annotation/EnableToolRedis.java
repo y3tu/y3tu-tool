@@ -1,9 +1,9 @@
-package com.y3tu.tool.cache.redis.annotation;
+package com.y3tu.tool.cache.annotation;
 
-import com.y3tu.tool.cache.redis.config.EnableRedisToolRegistrar;
-import com.y3tu.tool.cache.redis.aspect.LimitAspect;
-import com.y3tu.tool.cache.redis.aspect.RedisAspect;
-import com.y3tu.tool.cache.redis.config.RedisConfig;
+import com.y3tu.tool.cache.config.EnableRedisToolRegistrar;
+import com.y3tu.tool.cache.aspect.LimitAspect;
+import com.y3tu.tool.cache.aspect.RedisAspect;
+import com.y3tu.tool.cache.config.RedisConfig;
 import com.y3tu.tool.cache.redis.template.RedisRepository;
 import org.springframework.context.annotation.Import;
 

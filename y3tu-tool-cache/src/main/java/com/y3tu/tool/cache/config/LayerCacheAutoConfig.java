@@ -3,7 +3,7 @@ package com.y3tu.tool.cache.config;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.y3tu.tool.cache.aspectj.aspect.LayerCacheAspect;
+import com.y3tu.tool.cache.aspect.LayerCacheAspect;
 import com.y3tu.tool.cache.core.manager.CacheManager;
 import com.y3tu.tool.cache.core.manager.LayerCacheManager;
 import com.y3tu.tool.cache.core.serializer.FastJsonRedisSerializer;

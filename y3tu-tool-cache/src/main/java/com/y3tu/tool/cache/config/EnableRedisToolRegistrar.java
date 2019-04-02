@@ -1,6 +1,6 @@
-package com.y3tu.tool.cache.redis.config;
+package com.y3tu.tool.cache.config;
 
-import com.y3tu.tool.cache.redis.annotation.EnableToolRedis;
+import com.y3tu.tool.cache.annotation.EnableToolRedis;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;

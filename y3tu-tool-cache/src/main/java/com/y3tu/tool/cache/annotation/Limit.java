@@ -1,4 +1,4 @@
-package com.y3tu.tool.cache.redis.annotation;
+package com.y3tu.tool.cache.annotation;
 
 
 import com.y3tu.tool.cache.redis.constant.LimitType;

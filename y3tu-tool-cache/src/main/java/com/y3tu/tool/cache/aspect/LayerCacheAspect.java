@@ -1,10 +1,10 @@
-package com.y3tu.tool.cache.aspectj.aspect;
+package com.y3tu.tool.cache.aspect;
 
-import com.y3tu.tool.cache.aspectj.annotation.*;
-import com.y3tu.tool.cache.aspectj.expression.CacheOperationExpressionEvaluator;
-import com.y3tu.tool.cache.aspectj.support.CacheOperationInvoker;
-import com.y3tu.tool.cache.aspectj.support.KeyGenerator;
-import com.y3tu.tool.cache.aspectj.support.SimpleKeyGenerator;
+import com.y3tu.tool.cache.annotation.*;
+import com.y3tu.tool.cache.expression.CacheOperationExpressionEvaluator;
+import com.y3tu.tool.cache.support.CacheOperationInvoker;
+import com.y3tu.tool.cache.support.KeyGenerator;
+import com.y3tu.tool.cache.support.SimpleKeyGenerator;
 import com.y3tu.tool.cache.core.cache.Cache;
 import com.y3tu.tool.cache.core.manager.CacheManager;
 import com.y3tu.tool.cache.core.setting.FirstCacheSetting;
@@ -54,15 +54,15 @@ public class LayerCacheAspect {
     @Autowired(required = false)
     private KeyGenerator keyGenerator = new SimpleKeyGenerator();
 
-    @Pointcut("@annotation(com.y3tu.tool.cache.aspectj.annotation.Cacheable)")
+    @Pointcut("@annotation(com.y3tu.tool.cache.annotation.Cacheable)")
     public void cacheablePointcut() {
     }
 
-    @Pointcut("@annotation(com.y3tu.tool.cache.aspectj.annotation.CacheEvict)")
+    @Pointcut("@annotation(com.y3tu.tool.cache.annotation.CacheEvict)")
     public void cacheEvictPointcut() {
     }
 
-    @Pointcut("@annotation(com.y3tu.tool.cache.aspectj.annotation.CachePut)")
+    @Pointcut("@annotation(com.y3tu.tool.cache.annotation.CachePut)")
     public void cachePutPointcut() {
     }
 

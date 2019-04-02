@@ -1,7 +1,7 @@
-package com.y3tu.tool.cache.redis.aspect;
+package com.y3tu.tool.cache.aspect;
 
 
-import com.y3tu.tool.cache.redis.config.EnableRedisToolRegistrar;
+import com.y3tu.tool.cache.config.EnableRedisToolRegistrar;
 import com.y3tu.tool.core.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;

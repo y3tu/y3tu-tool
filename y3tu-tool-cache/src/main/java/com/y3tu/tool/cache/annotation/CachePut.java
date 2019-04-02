@@ -1,17 +1,17 @@
-package com.y3tu.tool.cache.aspectj.annotation;
+package com.y3tu.tool.cache.annotation;
 
 import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.*;
 
 /**
- * 删除缓存
+ * 将对应数据放到缓存中
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
-public @interface CacheEvict {
+public @interface CachePut {
 
     /**
      * 别名 {@link #cacheNames}.
@@ -30,6 +30,13 @@ public @interface CacheEvict {
     String[] cacheNames() default {};
 
     /**
+     * 描述
+     *
+     * @return String
+     */
+    String depict() default "";
+
+    /**
      * 缓存key，支持SpEL表达式
      *
      * @return String
@@ -46,13 +53,16 @@ public @interface CacheEvict {
     boolean ignoreException() default true;
 
     /**
-     * 是否删除缓存中所有数据
-     * <p>默认情况下是只删除关联key的缓存数据
-     * <p>注意：当该参数设置成 {@code true} 时 {@link #key} 参数将无效
+     * 一级缓存配置
      *
-     * @return boolean
+     * @return FirstCache
      */
-    boolean allEntries() default false;
+    FirstCache firstCache() default @FirstCache();
 
-
+    /**
+     * 二级缓存配置
+     *
+     * @return SecondaryCache
+     */
+    SecondaryCache secondaryCache() default @SecondaryCache();
 }

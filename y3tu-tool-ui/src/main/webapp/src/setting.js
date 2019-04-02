@@ -3,8 +3,8 @@ const setting = {
     //基础配置
     env: {
         //后端url
-        //apiURL: '',
-        apiURL: 'http://127.0.0.1:8080/y3tu-tool-ui/',
+        apiURL: '',
+        //apiURL: 'http://127.0.0.1:8080/y3tu-tool-ui/',
         // 前端web前缀
         baseURL: '',
         //开发模式

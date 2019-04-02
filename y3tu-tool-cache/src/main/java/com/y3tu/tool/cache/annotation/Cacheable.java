@@ -1,4 +1,4 @@
-package com.y3tu.tool.cache.aspectj.annotation;
+package com.y3tu.tool.cache.annotation;
 
 import org.springframework.core.annotation.AliasFor;
 

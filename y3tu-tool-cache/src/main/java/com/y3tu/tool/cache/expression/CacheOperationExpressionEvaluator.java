@@ -1,4 +1,4 @@
-package com.y3tu.tool.cache.aspectj.expression;
+package com.y3tu.tool.cache.expression;
 
 import org.springframework.aop.support.AopUtils;
 import org.springframework.context.expression.AnnotatedElementKey;

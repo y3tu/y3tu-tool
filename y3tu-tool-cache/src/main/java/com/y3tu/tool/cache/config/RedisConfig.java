@@ -1,4 +1,4 @@
-package com.y3tu.tool.cache.redis.config;
+package com.y3tu.tool.cache.config;
 
 
 import com.alibaba.fastjson.JSON;

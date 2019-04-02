@@ -1,4 +1,4 @@
-package com.y3tu.tool.cache.aspectj.annotation;
+package com.y3tu.tool.cache.annotation;
 
 import java.lang.annotation.*;
 import java.util.concurrent.TimeUnit;

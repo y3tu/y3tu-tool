@@ -1,6 +1,6 @@
-package com.y3tu.tool.cache.redis.aspect;
+package com.y3tu.tool.cache.aspect;
 
-import com.y3tu.tool.cache.redis.annotation.Limit;
+import com.y3tu.tool.cache.annotation.Limit;
 import com.y3tu.tool.cache.redis.constant.LimitType;
 import com.y3tu.tool.core.collection.CollectionUtil;
 import com.y3tu.tool.core.exception.BusinessException;
@@ -46,7 +46,7 @@ public class LimitAspect {
         this.limitRedisTemplate = limitRedisTemplate;
     }
 
-    @Pointcut("@annotation(com.y3tu.tool.cache.redis.annotation.Limit)")
+    @Pointcut("@annotation(com.y3tu.tool.cache.annotation.Limit)")
     public void pointcut() {
         // do nothing
     }

@@ -1,4 +1,4 @@
-package com.y3tu.tool.cache.aspectj.support;
+package com.y3tu.tool.cache.support;
 
 /**
  * 抽象的调用缓存操作方法
