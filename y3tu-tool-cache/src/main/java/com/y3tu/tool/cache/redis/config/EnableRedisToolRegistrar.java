@@ -1,6 +1,6 @@
-package com.y3tu.tool.cache.redis.annotation.registrar;
+package com.y3tu.tool.cache.redis.config;
 
-import com.y3tu.tool.cache.redis.annotation.EnableRedisTool;
+import com.y3tu.tool.cache.redis.annotation.EnableToolRedis;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
@@ -32,7 +32,7 @@ public class EnableRedisToolRegistrar implements ImportBeanDefinitionRegistrar, 
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
-        AnnotationAttributes annoAttrs = AnnotationAttributes.fromMap(importingClassMetadata.getAnnotationAttributes(EnableRedisTool.class.getName()));
+        AnnotationAttributes annoAttrs = AnnotationAttributes.fromMap(importingClassMetadata.getAnnotationAttributes(EnableToolRedis.class.getName()));
         redisAspectOpen = annoAttrs.getBoolean("aspectOpen");
 
         ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(registry);

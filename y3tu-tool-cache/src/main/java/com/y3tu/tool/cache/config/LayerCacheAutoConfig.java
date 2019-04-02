@@ -9,7 +9,6 @@ import com.y3tu.tool.cache.core.manager.LayerCacheManager;
 import com.y3tu.tool.cache.core.serializer.FastJsonRedisSerializer;
 import com.y3tu.tool.cache.core.serializer.KryoRedisSerializer;
 import com.y3tu.tool.cache.core.serializer.StringRedisSerializer;
-import com.y3tu.tool.cache.properties.LayerCacheProperties;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;

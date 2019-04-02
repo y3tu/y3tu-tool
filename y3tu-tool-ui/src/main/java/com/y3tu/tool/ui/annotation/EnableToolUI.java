@@ -1,6 +1,7 @@
-package com.y3tu.tool.ui.config;
+package com.y3tu.tool.ui.annotation;
 
 
+import com.y3tu.tool.ui.config.UiAutoConfiguration;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;

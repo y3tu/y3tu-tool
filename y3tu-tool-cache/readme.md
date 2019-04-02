@@ -1,6 +1,11 @@
-## 多级缓存的使用
+* Cache模块包含
+> 1.常见缓存实现(FIFO,LFU,LRU...)   
+> 2.基于redis的多级缓存实现   
+> 3.对redis操作的封装 
+  
+#### 多级缓存的使用
 
-#### maven引入
+##### maven引入
 ```
   <dependency>
         <groupId>com.y3tu</groupId>
@@ -9,9 +14,4 @@
   </dependency>
 ```
 
-#### 多级缓存配置
-
-* **y3tu-tool-cache.servlet-enable** _是否开启servlet页面访问_
-* **y3tu-tool-cache.stats**  _是否开启缓存统计_
-* **y3tu-tool-cache.url-pattern**  _配置拦截的url_
 

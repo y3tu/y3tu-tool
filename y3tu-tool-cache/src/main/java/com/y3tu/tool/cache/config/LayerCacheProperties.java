@@ -1,4 +1,4 @@
-package com.y3tu.tool.cache.properties;
+package com.y3tu.tool.cache.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

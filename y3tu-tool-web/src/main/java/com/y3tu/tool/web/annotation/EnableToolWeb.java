@@ -18,5 +18,5 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Documented
 @Import({SpringContextUtil.class, ControllerAop.class, ClassNameMappingHandler.class, MethodMappingHandler.class})
-public @interface EnableWebTool {
+public @interface EnableToolWeb {
 }
