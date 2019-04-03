@@ -1,6 +1,6 @@
 package com.y3tu.tool.http.callback;
 
-import com.y3tu.tool.core.exception.Error;
+import com.y3tu.tool.core.exception.ErrorEnum;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.http.HttpException;
@@ -38,7 +38,7 @@ public class FileCallBack extends CallBack<File> {
 
     @Override
     public void onFailure(Call call, IOException e) {
-        throw new HttpException("文件下载失败!", e, Error.HTTP_ERROR);
+        throw new HttpException("文件下载失败!", e, ErrorEnum.HTTP_ERROR);
     }
 
     @Override

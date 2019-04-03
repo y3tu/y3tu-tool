@@ -34,7 +34,7 @@ public abstract class AbstractFilter implements BloomFilter {
                 bm = new LongMap((int) (size / machineNum));
                 break;
             default:
-                throw new RuntimeException("Error Machine number!");
+                throw new RuntimeException("ErrorEnum Machine number!");
         }
     }
 

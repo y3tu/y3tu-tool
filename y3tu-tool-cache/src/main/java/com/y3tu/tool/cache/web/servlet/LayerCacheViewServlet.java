@@ -55,7 +55,7 @@ public class LayerCacheViewServlet extends AbstractResourceServlet {
                         statsList.addAll(cacheStats);
                     }
                 }
-                return JsonUtil.toJson(R.ok(statsList));
+                return JsonUtil.toJson(R.success(statsList));
             }
 
             // 重置缓存统计数据
@@ -64,7 +64,7 @@ public class LayerCacheViewServlet extends AbstractResourceServlet {
                 for (AbstractCacheManager cacheManager : cacheManagers) {
                     cacheManager.resetCacheStat();
                 }
-                return JsonUtil.toJson(R.ok());
+                return JsonUtil.toJson(R.success());
             }
 
             // 删除缓存
@@ -73,7 +73,7 @@ public class LayerCacheViewServlet extends AbstractResourceServlet {
                 String internalKey = request.getParameter("internalKey");
                 String key = request.getParameter("key");
                 BeanCache.getBean(CacheService.class).deleteCache(cacheNameParam, internalKey, key);
-                return JsonUtil.toJson(R.ok());
+                return JsonUtil.toJson(R.success());
             }
         } catch (Exception e) {
             log.error("获取缓存统计数据异常", e);

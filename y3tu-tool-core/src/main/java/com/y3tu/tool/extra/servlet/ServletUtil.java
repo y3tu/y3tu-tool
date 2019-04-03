@@ -255,7 +255,7 @@ public class ServletUtil {
             try {
                 return new String(header.getBytes(CharsetUtil.ISO_8859_1), charset);
             } catch (UnsupportedEncodingException e) {
-                throw new ToolException(StrUtil.format("Error charset {} for http request header.", charset));
+                throw new ToolException(StrUtil.format("ErrorEnum charset {} for http request header.", charset));
             }
         }
         return null;

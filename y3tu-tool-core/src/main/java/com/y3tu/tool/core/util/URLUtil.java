@@ -180,7 +180,7 @@ public class URLUtil {
         try {
             return file.toURI().toURL();
         } catch (MalformedURLException e) {
-            throw new ToolException(e, "Error occured when get URL!");
+            throw new ToolException(e, "ErrorEnum occured when get URL!");
         }
     }
 
@@ -198,7 +198,7 @@ public class URLUtil {
                 urls[i] = files[i].toURI().toURL();
             }
         } catch (MalformedURLException e) {
-            throw new ToolException(e, "Error occured when get URL!");
+            throw new ToolException(e, "ErrorEnum occured when get URL!");
         }
 
         return urls;

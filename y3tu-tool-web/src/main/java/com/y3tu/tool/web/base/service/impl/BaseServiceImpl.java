@@ -64,7 +64,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
     @Override
     public boolean saveBatch(Collection<T> entityList, int batchSize) {
         if (CollectionUtil.isEmpty(entityList)) {
-            throw new IllegalArgumentException("Error: entityList must not be empty");
+            throw new IllegalArgumentException("ErrorEnum: entityList must not be empty");
         }
         CollectionUtil.filter(entityList, new Editor<T>() {
             @Override

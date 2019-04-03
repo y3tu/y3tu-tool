@@ -85,7 +85,7 @@ public class UiViewServlet extends AbstractResourceServlet {
                 if (checkLoginParam(request)) {
                     //登录成功
                     String token = UUID.randomUUID().toString();
-                    return JsonUtil.toJson(R.ok(token));
+                    return JsonUtil.toJson(R.success(token));
                 } else {
                     return JsonUtil.toJson(R.error("用户名密码错误!"));
                 }

@@ -166,7 +166,7 @@ public final class HttpStatus {
 	/* 5XX: server error */
 
 	/**
-	 * HTTP Status-Code 500: Internal Server Error.
+	 * HTTP Status-Code 500: Internal Server ErrorEnum.
 	 */
 	public static final int HTTP_INTERNAL_ERROR = 500;
 

@@ -127,7 +127,7 @@ public class JschUtil {
     public static int openAndBindPortToLocal(Connector sshConn, String remoteHost, int remotePort) throws JschRuntimeException {
         final Session session = openSession(sshConn.getHost(), sshConn.getPort(), sshConn.getUser(), sshConn.getPassword());
         if (session == null) {
-            throw new JschRuntimeException("Error to create SSH Session！");
+            throw new JschRuntimeException("ErrorEnum to create SSH Session！");
         }
         final int localPort = generateLocalPort();
         bindPort(session, remoteHost, remotePort, localPort);

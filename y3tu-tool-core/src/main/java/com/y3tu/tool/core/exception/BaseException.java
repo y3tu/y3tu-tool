@@ -12,8 +12,8 @@ import lombok.Data;
 @Data
 public class BaseException extends RuntimeException {
 
-    public IError error = Error.SYSTEM_INTERNAL_ERROR;
-    public String errorMessage = Error.SYSTEM_INTERNAL_ERROR.getErrorMessage();
+    public String code;
+    public String message;
 
     public BaseException() {
         super();
@@ -21,7 +21,7 @@ public class BaseException extends RuntimeException {
 
     public BaseException(String message) {
         super(message);
-        errorMessage = message;
+        this.message = message;
     }
 
     public BaseException(Throwable cause) {
@@ -30,41 +30,41 @@ public class BaseException extends RuntimeException {
 
     public BaseException(String message, Throwable cause) {
         super(message, cause);
-        errorMessage = message;
+        this.message = message;
     }
 
     public BaseException(String messageTemplate, Object... params) {
         super(StrUtil.format(messageTemplate, params));
-        errorMessage = StrUtil.format(messageTemplate, params);
+        message = StrUtil.format(messageTemplate, params);
     }
 
     public BaseException(Throwable throwable, String messageTemplate, Object... params) {
         super(StrUtil.format(messageTemplate, params), throwable);
-        errorMessage = StrUtil.format(messageTemplate, params);
+        message = StrUtil.format(messageTemplate, params);
     }
 
-    public BaseException(Error error) {
+    public BaseException(ErrorEnum error) {
         super();
-        this.errorMessage = error.getErrorMessage();
-        this.error = error;
+        this.code = error.getCode();
+        this.message = error.getMessage();
     }
 
-    public BaseException(String message, Error error) {
+    public BaseException(String message, ErrorEnum error) {
         this(message);
-        this.errorMessage = message;
-        this.error = error;
+        this.code = error.getCode();
+        this.message = error.getMessage();
     }
 
-    public BaseException(String message, Throwable cause, Error error) {
+    public BaseException(String message, Throwable cause, ErrorEnum error) {
         this(message, cause);
-        this.errorMessage = message;
-        this.error = error;
+        this.code = error.getCode();
+        this.message = error.getMessage();
     }
 
-    public BaseException(Throwable cause, Error error) {
+    public BaseException(Throwable cause, ErrorEnum error) {
         this(cause);
-        this.errorMessage = error.getErrorMessage();
-        this.error = error;
+        this.code = error.getCode();
+        this.message = error.getMessage();
     }
 
 }

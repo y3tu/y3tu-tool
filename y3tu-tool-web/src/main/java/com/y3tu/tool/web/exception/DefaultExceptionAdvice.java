@@ -1,13 +1,11 @@
 package com.y3tu.tool.web.exception;
 
 import com.y3tu.tool.core.exception.*;
-import com.y3tu.tool.core.exception.Error;
+import com.y3tu.tool.core.exception.ErrorEnum;
 import com.y3tu.tool.web.annotation.EnableDefaultExceptionAdvice;
 import com.y3tu.tool.core.pojo.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,11 +32,11 @@ public class DefaultExceptionAdvice {
      */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({SQLException.class})
-    public ResponseEntity handleSQLException(SQLException e) {
+    public R handleSQLException(SQLException e) {
         log.error("服务运行SQLException异常", e);
-        R response = R.error(Error.SQL_EXCEPTION);
-        response.setMessage(e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        R r = R.error(ErrorEnum.SQL_EXCEPTION);
+        r.setMessage(e.getMessage());
+        return r;
     }
 
     /**
@@ -48,11 +46,11 @@ public class DefaultExceptionAdvice {
      */
     @ExceptionHandler(value = {Throwable.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity handle(Throwable throwable) {
+    public R handle(Throwable throwable) {
         RuntimeException runtimeException = ExceptionUtil.wrapRuntime(throwable);
-        R response = R.error(Error.SYSTEM_INTERNAL_ERROR);
-        response.setMessage(runtimeException.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        R r = R.error(ErrorEnum.SYSTEM_INTERNAL_ERROR);
+        r.setMessage(runtimeException.getMessage());
+        return r;
     }
 
     /**
@@ -62,26 +60,25 @@ public class DefaultExceptionAdvice {
      */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
-    public ResponseEntity handleException(Exception e) {
+    public R handleException(Exception e) {
         log.error("异常", e);
-        IError error;
-        String message = null;
+        String code = "";
+        String message = "";
         if (e instanceof BusinessException) {
-            error = ((BusinessException) e).getError();
-            message = ((BusinessException) e).getErrorMessage();
+            code = ((BusinessException) e).getCode();
+            message = ((BusinessException) e).getMessage();
         } else if (e instanceof ToolException) {
-            error = ((ToolException) e).getError();
-            message = ((ToolException) e).getErrorMessage();
+            code = ((ToolException) e).getCode();
+            message = ((ToolException) e).getMessage();
         } else if (e instanceof ServerException) {
-            error = ((ServerException) e).getError();
-            message = ((ServerException) e).getErrorMessage();
+            code = ((ServerException) e).getCode();
+            message = ((ServerException) e).getMessage();
         } else {
-            error = Error.SYSTEM_INTERNAL_ERROR;
+            code = ErrorEnum.SYSTEM_INTERNAL_ERROR.getCode();
             message = e.getMessage();
         }
-        R response = R.error(error);
-        response.setMessage(message);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        R r = R.error(code, message);
+        return r;
     }
 
 }

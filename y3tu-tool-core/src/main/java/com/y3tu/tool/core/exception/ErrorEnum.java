@@ -2,12 +2,11 @@ package com.y3tu.tool.core.exception;
 
 
 /**
- * 说明：默认异常
+ * 默认异常
  *
- * @author zhangwei
- * @date 2017年11月18日23:45:26
+ * @author y3tu
  */
-public enum Error implements IError {
+public enum ErrorEnum {
     /**
      * 系统内部错误
      */
@@ -90,27 +89,19 @@ public enum Error implements IError {
     HTTP_ERROR("0024", "HTTP异常");
 
 
-    String errorCode;
-    String errorMessage;
-    private static final String NS = "SYS";
+    String code;
+    String message;
 
-    Error(String errorCode, String errorMessage) {
-        this.errorCode = errorCode;
-        this.errorMessage = errorMessage;
+    ErrorEnum(String code, String message) {
+        this.code = code;
+        this.message = message;
     }
 
-    @Override
-    public String getNameSpace() {
-        return NS;
+    public String getCode() {
+        return this.code;
     }
 
-    @Override
-    public String getErrorCode() {
-        return NS + "." + this.errorCode;
-    }
-
-    @Override
-    public String getErrorMessage() {
-        return this.errorMessage;
+    public String getMessage() {
+        return this.message;
     }
 }

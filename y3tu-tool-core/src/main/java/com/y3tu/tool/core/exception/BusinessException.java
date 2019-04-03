@@ -31,19 +31,19 @@ public class BusinessException extends BaseException {
         super(throwable, messageTemplate, params);
     }
 
-    public BusinessException(Error error) {
+    public BusinessException(ErrorEnum error) {
         super(error);
     }
 
-    public BusinessException(String message, Error error) {
+    public BusinessException(String message, ErrorEnum error) {
         super(message, error);
     }
 
-    public BusinessException(String message, Throwable cause, Error error) {
+    public BusinessException(String message, Throwable cause, ErrorEnum error) {
         super(message, cause, error);
     }
 
-    public BusinessException(Throwable cause, Error error) {
+    public BusinessException(Throwable cause, ErrorEnum error) {
         super(cause, error);
     }
 

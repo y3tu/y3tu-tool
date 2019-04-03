@@ -35,7 +35,7 @@ public class GeneratorController {
     public R list(@RequestParam Map<String, Object> params) {
         PageInfo pageInfo = PageInfo.mapToPageInfo(params);
         pageInfo.setList(sysGeneratorService.queryTableName());
-        return R.ok(pageInfo);
+        return R.success(pageInfo);
     }
 
     /**
