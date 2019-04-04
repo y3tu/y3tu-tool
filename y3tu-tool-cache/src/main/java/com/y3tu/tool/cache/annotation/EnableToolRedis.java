@@ -31,6 +31,4 @@ public @interface EnableToolRedis {
      * @return
      */
     boolean aspectOpen() default true;
-
-
 }

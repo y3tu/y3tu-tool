@@ -15,6 +15,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented
+@EnableToolRedis
 @Import({LayerCacheAutoConfig.class, LayerCacheProperties.class})
 public @interface EnableToolLayerCache {
 }
