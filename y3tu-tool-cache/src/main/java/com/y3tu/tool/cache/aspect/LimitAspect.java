@@ -1,7 +1,7 @@
 package com.y3tu.tool.cache.aspect;
 
 import com.y3tu.tool.cache.annotation.Limit;
-import com.y3tu.tool.cache.redis.constant.LimitType;
+import com.y3tu.tool.cache.enums.LimitType;
 import com.y3tu.tool.core.collection.CollectionUtil;
 import com.y3tu.tool.core.exception.BusinessException;
 import com.y3tu.tool.core.util.StrUtil;

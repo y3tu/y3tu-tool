@@ -1,4 +1,4 @@
-package com.y3tu.tool.cache.redis.constant;
+package com.y3tu.tool.cache.enums;
 
 public enum LimitType {
     /**

@@ -1,7 +1,7 @@
 package com.y3tu.tool.cache.core.setting;
 
 
-import com.y3tu.tool.cache.core.support.ExpireMode;
+import com.y3tu.tool.cache.enums.ExpireMode;
 import lombok.Data;
 
 import java.io.Serializable;

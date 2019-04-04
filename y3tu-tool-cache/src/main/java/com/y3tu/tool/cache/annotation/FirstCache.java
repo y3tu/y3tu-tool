@@ -1,6 +1,6 @@
 package com.y3tu.tool.cache.annotation;
 
-import com.y3tu.tool.cache.core.support.ExpireMode;
+import com.y3tu.tool.cache.enums.ExpireMode;
 
 import java.lang.annotation.*;
 import java.util.concurrent.TimeUnit;

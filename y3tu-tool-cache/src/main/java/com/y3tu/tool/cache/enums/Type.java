@@ -1,4 +1,4 @@
-package com.y3tu.tool.cache.core.support;
+package com.y3tu.tool.cache.enums;
 
 /**
  * 对象类型

@@ -8,7 +8,7 @@ import com.y3tu.tool.core.date.DateUtil;
 import com.y3tu.tool.core.date.TimeInterval;
 import com.y3tu.tool.cache.core.cache.AbstractValueAdaptingCache;
 import com.y3tu.tool.cache.core.setting.FirstCacheSetting;
-import com.y3tu.tool.cache.core.support.ExpireMode;
+import com.y3tu.tool.cache.enums.ExpireMode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 

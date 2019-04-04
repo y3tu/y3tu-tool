@@ -22,6 +22,4 @@ public class RedisProperties {
     private String hostName;
     private Integer port;
     private String password;
-
-
 }

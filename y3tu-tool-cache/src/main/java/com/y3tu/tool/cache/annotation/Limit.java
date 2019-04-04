@@ -1,7 +1,7 @@
 package com.y3tu.tool.cache.annotation;
 
 
-import com.y3tu.tool.cache.redis.constant.LimitType;
+import com.y3tu.tool.cache.enums.LimitType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
