@@ -28,7 +28,6 @@ public class FastJsonRedisSerializer<T> implements RedisSerializer<T> {
      *
      * @param clazz Class
      */
-    @Deprecated
     public FastJsonRedisSerializer(Class<T> clazz) {
         super();
         this.clazz = clazz;
