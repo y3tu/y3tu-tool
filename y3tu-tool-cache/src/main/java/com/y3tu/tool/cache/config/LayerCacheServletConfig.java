@@ -14,7 +14,7 @@ import org.springframework.util.StringUtils;
  * @author yuhao.wang3
  */
 @ConditionalOnWebApplication
-@ConditionalOnProperty(name = "y3tu-tool-cache.servlet-enable", havingValue = "true", matchIfMissing = false)
+@ConditionalOnProperty(name = "y3tu.tool.cache.servlet-enable", havingValue = "true", matchIfMissing = false)
 public class LayerCacheServletConfig {
     @Bean
     public ServletRegistrationBean statViewServletRegistrationBean(LayerCacheProperties properties) {
@@ -23,6 +23,14 @@ public class LayerCacheServletConfig {
         registrationBean.setServlet(new LayerCacheViewServlet());
         //设置需要拦截的url
         registrationBean.addUrlMappings(!StringUtils.isEmpty(properties.getUrlPattern()) ? properties.getUrlPattern() : "/y3tu-tool-cache/*");
+
+        if (properties.getAllow() != null) {
+            registrationBean.addInitParameter("allow", properties.getAllow());
+        }
+        if (properties.getDeny() != null) {
+            registrationBean.addInitParameter("deny", properties.getDeny());
+        }
+
         return registrationBean;
     }
 }

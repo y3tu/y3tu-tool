@@ -1,6 +1,6 @@
 package com.y3tu.tool.cache.annotation;
 
-import com.y3tu.tool.cache.config.EnableRedisToolRegistrar;
+import com.y3tu.tool.cache.config.EnableToolRedisRegistrar;
 import com.y3tu.tool.cache.aspect.LimitAspect;
 import com.y3tu.tool.cache.aspect.RedisAspect;
 import com.y3tu.tool.cache.config.RedisConfig;
@@ -19,7 +19,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented
-@Import({EnableRedisToolRegistrar.class, RedisConfig.class, RedisAspect.class, LimitAspect.class, RedisRepository.class,})
+@Import({EnableToolRedisRegistrar.class, RedisConfig.class, RedisAspect.class, LimitAspect.class, RedisRepository.class,})
 public @interface EnableToolRedis {
     /**
      * 是否开始redis切面控制

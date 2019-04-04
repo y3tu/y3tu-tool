@@ -1,7 +1,7 @@
 package com.y3tu.tool.cache.aspect;
 
 
-import com.y3tu.tool.cache.config.EnableRedisToolRegistrar;
+import com.y3tu.tool.cache.config.EnableToolRedisRegistrar;
 import com.y3tu.tool.core.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -23,7 +23,7 @@ public class RedisAspect {
     @Around("execution(* com.y3tu.tool.cache.redis.template.RedisRepository.*(..))")
     public Object around(ProceedingJoinPoint point) throws Throwable {
         Object result = null;
-        if (EnableRedisToolRegistrar.redisAspectOpen) {
+        if (EnableToolRedisRegistrar.redisAspectOpen) {
             try {
                 result = point.proceed();
             } catch (Exception e) {

@@ -42,6 +42,22 @@ export const constantRouterMap = [
             },
         ]
     },
+    {
+        path: '/cache',
+        component: Layout,
+        redirect: '/cache/cacheManager',
+        name: 'cache',
+        meta: {title: '缓存', icon: 'database'},
+        children: [
+            {
+                path: 'cacheManager',
+                name: 'cacheManager',
+                component: () => import('@/views/cache/cacheManager'),
+                meta: {title: '缓存管理', icon: 'database'}
+            },
+        ]
+    },
+
 
     {path: '*', redirect: '/404', hidden: true}
 ];

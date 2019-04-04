@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author yuhao.wang3
  */
 @Data
-@ConfigurationProperties("y3tu-tool-cache")
+@ConfigurationProperties("y3tu.tool.cache")
 public class LayerCacheProperties {
 
     /**
@@ -41,19 +41,5 @@ public class LayerCacheProperties {
      */
     private String deny;
 
-    /**
-     * 登录用户账号
-     */
-    private String loginUsername = "admin";
-
-    /**
-     * 登录用户密码
-     */
-    private String loginPassword = "admin";
-
-    /**
-     * 是否启用更新权限
-     */
-    private boolean enableUpdate = true;
 
 }

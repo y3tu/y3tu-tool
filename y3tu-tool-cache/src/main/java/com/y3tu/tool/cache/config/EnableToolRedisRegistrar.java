@@ -16,7 +16,7 @@ import org.springframework.core.type.AnnotationMetadata;
  * @author y3tu
  * @date 2018/10/22
  */
-public class EnableRedisToolRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware {
+public class EnableToolRedisRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware {
 
     private ResourceLoader resourceLoader;
 

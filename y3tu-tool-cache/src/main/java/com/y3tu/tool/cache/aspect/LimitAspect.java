@@ -6,13 +6,12 @@ import com.y3tu.tool.core.collection.CollectionUtil;
 import com.y3tu.tool.core.exception.BusinessException;
 import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.http.IpUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -35,9 +34,8 @@ import java.util.Objects;
  */
 @Aspect
 @Component
+@Slf4j
 public class LimitAspect {
-
-    private static final Logger logger = LoggerFactory.getLogger(LimitAspect.class);
 
     private final RedisTemplate<String, Serializable> limitRedisTemplate;
 
@@ -77,7 +75,7 @@ public class LimitAspect {
         String luaScript = buildLuaScript();
         RedisScript<Number> redisScript = new DefaultRedisScript<>(luaScript, Number.class);
         Number count = limitRedisTemplate.execute(redisScript, keys, limitCount, limitPeriod);
-        logger.info("第{}次访问key为 {}，描述为 [{}] 的接口", count, keys, name);
+        log.info("第{}次访问key为 {}，描述为 [{}] 的接口", count, keys, name);
         if (count != null && count.intValue() <= limitCount) {
             return point.proceed();
         } else {
