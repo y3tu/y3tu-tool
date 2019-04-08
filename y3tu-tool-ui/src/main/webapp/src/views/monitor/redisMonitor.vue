@@ -39,7 +39,7 @@
 </template>
 
 <script>
-    import developing from '@/views/components/Developing'
+    import developing from '@/components/Developing'
 
     export default {
         name: "redisMonitor",

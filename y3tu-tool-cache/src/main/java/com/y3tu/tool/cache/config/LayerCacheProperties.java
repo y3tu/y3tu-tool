@@ -1,6 +1,7 @@
 package com.y3tu.tool.cache.config;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -8,7 +9,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author yuhao.wang3
  */
 @Data
-@ConfigurationProperties("y3tu.tool.cache")
+@ConfigurationProperties("y3tu.tool.cache.layer")
+@Qualifier("layerCacheProperties")
 public class LayerCacheProperties {
 
     /**

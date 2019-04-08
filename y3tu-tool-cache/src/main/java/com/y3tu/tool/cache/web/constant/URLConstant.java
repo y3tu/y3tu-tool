@@ -1,4 +1,4 @@
-package com.y3tu.tool.cache.web.support;
+package com.y3tu.tool.cache.web.constant;
 
 /**
  * URL 常量

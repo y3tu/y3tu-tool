@@ -8,7 +8,7 @@ import com.y3tu.tool.http.servlet.AbstractResourceServlet;
 import com.y3tu.tool.cache.core.manager.AbstractCacheManager;
 import com.y3tu.tool.cache.core.stats.CacheStatsInfo;
 import com.y3tu.tool.cache.web.service.CacheService;
-import com.y3tu.tool.cache.web.support.URLConstant;
+import com.y3tu.tool.cache.web.constant.URLConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 
@@ -39,10 +39,6 @@ public class LayerCacheViewServlet extends AbstractResourceServlet {
     @Override
     protected String process(HttpServletRequest request, String url) {
         try {
-
-            //登录
-
-            //退出
 
             // 缓存统计列表
             if (StrUtil.startWith(url,URLConstant.CACHE_STATS_LIST)) {

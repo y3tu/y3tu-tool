@@ -1,13 +1,13 @@
 package com.y3tu.tool.cache.core.stats;
 
 import com.alibaba.fastjson.JSON;
+import com.y3tu.tool.cache.redis.lock.Lock;
 import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.cache.core.cache.Cache;
 import com.y3tu.tool.cache.core.cache.LayerCache;
 import com.y3tu.tool.cache.core.manager.AbstractCacheManager;
 import com.y3tu.tool.cache.core.manager.CacheManager;
 import com.y3tu.tool.cache.core.setting.LayerCacheSetting;
-import com.y3tu.tool.cache.core.support.Lock;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 

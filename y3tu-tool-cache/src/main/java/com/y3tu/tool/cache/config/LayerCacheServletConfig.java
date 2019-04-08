@@ -14,7 +14,7 @@ import org.springframework.util.StringUtils;
  * @author yuhao.wang3
  */
 @ConditionalOnWebApplication
-@ConditionalOnProperty(name = "y3tu.tool.cache.servlet-enable", havingValue = "true", matchIfMissing = false)
+@ConditionalOnProperty(name = "y3tu.tool.cache.servlet-enable", havingValue = "true", matchIfMissing = true)
 public class LayerCacheServletConfig {
     @Bean
     public ServletRegistrationBean statViewServletRegistrationBean(LayerCacheProperties properties) {

@@ -12,7 +12,6 @@ import 'element-ui/lib/theme-chalk/index.css'
 //图表
 import VCharts from 'v-charts'
 
-
 //图标
 import Icon from 'vue-awesome/components/Icon'
 

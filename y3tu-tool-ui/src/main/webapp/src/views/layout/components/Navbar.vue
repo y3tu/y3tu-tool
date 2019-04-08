@@ -23,8 +23,8 @@
 
 <script>
     import {mapGetters} from 'vuex'
-    import Breadcrumb from '@/views/components/Breadcrumb'
-    import Hamburger from '@/views/components/Hamburger'
+    import Breadcrumb from '@/components/Breadcrumb'
+    import Hamburger from '@/components/Hamburger'
     import avatar from '@/assets/images/avatar.jpg'
 
     export default {

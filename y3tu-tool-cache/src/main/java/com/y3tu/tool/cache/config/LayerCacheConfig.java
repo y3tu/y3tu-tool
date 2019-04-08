@@ -14,7 +14,6 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -32,9 +31,7 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 @ConditionalOnBean(RedisTemplate.class)
 @AutoConfigureAfter({RedisAutoConfiguration.class})
 @EnableAspectJAutoProxy
-@EnableConfigurationProperties({LayerCacheProperties.class})
-@Import({LayerCacheServletConfig.class})
-public class LayerCacheAutoConfig {
+public class LayerCacheConfig {
 
 
     @Bean
@@ -71,7 +68,7 @@ public class LayerCacheAutoConfig {
 
     @Bean
     @ConditionalOnMissingBean(CacheManager.class)
-    public CacheManager cacheManager(@Qualifier("cacheRedisTemplate") RedisTemplate cacheRedisTemplate,LayerCacheProperties properties) {
+    public CacheManager cacheManager(@Qualifier("cacheRedisTemplate") RedisTemplate cacheRedisTemplate, @Qualifier("layerCacheProperties") LayerCacheProperties properties) {
         LayerCacheManager layerCacheManager = new LayerCacheManager(cacheRedisTemplate);
         // 默认开启统计功能
         layerCacheManager.setStats(properties.isStats());

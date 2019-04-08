@@ -4,6 +4,7 @@ import com.y3tu.tool.cache.core.serializer.FastJsonRedisSerializer;
 import com.y3tu.tool.cache.redis.lock.RedisDistributedLock;
 import com.y3tu.tool.cache.redis.template.RedisRepository;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -57,7 +58,7 @@ public class RedisConfig extends CachingConfigurerSupport {
      * @return
      */
     @Bean
-    @ConditionalOnMissingBean(JedisPoolConfig.class)
+    @ConditionalOnProperty(name = "y3tu.tool.cache.redis.enable")
     public JedisPoolConfig jedisPoolConfig(RedisProperties properties) {
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         // 最大空闲数
@@ -83,7 +84,7 @@ public class RedisConfig extends CachingConfigurerSupport {
      * 单机版配置
      */
     @Bean
-    @ConditionalOnMissingBean(RedisConnectionFactory.class)
+    @ConditionalOnProperty(name = "y3tu.tool.cache.redis.enable")
     public RedisConnectionFactory redisConnectionFactory(JedisPoolConfig jedisPoolConfig,RedisProperties properties) {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
         redisStandaloneConfiguration.setHostName(properties.getHostName());

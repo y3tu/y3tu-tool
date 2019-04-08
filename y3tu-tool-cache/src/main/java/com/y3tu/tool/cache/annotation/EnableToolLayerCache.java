@@ -1,7 +1,9 @@
 package com.y3tu.tool.cache.annotation;
 
-import com.y3tu.tool.cache.config.LayerCacheAutoConfig;
+import com.y3tu.tool.cache.config.LayerCacheConfig;
 import com.y3tu.tool.cache.config.LayerCacheProperties;
+import com.y3tu.tool.cache.config.LayerCacheServletConfig;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
@@ -16,6 +18,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Documented
 @EnableToolRedis
-@Import({LayerCacheAutoConfig.class, LayerCacheProperties.class})
+@Import({LayerCacheConfig.class,LayerCacheServletConfig.class})
+@EnableConfigurationProperties(LayerCacheProperties.class)
 public @interface EnableToolLayerCache {
 }

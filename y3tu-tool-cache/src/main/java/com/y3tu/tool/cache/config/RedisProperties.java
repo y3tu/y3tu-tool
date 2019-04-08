@@ -9,6 +9,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 @ConfigurationProperties("y3tu.tool.cache.redis")
 public class RedisProperties {
+    /**
+     * 是否开启自带的redis配置
+     */
+    private boolean enable;
     private Integer maxIdle;
     private Integer maxTotal;
     private Integer maxWaitMillis;

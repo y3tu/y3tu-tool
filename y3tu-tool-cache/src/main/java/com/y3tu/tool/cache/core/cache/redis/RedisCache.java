@@ -1,10 +1,10 @@
 package com.y3tu.tool.cache.core.cache.redis;
 
+import com.y3tu.tool.cache.redis.lock.Lock;
 import com.y3tu.tool.core.util.JsonUtil;
 import com.y3tu.tool.cache.core.cache.AbstractValueAdaptingCache;
 import com.y3tu.tool.cache.core.setting.SecondaryCacheSetting;
 import com.y3tu.tool.core.thread.AwaitThreadContainer;
-import com.y3tu.tool.cache.core.support.Lock;
 import com.y3tu.tool.cache.core.support.ThreadTaskUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
