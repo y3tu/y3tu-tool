@@ -25,7 +25,6 @@
 
                 <el-card class="box-card">
                     <el-table :data="currentTableData"
-                              v-loading="loading"
                               size="mini"
                               stripe
                               style="width: 100%;"
@@ -94,7 +93,7 @@
 
 <script>
 
-    import {cacheList} from "@/api/redis";
+    import {cacheList} from "@/api/cache";
 
     export default {
         name: "cacheManager",
@@ -125,7 +124,7 @@
                 console.log(item);
             },
             queryCacheInfo: function () {
-                console.log(this.cacheName);
+                cacheList(this.cacheName);
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val

@@ -14,6 +14,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -37,11 +38,11 @@ public class LayerCacheViewServlet extends AbstractResourceServlet {
      * @return
      */
     @Override
-    protected String process(HttpServletRequest request, String url) {
+    protected String process(HttpServletRequest request, HttpServletResponse response, String url) {
         try {
 
             // 缓存统计列表
-            if (StrUtil.startWith(url,URLConstant.CACHE_STATS_LIST)) {
+            if (StrUtil.startWith(url, URLConstant.CACHE_STATS_LIST)) {
                 String cacheName = request.getParameter("cacheName");
                 Set<AbstractCacheManager> cacheManagers = AbstractCacheManager.getCacheManager();
                 List<CacheStatsInfo> statsList = new ArrayList<>();
@@ -55,7 +56,7 @@ public class LayerCacheViewServlet extends AbstractResourceServlet {
             }
 
             // 重置缓存统计数据
-            if (StrUtil.startWith(url,URLConstant.RESET_CACHE_STAT)) {
+            if (StrUtil.startWith(url, URLConstant.RESET_CACHE_STAT)) {
                 Set<AbstractCacheManager> cacheManagers = AbstractCacheManager.getCacheManager();
                 for (AbstractCacheManager cacheManager : cacheManagers) {
                     cacheManager.resetCacheStat();
@@ -64,7 +65,7 @@ public class LayerCacheViewServlet extends AbstractResourceServlet {
             }
 
             // 删除缓存
-            if ( StrUtil.startWith(url,URLConstant.CACHE_STATS_DELETE_CACHW)) {
+            if (StrUtil.startWith(url, URLConstant.CACHE_STATS_DELETE_CACHW)) {
                 String cacheNameParam = request.getParameter("cacheName");
                 String internalKey = request.getParameter("internalKey");
                 String key = request.getParameter("key");
@@ -73,9 +74,9 @@ public class LayerCacheViewServlet extends AbstractResourceServlet {
             }
         } catch (Exception e) {
             log.error("获取缓存统计数据异常", e);
-            return JsonUtil.toJson(R.error("获取缓存统计数据异常:"+e.getMessage()));
+            return JsonUtil.toJson(R.error("获取缓存统计数据异常:" + e.getMessage()));
         }
-        return JsonUtil.toJson(R.warn("服务端没有找到匹配的url:"+url));
+        return JsonUtil.toJson(R.warn("服务端没有找到匹配的url:" + url));
     }
 
 

@@ -10,7 +10,7 @@ export function cacheList(cacheName) {
     };
 
     return request({
-        url: 'cacheList.json',
+        url: 'cache-stats/list.json',
         method: 'post',
         data: Qs.stringify(data)
     })

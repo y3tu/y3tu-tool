@@ -47,7 +47,7 @@ public abstract class AbstractResourceServlet extends HttpServlet {
      * @param url
      * @return
      */
-    protected abstract String process(HttpServletRequest request, String url);
+    protected abstract String process(HttpServletRequest request, HttpServletResponse response,String url);
 
     /**
      * 请求处理
@@ -78,7 +78,7 @@ public abstract class AbstractResourceServlet extends HttpServlet {
         //请求路径包含.json表示这是一个获取数据的请求
         if (path.contains(".json")) {
             response.setContentType("application/json; charset=utf-8");
-            response.getWriter().print(process(request, path));
+            response.getWriter().print(process(request, response,path));
             return;
         }
 

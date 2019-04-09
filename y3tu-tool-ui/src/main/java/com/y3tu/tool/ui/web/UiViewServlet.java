@@ -62,7 +62,7 @@ public class UiViewServlet extends AbstractResourceServlet {
         //请求路径包含.json表示这是一个获取数据的请求
         if (path.contains(".json")) {
             response.setContentType("application/json; charset=utf-8");
-            response.getWriter().write(process(request, path));
+            response.getWriter().write(process(request, response, path));
             return;
         }
         //查找到资源文件并返回给前台
@@ -77,7 +77,7 @@ public class UiViewServlet extends AbstractResourceServlet {
      * @return
      */
     @Override
-    protected String process(HttpServletRequest request, String url) {
+    protected String process(HttpServletRequest request, HttpServletResponse response, String url) {
         try {
 
             //登录
@@ -90,7 +90,6 @@ public class UiViewServlet extends AbstractResourceServlet {
                     return JsonUtil.toJson(R.error("用户名密码错误!"));
                 }
             }
-
 
         } catch (Exception e) {
             log.error("请求异常", e);
