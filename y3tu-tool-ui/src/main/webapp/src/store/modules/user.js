@@ -23,7 +23,13 @@ const user = {
         Login({commit}, userInfo) {
             const username = userInfo.username.trim()
             return new Promise((resolve, reject) => {
-                login(username, userInfo.password).then(response => {
+
+                let params = {
+                    loginUsername: username,
+                    loginPassword: userInfo.password
+                };
+
+                login(params).then(response => {
                     const tokenStr = response.data;
                     util.cookies.set("token", tokenStr);
                     commit('SET_TOKEN', tokenStr)

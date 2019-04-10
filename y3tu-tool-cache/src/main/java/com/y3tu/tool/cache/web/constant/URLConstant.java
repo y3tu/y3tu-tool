@@ -8,9 +8,9 @@ package com.y3tu.tool.cache.web.constant;
 public class URLConstant {
 
     /**
-     * 重置缓存统计数据
+     * 缓存名称列表
      */
-    public static final String RESET_CACHE_STAT = "/cache-stats/reset-stats";
+    public static final String CACHE_STATS_CACHE_NAME = "/cache-stats/cache-name";
 
     /**
      * 缓存统计列表
@@ -22,4 +22,8 @@ public class URLConstant {
      */
     public static final String CACHE_STATS_DELETE_CACHW = "/cache-stats/delete-cache";
 
+    /**
+     * 重置缓存统计数据
+     */
+    public static final String RESET_CACHE_STAT = "/cache-stats/reset-stats";
 }

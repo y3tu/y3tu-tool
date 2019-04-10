@@ -205,6 +205,11 @@ public abstract class AbstractCacheManager implements CacheManager, Initializing
     }
 
     @Override
+    public List<CacheStatsInfo> listCacheStats() {
+        return BeanCache.getBean(StatsService.class).listCacheStats();
+    }
+
+    @Override
     public void resetCacheStat() {
         BeanCache.getBean(StatsService.class).resetCacheStat();
     }

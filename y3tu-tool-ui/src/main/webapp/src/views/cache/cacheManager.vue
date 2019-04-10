@@ -1,6 +1,7 @@
 <template>
     <div>
         <el-container>
+
             <el-header>
                 <el-card>
                     <el-row>
@@ -87,13 +88,14 @@
                     </page-footer>
                 </el-card>
             </el-footer>
+
         </el-container>
     </div>
 </template>
 
 <script>
 
-    import {cacheList} from "@/api/cache";
+    import {getCacheList, getCacheName} from "@/api/cache";
 
     export default {
         name: "cacheManager",
@@ -114,17 +116,29 @@
         components: {
             'PageFooter': () => import('@/components/PageFooter')
         },
+        mounted() {
+        },
         methods: {
             getCacheName: function (queryString, cb) {
-                let arr = [{"value": "Hot honey 首尔炸鸡（仙霞路）", "name": "上海市长宁区淞虹路661号"},
-                    {"value": "新旺角茶餐厅", "name": "上海市普陀区真北路988号创邑金沙谷6号楼113"}];
-                cb(arr);
+                getCacheName().then(res => {
+                    if (res.status === 'SUCCESS') {
+                        cb(res.data);
+                    }else {
+                        this.$message.error('查询缓存名称错误:'+res.message);
+                    }
+                });
             },
             handleSelect(item) {
                 console.log(item);
             },
             queryCacheInfo: function () {
-                cacheList(this.cacheName);
+                getCacheList(this.cacheName).then(res=>{
+                    if(res.status==='SUCCESS'){
+
+                    }else {
+                        this.$message.error(res.message);
+                    }
+                })
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val
@@ -133,7 +147,7 @@
                 this.$notify({
                     title: '分页变化',
                     message: `当前第${val.current}页 共${val.total}条 每页${val.size}条`
-                })
+                });
                 this.page = val
                 // nextTick 只是为了优化示例中 notify 的显示
                 this.$nextTick(() => {

@@ -41,13 +41,30 @@ public class LayerCacheViewServlet extends AbstractResourceServlet {
     protected String process(HttpServletRequest request, HttpServletResponse response, String url) {
         try {
 
+            //缓存名称列表
+            if (StrUtil.startWith(url, URLConstant.CACHE_STATS_CACHE_NAME)) {
+                List<String> cacheNameList = new ArrayList<>();
+                Set<AbstractCacheManager> cacheManagers = AbstractCacheManager.getCacheManager();
+                for (AbstractCacheManager cacheManager : cacheManagers) {
+                    cacheNameList.addAll(cacheManager.getCacheNames());
+                }
+                return JsonUtil.toJson(R.success(cacheNameList));
+            }
+
             // 缓存统计列表
             if (StrUtil.startWith(url, URLConstant.CACHE_STATS_LIST)) {
                 String cacheName = request.getParameter("cacheName");
                 Set<AbstractCacheManager> cacheManagers = AbstractCacheManager.getCacheManager();
                 List<CacheStatsInfo> statsList = new ArrayList<>();
                 for (AbstractCacheManager cacheManager : cacheManagers) {
-                    List<CacheStatsInfo> cacheStats = cacheManager.listCacheStats(cacheName);
+                    List<CacheStatsInfo> cacheStats = new ArrayList<>();
+                    if (StrUtil.isNotEmpty(cacheName)) {
+                        //查询单独缓存
+                        cacheStats = cacheManager.listCacheStats(cacheName);
+                    } else {
+                        //查询全部缓存
+                        cacheStats = cacheManager.listCacheStats();
+                    }
                     if (!CollectionUtils.isEmpty(cacheStats)) {
                         statsList.addAll(cacheStats);
                     }
@@ -72,6 +89,7 @@ public class LayerCacheViewServlet extends AbstractResourceServlet {
                 BeanCache.getBean(CacheService.class).deleteCache(cacheNameParam, internalKey, key);
                 return JsonUtil.toJson(R.success());
             }
+
         } catch (Exception e) {
             log.error("获取缓存统计数据异常", e);
             return JsonUtil.toJson(R.error("获取缓存统计数据异常:" + e.getMessage()));

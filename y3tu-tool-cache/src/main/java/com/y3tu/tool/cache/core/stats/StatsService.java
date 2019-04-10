@@ -73,6 +73,24 @@ public class StatsService {
     }
 
     /**
+     * 获取所有缓存
+     *
+     * @return
+     */
+    public List<CacheStatsInfo> listCacheStats() {
+        log.debug("获取所有缓存数据");
+        List<CacheStatsInfo> statsList = new ArrayList<>();
+        Collection<String> cacheNames = cacheManager.getCacheNames();
+        for (String cacheName : cacheNames) {
+            List<CacheStatsInfo> list = listCacheStats(cacheName);
+            if (list != null && list.size() > 0) {
+                statsList.addAll(list);
+            }
+        }
+        return statsList;
+    }
+
+    /**
      * 同步缓存统计list
      */
     public void syncCacheStats() {
