@@ -1,6 +1,7 @@
 package com.y3tu.tool.cache.core.setting;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.y3tu.tool.cache.enums.CacheMode;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -23,10 +24,10 @@ public class LayerCacheSetting implements Serializable {
      */
     private String depict;
 
-    /**
-     * 是否使用一级缓存
-     */
-    boolean useFirstCache = true;
+//    /**
+//     * 是否使用一级缓存
+//     */
+//    boolean useFirstCache = true;
 
     /**
      * 一级缓存配置
@@ -38,13 +39,19 @@ public class LayerCacheSetting implements Serializable {
      */
     private SecondaryCacheSetting secondaryCacheSetting;
 
+    /**
+     * 缓存模式
+     */
+    private CacheMode cacheMode;
+
     public LayerCacheSetting() {
     }
 
-    public LayerCacheSetting(FirstCacheSetting firstCacheSetting, SecondaryCacheSetting secondaryCacheSetting, String depict) {
+    public LayerCacheSetting(FirstCacheSetting firstCacheSetting, SecondaryCacheSetting secondaryCacheSetting, String depict,CacheMode cacheMode) {
         this.firstCacheSetting = firstCacheSetting;
         this.secondaryCacheSetting = secondaryCacheSetting;
         this.depict = depict;
+        this.cacheMode = cacheMode;
         internalKey();
     }
 

@@ -180,7 +180,7 @@ public class LayerCacheAspect {
 
         SecondaryCacheSetting secondaryCacheSetting = new SecondaryCacheSetting(secondaryCache.expireTime(),
                 secondaryCache.preloadTime(), secondaryCache.timeUnit(), secondaryCache.forceRefresh());
-        LayerCacheSetting layerCacheSetting = new LayerCacheSetting(firstCacheSetting, secondaryCacheSetting, cacheable.depict());
+        LayerCacheSetting layerCacheSetting = new LayerCacheSetting(firstCacheSetting, secondaryCacheSetting, cacheable.depict(),cacheable.cacheMode());
 
         // 通过cacheName和缓存配置获取Cache
         Cache cache = cacheManager.getCache(cacheName, layerCacheSetting);
@@ -270,7 +270,7 @@ public class LayerCacheAspect {
 
         SecondaryCacheSetting secondaryCacheSetting = new SecondaryCacheSetting(secondaryCache.expireTime(),
                 secondaryCache.preloadTime(), secondaryCache.timeUnit(), secondaryCache.forceRefresh());
-        LayerCacheSetting layerCacheSetting = new LayerCacheSetting(firstCacheSetting, secondaryCacheSetting, cachePut.depict());
+        LayerCacheSetting layerCacheSetting = new LayerCacheSetting(firstCacheSetting, secondaryCacheSetting, cachePut.depict(),cachePut.cacheMode());
 
         // 指定调用方法获取缓存值
         Object result = invoker.invoke();

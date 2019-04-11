@@ -1,5 +1,6 @@
 package com.y3tu.tool.cache.core.cache;
 
+import com.y3tu.tool.cache.enums.CacheMode;
 import com.y3tu.tool.core.util.JsonUtil;
 import com.y3tu.tool.cache.core.listener.RedisPubSubMessage;
 import com.y3tu.tool.cache.core.listener.RedisPubSubMessageType;
@@ -24,8 +25,6 @@ public class LayerCache extends AbstractValueAdaptingCache {
      * redis 客户端
      */
     private RedisTemplate<String, Object> redisTemplate;
-
-
     /**
      * 一级缓存
      */
@@ -35,16 +34,14 @@ public class LayerCache extends AbstractValueAdaptingCache {
      * 二级缓存
      */
     private Cache secondCache;
-
+    /**
+     * 缓存模式
+     */
+    private CacheMode cacheMode;
     /**
      * 多级缓存配置
      */
     private LayerCacheSetting layerCacheSetting;
-
-    /**
-     * 是否使用一级缓存， 默认true
-     */
-    private boolean useFirstCache = true;
 
     /**
      * 创建一个多级缓存对象
@@ -56,24 +53,23 @@ public class LayerCache extends AbstractValueAdaptingCache {
      * @param layerCacheSetting 多级缓存配置
      */
     public LayerCache(RedisTemplate<String, Object> redisTemplate, Cache firstCache, Cache secondCache, boolean stats, LayerCacheSetting layerCacheSetting) {
-        this(redisTemplate, firstCache, secondCache, true, stats, secondCache.getName(), layerCacheSetting);
+        this(redisTemplate, firstCache, secondCache, layerCacheSetting.getCacheMode(), stats, secondCache.getName(), layerCacheSetting);
     }
 
     /**
      * @param redisTemplate     redisTemplate
      * @param firstCache        一级缓存
      * @param secondCache       二级缓存
-     * @param useFirstCache     是否使用一级缓存，默认是
+     * @param cacheMode         缓存模式
      * @param stats             是否开启统计，默认否
      * @param name              缓存名称
      * @param layerCacheSetting 多级缓存配置
      */
-    public LayerCache(RedisTemplate<String, Object> redisTemplate, Cache firstCache, Cache secondCache, boolean useFirstCache, boolean stats, String name, LayerCacheSetting layerCacheSetting) {
+    public LayerCache(RedisTemplate<String, Object> redisTemplate, Cache firstCache, Cache secondCache, CacheMode cacheMode, boolean stats, String name, LayerCacheSetting layerCacheSetting) {
         super(true, stats, name);
         this.redisTemplate = redisTemplate;
         this.firstCache = firstCache;
         this.secondCache = secondCache;
-        this.useFirstCache = useFirstCache;
         this.layerCacheSetting = layerCacheSetting;
     }
 
@@ -85,21 +81,23 @@ public class LayerCache extends AbstractValueAdaptingCache {
     @Override
     public Object get(Object key) {
         Object result = null;
-        if (useFirstCache) {
+        if (CacheMode.ALL.equals(cacheMode)) {
             result = firstCache.get(key);
             log.debug("查询一级缓存。 key={},返回值是:{}", key, JsonUtil.toJson(result));
         }
         if (result == null) {
             result = secondCache.get(key);
-            firstCache.putIfAbsent(key, result);
-            log.debug("查询二级缓存,并将数据放到一级缓存。 key={},返回值是:{}", key, JsonUtil.toJson(result));
+            if (CacheMode.ALL.equals(cacheMode)) {
+                firstCache.putIfAbsent(key, result);
+                log.debug("查询二级缓存,并将数据放到一级缓存。 key={},返回值是:{}", key, JsonUtil.toJson(result));
+            }
         }
         return fromStoreValue(result);
     }
 
     @Override
     public <T> T get(Object key, Class<T> type) {
-        if (useFirstCache) {
+        if (CacheMode.ALL.equals(cacheMode)) {
             Object result = firstCache.get(key, type);
             log.debug("查询一级缓存。 key={},返回值是:{}", key, JsonUtil.toJson(result));
             if (result != null) {
@@ -108,14 +106,16 @@ public class LayerCache extends AbstractValueAdaptingCache {
         }
 
         T result = secondCache.get(key, type);
-        firstCache.putIfAbsent(key, result);
+        if (CacheMode.ALL.equals(cacheMode)) {
+            firstCache.putIfAbsent(key, result);
+        }
         log.debug("查询二级缓存,并将数据放到一级缓存。 key={},返回值是:{}", key, JsonUtil.toJson(result));
         return result;
     }
 
     @Override
     public <T> T get(Object key, Callable<T> valueLoader) {
-        if (useFirstCache) {
+        if (CacheMode.ALL.equals(cacheMode)) {
             Object result = firstCache.get(key);
             log.debug("查询一级缓存。 key={},返回值是:{}", key, JsonUtil.toJson(result));
             if (result != null) {
@@ -123,7 +123,9 @@ public class LayerCache extends AbstractValueAdaptingCache {
             }
         }
         T result = secondCache.get(key, valueLoader);
-        firstCache.putIfAbsent(key, result);
+        if (CacheMode.ALL.equals(cacheMode)) {
+            firstCache.putIfAbsent(key, result);
+        }
         log.debug("查询二级缓存,并将数据放到一级缓存。 key={},返回值是:{}", key, JsonUtil.toJson(result));
         return result;
     }
@@ -132,7 +134,7 @@ public class LayerCache extends AbstractValueAdaptingCache {
     public void put(Object key, Object value) {
         secondCache.put(key, value);
         // 删除一级缓存
-        if (useFirstCache) {
+        if (CacheMode.ALL.equals(cacheMode)) {
             deleteFirstCache(key);
         }
     }
@@ -141,7 +143,7 @@ public class LayerCache extends AbstractValueAdaptingCache {
     public Object putIfAbsent(Object key, Object value) {
         Object result = secondCache.putIfAbsent(key, value);
         // 删除一级缓存
-        if (useFirstCache) {
+        if (CacheMode.ALL.equals(cacheMode)) {
             deleteFirstCache(key);
         }
         return result;
@@ -152,7 +154,7 @@ public class LayerCache extends AbstractValueAdaptingCache {
         // 删除的时候要先删除二级缓存再删除一级缓存，否则有并发问题
         secondCache.evict(key);
         // 删除一级缓存
-        if (useFirstCache) {
+        if (CacheMode.ALL.equals(cacheMode)) {
             deleteFirstCache(key);
         }
     }
@@ -161,7 +163,7 @@ public class LayerCache extends AbstractValueAdaptingCache {
     public void clear() {
         // 删除的时候要先删除二级缓存再删除一级缓存，否则有并发问题
         secondCache.clear();
-        if (useFirstCache) {
+        if (CacheMode.ALL.equals(cacheMode)) {
             // 清除一级缓存需要用到redis的订阅/发布模式，否则集群中其他服服务器节点的一级缓存数据无法删除
             RedisPubSubMessage message = new RedisPubSubMessage();
             message.setCacheName(getName());

@@ -1,5 +1,6 @@
 package com.y3tu.tool.cache.annotation;
 
+import com.y3tu.tool.cache.enums.CacheMode;
 import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.*;
@@ -65,4 +66,9 @@ public @interface CachePut {
      * @return SecondaryCache
      */
     SecondaryCache secondaryCache() default @SecondaryCache();
+
+    /**
+     * 缓存模式 默认同时开启一二级缓存
+     */
+    CacheMode cacheMode() default CacheMode.ALL;
 }

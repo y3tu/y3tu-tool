@@ -1,11 +1,8 @@
 package com.y3tu.tool.cache.core.manager;
 
-
 import com.y3tu.tool.cache.core.cache.Cache;
 import com.y3tu.tool.cache.core.setting.LayerCacheSetting;
-import com.y3tu.tool.cache.core.stats.CacheStats;
 import com.y3tu.tool.cache.core.stats.CacheStatsInfo;
-
 import java.util.Collection;
 import java.util.List;
 
