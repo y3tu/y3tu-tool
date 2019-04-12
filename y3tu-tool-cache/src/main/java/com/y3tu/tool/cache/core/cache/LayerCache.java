@@ -179,35 +179,65 @@ public class LayerCache extends AbstractValueAdaptingCache {
 
     @Override
     public Object putIfAbsent(Object key, Object value) {
-        Object result = secondCache.putIfAbsent(key, value);
-        // 删除一级缓存
-        if (CacheMode.ALL.equals(cacheMode)) {
-            deleteFirstCache(key);
+        Object result = null;
+        switch (cacheMode) {
+            case ALL:
+                result = secondCache.putIfAbsent(key, value);
+                deleteFirstCache(key);
+                break;
+            case ONLY_FIRST:
+                result = firstCache.putIfAbsent(key, value);
+                break;
+            case ONLY_SECOND:
+                result = secondCache.putIfAbsent(key, value);
+                break;
+            default:
+                break;
         }
         return result;
     }
 
     @Override
     public void evict(Object key) {
-        // 删除的时候要先删除二级缓存再删除一级缓存，否则有并发问题
-        secondCache.evict(key);
-        // 删除一级缓存
-        if (CacheMode.ALL.equals(cacheMode)) {
-            deleteFirstCache(key);
+        switch (cacheMode) {
+            case ALL:
+                // 删除的时候要先删除二级缓存再删除一级缓存，否则有并发问题
+                secondCache.evict(key);
+                // 删除一级缓存
+                deleteFirstCache(key);
+                break;
+            case ONLY_FIRST:
+                firstCache.evict(key);
+                break;
+            case ONLY_SECOND:
+                secondCache.evict(key);
+                break;
+            default:
+                break;
         }
     }
 
     @Override
     public void clear() {
-        // 删除的时候要先删除二级缓存再删除一级缓存，否则有并发问题
-        secondCache.clear();
-        if (CacheMode.ALL.equals(cacheMode)) {
-            // 清除一级缓存需要用到redis的订阅/发布模式，否则集群中其他服服务器节点的一级缓存数据无法删除
-            RedisPubSubMessage message = new RedisPubSubMessage();
-            message.setCacheName(getName());
-            message.setMessageType(RedisPubSubMessageType.CLEAR);
-            // 发布消息
-            RedisPublisher.publisher(redisTemplate, new ChannelTopic(getName()), message);
+        switch (cacheMode) {
+            case ALL:
+                // 删除的时候要先删除二级缓存再删除一级缓存，否则有并发问题
+                secondCache.clear();
+                // 清除一级缓存需要用到redis的订阅/发布模式，否则集群中其他服服务器节点的一级缓存数据无法删除
+                RedisPubSubMessage message = new RedisPubSubMessage();
+                message.setCacheName(getName());
+                message.setMessageType(RedisPubSubMessageType.CLEAR);
+                // 发布消息
+                RedisPublisher.publisher(redisTemplate, new ChannelTopic(getName()), message);
+                break;
+            case ONLY_FIRST:
+                firstCache.clear();
+                break;
+            case ONLY_SECOND:
+                secondCache.clear();
+                break;
+            default:
+                break;
         }
     }
 
