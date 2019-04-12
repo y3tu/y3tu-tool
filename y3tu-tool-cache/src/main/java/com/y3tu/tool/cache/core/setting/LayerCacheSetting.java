@@ -24,11 +24,6 @@ public class LayerCacheSetting implements Serializable {
      */
     private String depict;
 
-//    /**
-//     * 是否使用一级缓存
-//     */
-//    boolean useFirstCache = true;
-
     /**
      * 一级缓存配置
      */

@@ -21,25 +21,11 @@ public class LayerCacheManager extends AbstractCacheManager {
 
     @Override
     protected Cache getMissingCache(String name, LayerCacheSetting layerCacheSetting) {
-        CacheMode cacheMode = layerCacheSetting.getCacheMode();
-        if (CacheMode.ALL.equals(cacheMode)) {
-            // 创建一级缓存
-            CaffeineCache caffeineCache = new CaffeineCache(name, layerCacheSetting.getFirstCacheSetting(), getStats());
-            // 创建二级缓存
-            RedisCache redisCache = new RedisCache(name, redisTemplate, layerCacheSetting.getSecondaryCacheSetting(), getStats());
-            return new LayerCache(redisTemplate, caffeineCache, redisCache, super.getStats(), layerCacheSetting);
-        } else if (CacheMode.ONLY_FIRST.equals(cacheMode)) {
-            //只是用一级缓存
-            // 创建一级缓存
-            CaffeineCache caffeineCache = new CaffeineCache(name, layerCacheSetting.getFirstCacheSetting(), getStats());
-            return caffeineCache;
-        } else if (CacheMode.ONLY_SECOND.equals(cacheMode)) {
-            //只是使用二级缓存
-            // 创建二级缓存
-            RedisCache redisCache = new RedisCache(name, redisTemplate, layerCacheSetting.getSecondaryCacheSetting(), getStats());
-            return redisCache;
-        }
-        return null;
+        // 创建一级缓存
+        CaffeineCache caffeineCache = new CaffeineCache(name, layerCacheSetting.getFirstCacheSetting(), getStats());
+        // 创建二级缓存
+        RedisCache redisCache = new RedisCache(name, redisTemplate, layerCacheSetting.getSecondaryCacheSetting(), getStats());
+        return new LayerCache(redisTemplate, caffeineCache, redisCache, super.getStats(), layerCacheSetting);
     }
 
     @Override

@@ -1,11 +1,13 @@
 package com.y3tu.tool.cache.core.listener;
 
+import java.io.Serializable;
+
 /**
  * redis pub/sub 消息
  *
  * @author yuhao.wang3
  */
-public class RedisPubSubMessage {
+public class RedisPubSubMessage implements Serializable {
     /**
      * 缓存名称
      */

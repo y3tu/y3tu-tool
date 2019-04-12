@@ -14,9 +14,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class LayerCacheProperties {
 
     /**
-     * 是否开启缓存统计
+     * 是否关闭缓存统计
      */
-    private boolean stats = true;
+    private boolean stats = false;
 
     /**
      * 命名空间，必须唯一般使用服务名

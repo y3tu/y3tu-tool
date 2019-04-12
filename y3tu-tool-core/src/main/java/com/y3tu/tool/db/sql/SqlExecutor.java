@@ -273,7 +273,6 @@ public class SqlExecutor {
      *
      * @param ps     {@link PreparedStatement}
      * @param rsh    结果集处理对象
-     * @param params 参数
      * @return 结果对象
      * @throws SQLException SQL执行异常
      */

@@ -47,7 +47,7 @@ public abstract class AbstractResourceServlet extends HttpServlet {
      * @param url
      * @return
      */
-    protected abstract String process(HttpServletRequest request, HttpServletResponse response,String url);
+    protected abstract String process(HttpServletRequest request, HttpServletResponse response, String url);
 
     /**
      * 请求处理
@@ -78,12 +78,22 @@ public abstract class AbstractResourceServlet extends HttpServlet {
         //请求路径包含.json表示这是一个获取数据的请求
         if (path.contains(".json")) {
             response.setContentType("application/json; charset=utf-8");
-            response.getWriter().print(process(request, response,path));
+            response.getWriter().print(process(request, response, path));
             return;
         }
 
         //查找到资源文件并返回给前台
-        returnResourceFile(path, uri, response);
+        try {
+            returnResourceFile(path, uri, response);
+        } catch (Exception e) {
+            //查找资源返回错误暂不处理，记录异常
+            log.error("查找资源异常", e);
+            try {
+                super.service(request, response);
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -99,7 +109,7 @@ public abstract class AbstractResourceServlet extends HttpServlet {
         if (filePath.endsWith(".html")) {
             response.setContentType("text/html; charset=utf-8");
         }
-        if (StrUtil.containsAnyIgnoreCase(fileName, ".jpg", ".png", ".woff", ".ttf",".gif")) {
+        if (StrUtil.containsAnyIgnoreCase(fileName, ".jpg", ".png", ".woff", ".ttf", ".gif")) {
             byte[] bytes = IoUtil.readBytes(ResourceUtil.getStream(filePath));
             if (bytes != null) {
                 response.getOutputStream().write(bytes);

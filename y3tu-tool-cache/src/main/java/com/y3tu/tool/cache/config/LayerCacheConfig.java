@@ -70,7 +70,7 @@ public class LayerCacheConfig {
     @ConditionalOnMissingBean(CacheManager.class)
     public CacheManager cacheManager(@Qualifier("cacheRedisTemplate") RedisTemplate cacheRedisTemplate, @Qualifier("layerCacheProperties") LayerCacheProperties properties) {
         LayerCacheManager layerCacheManager = new LayerCacheManager(cacheRedisTemplate);
-        // 默认开启统计功能
+        // 默认关闭统计功能
         layerCacheManager.setStats(properties.isStats());
         return layerCacheManager;
     }

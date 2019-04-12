@@ -18,6 +18,10 @@
                         <el-col :span="4">
                             <el-button type="primary" icon="el-icon-search" @click="queryCacheInfo">搜索</el-button>
                         </el-col>
+
+                        <el-col :span="4">
+                            <el-button type="primary" icon="el-icon-search" @click="test">测试</el-button>
+                        </el-col>
                     </el-row>
                 </el-card>
             </el-header>
@@ -25,7 +29,7 @@
             <el-main>
 
                 <el-card class="box-card">
-                    <el-table :data="currentTableData"
+                    <el-table :data="tables.slice((page.pageCurrent-1)*page.pageSize,page.pageCurrent*page.pageSize)"
                               size="mini"
                               stripe
                               style="width: 100%;"
@@ -95,13 +99,12 @@
 
 <script>
 
-    import {getCacheList, getCacheName} from "@/api/cache";
+    import {getCacheList, getCacheName, testPut} from "@/api/cache";
 
     export default {
         name: "cacheManager",
         data() {
             return {
-                currentTableData: [],
                 multipleSelection: [],
                 cacheName: "",
                 cacheNameArr: [],
@@ -118,13 +121,26 @@
         },
         mounted() {
         },
+        computed: {
+            tables() {
+                return this.tableData;
+            }
+        },
         methods: {
             getCacheName: function (queryString, cb) {
                 getCacheName().then(res => {
                     if (res.status === 'SUCCESS') {
-                        cb(res.data);
-                    }else {
-                        this.$message.error('查询缓存名称错误:'+res.message);
+                        let cbs = [];
+                        for (let i in res.data) {
+                            let cacheName = {
+                                'value': res.data[i],
+                                'cacheName': res.data[i]
+                            };
+                            cbs.push(cacheName)
+                        }
+                        cb(cbs);
+                    } else {
+                        this.$message.error('查询缓存名称错误:' + res.message);
                     }
                 });
             },
@@ -132,10 +148,15 @@
                 console.log(item);
             },
             queryCacheInfo: function () {
-                getCacheList(this.cacheName).then(res=>{
-                    if(res.status==='SUCCESS'){
-
-                    }else {
+                getCacheList(this.cacheName).then(res => {
+                    if (res.status === 'SUCCESS') {
+                        if(res.data==null||res.data.length<1){
+                            this.$message.warning("没有查询到数据!");
+                        }else {
+                            this.tableData = res.data;
+                            this.page.pageTotal = this.tableData.length;
+                        }
+                    } else {
                         this.$message.error(res.message);
                     }
                 })
@@ -144,16 +165,12 @@
                 this.multipleSelection = val
             },
             handlePaginationChange(val) {
-                this.$notify({
-                    title: '分页变化',
-                    message: `当前第${val.current}页 共${val.total}条 每页${val.size}条`
-                });
-                this.page = val
-                // nextTick 只是为了优化示例中 notify 的显示
-                this.$nextTick(() => {
-
-                })
+                this.page.pageCurrent = val.current;
+                this.page.pageSize = val.size;
             },
+            test(){
+                testPut();
+            }
         }
     };
 </script>

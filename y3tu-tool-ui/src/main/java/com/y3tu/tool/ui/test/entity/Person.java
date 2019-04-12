@@ -1,5 +1,6 @@
 package com.y3tu.tool.ui.test.entity;
 
+import jdk.nashorn.internal.objects.annotations.Constructor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

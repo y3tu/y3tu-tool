@@ -3,9 +3,7 @@ package com.y3tu.tool.ui.test.controller;
 import com.y3tu.tool.ui.test.entity.Person;
 import com.y3tu.tool.ui.test.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 多级缓存测试
@@ -13,22 +11,23 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2019-04-08
  */
 @RestController
-@RequestMapping("cacheTest")
+@RequestMapping("/cacheTest")
 public class CacheTestController {
 
     @Autowired
     PersonService personService;
 
-    @RequestMapping("/put")
-    public long put(@RequestBody Person person) {
-        Person p = personService.save(person);
-        return p.getId();
+    @RequestMapping(value = "/put",method = RequestMethod.GET)
+    public long put() {
+        Person p = new Person(1,"y3tu",29,"test");
+        Person person = personService.save(p);
+        return person.getId();
     }
 
     @RequestMapping("/able")
-    public Person cacheable(@RequestBody Person person) {
-
-        return personService.findOne(person);
+    public Person cacheable() {
+        Person p = new Person(1,"y3tu",29,"test");
+        return personService.findOne(p);
     }
 
     @RequestMapping("/evit")

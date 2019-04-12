@@ -1,6 +1,7 @@
 package com.y3tu.tool.ui.test.service.impl;
 
 import com.y3tu.tool.cache.annotation.*;
+import com.y3tu.tool.cache.enums.CacheMode;
 import com.y3tu.tool.ui.test.entity.Person;
 import com.y3tu.tool.ui.test.service.PersonService;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class PersonServiceImpl implements PersonService {
 
     @Override
-    @CachePut(value = "people", key = "#person.id", depict = "用户信息缓存")
+    @CachePut(value = "people", key = "#person.id", depict = "用户信息缓存",cacheMode = CacheMode.ONLY_FIRST)
     public Person save(Person person) {
         log.info("为id、key为:" + person.getId() + "数据做了缓存");
         return person;

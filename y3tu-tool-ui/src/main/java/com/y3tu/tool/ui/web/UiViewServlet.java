@@ -65,9 +65,15 @@ public class UiViewServlet extends AbstractResourceServlet {
             response.getWriter().write(process(request, response, path));
             return;
         }
-        //查找到资源文件并返回给前台
-        returnResourceFile(path, uri, response);
 
+        //查找到资源文件并返回给前台
+        try {
+            returnResourceFile(path, uri, response);
+        }catch (Exception e){
+            //查找资源返回错误暂不处理，记录异常
+            log.error("查找资源异常",e);
+            super.service(request,response);
+        }
     }
 
     /**

@@ -1,7 +1,7 @@
 package com.y3tu.tool.cache.core.stats;
 
-import com.alibaba.fastjson.JSON;
 import com.y3tu.tool.cache.redis.lock.Lock;
+import com.y3tu.tool.core.util.JsonUtil;
 import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.cache.core.cache.Cache;
 import com.y3tu.tool.cache.core.cache.LayerCache;
@@ -151,7 +151,7 @@ public class StatsService {
                                 // 将缓存统计数据写到redis
                                 redisTemplate.opsForValue().set(redisKey, cacheStats, 1, TimeUnit.HOURS);
 
-                                log.info("Layering Cache 统计信息：{}", JSON.toJSONString(cacheStats));
+                                log.info("Layering Cache 统计信息：{}", JsonUtil.toJson(cacheStats));
                             }
                         } catch (Exception e) {
                             log.error(e.getMessage(), e);

@@ -1,6 +1,9 @@
 y3tu:
   tool:
     cache:
+      layer:
+        #开启缓存统计
+        stats: true
       redis:
         enable: true
         #Matser的ip地址
@@ -11,7 +14,6 @@ y3tu:
         password: xiehuan
         #客户端超时时间单位是毫秒 默认是2000
         timeout: 10000
-
         #最大空闲数
         maxIdle: 300
         #连接池的最大数据库连接数。设为0表示无限制,如果是jedis 2.4以后用maxTotal
@@ -30,7 +32,6 @@ y3tu:
         testOnBorrow: true
         #在空闲时检查有效性, 默认false
         testWhileIdle: true
-
         #redis集群配置
         spring.cluster.nodes: 119.23.205.255:6379
         spring.cluster.max-redirects: 2
