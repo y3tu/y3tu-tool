@@ -81,76 +81,61 @@ public class LayerCache extends AbstractValueAdaptingCache {
 
     @Override
     public Object get(Object key) {
-        Object result = null;
-        switch (cacheMode) {
-            case ALL:
-                result = firstCache.get(key);
-                log.debug("查询一级缓存。 key={},返回值是:{}", key, JsonUtil.toJson(result));
-                if (result == null) {
-                    result = secondCache.get(key);
-                    firstCache.putIfAbsent(key, result);
-                    log.debug("查询二级缓存,并将数据放到一级缓存。 key={},返回值是:{}", key, JsonUtil.toJson(result));
-                }
-                break;
-            case ONLY_FIRST:
-                result = firstCache.get(key);
-                log.debug("查询一级缓存。 key={},返回值是:{}", key, JsonUtil.toJson(result));
-                break;
-            case ONLY_SECOND:
-                result = secondCache.get(key);
-                break;
-            default:
-                break;
-        }
-        return fromStoreValue(result);
+       return get(key,null,null);
     }
 
     @Override
     public <T> T get(Object key, Class<T> type) {
-        T result = null;
-        switch (cacheMode) {
-            case ALL:
-                result = firstCache.get(key, type);
-                log.debug("查询一级缓存。 key={},返回值是:{}", key, JsonUtil.toJson(result));
-                if (result == null) {
-                    result = secondCache.get(key, type);
-                    firstCache.putIfAbsent(key, result);
-                    log.debug("查询二级缓存,并将数据放到一级缓存。 key={},返回值是:{}", key, JsonUtil.toJson(result));
-                }
-                break;
-            case ONLY_FIRST:
-                result = firstCache.get(key, type);
-                log.debug("查询一级缓存。 key={},返回值是:{}", key, JsonUtil.toJson(result));
-                break;
-            case ONLY_SECOND:
-                result = secondCache.get(key, type);
-                break;
-            default:
-                break;
-        }
-        return (T) fromStoreValue(result);
+       return get(key,type,null);
     }
 
     @Override
     public <T> T get(Object key, Callable<T> valueLoader) {
+        return get(key,null,valueLoader);
+    }
 
+    public <T> T get(Object key,Class<T> type, Callable<T> valueLoader) {
         T result = null;
         switch (cacheMode) {
             case ALL:
-                result = firstCache.get(key, valueLoader);
+                if(type!=null){
+                    result = firstCache.get(key, type);
+                }else if(valueLoader!=null){
+                    result  = firstCache.get(key,valueLoader);
+                }else {
+                    result =(T)firstCache.get(key);
+                }
                 log.debug("查询一级缓存。 key={},返回值是:{}", key, JsonUtil.toJson(result));
                 if (result == null) {
-                    result = secondCache.get(key, valueLoader);
+                    if(type!=null){
+                        result = secondCache.get(key, type);
+                    }else if(valueLoader!=null){
+                        result  = secondCache.get(key,valueLoader);
+                    }else {
+                        result =(T)secondCache.get(key);
+                    }
                     firstCache.putIfAbsent(key, result);
                     log.debug("查询二级缓存,并将数据放到一级缓存。 key={},返回值是:{}", key, JsonUtil.toJson(result));
                 }
                 break;
             case ONLY_FIRST:
-                result = firstCache.get(key, valueLoader);
+                if(type!=null){
+                    result = firstCache.get(key, type);
+                }else if(valueLoader!=null){
+                    result  = firstCache.get(key,valueLoader);
+                }else {
+                    result =(T)firstCache.get(key);
+                }
                 log.debug("查询一级缓存。 key={},返回值是:{}", key, JsonUtil.toJson(result));
                 break;
             case ONLY_SECOND:
-                result = secondCache.get(key, valueLoader);
+                if(type!=null){
+                    result = secondCache.get(key, type);
+                }else if(valueLoader!=null){
+                    result  = secondCache.get(key,valueLoader);
+                }else {
+                    result =(T)secondCache.get(key);
+                }
                 break;
             default:
                 break;
