@@ -33,6 +33,8 @@ public class CacheService {
                 layerCacheSetting.setInternalKey(internalKey);
                 Cache cache = cacheManager.getCache(cacheName, layerCacheSetting);
                 cache.clear();
+                //清空容器中的缓存
+                cacheManager.deleteCache(cacheName);
             }
 
             return;

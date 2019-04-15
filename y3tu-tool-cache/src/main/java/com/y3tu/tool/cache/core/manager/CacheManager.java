@@ -55,4 +55,10 @@ public interface CacheManager {
      * 重置缓存统计数据
      */
     void resetCacheStat();
+
+    /**
+     * 根据缓存名称删除缓存
+     * @param cacheName
+     */
+    void deleteCache(String cacheName);
 }

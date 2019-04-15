@@ -6,7 +6,6 @@ import com.y3tu.tool.cache.core.cache.LayerCache;
 import com.y3tu.tool.cache.core.cache.caffeine.CaffeineCache;
 import com.y3tu.tool.cache.core.cache.redis.RedisCache;
 import com.y3tu.tool.cache.core.setting.LayerCacheSetting;
-import com.y3tu.tool.cache.enums.CacheMode;
 import org.springframework.data.redis.core.RedisTemplate;
 
 /**
@@ -37,4 +36,6 @@ public class LayerCacheManager extends AbstractCacheManager {
     public int hashCode() {
         return super.hashCode();
     }
+
+
 }

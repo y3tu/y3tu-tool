@@ -146,6 +146,16 @@ public abstract class AbstractCacheManager implements CacheManager, Initializing
         cacheNames.add(name);
     }
 
+    /**
+     * 删除容器中指定的cacheName
+     *
+     * @param cacheName 缓存名称
+     */
+    @Override
+    public void deleteCache(String cacheName) {
+        this.cacheNames.remove(cacheName);
+        this.cacheContainer.remove(cacheName);
+    }
 
     /**
      * 获取Cache对象的装饰示例
