@@ -1,6 +1,6 @@
-package com.y3tu.tool.ui.test.service;
+package com.y3tu.tool.demo.service;
 
-import com.y3tu.tool.ui.test.entity.Person;
+import com.y3tu.tool.demo.entity.Person;
 
 /**
  * @author y3tu

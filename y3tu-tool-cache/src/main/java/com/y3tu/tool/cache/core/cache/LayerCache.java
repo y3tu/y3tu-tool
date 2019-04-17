@@ -53,7 +53,7 @@ public class LayerCache extends AbstractValueAdaptingCache {
      * @param layerCacheSetting 多级缓存配置
      */
     public LayerCache(RedisTemplate<String, Object> redisTemplate, Cache firstCache, Cache secondCache, boolean stats, LayerCacheSetting layerCacheSetting) {
-        this(redisTemplate, firstCache, secondCache, layerCacheSetting.getCacheMode(), stats, secondCache.getName(), layerCacheSetting);
+        this(redisTemplate, firstCache, secondCache, layerCacheSetting.getCacheMode(), stats, firstCache.getName(), layerCacheSetting);
     }
 
     /**
@@ -98,7 +98,7 @@ public class LayerCache extends AbstractValueAdaptingCache {
         T result = null;
         switch (cacheMode) {
             case ALL:
-                result = get(firstCache, key, type, valueLoader);
+                result = get(firstCache, key, null, null);
                 log.debug("查询一级缓存。 key={},返回值是:{}", key, JsonUtil.toJson(result));
                 if (result == null) {
                     result = get(secondCache, key, type, valueLoader);

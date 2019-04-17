@@ -3,7 +3,7 @@ package com.y3tu.tool.cache.core.listener;
 import com.alibaba.fastjson.JSON;
 import com.y3tu.tool.cache.core.cache.Cache;
 import com.y3tu.tool.cache.core.cache.LayerCache;
-import com.y3tu.tool.cache.core.manager.AbstractCacheManager;
+import com.y3tu.tool.cache.core.manager.LayerCacheManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
@@ -21,7 +21,7 @@ public class RedisMessageListener extends MessageListenerAdapter {
     /**
      * 缓存管理器
      */
-    private AbstractCacheManager cacheManager;
+    private LayerCacheManager cacheManager;
 
     @Override
     public void onMessage(Message message, byte[] pattern) {
@@ -58,7 +58,7 @@ public class RedisMessageListener extends MessageListenerAdapter {
         }
     }
 
-    public void setCacheManager(AbstractCacheManager cacheManager) {
+    public void setCacheManager(LayerCacheManager cacheManager) {
         this.cacheManager = cacheManager;
     }
 }

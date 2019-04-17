@@ -1,4 +1,4 @@
-package com.y3tu.tool.ui.test.controller;
+package com.y3tu.tool.demo.controller;
 
 import com.y3tu.tool.cache.redis.template.RedisRepository;
 import com.y3tu.tool.core.pojo.R;
@@ -17,20 +17,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("redisTest")
 public class RedisTestController {
 
-    @Autowired
-    RedisRepository redisRepository;
-
-    @RequestMapping(value = "/setValue",method = RequestMethod.GET)
-    R setValue(@RequestParam String key,@RequestParam String value){
-        redisRepository.set(key,value);
-        return R.success();
-    }
-
-    @RequestMapping(value = "/getValue",method = RequestMethod.GET)
-    R getValue(@RequestParam String key){
-        String resultStr = redisRepository.get(key);
-        return R.success(resultStr);
-    }
+//    @Autowired
+//    RedisRepository redisRepository;
+//
+//    @RequestMapping(value = "/setValue",method = RequestMethod.GET)
+//    R setValue(@RequestParam String key,@RequestParam String value){
+//        redisRepository.set(key,value);
+//        return R.success();
+//    }
+//
+//    @RequestMapping(value = "/getValue",method = RequestMethod.GET)
+//    R getValue(@RequestParam String key){
+//        String resultStr = redisRepository.get(key);
+//        return R.success(resultStr);
+//    }
 
 
 }

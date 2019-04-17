@@ -1,9 +1,9 @@
-package com.y3tu.tool.ui.test.service.impl;
+package com.y3tu.tool.demo.service.impl;
 
 import com.y3tu.tool.cache.annotation.*;
 import com.y3tu.tool.cache.enums.CacheMode;
-import com.y3tu.tool.ui.test.entity.Person;
-import com.y3tu.tool.ui.test.service.PersonService;
+import com.y3tu.tool.demo.entity.Person;
+import com.y3tu.tool.demo.service.PersonService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -37,12 +37,9 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    @Cacheable(value = "people", key = "#person.id", depict = "用户信息缓存",
-            firstCache = @FirstCache(expireTime = 4),
-            secondaryCache = @SecondaryCache(expireTime = 15, preloadTime = 8, forceRefresh = true))
+    @Cacheable(value = "people", key = "#person.id", depict = "用户信息缓存",cacheMode = CacheMode.ONLY_FIRST)
     public Person findOne(Person person) {
-        Person p = new Person(2L, "name2", 12, "address2");
-        log.info("为id、key为:" + p.getId() + "数据做了缓存");
-        return p;
+        log.info("为id、key为:" + person.getId() + "数据做了缓存");
+        return person;
     }
 }

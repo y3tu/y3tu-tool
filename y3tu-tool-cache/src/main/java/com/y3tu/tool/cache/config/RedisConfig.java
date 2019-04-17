@@ -1,11 +1,15 @@
 package com.y3tu.tool.cache.config;
 
+import com.y3tu.tool.cache.aspect.LimitAspect;
+import com.y3tu.tool.cache.aspect.RedisAspect;
 import com.y3tu.tool.cache.core.serializer.FastJsonRedisSerializer;
 import com.y3tu.tool.cache.redis.lock.RedisDistributedLock;
 import com.y3tu.tool.cache.redis.template.RedisRepository;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -26,7 +30,8 @@ import java.io.Serializable;
  * @author y3tu
  */
 @Configuration
-public class RedisConfig extends CachingConfigurerSupport {
+@ConditionalOnClass(RedisConnectionFactory.class)
+public class RedisConfig {
 
     /**
      * 对redis操作的封装
@@ -36,9 +41,32 @@ public class RedisConfig extends CachingConfigurerSupport {
      */
     @Bean
     @ConditionalOnMissingBean(RedisRepository.class)
+    @ConditionalOnBean(RedisTemplate.class)
     public RedisRepository redisRepository(RedisTemplate redisTemplate) {
         return new RedisRepository(redisTemplate);
     }
+
+    /**
+     * redis切面
+     * @return
+     */
+    @Bean
+    @ConditionalOnClass(Aspect.class)
+    public RedisAspect redisAspect(){
+        return new RedisAspect();
+    }
+
+    /**
+     * 限流切面
+     * @param redisTemplate
+     * @return
+     */
+    @Bean
+    @ConditionalOnBean(RedisTemplate.class)
+    public LimitAspect limitAspect(RedisTemplate redisTemplate){
+        return new LimitAspect(redisTemplate);
+    }
+
 
     /**
      * 分布式锁的实现
@@ -48,6 +76,7 @@ public class RedisConfig extends CachingConfigurerSupport {
      */
     @Bean
     @ConditionalOnMissingBean(RedisDistributedLock.class)
+    @ConditionalOnBean(RedisTemplate.class)
     public RedisDistributedLock redisDistributedLock(RedisTemplate redisTemplate) {
         return new RedisDistributedLock(redisTemplate);
     }
@@ -85,7 +114,7 @@ public class RedisConfig extends CachingConfigurerSupport {
      */
     @Bean
     @ConditionalOnProperty(name = "y3tu.tool.cache.redis.enable")
-    public RedisConnectionFactory redisConnectionFactory(JedisPoolConfig jedisPoolConfig,RedisProperties properties) {
+    public RedisConnectionFactory redisConnectionFactory(JedisPoolConfig jedisPoolConfig, RedisProperties properties) {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
         redisStandaloneConfiguration.setHostName(properties.getHostName());
         redisStandaloneConfiguration.setPort(properties.getPort());
@@ -100,6 +129,7 @@ public class RedisConfig extends CachingConfigurerSupport {
     @Bean(name = "redisTemplate")
     @SuppressWarnings({"unchecked", "rawtypes"})
     @ConditionalOnMissingBean(name = "redisTemplate")
+    @ConditionalOnBean(RedisConnectionFactory.class)
     public RedisTemplate redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate template = new RedisTemplate();
         //使用 fastjson 序列化
@@ -117,6 +147,7 @@ public class RedisConfig extends CachingConfigurerSupport {
 
     @Bean
     @ConditionalOnMissingBean(name = "limitRedisTemplate")
+    @ConditionalOnBean(RedisConnectionFactory.class)
     public RedisTemplate<String, Serializable> limitRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Serializable> template = new RedisTemplate<>();
         template.setKeySerializer(new StringRedisSerializer());
@@ -124,5 +155,6 @@ public class RedisConfig extends CachingConfigurerSupport {
         template.setConnectionFactory(redisConnectionFactory);
         return template;
     }
+
 }
 

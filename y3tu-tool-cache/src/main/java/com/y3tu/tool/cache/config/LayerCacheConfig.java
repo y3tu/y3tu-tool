@@ -3,21 +3,16 @@ package com.y3tu.tool.cache.config;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.y3tu.tool.cache.aspect.LayerCacheAspect;
 import com.y3tu.tool.cache.core.manager.CacheManager;
 import com.y3tu.tool.cache.core.manager.LayerCacheManager;
 import com.y3tu.tool.cache.core.serializer.FastJsonRedisSerializer;
 import com.y3tu.tool.cache.core.serializer.KryoRedisSerializer;
 import com.y3tu.tool.cache.core.serializer.StringRedisSerializer;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
@@ -28,19 +23,10 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
  * @author xiaolyuh
  */
 @Configuration
-@ConditionalOnBean(RedisTemplate.class)
-@AutoConfigureAfter({RedisAutoConfiguration.class})
-@EnableAspectJAutoProxy
+@ConditionalOnClass(RedisConnectionFactory.class)
 public class LayerCacheConfig {
 
-
-    @Bean
-    public LayerCacheAspect layerCacheAspect() {
-        return new LayerCacheAspect();
-    }
-
     @Bean(name = "cacheRedisTemplate")
-    @ConditionalOnBean(RedisConnectionFactory.class)
     public RedisTemplate<String, Object> cacheRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
@@ -66,8 +52,8 @@ public class LayerCacheConfig {
         return redisTemplate;
     }
 
-    @Bean
-    @ConditionalOnMissingBean(CacheManager.class)
+    @Bean("redisCacheManager")
+    @ConditionalOnBean(RedisTemplate.class)
     public CacheManager cacheManager(@Qualifier("cacheRedisTemplate") RedisTemplate cacheRedisTemplate, @Qualifier("layerCacheProperties") LayerCacheProperties properties) {
         LayerCacheManager layerCacheManager = new LayerCacheManager(cacheRedisTemplate);
         // 默认关闭统计功能

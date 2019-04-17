@@ -1,5 +1,6 @@
 package com.y3tu.tool.cache.core.stats;
 
+import com.y3tu.tool.cache.core.manager.LayerCacheManager;
 import com.y3tu.tool.cache.redis.lock.Lock;
 import com.y3tu.tool.core.util.JsonUtil;
 import com.y3tu.tool.core.util.StrUtil;
@@ -37,7 +38,7 @@ public class StatsService {
     /**
      * {@link AbstractCacheManager }
      */
-    private AbstractCacheManager cacheManager;
+    private LayerCacheManager cacheManager;
 
     /**
      * 获取缓存统计list
@@ -182,7 +183,7 @@ public class StatsService {
         redisTemplate.delete(keys);
     }
 
-    public void setCacheManager(AbstractCacheManager cacheManager) {
+    public void setCacheManager(LayerCacheManager cacheManager) {
         this.cacheManager = cacheManager;
     }
 }

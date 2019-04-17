@@ -1,19 +1,12 @@
 package com.y3tu.tool.cache.core.manager;
 
 import com.y3tu.tool.cache.core.cache.Cache;
-import com.y3tu.tool.cache.core.listener.RedisMessageListener;
 import com.y3tu.tool.cache.core.setting.LayerCacheSetting;
 import com.y3tu.tool.cache.core.stats.CacheStatsInfo;
 import com.y3tu.tool.cache.core.stats.StatsService;
 import com.y3tu.tool.core.bean.BeanCache;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.SmartLifecycle;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.listener.ChannelTopic;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
@@ -26,17 +19,7 @@ import java.util.concurrent.ConcurrentMap;
  * @author yuhao.wang3
  */
 @Slf4j
-public abstract class AbstractCacheManager implements CacheManager, InitializingBean, DisposableBean, BeanNameAware, SmartLifecycle {
-
-    /**
-     * redis pub/sub 容器
-     */
-    private final RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-
-    /**
-     * redis pub/sub 监听器
-     */
-    private final RedisMessageListener messageListener = new RedisMessageListener();
+public abstract class AbstractCacheManager implements CacheManager,DisposableBean {
 
     /**
      * 缓存容器
@@ -60,10 +43,6 @@ public abstract class AbstractCacheManager implements CacheManager, Initializing
      */
     private boolean stats = true;
 
-    /**
-     * redis 客户端
-     */
-    RedisTemplate<String, Object> redisTemplate;
 
     /**
      * 获取CacheManager容器
@@ -176,6 +155,10 @@ public abstract class AbstractCacheManager implements CacheManager, Initializing
      */
     protected abstract Cache getMissingCache(String name, LayerCacheSetting layerCacheSetting);
 
+    protected void addMessageListener(String name){
+
+    }
+
     /**
      * 获取缓存容器
      *
@@ -185,29 +168,7 @@ public abstract class AbstractCacheManager implements CacheManager, Initializing
         return cacheContainer;
     }
 
-    /**
-     * 添加消息监听
-     *
-     * @param name 缓存名称
-     */
-    protected void addMessageListener(String name) {
-        container.addMessageListener(messageListener, new ChannelTopic(name));
-    }
 
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        messageListener.setCacheManager(this);
-        container.setConnectionFactory(getRedisTemplate().getConnectionFactory());
-        container.afterPropertiesSet();
-        messageListener.afterPropertiesSet();
-
-        BeanCache.getBean(StatsService.class).setCacheManager(this);
-        if (getStats()) {
-            // 采集缓存命中率数据
-            BeanCache.getBean(StatsService.class).syncCacheStats();
-        }
-    }
 
     @Override
     public List<CacheStatsInfo> listCacheStats(String cacheName) {
@@ -224,49 +185,13 @@ public abstract class AbstractCacheManager implements CacheManager, Initializing
         BeanCache.getBean(StatsService.class).resetCacheStat();
     }
 
-    @Override
-    public void setBeanName(String name) {
-        container.setBeanName("redisMessageListenerContainer");
+    public boolean getStats() {
+        return stats;
     }
 
     @Override
     public void destroy() throws Exception {
-        container.destroy();
         BeanCache.getBean(StatsService.class).shutdownExecutor();
-    }
-
-    @Override
-    public boolean isAutoStartup() {
-        return container.isAutoStartup();
-    }
-
-    @Override
-    public void stop(Runnable callback) {
-        container.stop(callback);
-    }
-
-    @Override
-    public void start() {
-        container.start();
-    }
-
-    @Override
-    public void stop() {
-        container.stop();
-    }
-
-    @Override
-    public boolean isRunning() {
-        return container.isRunning();
-    }
-
-    @Override
-    public int getPhase() {
-        return container.getPhase();
-    }
-
-    public boolean getStats() {
-        return stats;
     }
 
     public void setStats(boolean stats) {
@@ -283,11 +208,4 @@ public abstract class AbstractCacheManager implements CacheManager, Initializing
         return super.hashCode();
     }
 
-    public RedisTemplate<String, Object> getRedisTemplate() {
-        return redisTemplate;
-    }
-
-    public void setRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
-        this.redisTemplate = redisTemplate;
-    }
 }

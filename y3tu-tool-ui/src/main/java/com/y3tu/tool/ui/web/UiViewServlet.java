@@ -55,7 +55,7 @@ public class UiViewServlet extends AbstractResourceServlet {
             return;
         }
         //默认进入首页
-        if ("/".equals(path)) {
+        if ("/".equals(path)||"".equals(path)) {
             response.sendRedirect(uri + "/index.html");
             return;
         }

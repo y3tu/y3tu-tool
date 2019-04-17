@@ -1,7 +1,7 @@
-package com.y3tu.tool.ui.test.controller;
+package com.y3tu.tool.demo.controller;
 
-import com.y3tu.tool.ui.test.entity.Person;
-import com.y3tu.tool.ui.test.service.PersonService;
+import com.y3tu.tool.demo.entity.Person;
+import com.y3tu.tool.demo.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,14 +19,15 @@ public class CacheTestController {
 
     @RequestMapping(value = "/put",method = RequestMethod.GET)
     public long put() {
-        Person p = new Person(1,"y3tu",29,"test");
+        Person p = new Person(1,"y3tu-put",30,"test");
         Person person = personService.save(p);
         return person.getId();
     }
 
     @RequestMapping("/able")
     public Person cacheable() {
-        Person p = new Person(1,"y3tu",29,"test");
+        Person p = new Person();
+        p.setId(1);
         return personService.findOne(p);
     }
 

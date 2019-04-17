@@ -1,8 +1,8 @@
-package com.y3tu.tool.ui.test.entity;
+package com.y3tu.tool.demo.entity;
 
-import jdk.nashorn.internal.objects.annotations.Constructor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -12,6 +12,7 @@ import java.io.Serializable;
  */
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class Person implements Serializable {
 
     private long id;

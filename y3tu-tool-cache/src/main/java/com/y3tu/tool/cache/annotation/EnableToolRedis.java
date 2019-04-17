@@ -1,11 +1,8 @@
 package com.y3tu.tool.cache.annotation;
 
 import com.y3tu.tool.cache.config.EnableToolRedisRegistrar;
-import com.y3tu.tool.cache.aspect.LimitAspect;
-import com.y3tu.tool.cache.aspect.RedisAspect;
 import com.y3tu.tool.cache.config.RedisConfig;
 import com.y3tu.tool.cache.config.RedisProperties;
-import com.y3tu.tool.cache.redis.template.RedisRepository;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Import;
 
@@ -22,7 +19,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Documented
 @EnableConfigurationProperties(RedisProperties.class)
-@Import({EnableToolRedisRegistrar.class, RedisConfig.class,RedisAspect.class, LimitAspect.class, RedisRepository.class,})
+@Import({EnableToolRedisRegistrar.class, RedisConfig.class})
 public @interface EnableToolRedis {
     /**
      * 是否开始redis切面控制

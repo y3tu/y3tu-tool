@@ -6,7 +6,7 @@
     <packaging>jar</packaging>
 
     <name>y3tu-tool-cache</name>
-    <description>缓存工具，包含普通缓存和多级缓存</description>
+    <description>缓存工具，包含普通缓存和基于redis的多级缓存</description>
 
     <parent>
         <groupId>com.y3tu</groupId>
