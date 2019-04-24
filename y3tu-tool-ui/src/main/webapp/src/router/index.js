@@ -29,6 +29,12 @@ export const constantRouterMap = [
         meta: {title: '监控', icon: 'eye'},
         children: [
             {
+                path: 'redisTerminal',
+                name: 'redisTerminal',
+                component: () => import('@/views/monitor/redisTerminal'),
+                meta: {title: 'redis控制台', icon: 'random'}
+            },
+            {
                 path: 'redisMonitor',
                 name: 'redisMonitor',
                 component: () => import('@/views/monitor/redisMonitor'),
