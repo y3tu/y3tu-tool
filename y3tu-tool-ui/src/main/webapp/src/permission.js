@@ -1,7 +1,8 @@
-import router from './router'
+import router from './router/loginMode'
 import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css'// Progress 进度条样式
 import util from '@/utils/util'
+import setting from '@/setting'
 
 
 const whiteList = ['/login', '/401', '/404'] // 不重定向白名单
@@ -15,6 +16,9 @@ router.beforeEach((to, from, next) => {
             next();
         }
     } else {
+        if(!setting.env.loginMode){
+            next()
+        }
         if (whiteList.indexOf(to.path) !== -1) {
             next()
         } else {

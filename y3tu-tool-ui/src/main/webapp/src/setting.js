@@ -4,11 +4,13 @@ const setting = {
     env: {
         //后端url
         apiURL: '',
-        //apiURL: 'http://127.0.0.1:8080/y3tu-tool-ui/',
+        //apiURL: 'http://127.0.0.1:8081/y3tu-tool-ui/',
         // 前端web前缀
         baseURL: '',
         //开发模式
-        development: true
+        development: true,
+        //是否使用登录加侧导航模式 (默认false)
+        loginMode: false
     },
 
     // 侧边栏默认折叠状态
