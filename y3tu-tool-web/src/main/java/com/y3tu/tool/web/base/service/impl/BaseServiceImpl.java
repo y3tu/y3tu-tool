@@ -22,7 +22,7 @@ import java.util.Map;
  * @author y3tu
  * @date 2018/1/29
  */
-public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T> implements BaseService<T> {
+public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T> implements BaseService<T> {
 
     @Override
     public PageInfo<T> queryPage(PageInfo<T> pageInfo, Map<String, Object> map) {

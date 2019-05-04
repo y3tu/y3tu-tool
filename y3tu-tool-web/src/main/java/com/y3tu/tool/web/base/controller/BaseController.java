@@ -10,7 +10,6 @@ import com.y3tu.tool.web.base.service.BaseService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Map;
 
@@ -19,10 +18,10 @@ import java.util.Map;
  *
  * @author y3tu
  */
-public abstract class BaseController<T extends BaseService, M extends BaseEntity> {
+public abstract class  BaseController<K extends BaseService<T>, T extends BaseEntity> {
 
     @Autowired
-    public T service;
+    protected K service;
 
     /**
      * 分页查询
@@ -74,7 +73,7 @@ public abstract class BaseController<T extends BaseService, M extends BaseEntity
      */
     @ApiOperation(value = "保存", httpMethod = "POST")
     @MethodMapping(method = RequestMethod.POST)
-    public R save(@RequestBody M entity) {
+    public R save(@RequestBody T entity) {
         service.save(entity);
         return R.success("保存成功!");
     }
@@ -87,7 +86,7 @@ public abstract class BaseController<T extends BaseService, M extends BaseEntity
      */
     @ApiOperation(value = "更新", httpMethod = "PUT")
     @MethodMapping(method = RequestMethod.PUT)
-    public R update(@RequestBody M entity) {
+    public R update(@RequestBody T entity) {
         service.updateById(entity);
         return R.success("更新成功!");
     }
