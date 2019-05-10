@@ -1,7 +1,7 @@
 package com.y3tu.tool.http;
 
 import com.y3tu.tool.core.exception.BaseException;
-import com.y3tu.tool.core.exception.ErrorEnum;
+import com.y3tu.tool.core.exception.IError;
 import com.y3tu.tool.core.exception.ExceptionUtil;
 import com.y3tu.tool.core.util.StrUtil;
 
@@ -36,25 +36,25 @@ public class HttpException extends BaseException {
         super(StrUtil.format(messageTemplate, params), throwable);
     }
 
-    public HttpException(ErrorEnum error) {
+    public HttpException(IError error) {
         super();
         this.code = error.getCode();
         this.message = error.getMessage();
     }
 
-    public HttpException(String message, ErrorEnum error) {
+    public HttpException(String message, IError error) {
         this(message);
         this.code = error.getCode();
         this.message = error.getMessage();
     }
 
-    public HttpException(String message, Throwable cause, ErrorEnum error) {
+    public HttpException(String message, Throwable cause, IError error) {
         this(message, cause);
         this.code = error.getCode();
         this.message = error.getMessage();
     }
 
-    public HttpException(Throwable cause, ErrorEnum error) {
+    public HttpException(Throwable cause, IError error) {
         this(cause);
         this.code = error.getCode();
         this.message = error.getMessage();

@@ -31,19 +31,19 @@ public class ServerException extends BaseException {
         super(throwable, messageTemplate, params);
     }
 
-    public ServerException(ErrorEnum error) {
+    public ServerException(IError error) {
         super(error);
     }
 
-    public ServerException(String message, ErrorEnum error) {
+    public ServerException(String message, IError error) {
         super(message, error);
     }
 
-    public ServerException(String message, Throwable cause, ErrorEnum error) {
+    public ServerException(String message, Throwable cause, IError error) {
         super(message, cause, error);
     }
 
-    public ServerException(Throwable cause, ErrorEnum error) {
+    public ServerException(Throwable cause, IError error) {
         super(cause, error);
     }
 }

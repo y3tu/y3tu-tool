@@ -6,7 +6,7 @@ package com.y3tu.tool.core.exception;
  *
  * @author y3tu
  */
-public enum ErrorEnum {
+public enum ErrorEnum implements IError {
     /**
      * 系统内部错误
      */
@@ -97,10 +97,12 @@ public enum ErrorEnum {
         this.message = message;
     }
 
+    @Override
     public String getCode() {
         return this.code;
     }
 
+    @Override
     public String getMessage() {
         return this.message;
     }

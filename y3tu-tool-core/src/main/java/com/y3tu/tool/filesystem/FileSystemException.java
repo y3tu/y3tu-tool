@@ -2,7 +2,7 @@ package com.y3tu.tool.filesystem;
 
 
 import com.y3tu.tool.core.exception.BaseException;
-import com.y3tu.tool.core.exception.ErrorEnum;
+import com.y3tu.tool.core.exception.IError;
 import com.y3tu.tool.core.exception.ExceptionUtil;
 import com.y3tu.tool.core.util.StrUtil;
 
@@ -37,25 +37,25 @@ public class FileSystemException extends BaseException {
         super(StrUtil.format(messageTemplate, params), throwable);
     }
 
-    public FileSystemException(ErrorEnum error) {
+    public FileSystemException(IError error) {
         super();
         this.code = error.getCode();
         this.message = error.getMessage();
     }
 
-    public FileSystemException(String message, ErrorEnum error) {
+    public FileSystemException(String message, IError error) {
         this(message);
         this.code = error.getCode();
         this.message = error.getMessage();
     }
 
-    public FileSystemException(String message, Throwable cause, ErrorEnum error) {
+    public FileSystemException(String message, Throwable cause, IError error) {
         this(message, cause);
         this.code = error.getCode();
         this.message = error.getMessage();
     }
 
-    public FileSystemException(Throwable cause, ErrorEnum error) {
+    public FileSystemException(Throwable cause, IError error) {
         this(cause);
         this.code = error.getCode();
         this.message = error.getMessage();

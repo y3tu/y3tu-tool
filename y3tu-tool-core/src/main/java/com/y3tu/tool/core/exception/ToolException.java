@@ -32,19 +32,19 @@ public class ToolException extends BaseException {
         super(throwable, messageTemplate, params);
     }
 
-    public ToolException(ErrorEnum error) {
+    public ToolException(IError error) {
         super(error);
     }
 
-    public ToolException(String message, ErrorEnum error) {
+    public ToolException(String message, IError error) {
         super(message, error);
     }
 
-    public ToolException(String message, Throwable cause, ErrorEnum error) {
+    public ToolException(String message, Throwable cause, IError error) {
         super(message, cause, error);
     }
 
-    public ToolException(Throwable cause, ErrorEnum error) {
+    public ToolException(Throwable cause, IError error) {
         super(cause, error);
     }
 }

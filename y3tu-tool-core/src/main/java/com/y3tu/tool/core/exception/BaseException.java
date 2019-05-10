@@ -43,25 +43,25 @@ public class BaseException extends RuntimeException {
         message = StrUtil.format(messageTemplate, params);
     }
 
-    public BaseException(ErrorEnum error) {
+    public BaseException(IError error) {
         super();
         this.code = error.getCode();
         this.message = error.getMessage();
     }
 
-    public BaseException(String message, ErrorEnum error) {
+    public BaseException(String message, IError error) {
         this(message);
         this.code = error.getCode();
         this.message = error.getMessage();
     }
 
-    public BaseException(String message, Throwable cause, ErrorEnum error) {
+    public BaseException(String message, Throwable cause, IError error) {
         this(message, cause);
         this.code = error.getCode();
         this.message = error.getMessage();
     }
 
-    public BaseException(Throwable cause, ErrorEnum error) {
+    public BaseException(Throwable cause, IError error) {
         this(cause);
         this.code = error.getCode();
         this.message = error.getMessage();

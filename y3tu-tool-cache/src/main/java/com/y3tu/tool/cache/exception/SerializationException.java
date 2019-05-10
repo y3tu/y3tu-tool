@@ -2,7 +2,7 @@ package com.y3tu.tool.cache.exception;
 
 
 import com.y3tu.tool.core.exception.BaseException;
-import com.y3tu.tool.core.exception.ErrorEnum;
+import com.y3tu.tool.core.exception.IError;
 
 /**
  *  序列化异常
@@ -34,19 +34,19 @@ public class SerializationException extends BaseException {
         super(throwable, messageTemplate, params);
     }
 
-    public SerializationException(ErrorEnum error) {
+    public SerializationException(IError error) {
         super(error);
     }
 
-    public SerializationException(String message, ErrorEnum error) {
+    public SerializationException(String message, IError error) {
         super(message, error);
     }
 
-    public SerializationException(String message, Throwable cause, ErrorEnum error) {
+    public SerializationException(String message, Throwable cause, IError error) {
         super(message, cause, error);
     }
 
-    public SerializationException(Throwable cause, ErrorEnum error) {
+    public SerializationException(Throwable cause, IError error) {
         super(cause, error);
     }
 }
