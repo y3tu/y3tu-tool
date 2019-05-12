@@ -38,7 +38,7 @@ public class FileCallBack extends CallBack<File> {
 
     @Override
     public void onFailure(Call call, IOException e) {
-        throw new HttpException("文件下载失败!", e, ErrorEnum.HTTP_ERROR);
+        throw new HttpException("文件下载失败!", e, ErrorEnum.UTIL_EXCEPTION);
     }
 
     @Override

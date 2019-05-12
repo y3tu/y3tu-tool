@@ -2,6 +2,7 @@ package com.y3tu.tool.core.pojo;
 
 import com.y3tu.tool.core.exception.ErrorEnum;
 import com.y3tu.tool.core.exception.IError;
+import com.y3tu.tool.core.util.StrUtil;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -124,6 +125,17 @@ public class R<T> implements Serializable {
         return r;
     }
 
+    public static R error(String message, IError error) {
+        R r = new R();
+        r.code = error.getCode();
+        if (StrUtil.isNotEmpty(message)) {
+            r.message = message;
+        } else {
+            r.message = error.getMessage();
+        }
+        r.status = Status.ERROR;
+        return r;
+    }
 
     public static R error(IError error) {
         R r = new R();

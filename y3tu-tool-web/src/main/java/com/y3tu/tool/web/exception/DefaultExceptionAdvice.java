@@ -66,13 +66,13 @@ public class DefaultExceptionAdvice {
         String message = "";
         if (e instanceof BusinessException) {
             code = ((BusinessException) e).getCode();
-            message = ((BusinessException) e).getMessage();
+            message = e.getMessage();
         } else if (e instanceof ToolException) {
             code = ((ToolException) e).getCode();
-            message = ((ToolException) e).getMessage();
-        } else if (e instanceof ServerException) {
-            code = ((ServerException) e).getCode();
-            message = ((ServerException) e).getMessage();
+            message = e.getMessage();
+        } else if (e instanceof ServerCallException) {
+            code = ErrorEnum.SERVICE_CALL_ERROR.getCode();
+            message = e.getMessage();
         } else {
             code = ErrorEnum.SYSTEM_INTERNAL_ERROR.getCode();
             message = e.getMessage();

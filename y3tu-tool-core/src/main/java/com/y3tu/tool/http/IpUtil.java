@@ -181,7 +181,7 @@ public class IpUtil {
             DataBlock dataBlock = null;
             if (!Validator.isIpv4(ip)) {
                 log.error("ErrorEnum: Invalid ip address");
-                throw new ToolException("ErrorEnum: Invalid ip address", ErrorEnum.INVALID_PARAMETER);
+                throw new ToolException("ErrorEnum: Invalid ip address", ErrorEnum.UTIL_EXCEPTION);
             }
             dataBlock = (DataBlock) method.invoke(searcher, ip);
             if (ObjectUtil.isNull(dataBlock)) {

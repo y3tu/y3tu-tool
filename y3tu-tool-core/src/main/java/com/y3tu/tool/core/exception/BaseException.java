@@ -52,13 +52,21 @@ public class BaseException extends RuntimeException {
     public BaseException(String message, IError error) {
         this(message);
         this.code = error.getCode();
-        this.message = error.getMessage();
+        if (StrUtil.isNotEmpty(message)) {
+            this.message = message;
+        } else {
+            this.message = error.getMessage();
+        }
     }
 
     public BaseException(String message, Throwable cause, IError error) {
         this(message, cause);
         this.code = error.getCode();
-        this.message = error.getMessage();
+        if (StrUtil.isNotEmpty(message)) {
+            this.message = message;
+        } else {
+            this.message = error.getMessage();
+        }
     }
 
     public BaseException(Throwable cause, IError error) {
