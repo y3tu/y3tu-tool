@@ -1,6 +1,8 @@
 package com.y3tu.tool.core.exception;
 
 import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.HashMap;
@@ -250,5 +252,22 @@ public class ExceptionUtil {
         String methodName = stackTraceElement.getMethodName();
         Integer lineNumber = stackTraceElement.getLineNumber();
         return "异常发生处：" + className + "." + methodName + " 第" + lineNumber + " 行\n异常简要信息：" + e.getLocalizedMessage();
+    }
+
+    /**
+     * 获取堆栈信息
+     *
+     * @param throwable
+     * @return
+     */
+    public static String getStackTrace(Throwable throwable) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        try {
+            throwable.printStackTrace(pw);
+            return sw.toString();
+        } finally {
+            pw.close();
+        }
     }
 }
