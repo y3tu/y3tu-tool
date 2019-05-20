@@ -94,10 +94,10 @@ public class IdUtil {
      * 参考：http://www.cnblogs.com/relucent/p/4955340.html
      *
      * @param workerId     终端ID
-     * @param datacenterId 数据中心ID
+     * @param dataCenterId 数据中心ID
      * @return {@link Snowflake}
      */
-    public static Snowflake createSnowflake(long workerId, long datacenterId) {
-        return new Snowflake(workerId, datacenterId);
+    public static Snowflake createSnowflake(long workerId, long dataCenterId) {
+        return new Snowflake(workerId, dataCenterId);
     }
 }

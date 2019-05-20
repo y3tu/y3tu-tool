@@ -10,15 +10,15 @@ import com.y3tu.tool.web.base.service.BaseService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
-import java.util.Map;
 
 /**
  * Controller基类
  *
  * @author y3tu
  */
-public abstract class  BaseController<K extends BaseService<T>, T extends BaseEntity> {
+public abstract class BaseController<K extends BaseService<T>, T extends BaseEntity> {
 
     @Autowired
     protected K service;
@@ -26,20 +26,19 @@ public abstract class  BaseController<K extends BaseService<T>, T extends BaseEn
     /**
      * 分页查询
      *
-     * @param params 查询参数 包含分页信息和查询条件
-     *               前台传入参数params封装规则
-     *               page：当前页
-     *               pageSize：每页条数
-     *               ascs:升序排列的字段 字符串数组
-     *               descs:降序排列的字段 字符串数组
-     *               查询条件的key要和mapper.xml文件里面的key保持一致
+     * @param pageInfo 查询参数 包含分页信息和查询条件
+     *                 前台传入参数params封装规则
+     *                 current：当前页
+     *                 size：每页条数
+     *                 ascs:升序排列的字段 字符串数组
+     *                 descs:降序排列的字段 字符串数组
+     *                 查询条件的key要和mapper.xml文件里面的key保持一致
      * @return
      */
     @MethodMapping
     @ApiOperation(value = "分页查询", notes = "分页查询", httpMethod = "GET")
-    public R<PageInfo<T>> getByPage(@RequestParam Map<String, Object> params) {
-        PageInfo<T> pageInfo = service.queryPage(PageInfo.mapToPageInfo(params), params);
-        return new R(pageInfo);
+    public R<PageInfo<T>> page(@RequestParam PageInfo pageInfo) {
+        return R.success(service.page(pageInfo));
     }
 
     /**

@@ -11,40 +11,32 @@ import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.web.base.mapper.BaseMapper;
 import com.y3tu.tool.web.base.pojo.PageInfo;
 import com.y3tu.tool.web.base.service.BaseService;
-
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author y3tu
  * @date 2018/1/29
  */
 public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T> implements BaseService<T> {
+    /**
+     * 终端ID 生成唯一主键id时，雪花算法使用
+     */
+    int workerId = 1;
+    /**
+     * 数据中心id 生成唯一主键id时，雪花算法使用
+     */
+    int dataCenterId = 1;
 
     @Override
-    public PageInfo<T> queryPage(PageInfo<T> pageInfo, Map<String, Object> map) {
-        if (pageInfo != null) {
-            //表示分页
-            baseMapper.queryPage(pageInfo.getPage(), map);
-            pageInfo.setCurrentPage(pageInfo.getPage().getCurrent());
-            pageInfo.setList(pageInfo.getPage().getRecords());
-            pageInfo.setTotalCount(pageInfo.getPage().getTotal());
-            pageInfo.setTotalPage(pageInfo.getPage().getPages());
-
-        } else {
-            //不分页，查全量数据
-            List<T> list = baseMapper.queryPage(map);
-            pageInfo.setTotalCount(list.size());
-            pageInfo.setList(list);
-        }
-        return pageInfo;
+    public PageInfo<T> page(PageInfo<T> pageInfo) {
+        return baseMapper.page(pageInfo);
     }
 
     /**
-     * 重写插入数据方法，添加注解生成id
+     * 重写插入数据方法，采用雪花算法生成主键id
      *
      * @param entity
      * @return
@@ -53,6 +45,20 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
     public boolean save(T entity) {
         return retBool(baseMapper.insert(fillEntityId(entity)));
     }
+
+    /**
+     * 重写插入数据方法，采用雪花算法生成主键id
+     *
+     * @param entity
+     * @return
+     */
+    @Transactional(rollbackFor = {Exception.class})
+    public boolean save(T entity, int workerId, int dataCenterId) {
+        this.workerId = workerId;
+        this.dataCenterId = dataCenterId;
+        return retBool(baseMapper.insert(fillEntityId(entity)));
+    }
+
 
     /**
      * 批量插入
@@ -90,13 +96,13 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
                     f.setAccessible(true);
                     if (f.get(entity) == null) {
                         if (f.getType() == Integer.class) {
-                            int id = (int) IdUtil.createSnowflake(1, 1).nextId();
+                            int id = (int) IdUtil.createSnowflake(workerId, dataCenterId).nextId();
                             f.set(entity, id);
                         } else if (f.getType() == Long.class) {
-                            long id = IdUtil.createSnowflake(1, 1).nextId();
+                            long id = IdUtil.createSnowflake(workerId, dataCenterId).nextId();
                             f.set(entity, id);
                         } else if (f.getType() == String.class) {
-                            long id = IdUtil.createSnowflake(1, 1).nextId();
+                            long id = IdUtil.createSnowflake(workerId, dataCenterId).nextId();
                             f.set(entity, String.valueOf(id));
                         } else {
                             throw new ToolException("主键类型不可用：" + f.getType().getName());
