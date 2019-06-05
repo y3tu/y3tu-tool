@@ -32,6 +32,8 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
 
     @Override
     public PageInfo<T> page(PageInfo<T> pageInfo) {
+        //每次查询前把total置为0
+        pageInfo.setTotal(0);
         return baseMapper.page(pageInfo);
     }
 
