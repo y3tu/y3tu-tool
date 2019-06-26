@@ -1,7 +1,6 @@
 package com.y3tu.tool.db.meta;
 
 import com.y3tu.tool.core.convert.Convert;
-import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.db.DbRuntimeException;
 import com.y3tu.tool.db.DbUtil;
 import com.y3tu.tool.db.Entity;
@@ -9,49 +8,64 @@ import com.y3tu.tool.db.Entity;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 数据库元数据信息工具类
  *
- * @author looly
+ * @author y3tu
  */
 public class MetaUtil {
+
+
     /**
-     * 获得所有表名
+     * 获取所有表的表名
+     *
+     * @param ds
+     * @return
+     */
+    public static List<String> getTableName(DataSource ds) {
+        return getTables(ds).stream().map(map -> (String) map.get("name")).collect(Collectors.toList());
+    }
+
+    /**
+     * 获得所有表信息
      *
      * @param ds 数据源
-     * @return 表名列表
+     * @return
      */
-    public static List<String> getTables(DataSource ds) {
+    public static List<Map> getTables(DataSource ds) {
         return getTables(ds, TableType.TABLE);
     }
 
     /**
-     * 获得所有表名
+     * 获得所有信息
      *
      * @param ds    数据源
      * @param types 表类型
      * @return 表名列表
      */
-    public static List<String> getTables(DataSource ds, TableType... types) {
+    public static List<Map> getTables(DataSource ds, TableType... types) {
         return getTables(ds, null, null, types);
     }
 
     /**
-     * 获得所有表名
+     * 获得所有信息
      *
      * @param ds     数据源
      * @param schema 表数据库名，对于Oracle为用户名
      * @param types  表类型
      * @return 表名列表
      */
-    public static List<String> getTables(DataSource ds, String schema, TableType... types) {
+    public static List<Map> getTables(DataSource ds, String schema, TableType... types) {
         return getTables(ds, schema, null, types);
     }
 
     /**
-     * 获得所有表名
+     * 获得所有表信息
      *
      * @param ds        数据源
      * @param schema    表数据库名，对于Oracle为用户名
@@ -59,8 +73,8 @@ public class MetaUtil {
      * @param types     表类型
      * @return 表名列表
      */
-    public static List<String> getTables(DataSource ds, String schema, String tableName, TableType... types) {
-        final List<String> tables = new ArrayList<String>();
+    private static List<Map> getTables(DataSource ds, String schema, String tableName, TableType... types) {
+        final List<Map> tables = new ArrayList<>();
         Connection conn = null;
         ResultSet rs = null;
         try {
@@ -70,12 +84,13 @@ public class MetaUtil {
             if (rs == null) {
                 return null;
             }
-            String table;
             while (rs.next()) {
-                table = rs.getString("TABLE_NAME");
-                if (StrUtil.isNotBlank(table)) {
-                    tables.add(table);
-                }
+                Map map = new HashMap();
+                String name = rs.getString("TABLE_NAME");
+                String remarks = rs.getString("REMARKS");
+                map.put("name", name);
+                map.put("remarks", remarks);
+                tables.add(map);
             }
         } catch (Exception e) {
             throw new DbRuntimeException("Get tables error!", e);
