@@ -1,5 +1,8 @@
 package com.y3tu.tool.core.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 分页工具类
  *
@@ -105,5 +108,27 @@ public class PageUtil {
      */
     public static int[] rainbow(int currentPage, int pageCount) {
         return rainbow(currentPage, pageCount, 10);
+    }
+
+    /**
+     * List 分页
+     * 适合前端分页
+     *
+     * @param page
+     * @param size
+     * @param list
+     * @return
+     */
+    public static List toPage(int page, int size, List list) {
+        int fromIndex = page * size;
+        int toIndex = page * size + size;
+
+        if (fromIndex > list.size()) {
+            return new ArrayList();
+        } else if (toIndex >= list.size()) {
+            return list.subList(fromIndex, list.size());
+        } else {
+            return list.subList(fromIndex, toIndex);
+        }
     }
 }

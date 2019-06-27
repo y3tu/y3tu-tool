@@ -1,7 +1,7 @@
 package com.y3tu.tool.extra.template.engine.velocity;
 
 import com.y3tu.tool.core.util.StrUtil;
-import com.y3tu.tool.extra.template.Engine;
+import com.y3tu.tool.extra.template.TemplateEngine;
 import com.y3tu.tool.extra.template.Template;
 import com.y3tu.tool.extra.template.TemplateConfig;
 import org.apache.velocity.app.Velocity;
@@ -11,7 +11,7 @@ import org.apache.velocity.app.Velocity;
  *
  * @author looly
  */
-public class VelocityEngine implements Engine {
+public class VelocityTemplateEngine implements TemplateEngine {
 
     org.apache.velocity.app.VelocityEngine engine;
 
@@ -20,7 +20,7 @@ public class VelocityEngine implements Engine {
     /**
      * 默认构造
      */
-    public VelocityEngine() {
+    public VelocityTemplateEngine() {
         this(new TemplateConfig());
     }
 
@@ -29,7 +29,7 @@ public class VelocityEngine implements Engine {
      *
      * @param config 模板配置
      */
-    public VelocityEngine(TemplateConfig config) {
+    public VelocityTemplateEngine(TemplateConfig config) {
         this(createEngine(config));
     }
 
@@ -38,7 +38,7 @@ public class VelocityEngine implements Engine {
      *
      * @param engine {@link org.apache.velocity.app.VelocityEngine}
      */
-    public VelocityEngine(org.apache.velocity.app.VelocityEngine engine) {
+    public VelocityTemplateEngine(org.apache.velocity.app.VelocityEngine engine) {
         this.engine = engine;
     }
     // --------------------------------------------------------------------------------- Constructor end

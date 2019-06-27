@@ -3,7 +3,7 @@ package com.y3tu.tool.extra.template.engine.enjoy;
 import com.jfinal.template.source.FileSourceFactory;
 import com.y3tu.tool.core.lang.Assert;
 import com.y3tu.tool.core.util.ObjectUtil;
-import com.y3tu.tool.extra.template.Engine;
+import com.y3tu.tool.extra.template.TemplateEngine;
 import com.y3tu.tool.extra.template.Template;
 import com.y3tu.tool.extra.template.TemplateConfig;
 import com.y3tu.tool.extra.template.TemplateConfig.ResourceMode;
@@ -14,7 +14,7 @@ import org.beetl.core.GroupTemplate;
  *
  * @author looly
  */
-public class EnjoyEngine implements Engine {
+public class EnjoyTemplateEngine implements TemplateEngine {
 
     private com.jfinal.template.Engine engine;
     private ResourceMode resourceMode;
@@ -24,7 +24,7 @@ public class EnjoyEngine implements Engine {
     /**
      * 默认构造
      */
-    public EnjoyEngine() {
+    public EnjoyTemplateEngine() {
         this(new TemplateConfig());
     }
 
@@ -33,7 +33,7 @@ public class EnjoyEngine implements Engine {
      *
      * @param config 模板配置
      */
-    public EnjoyEngine(TemplateConfig config) {
+    public EnjoyTemplateEngine(TemplateConfig config) {
         this(createEngine(config));
         this.resourceMode = config.getResourceMode();
     }
@@ -43,7 +43,7 @@ public class EnjoyEngine implements Engine {
      *
      * @param engine {@link com.jfinal.template.Engine}
      */
-    public EnjoyEngine(com.jfinal.template.Engine engine) {
+    public EnjoyTemplateEngine(com.jfinal.template.Engine engine) {
         this.engine = engine;
     }
     // --------------------------------------------------------------------------------- Constructor end
@@ -64,7 +64,7 @@ public class EnjoyEngine implements Engine {
      */
     private static com.jfinal.template.Engine createEngine(TemplateConfig config) {
         Assert.notNull(config, "Template config is null !");
-        final com.jfinal.template.Engine engine = com.jfinal.template.Engine.create("Hutool-Enjoy-Engine");
+        final com.jfinal.template.Engine engine = com.jfinal.template.Engine.create("Hutool-Enjoy-TemplateEngine");
         engine.setEncoding(config.getCharset().toString());
 
         switch (config.getResourceMode()) {

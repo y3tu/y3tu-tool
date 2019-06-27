@@ -78,7 +78,7 @@ public class VelocityUtil {
      *
      * @param templateDir 模板所在目录，绝对路径
      * @param charset     编码
-     * @return VelocityEngine
+     * @return VelocityTemplateEngine
      */
     public static VelocityEngine newEngine(String templateDir, String charset) {
         final VelocityEngine ve = new VelocityEngine();

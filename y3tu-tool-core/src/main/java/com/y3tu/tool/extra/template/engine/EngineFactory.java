@@ -1,15 +1,15 @@
 package com.y3tu.tool.extra.template.engine;
 
 import com.y3tu.tool.core.util.StrUtil;
-import com.y3tu.tool.extra.template.Engine;
+import com.y3tu.tool.extra.template.TemplateEngine;
 import com.y3tu.tool.extra.template.TemplateConfig;
 import com.y3tu.tool.extra.template.TemplateException;
-import com.y3tu.tool.extra.template.engine.beetl.BeetlEngine;
-import com.y3tu.tool.extra.template.engine.enjoy.EnjoyEngine;
-import com.y3tu.tool.extra.template.engine.freemarker.FreemarkerEngine;
-import com.y3tu.tool.extra.template.engine.rythm.RythmEngine;
-import com.y3tu.tool.extra.template.engine.thymeleaf.ThymeleafEngine;
-import com.y3tu.tool.extra.template.engine.velocity.VelocityEngine;
+import com.y3tu.tool.extra.template.engine.beetl.BeetlTemplateEngine;
+import com.y3tu.tool.extra.template.engine.enjoy.EnjoyTemplateEngine;
+import com.y3tu.tool.extra.template.engine.freemarker.FreemarkerTemplateEngine;
+import com.y3tu.tool.extra.template.engine.rythm.RythmTemplateEngine;
+import com.y3tu.tool.extra.template.engine.thymeleaf.ThymeleafTemplateEngine;
+import com.y3tu.tool.extra.template.engine.velocity.VelocityTemplateEngine;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -23,48 +23,48 @@ public class EngineFactory {
      * 根据用户引入的模板引擎jar，自动创建对应的模板引擎对象
      *
      * @param config 模板配置，包括编码、模板文件path等信息
-     * @return {@link Engine}
+     * @return {@link TemplateEngine}
      */
-    public static Engine create(TemplateConfig config) {
-        final Engine engine = doCreate(config);
-        log.debug("Use [{}] Engine As Default.", StrUtil.removeSuffix(engine.getClass().getSimpleName(), "Engine"));
-        return engine;
+    public static TemplateEngine create(TemplateConfig config) {
+        final TemplateEngine templateEngine = doCreate(config);
+        log.debug("Use [{}] TemplateEngine As Default.", StrUtil.removeSuffix(templateEngine.getClass().getSimpleName(), "TemplateEngine"));
+        return templateEngine;
     }
 
     /**
      * 根据用户引入的模板引擎jar，自动创建对应的模板引擎对象
      *
      * @param config 模板配置，包括编码、模板文件path等信息
-     * @return {@link Engine}
+     * @return {@link TemplateEngine}
      */
-    private static Engine doCreate(TemplateConfig config) {
+    private static TemplateEngine doCreate(TemplateConfig config) {
         try {
-            return new BeetlEngine(config);
+            return new BeetlTemplateEngine(config);
         } catch (NoClassDefFoundError e) {
             // ignore
         }
         try {
-            return new FreemarkerEngine(config);
+            return new FreemarkerTemplateEngine(config);
         } catch (NoClassDefFoundError e) {
             // ignore
         }
         try {
-            return new VelocityEngine(config);
+            return new VelocityTemplateEngine(config);
         } catch (NoClassDefFoundError e) {
             // ignore
         }
         try {
-            return new RythmEngine(config);
+            return new RythmTemplateEngine(config);
         } catch (NoClassDefFoundError e) {
             // ignore
         }
         try {
-            return new EnjoyEngine(config);
+            return new EnjoyTemplateEngine(config);
         } catch (NoClassDefFoundError e) {
             // ignore
         }
         try {
-            return new ThymeleafEngine(config);
+            return new ThymeleafTemplateEngine(config);
         } catch (NoClassDefFoundError e) {
             // ignore
         }

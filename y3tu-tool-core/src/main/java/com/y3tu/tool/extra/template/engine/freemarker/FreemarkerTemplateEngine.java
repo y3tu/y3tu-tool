@@ -3,7 +3,7 @@ package com.y3tu.tool.extra.template.engine.freemarker;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.io.IORuntimeException;
 import com.y3tu.tool.core.util.ClassUtil;
-import com.y3tu.tool.extra.template.Engine;
+import com.y3tu.tool.extra.template.TemplateEngine;
 import com.y3tu.tool.extra.template.Template;
 import com.y3tu.tool.extra.template.TemplateConfig;
 import com.y3tu.tool.extra.template.TemplateException;
@@ -19,7 +19,7 @@ import java.io.IOException;
  *
  * @author looly
  */
-public class FreemarkerEngine implements Engine {
+public class FreemarkerTemplateEngine implements TemplateEngine {
 
     Configuration cfg;
 
@@ -28,7 +28,7 @@ public class FreemarkerEngine implements Engine {
     /**
      * 默认构造
      */
-    public FreemarkerEngine() {
+    public FreemarkerTemplateEngine() {
         this(new TemplateConfig());
     }
 
@@ -37,7 +37,7 @@ public class FreemarkerEngine implements Engine {
      *
      * @param config 模板配置
      */
-    public FreemarkerEngine(TemplateConfig config) {
+    public FreemarkerTemplateEngine(TemplateConfig config) {
         this(createCfg(config));
     }
 
@@ -46,7 +46,7 @@ public class FreemarkerEngine implements Engine {
      *
      * @param freemarkerCfg {@link Configuration}
      */
-    public FreemarkerEngine(Configuration freemarkerCfg) {
+    public FreemarkerTemplateEngine(Configuration freemarkerCfg) {
         this.cfg = freemarkerCfg;
     }
     // --------------------------------------------------------------------------------- Constructor end

@@ -1,7 +1,7 @@
 package com.y3tu.tool.extra.template.engine.beetl;
 
 import com.y3tu.tool.core.io.IORuntimeException;
-import com.y3tu.tool.extra.template.Engine;
+import com.y3tu.tool.extra.template.TemplateEngine;
 import com.y3tu.tool.extra.template.Template;
 import com.y3tu.tool.extra.template.TemplateConfig;
 import org.beetl.core.Configuration;
@@ -16,7 +16,7 @@ import java.io.IOException;
  *
  * @author looly
  */
-public class BeetlEngine implements Engine {
+public class BeetlTemplateEngine implements TemplateEngine {
 
     private GroupTemplate engine;
 
@@ -25,7 +25,7 @@ public class BeetlEngine implements Engine {
     /**
      * 默认构造
      */
-    public BeetlEngine() {
+    public BeetlTemplateEngine() {
         this(new TemplateConfig());
     }
 
@@ -34,7 +34,7 @@ public class BeetlEngine implements Engine {
      *
      * @param config 模板配置
      */
-    public BeetlEngine(TemplateConfig config) {
+    public BeetlTemplateEngine(TemplateConfig config) {
         this(createEngine(config));
     }
 
@@ -43,7 +43,7 @@ public class BeetlEngine implements Engine {
      *
      * @param engine {@link GroupTemplate}
      */
-    public BeetlEngine(GroupTemplate engine) {
+    public BeetlTemplateEngine(GroupTemplate engine) {
         this.engine = engine;
     }
     // --------------------------------------------------------------------------------- Constructor end

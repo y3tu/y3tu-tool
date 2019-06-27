@@ -1,6 +1,6 @@
 package com.y3tu.tool.extra.template.engine.rythm;
 
-import com.y3tu.tool.extra.template.Engine;
+import com.y3tu.tool.extra.template.TemplateEngine;
 import com.y3tu.tool.extra.template.Template;
 import com.y3tu.tool.extra.template.TemplateConfig;
 
@@ -12,7 +12,7 @@ import java.util.Properties;
  *
  * @author looly
  */
-public class RythmEngine implements Engine {
+public class RythmTemplateEngine implements TemplateEngine {
 
     org.rythmengine.RythmEngine engine;
 
@@ -21,7 +21,7 @@ public class RythmEngine implements Engine {
     /**
      * 默认构造
      */
-    public RythmEngine() {
+    public RythmTemplateEngine() {
         this(new TemplateConfig());
     }
 
@@ -30,7 +30,7 @@ public class RythmEngine implements Engine {
      *
      * @param config 模板配置
      */
-    public RythmEngine(TemplateConfig config) {
+    public RythmTemplateEngine(TemplateConfig config) {
         this(createEngine(config));
     }
 
@@ -39,7 +39,7 @@ public class RythmEngine implements Engine {
      *
      * @param engine {@link org.rythmengine.RythmEngine}
      */
-    public RythmEngine(org.rythmengine.RythmEngine engine) {
+    public RythmTemplateEngine(org.rythmengine.RythmEngine engine) {
         this.engine = engine;
     }
     // --------------------------------------------------------------------------------- Constructor end

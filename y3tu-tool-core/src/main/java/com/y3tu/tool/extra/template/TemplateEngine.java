@@ -5,7 +5,7 @@ package com.y3tu.tool.extra.template;
  *
  * @author looly
  */
-public interface Engine {
+public interface TemplateEngine {
 
     /**
      * 获取模板

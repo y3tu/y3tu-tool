@@ -1,10 +1,9 @@
 package com.y3tu.tool.extra.template.engine.thymeleaf;
 
 import com.y3tu.tool.core.io.FileUtil;
-import com.y3tu.tool.extra.template.Engine;
+import com.y3tu.tool.extra.template.TemplateEngine;
 import com.y3tu.tool.extra.template.Template;
 import com.y3tu.tool.extra.template.TemplateConfig;
-import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.*;
 
@@ -13,9 +12,9 @@ import org.thymeleaf.templateresolver.*;
  *
  * @author looly
  */
-public class ThymeleafEngine implements Engine {
+public class ThymeleafTemplateEngine implements TemplateEngine {
 
-    TemplateEngine engine;
+    org.thymeleaf.TemplateEngine templateEngine;
     TemplateConfig config;
 
     // --------------------------------------------------------------------------------- Constructor start
@@ -23,7 +22,7 @@ public class ThymeleafEngine implements Engine {
     /**
      * 默认构造
      */
-    public ThymeleafEngine() {
+    public ThymeleafTemplateEngine() {
         this(new TemplateConfig());
     }
 
@@ -32,7 +31,7 @@ public class ThymeleafEngine implements Engine {
      *
      * @param config 模板配置
      */
-    public ThymeleafEngine(TemplateConfig config) {
+    public ThymeleafTemplateEngine(TemplateConfig config) {
         this(createEngine(config));
         this.config = config;
     }
@@ -40,25 +39,25 @@ public class ThymeleafEngine implements Engine {
     /**
      * 构造
      *
-     * @param engine {@link TemplateEngine}
+     * @param templateEngine {@link org.thymeleaf.TemplateEngine}
      */
-    public ThymeleafEngine(TemplateEngine engine) {
-        this.engine = engine;
+    public ThymeleafTemplateEngine(org.thymeleaf.TemplateEngine templateEngine) {
+        this.templateEngine = templateEngine;
     }
     // --------------------------------------------------------------------------------- Constructor end
 
     @Override
     public Template getTemplate(String resource) {
-        return ThymeleafTemplate.wrap(this.engine, resource, (null == this.config) ? null : this.config.getCharset());
+        return ThymeleafTemplate.wrap(this.templateEngine, resource, (null == this.config) ? null : this.config.getCharset());
     }
 
     /**
      * 创建引擎
      *
      * @param config 模板配置
-     * @return {@link TemplateEngine}
+     * @return {@link org.thymeleaf.TemplateEngine}
      */
-    private static TemplateEngine createEngine(TemplateConfig config) {
+    private static org.thymeleaf.TemplateEngine createEngine(TemplateConfig config) {
         if (null == config) {
             config = new TemplateConfig();
         }
@@ -95,8 +94,8 @@ public class ThymeleafEngine implements Engine {
                 break;
         }
 
-        final TemplateEngine engine = new TemplateEngine();
-        engine.setTemplateResolver(resolver);
-        return engine;
+        final org.thymeleaf.TemplateEngine templateEngine = new org.thymeleaf.TemplateEngine();
+        templateEngine.setTemplateResolver(resolver);
+        return templateEngine;
     }
 }
