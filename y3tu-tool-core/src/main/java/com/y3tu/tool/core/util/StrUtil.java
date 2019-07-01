@@ -2367,6 +2367,20 @@ public class StrUtil {
     }
 
     /**
+     * 驼峰命名法工具 首字母大写
+     *
+     * @return toCamelCase(" hello_world ") == "HelloWorld"
+     * toCapitalizeCamelCase("hello_world") == "HelloWorld"
+     */
+    public static String toCapitalizeCamelCase(String s) {
+        if (s == null) {
+            return null;
+        }
+        s = toCamelCase(s);
+        return s.substring(0, 1).toUpperCase() + s.substring(1);
+    }
+
+    /**
      * 包装指定字符串<br>
      * 当前缀和后缀一致时使用此方法
      *
@@ -2601,9 +2615,9 @@ public class StrUtil {
      * StrUtil.padAfter("123", 2, '0');//"23"
      * </pre>
      *
-     * @param str 字符串，如果为<code>null</code>，按照空串处理
+     * @param str       字符串，如果为<code>null</code>，按照空串处理
      * @param minLength 最小长度
-     * @param padChar 补充的字符
+     * @param padChar   补充的字符
      * @return 补充后的字符串
      */
     public static String padAfter(CharSequence str, int minLength, char padChar) {

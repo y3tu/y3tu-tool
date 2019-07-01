@@ -56,7 +56,7 @@ public class GeneratorServiceImpl implements GeneratorService {
      */
     @Override
     public List<String> queryTableName() {
-        return MetaUtil.getTables(dataSource);
+        return MetaUtil.getTableName(dataSource);
     }
 
     /**
