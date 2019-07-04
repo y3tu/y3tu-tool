@@ -10,7 +10,6 @@ import java.util.Set;
  * @author loolly
  */
 public class Table extends LinkedHashMap<String, Column> {
-    private static final long serialVersionUID = -810699625961392983L;
 
     /**
      * 表名
@@ -105,5 +104,13 @@ public class Table extends LinkedHashMap<String, Column> {
     public Table setRemarks(String remarks) {
         this.remarks = remarks;
         return this;
+    }
+
+    /**
+     * 获取表注释
+     * @return
+     */
+    public String getRemarks() {
+        return this.remarks;
     }
 }

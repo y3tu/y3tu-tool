@@ -176,6 +176,17 @@ public class MetaUtil {
         try {
             conn = ds.getConnection();
             final DatabaseMetaData metaData = conn.getMetaData();
+
+            rs = metaData.getTables(conn.getCatalog(), null, tableName, null);
+            if (rs == null) {
+                return null;
+            }
+            //获得表注释
+            while (rs.next()) {
+                String remarks = rs.getString("REMARKS");
+                table.setRemarks(remarks);
+            }
+
             // 获得主键
             rs = metaData.getPrimaryKeys(conn.getCatalog(), null, tableName);
             while (rs.next()) {
