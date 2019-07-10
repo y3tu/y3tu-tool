@@ -45,7 +45,12 @@ public class VelocityTemplateEngine implements TemplateEngine {
 
     @Override
     public Template getTemplate(String resource) {
-        return VelocityTemplate.wrap(engine.getTemplate(resource));
+        String charset = engine.getProperty(Velocity.ENCODING_DEFAULT).toString();
+        if (StrUtil.isNotEmpty(charset)) {
+            return VelocityTemplate.wrap(engine.getTemplate(resource, charset));
+        } else {
+            return VelocityTemplate.wrap(engine.getTemplate(resource));
+        }
     }
 
     /**
@@ -62,9 +67,12 @@ public class VelocityTemplateEngine implements TemplateEngine {
         final org.apache.velocity.app.VelocityEngine ve = new org.apache.velocity.app.VelocityEngine();
         // 编码
         final String charsetStr = config.getCharset().toString();
+        //全局编码,如果以下编码不设置它就生效
+        ve.setProperty(Velocity.ENCODING_DEFAULT, charsetStr);
         ve.setProperty(Velocity.INPUT_ENCODING, charsetStr);
         ve.setProperty(Velocity.OUTPUT_ENCODING, charsetStr);
-        ve.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, true); // 使用缓存
+        // 使用缓存
+        ve.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, true);
 
         // loader
         switch (config.getResourceMode()) {
