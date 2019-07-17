@@ -36,7 +36,7 @@ public abstract class BaseController<K extends BaseService<T>, T extends BaseEnt
      * @return
      */
     @MethodMapping
-    @ApiOperation(value = "分页查询", notes = "分页查询", httpMethod = "GET")
+    @ApiOperation(value = "分页查询" , notes = "分页查询" , httpMethod = "POST")
     public R<PageInfo<T>> page(@RequestParam PageInfo pageInfo) {
         return R.success(service.page(pageInfo));
     }
@@ -47,7 +47,7 @@ public abstract class BaseController<K extends BaseService<T>, T extends BaseEnt
      * @return
      */
     @MethodMapping
-    @ApiOperation(value = "查询所有信息", notes = "查询所有信息", httpMethod = "GET")
+    @ApiOperation(value = "查询所有信息" , notes = "查询所有信息" , httpMethod = "GET")
     public R<List<T>> getAll() {
         return new R(service.list(null));
     }
@@ -58,7 +58,7 @@ public abstract class BaseController<K extends BaseService<T>, T extends BaseEnt
      * @param id
      * @return
      */
-    @ApiOperation(value = "主键查询", notes = "主键查询", httpMethod = "GET")
+    @ApiOperation(value = "主键查询" , notes = "主键查询" , httpMethod = "GET")
     @MethodMapping(value = "/get/{id}")
     public R get(@PathVariable String id) {
         return R.success(service.getById(id));
@@ -70,7 +70,7 @@ public abstract class BaseController<K extends BaseService<T>, T extends BaseEnt
      * @param entity 保存的数据
      * @return
      */
-    @ApiOperation(value = "保存", httpMethod = "POST")
+    @ApiOperation(value = "保存" , httpMethod = "POST")
     @MethodMapping(method = RequestMethod.POST)
     public R save(@RequestBody T entity) {
         service.save(entity);
@@ -83,7 +83,7 @@ public abstract class BaseController<K extends BaseService<T>, T extends BaseEnt
      * @param entity 更新的数据
      * @return
      */
-    @ApiOperation(value = "更新", httpMethod = "PUT")
+    @ApiOperation(value = "更新" , httpMethod = "PUT")
     @MethodMapping(method = RequestMethod.PUT)
     public R update(@RequestBody T entity) {
         service.updateById(entity);
@@ -96,8 +96,8 @@ public abstract class BaseController<K extends BaseService<T>, T extends BaseEnt
      * @param id 主键
      * @return
      */
-    @ApiOperation(value = "删除", httpMethod = "DELETE")
-    @MethodMapping(value = "/delById/{id}", method = RequestMethod.DELETE)
+    @ApiOperation(value = "删除" , httpMethod = "DELETE")
+    @MethodMapping(value = "/delById/{id}" , method = RequestMethod.DELETE)
     public R delById(@PathVariable String id) {
         service.removeById(id);
         return R.success("删除成功!");
@@ -109,8 +109,8 @@ public abstract class BaseController<K extends BaseService<T>, T extends BaseEnt
      * @param ids 主键集合
      * @return
      */
-    @ApiOperation(value = "删除", httpMethod = "DELETE")
-    @MethodMapping(value = "/delByIds/{ids}", method = RequestMethod.DELETE)
+    @ApiOperation(value = "删除" , httpMethod = "DELETE")
+    @MethodMapping(value = "/delByIds/{ids}" , method = RequestMethod.DELETE)
     public R delByIds(@PathVariable String[] ids) {
         service.removeByIds(CollectionUtil.toList(ids));
         return R.success("删除成功!");
