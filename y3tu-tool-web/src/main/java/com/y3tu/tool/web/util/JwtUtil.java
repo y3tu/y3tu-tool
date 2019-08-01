@@ -1,8 +1,10 @@
 package com.y3tu.tool.web.util;
 
-import com.y3tu.tool.core.codec.Base64;
-import com.y3tu.tool.core.date.DateField;
-import com.y3tu.tool.core.date.DateTime;
+import cn.hutool.core.codec.Base64;
+import cn.hutool.core.date.DateField;
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.lang.UUID;
+import com.y3tu.tool.core.date.DateUtil;
 import com.y3tu.tool.core.util.StrUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -77,7 +79,7 @@ public class JwtUtil {
      */
     public static String buildJWT(SignatureAlgorithm alg, Key key, String sub, String aud, String jti, String iss, Date nbf, Integer duration) {
         // jwt的签发时间
-        DateTime iat = DateTime.now();
+        DateTime iat = DateUtil.date();
         // jwt的过期时间，这个过期时间必须要大于签发时间
         DateTime exp = null;
         if (duration != null) {
@@ -154,12 +156,13 @@ public class JwtUtil {
 
     /**
      * 利用jwt解析token信息.
-     * @param token 要解析的token信息
+     *
+     * @param token   要解析的token信息
      * @param jwtRule 用于进行签名的秘钥
      * @return
      * @throws Exception
      */
-    public static Optional<Claims> getClaimsFromToken(String token,String jwtRule) throws Exception {
+    public static Optional<Claims> getClaimsFromToken(String token, String jwtRule) throws Exception {
         String key = Base64.encode(jwtRule.getBytes());
         Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
         return Optional.of(claims);
@@ -168,23 +171,24 @@ public class JwtUtil {
 
     /**
      * 获取token中的参数值
-     * @param token 要解析的token信息
+     *
+     * @param token   要解析的token信息
      * @param jwtRule 用于进行签名的秘钥
      * @return
      * @throws Exception
      */
-    public static Map<String,Object> extractInfo(String token,String jwtRule) throws Exception{
+    public static Map<String, Object> extractInfo(String token, String jwtRule) throws Exception {
 
-        Optional<Claims> claims = getClaimsFromToken(token,jwtRule);
-        if(claims.isPresent()){
-            Map<String,Object> info = new HashMap<String,Object>();
+        Optional<Claims> claims = getClaimsFromToken(token, jwtRule);
+        if (claims.isPresent()) {
+            Map<String, Object> info = new HashMap<String, Object>();
             Set<String> keySet = claims.get().keySet();
             //通过迭代，提取token中的参数信息
             Iterator<String> iterator = keySet.iterator();
-            while(iterator.hasNext()){
+            while (iterator.hasNext()) {
                 String key = iterator.next();
-                Object value =  claims.get().get(key);
-                info.put(key,value);
+                Object value = claims.get().get(key);
+                info.put(key, value);
             }
             return info;
         }

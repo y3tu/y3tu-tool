@@ -1,10 +1,11 @@
 package com.y3tu.tool.core.collection;
 
 /**
- * 集合相关工具类，包括数组，是{@link CollUtil} 的别名工具类类
+ * 集合处理工具类
  *
- * @author xiaoleilu
- * @see CollUtil
+ * @author y3tu
+ * @date 2019-08-01
+ * @see cn.hutool.core.collection.CollectionUtil
  */
-public class CollectionUtil extends CollUtil {
+public class CollectionUtil extends cn.hutool.core.collection.CollectionUtil {
 }

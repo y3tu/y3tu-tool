@@ -1,7 +1,7 @@
 package com.y3tu.tool.web.aspect;
 
+import cn.hutool.core.date.TimeInterval;
 import com.y3tu.tool.core.date.DateUtil;
-import com.y3tu.tool.core.date.TimeInterval;
 import com.y3tu.tool.core.exception.ExceptionUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -66,6 +66,8 @@ public class ControllerAop {
 
     private Object methodHandler(ProceedingJoinPoint pjp) throws Throwable {
         Throwable failed = null;
+
+        //开始计时
         TimeInterval timer = DateUtil.timer();
 
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -87,6 +89,7 @@ public class ControllerAop {
             log.error("request failed...", ExceptionUtil.getFormatMessage(e));
             throw e;
         } finally {
+            //计算调用时间
             long duration = timer.intervalMs();
             if (failed != null) {
                 log.error(pjp.getSignature() + " use time:" + duration + " ms");

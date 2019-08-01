@@ -31,7 +31,7 @@ public class R<T> implements Serializable {
     /**
      * 返回状态 成功,失败,警告 默认成功
      */
-    private R.Status status = Status.SUCCESS;
+    private Status status = Status.SUCCESS;
 
 
     public R() {

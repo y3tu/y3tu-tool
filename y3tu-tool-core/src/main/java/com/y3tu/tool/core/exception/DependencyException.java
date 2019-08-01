@@ -1,32 +1,48 @@
 package com.y3tu.tool.core.exception;
 
-import com.y3tu.tool.core.util.StrUtil;
-
 /**
  * 依赖异常
  *
- * @author xiaoleilu
+ * @author y3tu
  */
-public class DependencyException extends RuntimeException {
-    private static final long serialVersionUID = 8247610319171014183L;
-
-    public DependencyException(Throwable e) {
-        super(ExceptionUtil.getMessage(e), e);
+public class DependencyException extends BaseException {
+    public DependencyException() {
+        super();
     }
 
     public DependencyException(String message) {
         super(message);
     }
 
-    public DependencyException(String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params));
+    public DependencyException(Throwable e) {
+        super(e);
     }
 
-    public DependencyException(String message, Throwable throwable) {
-        super(message, throwable);
+    public DependencyException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public DependencyException(String messageTemplate, Object... params) {
+        super(messageTemplate, params);
     }
 
     public DependencyException(Throwable throwable, String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params), throwable);
+        super(throwable, messageTemplate, params);
+    }
+
+    public DependencyException(IError error) {
+        super(error);
+    }
+
+    public DependencyException(String message, IError error) {
+        super(message, error);
+    }
+
+    public DependencyException(String message, Throwable cause, IError error) {
+        super(message, cause, error);
+    }
+
+    public DependencyException(Throwable cause, IError error) {
+        super(cause, error);
     }
 }

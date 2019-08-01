@@ -1,9 +1,8 @@
 package com.y3tu.tool.web.handler;
 
 
+import com.y3tu.tool.core.collection.ArrayUtil;
 import com.y3tu.tool.core.collection.CollectionUtil;
-import com.y3tu.tool.core.text.StrSpliter;
-import com.y3tu.tool.core.util.ArrayUtil;
 import com.y3tu.tool.core.util.CharUtil;
 import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.web.annotation.ClassNameMapping;
@@ -27,7 +26,7 @@ import java.util.List;
  *
  * @author y3tu
  * @date 2018/10/27
- * @see com.y3tu.tool.web.annotation.ClassNameMapping
+ * @see ClassNameMapping
  * 此注解的实现类
  */
 @Component
@@ -67,14 +66,14 @@ public class ClassNameMappingHandler extends RequestMappingHandlerMapping {
         if (requestMapping != null) {
             String[] strArr = requestMapping.value();
             String methodValue = methodAnnotation.value();
-            methodValue =  handlePathStr(method.getName(),methodValue);
+            methodValue = handlePathStr(method.getName(), methodValue);
             for (String str : strArr) {
-                mappingStrList.add(str+ methodValue);
+                mappingStrList.add(str + methodValue);
             }
         } else {
             String methodValue = methodAnnotation.value();
-            methodValue = handlePathStr(method.getName(),methodValue);
-            mappingStr = calcRouterStrNew(handlerType.getName()+methodValue);
+            methodValue = handlePathStr(method.getName(), methodValue);
+            mappingStr = calcRouterStrNew(handlerType.getName() + methodValue);
             mappingStrList.add(mappingStr);
         }
         String[] mappingStrArr = ArrayUtil.toArray(mappingStrList, String.class);
@@ -102,19 +101,19 @@ public class ClassNameMappingHandler extends RequestMappingHandlerMapping {
     }
 
     protected String calcRouterStrNew(String className) {
-        List<String> stringList = StrSpliter.splitTrim(className, CharUtil.DOT, true);
+        List<String> stringList = StrUtil.splitTrim(className, CharUtil.DOT);
         className = CollectionUtil.getLast(stringList);
         return className;
     }
 
-    private String handlePathStr(String methodName,String methodValue){
+    private String handlePathStr(String methodName, String methodValue) {
         if (StrUtil.isNotEmpty(methodValue)) {
-            if(!StrUtil.startWith(methodValue,"/")){
-                methodValue = "/"+methodValue;
+            if (!StrUtil.startWith(methodValue, "/")) {
+                methodValue = "/" + methodValue;
             }
             return methodValue;
-        }else {
-            return "/"+methodName;
+        } else {
+            return "/" + methodName;
         }
     }
 }

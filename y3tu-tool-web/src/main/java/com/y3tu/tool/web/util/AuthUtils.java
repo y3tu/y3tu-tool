@@ -1,7 +1,6 @@
 package com.y3tu.tool.web.util;
 
-
-import com.y3tu.tool.core.codec.Base64;
+import cn.hutool.core.codec.Base64;
 import com.y3tu.tool.core.exception.BusinessException;
 import com.y3tu.tool.core.exception.ErrorEnum;
 import com.y3tu.tool.core.util.CharsetUtil;

@@ -1,11 +1,11 @@
 package com.y3tu.tool.web.base.service.impl;
 
+import cn.hutool.core.lang.Editor;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.toolkit.TableInfoHelper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.y3tu.tool.core.collection.CollectionUtil;
 import com.y3tu.tool.core.exception.ToolException;
-import com.y3tu.tool.core.lang.Editor;
 import com.y3tu.tool.core.util.IdUtil;
 import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.web.base.mapper.BaseMapper;

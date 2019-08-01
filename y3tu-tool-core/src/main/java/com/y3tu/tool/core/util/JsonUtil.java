@@ -6,6 +6,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 
 /**
  * JSON 工具类
+ * 使用com.alibaba.fastjson包的方法
  *
  * @author y3tu
  */

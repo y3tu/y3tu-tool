@@ -5,8 +5,8 @@ import com.y3tu.tool.core.collection.CollectionUtil;
 import com.y3tu.tool.web.annotation.MethodMapping;
 import com.y3tu.tool.web.base.entity.BaseEntity;
 import com.y3tu.tool.web.base.pojo.PageInfo;
-import com.y3tu.tool.core.pojo.R;
 import com.y3tu.tool.web.base.service.BaseService;
+import com.y3tu.tool.core.pojo.R;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,9 +35,9 @@ public abstract class BaseController<K extends BaseService<T>, T extends BaseEnt
      *                 查询条件的key要和mapper.xml文件里面的key保持一致
      * @return
      */
-    @MethodMapping
+    @MethodMapping(method = RequestMethod.POST)
     @ApiOperation(value = "分页查询" , notes = "分页查询" , httpMethod = "POST")
-    public R<PageInfo<T>> page(@RequestParam PageInfo pageInfo) {
+    public R<PageInfo<T>> page(@RequestBody PageInfo pageInfo) {
         return R.success(service.page(pageInfo));
     }
 
