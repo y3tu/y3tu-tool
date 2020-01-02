@@ -15,9 +15,13 @@ import java.util.Map;
 public class PageInfo<T> extends Page<T> {
 
     /**
+     * 查询条件参数实体
+     */
+    T paramEntity;
+
+    /**
      * 查询条件参数Map
      */
-    Map<String, Object> params = new HashMap<>();
-
+    Map<String, Object> paramMap = new HashMap<>();
 
 }
