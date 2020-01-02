@@ -1,6 +1,7 @@
 package com.y3tu.tool.web.base.service.impl;
 
 import cn.hutool.core.lang.Editor;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.toolkit.TableInfoHelper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -17,8 +18,9 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 
 /**
+ * 基础service实现
+ *
  * @author y3tu
- * @date 2018/1/29
  */
 public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T> implements BaseService<T> {
     /**
@@ -35,6 +37,13 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
         //每次查询前把total置为0
         pageInfo.setTotal(0);
         return baseMapper.page(pageInfo);
+    }
+
+    @Override
+    public PageInfo<T> page(PageInfo<T> pageInfo, Wrapper<T> wrapper) {
+        //每次查询前把total置为0
+        pageInfo.setTotal(0);
+        return (PageInfo<T>) baseMapper.selectPage(pageInfo,wrapper);
     }
 
     /**

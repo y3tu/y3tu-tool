@@ -10,7 +10,6 @@ import java.util.Map;
  * 分页实体
  *
  * @author y3tu
- * @date 2018/3/1
  */
 @Data
 public class PageInfo<T> extends Page<T> {
