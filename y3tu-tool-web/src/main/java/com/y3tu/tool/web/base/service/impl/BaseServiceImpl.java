@@ -52,8 +52,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
      * @param entity
      * @return
      */
-    @Override
-    public boolean save(T entity) {
+    public boolean saveBySnowflakeId(T entity) {
         return retBool(baseMapper.insert(fillEntityId(entity)));
     }
 
@@ -64,7 +63,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
      * @return
      */
     @Transactional(rollbackFor = {Exception.class})
-    public boolean save(T entity, int workerId, int dataCenterId) {
+    public boolean saveBySnowflakeId(T entity, int workerId, int dataCenterId) {
         this.workerId = workerId;
         this.dataCenterId = dataCenterId;
         return retBool(baseMapper.insert(fillEntityId(entity)));
