@@ -32,6 +32,10 @@ public class TreeNode<T> {
      */
     private String url;
     /**
+     * 节点顺序 值越小越优优先
+     */
+    private int order;
+    /**
      * 显示节点文本
      */
     private String name;
