@@ -12,7 +12,6 @@ import java.lang.annotation.*;
  * 添加此注解使用web工具类
  *
  * @author y3tu
- * @date 2018/10/5
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

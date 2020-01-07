@@ -4,7 +4,6 @@ package com.y3tu.tool.core.exception;
  * 异常枚举接口
  *
  * @author y3tu
- * @date 2019-05-10
  */
 public interface IError {
 

@@ -4,7 +4,6 @@ package com.y3tu.tool.core.exception;
  * 业务异常
  *
  * @author y3tu
- * @date 2018/10/2
  */
 public class BusinessException extends BaseException {
     public BusinessException() {

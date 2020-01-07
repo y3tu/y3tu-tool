@@ -18,8 +18,7 @@ import java.util.Arrays;
 /**
  * Controller拦截器，主要获取一次请求包含的信息和处理时间
  *
- * @author lengleng
- * @date 2017/12/15
+ * @author y3tu
  * Controller 增强
  */
 

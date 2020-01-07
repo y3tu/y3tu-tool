@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 /**
  * 允许全局跨域访问
  * @author y3tu
- * @date 2019-04-01
+ *
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

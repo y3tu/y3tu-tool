@@ -7,7 +7,6 @@ import lombok.Data;
  * 基本异常
  *
  * @author y3tu
- * @date 2018/10/2
  */
 @Data
 public class BaseException extends RuntimeException {

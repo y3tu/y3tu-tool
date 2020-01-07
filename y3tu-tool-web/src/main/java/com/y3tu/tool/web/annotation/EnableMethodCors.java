@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
  * 也可使用自定义全局跨域配置 {@link CorsConfig}
  *
  * @author y3tu
- * @date 2018/10/30
+ *
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

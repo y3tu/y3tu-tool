@@ -22,7 +22,7 @@ import java.util.*;
  * jwt(json web token)工具类
  *
  * @author y3tu
- * @date 2019-05-20
+ *
  */
 @Slf4j
 public class JwtUtil {

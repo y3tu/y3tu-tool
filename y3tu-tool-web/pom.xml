@@ -14,7 +14,7 @@
 
     <name>${project.artifactId}</name>
     <description>web相关工具类</description>
-
+    <url>https://github.com/y3tu/y3tu-tool</url>
 
     <properties>
         <mybatis-plus-version>3.0.5</mybatis-plus-version>

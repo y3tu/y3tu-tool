@@ -14,6 +14,8 @@
 
     <name>${project.artifactId}</name>
     <description>y3tu-tool核心集合</description>
+    <url>https://github.com/y3tu/y3tu-tool</url>
+
 
     <properties>
         <!-- versions -->

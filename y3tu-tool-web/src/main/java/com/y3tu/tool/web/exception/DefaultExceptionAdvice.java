@@ -34,7 +34,7 @@ public class DefaultExceptionAdvice {
     @ExceptionHandler({SQLException.class})
     public R handleSQLException(SQLException e) {
         log.error("服务运行SQLException异常", e);
-        R r = R.error(ErrorEnum.SQL_EXCEPTION);
+        R r = R.error(ErrorEnum.SQL_ERROR);
         r.setMessage(e.getMessage());
         return r;
     }

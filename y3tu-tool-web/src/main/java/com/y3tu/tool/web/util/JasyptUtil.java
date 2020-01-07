@@ -5,7 +5,7 @@ import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
 
 /**
  * @author y3tu
- * @date 2018/6/18
+ *
  */
 public class JasyptUtil {
     /**

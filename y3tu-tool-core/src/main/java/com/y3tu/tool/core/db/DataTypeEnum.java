@@ -4,7 +4,6 @@ package com.y3tu.tool.core.db;
  * 数据库字段类型枚举
  *
  * @author y3tu
- * @date 2018/11/5
  */
 public enum DataTypeEnum {
     /**

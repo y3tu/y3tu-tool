@@ -17,7 +17,6 @@ import java.io.IOException;
  * 主要用于在jar中提供页面给用户访问
  *
  * @author y3tu
- * @date 2018/10/25
  */
 @Slf4j
 public abstract class AbstractResourceServlet extends HttpServlet {

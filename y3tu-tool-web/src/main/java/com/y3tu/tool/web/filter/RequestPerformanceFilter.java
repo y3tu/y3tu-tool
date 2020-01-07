@@ -19,7 +19,7 @@ import java.io.IOException;
  * 其中<code>threshold</code>参数表明超时阈值，如果处理的总时间超过该值，则filter会以warning的方式记录该次操作。
  *
  * @author liuht
- * @date 2018/10/23
+ *
  */
 @Slf4j
 public class RequestPerformanceFilter extends OncePerRequestFilter implements Filter {

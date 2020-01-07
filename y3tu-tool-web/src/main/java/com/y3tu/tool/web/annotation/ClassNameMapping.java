@@ -15,7 +15,7 @@ import java.lang.annotation.*;
  * 如果使用@PathVariable 这类路径参数的目前只能使用原方式 @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
  *
  * @author y3tu
- * @date 2018/10/27
+ *
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

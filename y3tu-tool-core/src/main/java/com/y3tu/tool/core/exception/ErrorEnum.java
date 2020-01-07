@@ -22,7 +22,7 @@ public enum ErrorEnum implements IError {
     /**
      * 服务运行SQLException异常
      */
-    SQL_EXCEPTION("SQL-ERROR", "数据库异常"),
+    SQL_ERROR("SQL-ERROR", "数据库异常"),
     /**
      * 系统繁忙,请稍候再试
      */

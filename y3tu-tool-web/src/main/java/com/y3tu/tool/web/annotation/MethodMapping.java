@@ -9,7 +9,7 @@ import java.lang.annotation.*;
  * 该注解用于Controller的方法上，把方法名映射为请求路径
  *
  * @author y3tu
- * @date 2018/10/27
+ *
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

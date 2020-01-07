@@ -23,7 +23,6 @@ import java.sql.*;
 /**
  * 数据库操作工具类
  * @author y3tu
- * @date 2019-08-02
  *
  * @see cn.hutool.db.DbUtil
  */

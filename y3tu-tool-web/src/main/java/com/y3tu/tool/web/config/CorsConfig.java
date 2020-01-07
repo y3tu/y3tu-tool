@@ -14,7 +14,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * 全局跨域设置
  *
  * @author y3tu
- * @date 2018/10/31
  */
 @Configuration
 @EnableWebMvc

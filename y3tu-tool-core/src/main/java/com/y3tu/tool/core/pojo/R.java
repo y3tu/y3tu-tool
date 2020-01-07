@@ -11,7 +11,7 @@ import java.io.Serializable;
  * 统一返回
  *
  * @author y3tu
- * @date 2018/1/10
+ *
  */
 @Data
 public class R<T> implements Serializable {

@@ -4,7 +4,6 @@ package com.y3tu.tool.core.exception;
  * 服务调用异常
  *
  * @author y3tu
- * @date 2019-05-12
  */
 public class ServerCallException extends BaseException {
     public ServerCallException(String message) {

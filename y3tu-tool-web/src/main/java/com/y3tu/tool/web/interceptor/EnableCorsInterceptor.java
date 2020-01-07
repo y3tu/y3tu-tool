@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
  * 允许跨域访问拦截器
  *
  * @author y3tu
- * @date 2018/10/30
+ *
  */
 public class EnableCorsInterceptor implements HandlerInterceptor {
     private String allowOrigin = "*";

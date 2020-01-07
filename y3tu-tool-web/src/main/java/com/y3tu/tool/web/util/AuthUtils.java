@@ -13,7 +13,6 @@ import java.rmi.ServerException;
  * 认证授权解析请求header信息
  *
  * @author y3tu
- * @date 2018/10/4
  */
 public class AuthUtils {
 
@@ -25,6 +24,7 @@ public class AuthUtils {
      * @param header header中的参数
      * @throws ServerException if the Basic header is not present or is not valid
      *                         Base64
+     * @return
      */
     public static String[] extractAndDecodeHeader(String header)
             throws IOException {
@@ -33,7 +33,7 @@ public class AuthUtils {
         try {
             decoded = Base64.decode(base64Token);
         } catch (IllegalArgumentException e) {
-            throw new BusinessException("Failed to decode basic authentication token", ErrorEnum.UTIL_EXCEPTION);
+            throw new BusinessException("Failed to decode basic authentication token", ErrorEnum.UTIL_ERROR);
         }
 
         String token = new String(decoded, CharsetUtil.UTF_8);
@@ -41,7 +41,7 @@ public class AuthUtils {
         int delim = token.indexOf(":");
 
         if (delim == -1) {
-            throw new BusinessException("Invalid basic authentication token" + ErrorEnum.UTIL_EXCEPTION);
+            throw new BusinessException("Invalid basic authentication token" + ErrorEnum.UTIL_ERROR);
         }
         return new String[]{token.substring(0, delim), token.substring(delim + 1)};
     }
@@ -50,15 +50,15 @@ public class AuthUtils {
      * *从header 请求中的clientId/clientsecect
      *
      * @param request
-     * @return
-     * @throws IOException
+     * @return 解析后的
+     * @throws IOException io异常
      */
     public static String[] extractAndDecodeHeader(HttpServletRequest request)
             throws IOException {
         String header = request.getHeader("Authorization");
 
         if (header == null || !header.startsWith(BASIC_)) {
-            throw new BusinessException("请求头中client信息为空" + ErrorEnum.UTIL_EXCEPTION);
+            throw new BusinessException("请求头中client信息为空" + ErrorEnum.UTIL_ERROR);
         }
 
         return extractAndDecodeHeader(header);

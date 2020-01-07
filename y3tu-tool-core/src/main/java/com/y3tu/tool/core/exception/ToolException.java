@@ -5,7 +5,6 @@ package com.y3tu.tool.core.exception;
  * 工具类异常
  *
  * @author y3tu
- * @date 2018/6/16
  */
 public class ToolException extends BaseException {
     public ToolException() {
