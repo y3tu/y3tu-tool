@@ -106,7 +106,7 @@ public class IpUtil {
      * 获取IP返回地理天气信息
      *
      * @param ip ip地址
-     * @return
+     * @return 天气信息
      */
     public static String getIpWeatherInfo(String ip) {
 
@@ -201,7 +201,7 @@ public class IpUtil {
     /**
      * 通过http://ip.chinaz.com 获取外网ip地址
      *
-     * @return
+     * @return 外网ip地址
      */
     public static String getOutsideIp() {
         String ip = "";

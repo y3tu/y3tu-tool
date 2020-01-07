@@ -151,6 +151,10 @@
                         </executions>
                         <configuration>
                             <javadocExecutable>${java.home}/../bin/javadoc</javadocExecutable>
+                            <!--指定编码为UTF-8-->
+                            <encoding>UTF-8</encoding>
+                            <charset>UTF-8</charset>
+                            <docencoding>UTF-8</docencoding>
                         </configuration>
                     </plugin>
                     <plugin>

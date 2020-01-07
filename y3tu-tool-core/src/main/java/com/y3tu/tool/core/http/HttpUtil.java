@@ -60,6 +60,7 @@ public class HttpUtil extends cn.hutool.http.HttpUtil {
      * get请求 (同步)
      *
      * @param url 请求url
+     * @return 返回
      */
     public static Resp getSync(String url) {
         return getSync(url, null);
@@ -70,6 +71,7 @@ public class HttpUtil extends cn.hutool.http.HttpUtil {
      *
      * @param url：url
      * @param paramsMap：map集合，封装键值对参数
+     * @return 返回
      */
     public static Resp getSync(String url, Map<String, String> paramsMap) {
         return httpSync(METHOD_GET, url, paramsMap, null);
@@ -101,6 +103,7 @@ public class HttpUtil extends cn.hutool.http.HttpUtil {
      * post请求 (同步)
      *
      * @param url 请求url
+     * @return 返回信息
      */
     public static Resp postSync(String url) {
         return postSync(url, null);
@@ -111,6 +114,7 @@ public class HttpUtil extends cn.hutool.http.HttpUtil {
      *
      * @param url：url
      * @param paramsMap：map集合，封装键值对参数
+     * @return 返回信息
      */
     public static Resp postSync(String url, Map<String, String> paramsMap) {
         return httpSync(METHOD_POST, url, paramsMap, null);
@@ -124,6 +128,7 @@ public class HttpUtil extends cn.hutool.http.HttpUtil {
      * @param url：url
      * @param paramsMap：map集合，封装键值对参数
      * @param headerMap：map集合，封装请求头键值对
+     * @return 返回信息
      */
     public static Resp httpSync(String methodType, String url, Map<String, String> paramsMap, Map<String, String> headerMap) {
         try {

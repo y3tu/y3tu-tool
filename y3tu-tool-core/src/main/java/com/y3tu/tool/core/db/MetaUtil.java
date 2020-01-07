@@ -29,7 +29,7 @@ public class MetaUtil {
      * 获取所有表的表名
      *
      * @param ds
-     * @return
+     * @return 表名集合
      */
     public static List<String> getTableName(DataSource ds) {
         return getTables(ds).stream().map(map -> (String) map.get("name")).collect(Collectors.toList());
@@ -39,7 +39,7 @@ public class MetaUtil {
      * 获得所有表信息
      *
      * @param ds 数据源
-     * @return
+     * @return 表信息集合
      */
     public static List<Map> getTables(DataSource ds) {
         return getTables(ds, TableType.TABLE);

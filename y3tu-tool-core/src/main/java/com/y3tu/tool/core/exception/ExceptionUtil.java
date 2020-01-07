@@ -27,8 +27,8 @@ public class ExceptionUtil extends cn.hutool.core.exceptions.ExceptionUtil {
     /**
      * 获取堆栈信息
      *
-     * @param throwable
-     * @return
+     * @param throwable 异常
+     * @return 异常堆栈信息
      */
     public static String getStackTrace(Throwable throwable) {
         StringWriter sw = new StringWriter();

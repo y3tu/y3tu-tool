@@ -9,11 +9,7 @@ import java.util.Map;
 
 /**
  * 树节点工具类
- * <p>
- * <p>
  * 要使用此工具类，需要用TreeNode构建出List<TreeNode<T>>对象
- *
- * eg:
  *
  * List<TreeNode<Department>> treeNodeList = list.stream().map(department -> {
  * TreeNode<Department> treeNode = new TreeNode<>(department.getId(), department.getName(), department.getParentId(), department);
@@ -29,9 +25,9 @@ public class TreeUtil {
     /**
      * 构建树结构
      *
-     * @param nodes
-     * @param <T>
-     * @return
+     * @param nodes 树节点集合
+     * @param <T> 需要转换成树的类型
+     * @return 树节点
      */
     public static <T> TreeNode<T> build(List<TreeNode<T>> nodes) {
         if (nodes == null) {
@@ -75,8 +71,8 @@ public class TreeUtil {
      *
      * @param nodes      被构建的数据
      * @param rootNodeId 根节点id
-     * @param <T>
-     * @return
+     * @param <T> 需要转换成树的类型
+     * @return 树结构
      */
     public static <T> List<TreeNode<T>> buildList(List<TreeNode<T>> nodes, String rootNodeId) {
         if (nodes == null) {

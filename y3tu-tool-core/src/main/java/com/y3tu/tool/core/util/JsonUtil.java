@@ -36,7 +36,7 @@ public class JsonUtil {
      * @param json  JSON字符串
      * @param clazz 目标类型
      * @param <T>   返回类型
-     * @return
+     * @return 转换后的实体
      */
     public static <T> T fromJson(String json, Class<T> clazz) {
         return JSONObject.parseObject(json, clazz);
