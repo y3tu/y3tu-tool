@@ -145,7 +145,7 @@ public class R<T> implements Serializable {
         return r;
     }
 
-    public static enum Status {
+    public enum Status {
         /**
          * 状态
          */

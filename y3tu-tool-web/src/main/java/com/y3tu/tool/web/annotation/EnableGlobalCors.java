@@ -10,8 +10,8 @@ import java.lang.annotation.Target;
 
 /**
  * 允许全局跨域访问
- * @author y3tu
  *
+ * @author y3tu
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

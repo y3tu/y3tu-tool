@@ -1,7 +1,6 @@
 package com.y3tu.tool.web.base.controller;
 
 import com.y3tu.tool.core.collection.CollectionUtil;
-import com.y3tu.tool.web.annotation.MethodMapping;
 import com.y3tu.tool.web.base.entity.BaseEntity;
 import com.y3tu.tool.web.base.pojo.PageInfo;
 import com.y3tu.tool.web.base.service.BaseService;
@@ -9,10 +8,10 @@ import com.y3tu.tool.core.pojo.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * Controller基类
+ * 如果继承此BaseController，那么会继承此类的方法，提供了简单的增删改成，但是无法做到权限控制；
+ * 也可不继承BaseController，直接复制里面的方法在自己的Controller里面，根据需求自行添加内容
  *
  * @author y3tu
  */
@@ -31,30 +30,30 @@ public abstract class BaseController<K extends BaseService<T>, T extends BaseEnt
      *                 ascs:升序排列的字段 字符串数组
      *                 descs:降序排列的字段 字符串数组
      *                 查询条件的key要和mapper.xml文件里面的key保持一致
-     * @return
+     * @return 分页数据
      */
-    @MethodMapping(method = RequestMethod.POST)
-    public R<PageInfo<T>> page(@RequestBody PageInfo pageInfo) {
+    @PostMapping
+    public R page(@RequestBody PageInfo<T> pageInfo) {
         return R.success(service.page(pageInfo));
     }
 
     /**
      * 获取全部数据
      *
-     * @return
+     * @return 全部数据
      */
-    @MethodMapping
-    public R<List<T>> getAll() {
+    @GetMapping
+    public R getAll() {
         return new R(service.list(null));
     }
 
     /**
-     * 通过id获取
+     * 通过主键id获取
      *
-     * @param id
-     * @return
+     * @param id 主键
+     * @return 数据
      */
-    @MethodMapping(value = "/get/{id}")
+    @GetMapping(value = "/get/{id}")
     public R get(@PathVariable String id) {
         return R.success(service.getById(id));
     }
@@ -63,60 +62,70 @@ public abstract class BaseController<K extends BaseService<T>, T extends BaseEnt
      * 保存数据
      *
      * @param entity 保存的数据
-     * @return
+     * @return 响应
      */
-    @MethodMapping(method = RequestMethod.POST)
+    @PostMapping
     public R save(@RequestBody T entity) {
-        service.save(entity);
-        return R.success("保存成功!");
+        if (service.save(entity)) {
+            return R.success(entity);
+        } else {
+            return R.error();
+        }
     }
 
     /**
      * 更新数据
      *
      * @param entity 更新的数据
-     * @return
+     * @return 响应
      */
-    @MethodMapping(method = RequestMethod.PUT)
+    @PutMapping
     public R update(@RequestBody T entity) {
-        service.updateById(entity);
-        return R.success("更新成功!");
+        if (service.updateById(entity)) {
+            return R.success();
+        } else {
+            return R.error();
+        }
     }
 
     /**
      * 删除
      *
      * @param id 主键
-     * @return
+     * @return 响应
      */
-    @MethodMapping(value = "/delById/{id}" , method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/delById/{id}")
     public R delById(@PathVariable String id) {
-        service.removeById(id);
-        return R.success("删除成功!");
+        if (service.removeById(id)) {
+            return R.success();
+        } else {
+            return R.error();
+        }
     }
 
     /**
      * 批量删除
      *
      * @param ids 主键集合
-     * @return
+     * @return 响应
      */
-    @MethodMapping(value = "/delByIds/{ids}" , method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/delByIds/{ids}")
     public R delByIds(@PathVariable String[] ids) {
-        service.removeByIds(CollectionUtil.toList(ids));
-        return R.success("删除成功!");
+        if (service.removeByIds(CollectionUtil.toList(ids))) {
+            return R.success();
+        } else {
+            return R.error();
+        }
     }
 
     /**
      * 重定向至地址 url
      *
      * @param url 请求地址
-     * @return
+     * @return 重定向url
      */
     protected String redirectTo(String url) {
-        StringBuffer rto = new StringBuffer("redirect:");
-        rto.append(url);
-        return rto.toString();
+        return "redirect:" + url;
     }
 
 

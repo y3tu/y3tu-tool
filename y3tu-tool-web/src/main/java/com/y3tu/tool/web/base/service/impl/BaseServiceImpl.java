@@ -43,49 +43,38 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
     public PageInfo<T> page(PageInfo<T> pageInfo, Wrapper<T> wrapper) {
         //每次查询前把total置为0
         pageInfo.setTotal(0);
-        return (PageInfo<T>) baseMapper.selectPage(pageInfo,wrapper);
+        return (PageInfo<T>) baseMapper.selectPage(pageInfo, wrapper);
     }
 
-    /**
-     * 重写插入数据方法，采用雪花算法生成主键id
-     *
-     * @param entity
-     * @return
-     */
-    public boolean saveBySnowflakeId(T entity) {
-        return retBool(baseMapper.insert(fillEntityId(entity)));
-    }
-
-    /**
-     * 重写插入数据方法，采用雪花算法生成主键id
-     *
-     * @param entity
-     * @return
-     */
     @Transactional(rollbackFor = {Exception.class})
+    @Override
+    public boolean saveBySnowflakeId(T entity) {
+        return retBool(baseMapper.insert(fillEntityId(entity, workerId, dataCenterId)));
+    }
+
+    @Transactional(rollbackFor = {Exception.class})
+    @Override
     public boolean saveBySnowflakeId(T entity, int workerId, int dataCenterId) {
-        this.workerId = workerId;
-        this.dataCenterId = dataCenterId;
-        return retBool(baseMapper.insert(fillEntityId(entity)));
+        return retBool(baseMapper.insert(fillEntityId(entity, workerId, dataCenterId)));
     }
 
 
-    /**
-     * 批量插入
-     *
-     * @param entityList
-     * @param batchSize
-     * @return
-     */
+    @Transactional(rollbackFor = {Exception.class})
     @Override
-    public boolean saveBatch(Collection<T> entityList, int batchSize) {
+    public boolean saveBatchBySnowflakeId(Collection<T> entityList, int batchSize) {
+        return this.saveBatchBySnowflakeId(entityList, batchSize, workerId, dataCenterId);
+    }
+
+    @Transactional(rollbackFor = {Exception.class})
+    @Override
+    public boolean saveBatchBySnowflakeId(Collection<T> entityList, int batchSize, int workerId, int dataCenterId) {
         if (CollectionUtil.isEmpty(entityList)) {
             throw new IllegalArgumentException("ErrorEnum: entityList must not be empty");
         }
         CollectionUtil.filter(entityList, new Editor<T>() {
             @Override
             public T edit(T t) {
-                return fillEntityId(t);
+                return fillEntityId(t, workerId, dataCenterId);
             }
         });
         return super.saveBatch(entityList, batchSize);
@@ -96,7 +85,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
      *
      * @param entity
      */
-    private T fillEntityId(T entity) {
+    private T fillEntityId(T entity, int workerId, int dataCenterId) {
         if (null != entity) {
             Class<?> cls = entity.getClass();
             TableInfo tableInfo = TableInfoHelper.getTableInfo(cls);
