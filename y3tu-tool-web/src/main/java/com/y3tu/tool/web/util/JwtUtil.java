@@ -44,7 +44,7 @@ public class JwtUtil {
      * 使用JWT默认方式，生成加解密密钥
      *
      * @param alg 加解密类型
-     * @return
+     * @return 加解密密钥
      */
     public static SecretKey generateKey(SignatureAlgorithm alg) {
         return MacProvider.generateKey(alg);
@@ -55,7 +55,7 @@ public class JwtUtil {
      *
      * @param alg  加解密类型
      * @param rule 密钥生成规则
-     * @return
+     * @return 加解密密钥
      */
     public static SecretKey generateKey(SignatureAlgorithm alg, String rule) {
         // 将密钥生成键转换为字节数组
@@ -121,6 +121,7 @@ public class JwtUtil {
      *
      * @param sub jwt 面向的用户
      * @param jti jwt 唯一身份标识，主要用来作为一次性token,从而回避重放攻击
+     * @param duration 失效时间
      * @return JWT字符串
      */
     public static String buildJWT(String sub, String jti, Integer duration) {
@@ -145,7 +146,6 @@ public class JwtUtil {
      * @param key       jwt 加密密钥
      * @param claimsJws jwt 内容文本
      * @return {@link Jws}
-     * @throws Exception
      */
     public static Jws<Claims> parseJWT(Key key, String claimsJws) {
         // 移除 JWT 前的"Bearer "字符串
@@ -159,10 +159,9 @@ public class JwtUtil {
      *
      * @param token   要解析的token信息
      * @param jwtRule 用于进行签名的秘钥
-     * @return
-     * @throws Exception
+     * @return token信息
      */
-    public static Optional<Claims> getClaimsFromToken(String token, String jwtRule) throws Exception {
+    public static Optional<Claims> getClaimsFromToken(String token, String jwtRule) {
         String key = Base64.encode(jwtRule.getBytes());
         Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
         return Optional.of(claims);
@@ -174,10 +173,9 @@ public class JwtUtil {
      *
      * @param token   要解析的token信息
      * @param jwtRule 用于进行签名的秘钥
-     * @return
-     * @throws Exception
+     * @return 参数值
      */
-    public static Map<String, Object> extractInfo(String token, String jwtRule) throws Exception {
+    public static Map<String, Object> extractInfo(String token, String jwtRule) {
 
         Optional<Claims> claims = getClaimsFromToken(token, jwtRule);
         if (claims.isPresent()) {

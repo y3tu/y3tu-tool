@@ -24,7 +24,7 @@ public class AuthUtils {
      * @param header header中的参数
      * @throws ServerException if the Basic header is not present or is not valid
      *                         Base64
-     * @return
+     * @return 解析后的信息
      */
     public static String[] extractAndDecodeHeader(String header)
             throws IOException {
@@ -49,8 +49,8 @@ public class AuthUtils {
     /**
      * *从header 请求中的clientId/clientsecect
      *
-     * @param request
-     * @return 解析后的
+     * @param request 请求
+     * @return 解析后的信息
      * @throws IOException io异常
      */
     public static String[] extractAndDecodeHeader(HttpServletRequest request)

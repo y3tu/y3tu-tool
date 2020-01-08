@@ -8,15 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ *
  * 树节点工具类
- * 要使用此工具类，需要用TreeNode构建出List<TreeNode<T>>对象
- *
- * List<TreeNode<Department>> treeNodeList = list.stream().map(department -> {
- * TreeNode<Department> treeNode = new TreeNode<>(department.getId(), department.getName(), department.getParentId(), department);
- * return treeNode;
- * }).collect(Collectors.toList());
- *
- * TreeUtil.buildList(treeNodeList, "0"));
  *
  * @author y3tu
  */

@@ -4,8 +4,9 @@ import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
 
 /**
- * @author y3tu
+ * Jasypt加解密工具类
  *
+ * @author y3tu
  */
 public class JasyptUtil {
     /**
@@ -13,7 +14,7 @@ public class JasyptUtil {
      *
      * @param password 配置文件中设定的加密密码 jasypt.encryptor.password
      * @param value    待加密值
-     * @return
+     * @return 加密结果
      */
     public static String encyptPwd(String password, String value) {
         PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
@@ -27,7 +28,7 @@ public class JasyptUtil {
      *
      * @param password 配置文件中设定的加密密码 jasypt.encryptor.password
      * @param value    待解密密文
-     * @return
+     * @return 解密结果
      */
     public static String decyptPwd(String password, String value) {
         PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
