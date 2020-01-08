@@ -8,5 +8,5 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
  *
  * @author y3tu
  */
-public abstract class BaseEntity<T extends BaseEntity> extends Model {
+public abstract class BaseEntity extends Model {
 }
