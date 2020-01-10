@@ -17,7 +17,7 @@
     <url>https://github.com/y3tu/y3tu-tool</url>
 
     <properties>
-        <mybatis-plus-version>3.0.5</mybatis-plus-version>
+        <mybatis-plus-version>3.2.0</mybatis-plus-version>
         <velocity-engine-version>2.0</velocity-engine-version>
         <jasypt-version>1.9.2</jasypt-version>
         <jjwt-version>0.9.0</jjwt-version>
