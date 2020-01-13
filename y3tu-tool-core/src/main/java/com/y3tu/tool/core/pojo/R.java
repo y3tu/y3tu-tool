@@ -4,6 +4,7 @@ import com.y3tu.tool.core.exception.ErrorEnum;
 import com.y3tu.tool.core.exception.IError;
 import com.y3tu.tool.core.util.StrUtil;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
@@ -14,6 +15,7 @@ import java.io.Serializable;
  *
  */
 @Data
+@Accessors(chain = true)
 public class R<T> implements Serializable {
 
     /**
