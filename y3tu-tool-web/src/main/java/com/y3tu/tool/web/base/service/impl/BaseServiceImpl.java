@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.y3tu.tool.core.collection.CollectionUtil;
 import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.util.IdUtil;
+import com.y3tu.tool.core.util.ObjectUtil;
 import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.web.base.mapper.BaseMapper;
 import com.y3tu.tool.web.base.pojo.PageInfo;
@@ -93,7 +94,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
                 try {
                     Field f = cls.getDeclaredField(tableInfo.getKeyProperty());
                     f.setAccessible(true);
-                    if (f.get(entity) == null) {
+                    if (ObjectUtil.isEmpty(f.get(entity))) {
                         if (f.getType() == Integer.class) {
                             int id = (int) IdUtil.createSnowflake(workerId, dataCenterId).nextId();
                             f.set(entity, id);
