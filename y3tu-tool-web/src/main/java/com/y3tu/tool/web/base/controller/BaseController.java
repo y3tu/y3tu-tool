@@ -2,7 +2,7 @@ package com.y3tu.tool.web.base.controller;
 
 import com.y3tu.tool.core.collection.CollectionUtil;
 import com.y3tu.tool.web.base.entity.BaseEntity;
-import com.y3tu.tool.web.base.pojo.PageInfo;
+import com.y3tu.tool.web.base.pojo.Page;
 import com.y3tu.tool.web.base.service.BaseService;
 import com.y3tu.tool.core.pojo.R;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +23,18 @@ public abstract class BaseController<K extends BaseService<T>, T extends BaseEnt
     /**
      * 分页查询
      *
-     * @param pageInfo 查询参数 包含分页信息和查询条件
-     *                 前台传入参数params封装规则
-     *                 current：当前页
-     *                 size：每页条数
-     *                 ascs:升序排列的字段 字符串数组
-     *                 descs:降序排列的字段 字符串数组
-     *                 查询条件的key要和mapper.xml文件里面的key保持一致
+     * @param page 查询参数 包含分页信息和查询条件
+     *             前台传入参数params封装规则
+     *             current：当前页
+     *             size：每页条数
+     *             ascs:升序排列的字段 字符串数组
+     *             descs:降序排列的字段 字符串数组
+     *             查询条件的key要和mapper.xml文件里面的key保持一致
      * @return 分页数据
      */
     @PostMapping
-    public R page(@RequestBody PageInfo<T> pageInfo) {
-        return R.success(service.page(pageInfo));
+    public R page(@RequestBody Page<T> page) {
+        return R.success(service.page(page));
     }
 
     /**

@@ -2,7 +2,7 @@ package com.y3tu.tool.web.base.service;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.y3tu.tool.web.base.pojo.PageInfo;
+import com.y3tu.tool.web.base.pojo.Page;
 
 import java.util.Collection;
 
@@ -19,7 +19,7 @@ public interface BaseService<T> extends IService<T> {
      * @param pageInfo 分页信息 包含每页多少条,当前页数,排序,查询条件
      * @return 分页查询数据
      */
-    PageInfo<T> page(PageInfo<T> pageInfo);
+    Page<T> page(Page<T> pageInfo);
 
     /**
      * 分页查询
@@ -28,7 +28,7 @@ public interface BaseService<T> extends IService<T> {
      * @param wrapper  查询条件
      * @return 分页查询数据
      */
-    PageInfo<T> page(PageInfo<T> pageInfo, Wrapper<T> wrapper);
+    Page<T> page(Page<T> pageInfo, Wrapper<T> wrapper);
 
     /**
      * 新增-用雪花算法生成主键Id

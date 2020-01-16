@@ -11,7 +11,7 @@ import com.y3tu.tool.core.util.IdUtil;
 import com.y3tu.tool.core.util.ObjectUtil;
 import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.web.base.mapper.BaseMapper;
-import com.y3tu.tool.web.base.pojo.PageInfo;
+import com.y3tu.tool.web.base.pojo.Page;
 import com.y3tu.tool.web.base.service.BaseService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,17 +34,17 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
     int dataCenterId = 1;
 
     @Override
-    public PageInfo<T> page(PageInfo<T> pageInfo) {
+    public Page<T> page(Page<T> pageInfo) {
         //每次查询前把total置为0
         pageInfo.setTotal(0);
         return baseMapper.page(pageInfo);
     }
 
     @Override
-    public PageInfo<T> page(PageInfo<T> pageInfo, Wrapper<T> wrapper) {
+    public Page<T> page(Page<T> pageInfo, Wrapper<T> wrapper) {
         //每次查询前把total置为0
         pageInfo.setTotal(0);
-        return (PageInfo<T>) baseMapper.selectPage(pageInfo, wrapper);
+        return (Page<T>) baseMapper.selectPage(pageInfo, wrapper);
     }
 
     @Transactional(rollbackFor = {Exception.class})
