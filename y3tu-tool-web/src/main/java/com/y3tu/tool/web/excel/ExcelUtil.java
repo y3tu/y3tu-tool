@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author y3tu
  */
-public class ExcelUtil extends EasyExcel{
+public class ExcelUtil extends EasyExcel {
 
 
     /**
@@ -45,10 +45,11 @@ public class ExcelUtil extends EasyExcel{
      *
      * @param excelWriter writer对象
      * @param sheetName   sheet页名称
+     * @param startPage   开始页
      * @param totalCount  数据总数
      * @param collect     分页查询方法
      */
-    public static void pageWrite(ExcelWriter excelWriter, String sheetName, long totalCount, ExcelPageCollect collect) {
+    public static void pageWrite(ExcelWriter excelWriter, String sheetName, int startPage, long totalCount, ExcelPageCollect collect) {
 
         //使用默认的 xlsx, page size 10000, sheet max row 1000000
         int pageSize = ExcelPageEnum.XLSX.getPageSize();
@@ -63,15 +64,14 @@ public class ExcelUtil extends EasyExcel{
         // 计算 page count, sheet count
         long pageCount = (totalCount - 1) / pageSize + 1;
         long sheetCount = (totalCount - 1) / sheetMaxRow + 1;
-        int currentPage = 0;
 
+        int currentPage = startPage;
         // 分页写数据
         WriteSheet sheet = null;
         for (int i = 0; i < sheetCount; i++) {
             sheet = EasyExcel.writerSheet(i, sheetName + i).build();
             for (int j = 0; j < (sheetMaxRow / pageSize); j++) {
-                // must use ++currentPage, mybatis-plus page query current page start 1
-                excelWriter.write(collect.data(++currentPage, pageSize), sheet);
+                excelWriter.write(collect.data(currentPage++, pageSize), sheet);
                 if (currentPage >= pageCount) {
                     break;
                 }
