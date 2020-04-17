@@ -24,6 +24,7 @@
         <spring-boot-version>2.0.3.RELEASE</spring-boot-version>
         <mysql.version>5.1.38</mysql.version>
         <redis-version>2.9.0</redis-version>
+        <easyexcel-version>2.1.7</easyexcel-version>
     </properties>
 
     <dependencies>
@@ -32,6 +33,13 @@
             <groupId>com.y3tu</groupId>
             <artifactId>y3tu-tool-core</artifactId>
             <version>${project.parent.version}</version>
+        </dependency>
+
+        <!--Excel工具-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>${easyexcel-version}</version>
         </dependency>
 
         <dependency>
