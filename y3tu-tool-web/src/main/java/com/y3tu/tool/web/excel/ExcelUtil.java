@@ -20,6 +20,22 @@ import java.util.List;
  */
 public class ExcelUtil extends EasyExcel {
 
+    /**
+     * 装饰响应对象，已适应浏览器下载
+     *
+     * @param fileName  文件名
+     * @param excelType excel文件类型
+     * @param response  响应
+     * @return HttpServletResponse
+     */
+    public static HttpServletResponse decorateResponse(String fileName, ExcelTypeEnum excelType, HttpServletResponse response) throws Exception {
+        response.setContentType("application/vnd.ms-excel");
+        response.setCharacterEncoding("utf-8");
+        // 这里URLEncoder.encode可以防止中文乱码 当然和easyExcel没有关系
+        fileName = URLEncoder.encode(fileName, "UTF-8");
+        response.setHeader("Content-disposition", "attachment;filename=" + fileName + excelType.getValue());
+        return response;
+    }
 
     /**
      * 浏览器导出excel文件
@@ -28,15 +44,12 @@ public class ExcelUtil extends EasyExcel {
      * @param sheetName sheet页名称
      * @param list      导出的数据
      * @param clazz     导出的实体类型
+     * @param excelType excel文件类型
      * @param response  响应请求
      * @throws IOException
      */
-    public static void downExcel(String fileName, String sheetName, List<?> list, Class clazz, HttpServletResponse response) throws IOException {
-        response.setContentType("application/vnd.ms-excel");
-        response.setCharacterEncoding("utf-8");
-        // 这里URLEncoder.encode可以防止中文乱码 当然和easyExcel没有关系
-        fileName = URLEncoder.encode(fileName, "UTF-8");
-        response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
+    public static void downExcel(String fileName, String sheetName, List<?> list, Class clazz, ExcelTypeEnum excelType, HttpServletResponse response) throws Exception {
+        response = decorateResponse(fileName, excelType, response);
         EasyExcel.write(response.getOutputStream(), clazz).sheet(sheetName).doWrite(list);
     }
 
