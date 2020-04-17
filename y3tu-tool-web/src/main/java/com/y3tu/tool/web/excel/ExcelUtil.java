@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author y3tu
  */
-public class EasyExcelUtil {
+public class ExcelUtil extends EasyExcel{
 
 
     /**
