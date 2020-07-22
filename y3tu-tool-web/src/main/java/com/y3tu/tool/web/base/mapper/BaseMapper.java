@@ -2,6 +2,9 @@ package com.y3tu.tool.web.base.mapper;
 
 import com.y3tu.tool.web.base.pojo.Page;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Mapper接口
  *
@@ -17,5 +20,11 @@ public interface BaseMapper<T> extends com.baomidou.mybatisplus.core.mapper.Base
      */
     Page<T> page(Page page);
 
+    /**
+     * 根据条件查询数据 此方法不分页 和分页方法是相同的查询sql
+     * @param params
+     * @return
+     */
+    List<T> page(Map params);
 
 }
