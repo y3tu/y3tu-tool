@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.y3tu.tool.web.base.pojo.Page;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 基本Service接口
@@ -29,6 +31,14 @@ public interface BaseService<T> extends IService<T> {
      * @return 分页查询数据
      */
     Page<T> page(Page<T> pageInfo, Wrapper<T> wrapper);
+
+    /**
+     * 不分页查询
+     *
+     * @param params 查询条件
+     * @return 不分页查询数据
+     */
+    List<T> noPage(Map params);
 
     /**
      * 新增-用雪花算法生成主键Id

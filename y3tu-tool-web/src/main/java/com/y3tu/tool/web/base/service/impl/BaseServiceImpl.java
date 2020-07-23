@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 基础service实现
@@ -45,6 +47,11 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
         //每次查询前把total置为0
         pageInfo.setTotal(0);
         return (Page<T>) baseMapper.selectPage(pageInfo, wrapper);
+    }
+
+    @Override
+    public List<T> noPage(Map params) {
+        return baseMapper.page(params);
     }
 
     @Transactional(rollbackFor = {Exception.class})
