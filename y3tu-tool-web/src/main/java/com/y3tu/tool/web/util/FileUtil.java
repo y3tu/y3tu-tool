@@ -12,9 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.security.MessageDigest;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -152,15 +149,10 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
     /**
      * 将文件名解析成文件的上传路径
      */
-    public static File upload(MultipartFile file, String filePath) {
-        Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhhmmssS");
-        String name = getFileNameNoEx(file.getOriginalFilename());
-        String suffix = getExtensionName(file.getOriginalFilename());
-        String nowStr = "-" + format.format(date);
+    public static boolean upload(MultipartFile file, String filePath) {
+
         try {
-            String fileName = name + nowStr + "." + suffix;
-            String path = filePath + fileName;
+            String path = filePath;
             // getCanonicalFile 可解析正确各种路径
             File dest = new File(path).getCanonicalFile();
             // 检测是否存在目录
@@ -171,12 +163,13 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
             }
             // 文件写入
             file.transferTo(dest);
-            return dest;
+            return true;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
-        return null;
+        return false;
     }
+
 
     public static String getFileType(String type) {
         type = type.toLowerCase();
@@ -267,7 +260,7 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
      * @param response /
      * @param file     /
      */
-    public static void downloadFile(HttpServletRequest request, HttpServletResponse response, File file, String fileName, boolean deleteOnExit) {
+    public static void downloadFile(File file, String fileName, boolean deleteOnExit, HttpServletRequest request, HttpServletResponse response) {
         response.setCharacterEncoding(request.getCharacterEncoding());
         response.setContentType("application/octet-stream");
         FileInputStream fis = null;
@@ -296,7 +289,7 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
         }
     }
 
-    public static void downloadFileBatch(HttpServletRequest request, HttpServletResponse response, Map<String, File> fileListMap, String zipName, boolean deleteOnExit) {
+    public static void downloadFileBatch(Map<String, File> fileListMap, String zipName, boolean deleteOnExit, HttpServletRequest request, HttpServletResponse response) {
         //响应头的设置
         response.reset();
         response.setCharacterEncoding("utf-8");
@@ -341,13 +334,18 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
                     zipStream.closeEntry();
                 }
 
-                if (deleteOnExit) {
-                    file.deleteOnExit();
-                }
             }
 
             response.flushBuffer();
         } catch (Exception e) {
+            if (deleteOnExit) {
+                for (String fileName : fileListMap.keySet()) {
+                    File file = fileListMap.get(fileName);
+                    if (deleteOnExit) {
+                        file.deleteOnExit();
+                    }
+                }
+            }
             log.error(e.getMessage(), e);
         } finally {
             try {
@@ -362,7 +360,14 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
                 if (bufferStream != null) {
                     bufferStream.close();
                 }
-
+                if (deleteOnExit) {
+                    for (String fileName : fileListMap.keySet()) {
+                        File file = fileListMap.get(fileName);
+                        if (deleteOnExit) {
+                            file.deleteOnExit();
+                        }
+                    }
+                }
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
             }
@@ -373,4 +378,6 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
     public static String getMd5(File file) {
         return getMd5(getByte(file));
     }
+
+
 }
