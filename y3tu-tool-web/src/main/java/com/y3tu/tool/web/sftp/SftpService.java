@@ -393,7 +393,7 @@ public class SftpService {
             if (fileListLocalMap != null) {
                 for (String fileName : fileListLocalMap.keySet()) {
                     File destFile = new File(FileUtil.SYS_TEM_DIR + fileName);
-                    FileUtil.copy(fileListLocalMap.get(fileName), destFile, true);
+                    FileUtil.copy(fileListLocalMap.get(fileName), destFile, false);
                     fileListUnionMap.put(fileName, destFile);
                 }
             }

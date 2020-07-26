@@ -369,6 +369,14 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
                     }
                 }
             } catch (Exception e) {
+                if (deleteOnExit) {
+                    for (String fileName : fileListMap.keySet()) {
+                        File file = fileListMap.get(fileName);
+                        if (deleteOnExit) {
+                            file.deleteOnExit();
+                        }
+                    }
+                }
                 log.error(e.getMessage(), e);
             }
         }
