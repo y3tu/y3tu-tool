@@ -307,7 +307,10 @@ public class SftpService {
      * @return
      */
     public boolean giveBack(Channel channel) {
-        return PoolMapUtil.giveChannel(sftpInfo, channel);
+        if (channel != null) {
+            return PoolMapUtil.giveChannel(sftpInfo, channel);
+        }
+        return false;
     }
 
     public boolean delete(ChannelSftp channel) {
@@ -317,8 +320,8 @@ public class SftpService {
 
     public boolean uploadSftp(MultipartFile file, String filePath, String fileName) {
         InputStream inputStream = null;
-        ChannelSftp sftp = getChannelFromPool();
         try {
+            ChannelSftp sftp = getChannelFromPool();
             inputStream = file.getInputStream();
             mkdir(filePath, sftp);
             sftp.put(inputStream, filePath + fileName, new SftpUploadProgressMonitor(this, sftp, inputStream));
@@ -330,33 +333,34 @@ public class SftpService {
     }
 
     public File downloadSftp(String filePath, String fileName, boolean deleteOnExit, HttpServletRequest request, HttpServletResponse response) {
-
-        File destFile = new File((sftpInfo.getTempPath().equals("") ? FileUtil.SYS_TEM_DIR : sftpInfo.getTempPath()) + fileName);
-        // 检测是否存在目录
-        if (!destFile.getParentFile().exists()) {
-            if (!destFile.getParentFile().mkdirs()) {
-                System.out.println("was not successful.");
-            }
-        }
-        ChannelSftp sftp = getChannelFromPool();
+        File destFile = null;
         try {
+            destFile = new File((sftpInfo.getTempPath().equals("") ? FileUtil.SYS_TEM_DIR : sftpInfo.getTempPath()) + fileName);
+            // 检测是否存在目录
+            if (!destFile.getParentFile().exists()) {
+                if (!destFile.getParentFile().mkdirs()) {
+                    System.out.println("was not successful.");
+                }
+            }
+
             if (!destFile.exists()) {
-                sftp.get(filePath, FileUtil.getAbsolutePath(destFile));
+                ChannelSftp sftp = getChannelFromPool();
+                sftp.get(filePath, FileUtil.getAbsolutePath(destFile), new SftpProgressMonitor(this, sftp));
             }
             FileUtil.downloadFile(destFile, fileName, true, request, response);
             if (deleteOnExit) {
+                ChannelSftp sftp = getChannelFromPool();
                 sftp.rm(filePath);
+                giveBack(sftp);
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-        } finally {
-            giveBack(sftp);
         }
         return destFile;
     }
 
     public void downloadSftpBatch(Map<String, String> fileListSftpMap, String zipName, boolean deleteOnExit, HttpServletRequest request, HttpServletResponse response) {
-        ChannelSftp sftp = getChannelFromPool();
+
         Map<String, File> fileListMap = new HashMap<>();
         try {
             for (String fileName : fileListSftpMap.keySet()) {
@@ -368,7 +372,8 @@ public class SftpService {
                     }
                 }
                 if (!destFile.exists()) {
-                    sftp.get(fileListSftpMap.get(fileName), FileUtil.getAbsolutePath(destFile));
+                    ChannelSftp sftp = getChannelFromPool();
+                    sftp.get(fileListSftpMap.get(fileName), FileUtil.getAbsolutePath(destFile), new SftpProgressMonitor(this, sftp));
                 }
                 fileListMap.put(fileName, destFile);
             }
@@ -377,19 +382,18 @@ public class SftpService {
 
             if (deleteOnExit) {
                 for (String fileName : fileListSftpMap.keySet()) {
+                    ChannelSftp sftp = getChannelFromPool();
                     sftp.rm(fileListSftpMap.get(fileName));
+                    giveBack(sftp);
                 }
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-        } finally {
-            giveBack(sftp);
         }
 
     }
 
     public void downloadUnionBatch(Map<String, String> fileListSftpMap, Map<String, File> fileListLocalMap, String zipName, boolean deleteOnExit, HttpServletRequest request, HttpServletResponse response) {
-        ChannelSftp sftp = getChannelFromPool();
         Map<String, File> fileListUnionMap = new HashMap<>();
         try {
 
@@ -402,7 +406,8 @@ public class SftpService {
                     }
                 }
                 if (!destFile.exists()) {
-                    sftp.get(fileListSftpMap.get(fileName), FileUtil.getAbsolutePath(destFile));
+                    ChannelSftp sftp = getChannelFromPool();
+                    sftp.get(fileListSftpMap.get(fileName), FileUtil.getAbsolutePath(destFile), new SftpProgressMonitor(this, sftp));
                 }
                 fileListUnionMap.put(fileName, destFile);
             }
@@ -425,7 +430,9 @@ public class SftpService {
 
             if (deleteOnExit) {
                 for (String fileName : fileListSftpMap.keySet()) {
+                    ChannelSftp sftp = getChannelFromPool();
                     sftp.rm(fileListSftpMap.get(fileName));
+                    giveBack(sftp);
                 }
 
                 for (String fileName : fileListLocalMap.keySet()) {
@@ -434,8 +441,6 @@ public class SftpService {
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-        } finally {
-            giveBack(sftp);
         }
     }
 

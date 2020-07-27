@@ -30,7 +30,6 @@ public class SftpProgressMonitor implements com.jcraft.jsch.SftpProgressMonitor 
     @Override
     public boolean count(long count) {
         transferSize = transferSize + count;
-        response.flushBuffer();
         return true;
     }
 

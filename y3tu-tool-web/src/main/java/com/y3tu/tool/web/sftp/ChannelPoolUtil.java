@@ -52,7 +52,7 @@ public class ChannelPoolUtil {
             channel = sleepChannelPool.get(channelId);
             System.out.println("从池中获取到channel,ID为：" + channelId);
             // 检查channel是否关闭，重连
-            if (channel.isClosed()) {
+            if (channel.isClosed()||!channel.isConnected()) {
                 Session session;
                 try {
                     session = channel.getSession();
@@ -63,7 +63,6 @@ public class ChannelPoolUtil {
                         channel.connect();
                     }
                 } catch (JSchException e) {
-                    log.info(e.getMessage(), e);
                     log.info("channel已关闭且重连出错！将其移出池并关闭！");
                     sleepChannelPool.remove(channelId);
                     channel.getSession().disconnect();
@@ -77,6 +76,22 @@ public class ChannelPoolUtil {
                     log.info("新channel已塞入到：runningChannelPool");
                     return channel;
                 }
+            }
+            try{
+                channel.connect();
+            }catch (Exception e){
+                log.info("channel已关闭且重连出错！将其移出池并关闭！");
+                sleepChannelPool.remove(channelId);
+                channel.getSession().disconnect();
+
+                channel = SftpService.getChannel(sftpInfo.getIp(),
+                        sftpInfo.getPort(), sftpInfo.getUser(),
+                        sftpInfo.getPwd());
+                log.info("创建了一个新的channel,ID为："
+                        + String.valueOf(channel.getId()));
+                runningChannelPool.put(channel.getId(), channel);
+                log.info("新channel已塞入到：runningChannelPool");
+                return channel;
             }
             // 将channel从sleepPool挪入runningPool
             sleepChannelPool.remove(channelId);
