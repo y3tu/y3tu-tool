@@ -68,4 +68,12 @@ public class PoolMapUtil {
         return true;
     }
 
+    public static boolean deleteChannel(SftpInfo sftpInfo, Channel channel) {
+        String poolId = sftpInfo.getIp() + sftpInfo.getPort() + sftpInfo.getUser() + sftpInfo.getPwd();
+        //获取channelPool
+        ChannelPoolUtil channelPool = poolMap.get(poolId);
+        channelPool.delete(channel);
+        return true;
+    }
+
 }

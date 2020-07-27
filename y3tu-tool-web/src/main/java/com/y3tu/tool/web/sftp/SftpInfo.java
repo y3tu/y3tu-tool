@@ -10,7 +10,7 @@ public class SftpInfo {
     String port;
     String user;
     String pwd;
+    String tempPath;
     int channelNum;
     boolean isPool;
-
 }

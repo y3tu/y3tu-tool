@@ -280,7 +280,9 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
                 try {
                     fis.close();
                     if (deleteOnExit) {
-                        file.deleteOnExit();
+                        if (response.isCommitted()) {
+                            file.deleteOnExit();
+                        }
                     }
                 } catch (IOException e) {
                     log.error(e.getMessage(), e);
@@ -317,14 +319,18 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
         BufferedInputStream bufferStream = null;
         try {
             zipStream = new ZipOutputStream(new BufferedOutputStream(response.getOutputStream()));
-            zipStream.setMethod(ZipOutputStream.DEFLATED); //设置压缩方法
+            //设置压缩方法
+            zipStream.setMethod(ZipOutputStream.DEFLATED);
             for (String fileName : fileListMap.keySet()) {
 
                 File file = fileListMap.get(fileName);
                 if (file.exists()) {
-                    zipSource = new FileInputStream(file);//将需要压缩的文件格式化为输入流
-                    ZipEntry zipEntry = new ZipEntry(fileName);//在压缩目录中文件的名字
-                    zipStream.putNextEntry(zipEntry);//定位该压缩条目位置，开始写入文件到压缩包中
+                    //将需要压缩的文件格式化为输入流
+                    zipSource = new FileInputStream(file);
+                    //在压缩目录中文件的名字
+                    ZipEntry zipEntry = new ZipEntry(fileName);
+                    //定位该压缩条目位置，开始写入文件到压缩包中
+                    zipStream.putNextEntry(zipEntry);
                     bufferStream = new BufferedInputStream(zipSource, 1024 * 10);
                     int read = 0;
                     byte[] buf = new byte[1024 * 10];
@@ -338,14 +344,6 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
 
             response.flushBuffer();
         } catch (Exception e) {
-            if (deleteOnExit) {
-                for (String fileName : fileListMap.keySet()) {
-                    File file = fileListMap.get(fileName);
-                    if (deleteOnExit) {
-                        file.deleteOnExit();
-                    }
-                }
-            }
             log.error(e.getMessage(), e);
         } finally {
             try {
@@ -361,22 +359,16 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
                     bufferStream.close();
                 }
                 if (deleteOnExit) {
-                    for (String fileName : fileListMap.keySet()) {
-                        File file = fileListMap.get(fileName);
-                        if (deleteOnExit) {
-                            file.deleteOnExit();
+                    if (response.isCommitted()) {
+                        for (String fileName : fileListMap.keySet()) {
+                            File file = fileListMap.get(fileName);
+                            if (deleteOnExit) {
+                                file.deleteOnExit();
+                            }
                         }
                     }
                 }
             } catch (Exception e) {
-                if (deleteOnExit) {
-                    for (String fileName : fileListMap.keySet()) {
-                        File file = fileListMap.get(fileName);
-                        if (deleteOnExit) {
-                            file.deleteOnExit();
-                        }
-                    }
-                }
                 log.error(e.getMessage(), e);
             }
         }

@@ -1,8 +1,6 @@
 package com.y3tu.tool.web.sftp;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,7 +54,7 @@ public class SftpService {
             session.setConfig("StrictHostKeyChecking", "no");
             session.setConfig("PreferredAuthentications",
                     "publickey,keyboard-interactive,password");
-            session.connect(60000);
+            session.connect(6000000);
 
             channel = session.openChannel("sftp");
             channel.getId();
@@ -308,8 +306,13 @@ public class SftpService {
      * @param channel
      * @return
      */
-    public boolean finish(Channel channel) {
+    public boolean giveBack(Channel channel) {
         return PoolMapUtil.giveChannel(sftpInfo, channel);
+    }
+
+    public boolean delete(ChannelSftp channel) {
+        channel.exit();
+        return PoolMapUtil.deleteChannel(sftpInfo, channel);
     }
 
     public boolean uploadSftp(MultipartFile file, String filePath, String fileName) {
@@ -318,30 +321,28 @@ public class SftpService {
         try {
             inputStream = file.getInputStream();
             mkdir(filePath, sftp);
-            sftp.put(inputStream, filePath + fileName);
-
+            sftp.put(inputStream, filePath + fileName, new SftpUploadProgressMonitor(this, sftp, inputStream));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             return false;
-        } finally {
-            try {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-                finish(sftp);
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-            }
         }
         return true;
     }
 
     public File downloadSftp(String filePath, String fileName, boolean deleteOnExit, HttpServletRequest request, HttpServletResponse response) {
 
-        File destFile = new File(FileUtil.SYS_TEM_DIR + fileName);
+        File destFile = new File((sftpInfo.getTempPath().equals("") ? FileUtil.SYS_TEM_DIR : sftpInfo.getTempPath()) + fileName);
+        // 检测是否存在目录
+        if (!destFile.getParentFile().exists()) {
+            if (!destFile.getParentFile().mkdirs()) {
+                System.out.println("was not successful.");
+            }
+        }
         ChannelSftp sftp = getChannelFromPool();
         try {
-            sftp.get(filePath, FileUtil.getAbsolutePath(destFile));
+            if (!destFile.exists()) {
+                sftp.get(filePath, FileUtil.getAbsolutePath(destFile));
+            }
             FileUtil.downloadFile(destFile, fileName, true, request, response);
             if (deleteOnExit) {
                 sftp.rm(filePath);
@@ -349,7 +350,7 @@ public class SftpService {
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         } finally {
-            finish(sftp);
+            giveBack(sftp);
         }
         return destFile;
     }
@@ -359,8 +360,16 @@ public class SftpService {
         Map<String, File> fileListMap = new HashMap<>();
         try {
             for (String fileName : fileListSftpMap.keySet()) {
-                File destFile = new File(FileUtil.SYS_TEM_DIR + fileName);
-                sftp.get(fileListSftpMap.get(fileName), FileUtil.getAbsolutePath(destFile));
+                File destFile = new File((sftpInfo.getTempPath().equals("") ? FileUtil.SYS_TEM_DIR : sftpInfo.getTempPath()) + fileName);
+                // 检测是否存在目录
+                if (!destFile.getParentFile().exists()) {
+                    if (!destFile.getParentFile().mkdirs()) {
+                        System.out.println("was not successful.");
+                    }
+                }
+                if (!destFile.exists()) {
+                    sftp.get(fileListSftpMap.get(fileName), FileUtil.getAbsolutePath(destFile));
+                }
                 fileListMap.put(fileName, destFile);
             }
 
@@ -374,7 +383,7 @@ public class SftpService {
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         } finally {
-            finish(sftp);
+            giveBack(sftp);
         }
 
     }
@@ -385,14 +394,28 @@ public class SftpService {
         try {
 
             for (String fileName : fileListSftpMap.keySet()) {
-                File destFile = new File(FileUtil.SYS_TEM_DIR + fileName);
-                sftp.get(fileListSftpMap.get(fileName), FileUtil.getAbsolutePath(destFile));
+                File destFile = new File((sftpInfo.getTempPath().equals("") ? FileUtil.SYS_TEM_DIR : sftpInfo.getTempPath()) + fileName);
+                // 检测是否存在目录
+                if (!destFile.getParentFile().exists()) {
+                    if (!destFile.getParentFile().mkdirs()) {
+                        System.out.println("was not successful.");
+                    }
+                }
+                if (!destFile.exists()) {
+                    sftp.get(fileListSftpMap.get(fileName), FileUtil.getAbsolutePath(destFile));
+                }
                 fileListUnionMap.put(fileName, destFile);
             }
 
             if (fileListLocalMap != null) {
                 for (String fileName : fileListLocalMap.keySet()) {
-                    File destFile = new File(FileUtil.SYS_TEM_DIR + fileName);
+                    File destFile = new File(sftpInfo.getTempPath() + fileName);
+                    // 检测是否存在目录
+                    if (!destFile.getParentFile().exists()) {
+                        if (!destFile.getParentFile().mkdirs()) {
+                            System.out.println("was not successful.");
+                        }
+                    }
                     FileUtil.copy(fileListLocalMap.get(fileName), destFile, false);
                     fileListUnionMap.put(fileName, destFile);
                 }
@@ -412,7 +435,7 @@ public class SftpService {
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         } finally {
-            finish(sftp);
+            giveBack(sftp);
         }
     }
 
@@ -424,7 +447,7 @@ public class SftpService {
         } catch (SftpException e) {
             return false;
         } finally {
-            finish(sftp);
+            giveBack(sftp);
         }
     }
 
