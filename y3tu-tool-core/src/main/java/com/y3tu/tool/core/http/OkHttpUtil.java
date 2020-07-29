@@ -85,23 +85,23 @@ public class OkHttpUtil {
      */
     private int readTimeout = 0;
 
-    OkHttpUtil(String methodType, String url, Map<String, String> paramsMap, Map<String, String> headerMap, CallBack callBack) {
+    public OkHttpUtil(String methodType, String url, Map<String, String> paramsMap, Map<String, String> headerMap, CallBack callBack) {
         this(methodType, url, null, null, null, null, null, null, paramsMap, headerMap, callBack);
     }
 
-    OkHttpUtil(String methodType, String url, String jsonStr, Map<String, String> headerMap, CallBack callBack) {
+    public OkHttpUtil(String methodType, String url, String jsonStr, Map<String, String> headerMap, CallBack callBack) {
         this(methodType, url, jsonStr, null, null, null, null, null, null, headerMap, callBack);
     }
 
-    OkHttpUtil(String methodType, String url, Map<String, String> paramsMap, File file, String fileKey, String fileType, Map<String, String> headerMap, CallBack callBack) {
+    public OkHttpUtil(String methodType, String url, Map<String, String> paramsMap, File file, String fileKey, String fileType, Map<String, String> headerMap, CallBack callBack) {
         this(methodType, url, null, file, null, fileKey, null, fileType, paramsMap, headerMap, callBack);
     }
 
-    OkHttpUtil(String methodType, String url, Map<String, String> paramsMap, List<File> fileList, String fileKey, String fileType, Map<String, String> headerMap, CallBack callBack) {
+    public OkHttpUtil(String methodType, String url, Map<String, String> paramsMap, List<File> fileList, String fileKey, String fileType, Map<String, String> headerMap, CallBack callBack) {
         this(methodType, url, null, null, fileList, fileKey, null, fileType, paramsMap, headerMap, callBack);
     }
 
-    OkHttpUtil(String methodType, String url, Map<String, String> paramsMap, Map<String, File> fileMap, String fileType, Map<String, String> headerMap, CallBack callBack) {
+    public OkHttpUtil(String methodType, String url, Map<String, String> paramsMap, Map<String, File> fileMap, String fileType, Map<String, String> headerMap, CallBack callBack) {
         this(methodType, url, null, null, null, null, fileMap, fileType, paramsMap, headerMap, callBack);
     }
 
@@ -158,7 +158,8 @@ public class OkHttpUtil {
         if (headerMap != null) {
             setHeader();
         }
-        //mRequestBuilder.addHeader("Authorization","Bearer "+"token");可以把token添加到这儿
+        //可以把token添加到这儿
+        requestBuilder.addHeader("Authorization","Basic n3iCjMAQLHzLM7jSjKRBKYICooCiHv91");
         okHttpRequest = requestBuilder.build();
     }
 
@@ -167,7 +168,7 @@ public class OkHttpUtil {
      *
      * @return body对象
      */
-    private RequestBody getRequestBody() {
+    public RequestBody getRequestBody() {
         /**
          * 首先判断mJsonStr是否为空，由于mJsonStr与mParamsMap不可能同时存在，所以先判断mJsonStr
          */
@@ -193,7 +194,7 @@ public class OkHttpUtil {
     /**
      * get请求，只有键值对参数
      */
-    private void setGetParams() {
+    public void setGetParams() {
         if (paramsMap != null) {
             url = url + "?";
             for (String key : paramsMap.keySet()) {
@@ -206,7 +207,7 @@ public class OkHttpUtil {
     /**
      * 设置上传文件
      */
-    private void setFile() {
+    public void setFile() {
         if (file != null) {
             //只有一个文件，且没有文件名
             if (paramsMap == null) {
@@ -226,7 +227,7 @@ public class OkHttpUtil {
     /**
      * 只有一个文件，且提交服务器时不用指定键，没有参数
      */
-    private void setPostFile() {
+    public void setPostFile() {
         if (file != null && file.exists()) {
             MediaType fileType = MediaType.parse(this.fileType);
             RequestBody body = RequestBody.create(fileType, file);
@@ -237,7 +238,7 @@ public class OkHttpUtil {
     /**
      * 只有一个文件，且提交服务器时不用指定键，带键值对参数
      */
-    private void setPostParameAndFile() {
+    public void setPostParameAndFile() {
         if (paramsMap != null && file != null) {
             MultipartBody.Builder builder = new MultipartBody.Builder();
             builder.setType(MultipartBody.FORM);
@@ -252,7 +253,7 @@ public class OkHttpUtil {
     /**
      * 文件集合，可能带有键值对参数
      */
-    private void setPostParameAndListFile() {
+    public void setPostParameAndListFile() {
         if (fileList != null) {
             MultipartBody.Builder builder = new MultipartBody.Builder();
             builder.setType(MultipartBody.FORM);
@@ -271,7 +272,7 @@ public class OkHttpUtil {
     /**
      * 文件Map，可能带有键值对参数
      */
-    private void setPostParameAndMapFile() {
+    public void setPostParameAndMapFile() {
         if (fileMap != null) {
             MultipartBody.Builder builder = new MultipartBody.Builder();
             builder.setType(MultipartBody.FORM);
@@ -291,7 +292,7 @@ public class OkHttpUtil {
     /**
      * 设置头参数
      */
-    private void setHeader() {
+    public void setHeader() {
         if (headerMap != null) {
             for (String key : headerMap.keySet()) {
                 requestBuilder.addHeader(key, headerMap.get(key));
@@ -302,7 +303,7 @@ public class OkHttpUtil {
     /**
      * 异步执行
      */
-    void execute() {
+    public void execute() {
         okHttpClient.newCall(okHttpRequest).enqueue(new Callback() {
             @Override
             public void onFailure(final Call call, final IOException e) {
@@ -324,7 +325,7 @@ public class OkHttpUtil {
     /**
      * 同步请求，会阻塞
      */
-    Response executeSync() {
+    public Response executeSync() {
         try {
             return okHttpClient.newCall(okHttpRequest).execute();
         } catch (IOException e) {

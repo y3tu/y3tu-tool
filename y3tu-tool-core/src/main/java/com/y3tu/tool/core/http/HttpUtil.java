@@ -55,6 +55,16 @@ public class HttpUtil extends cn.hutool.http.HttpUtil {
         http(METHOD_GET, url, paramsMap, null, callBack);
     }
 
+    /**
+     * get请求(异步)，可以传递参数
+     *
+     * @param url：url
+     * @param paramsMap：map集合，封装键值对参数
+     * @param callBack：回调接口，onFailure方法在请求失败时调用，onResponse方法在请求成功后调用
+     */
+    public static void get(String url, Map<String, String> paramsMap, Map<String, String> headerMap,CallBack callBack) {
+        http(METHOD_GET, url, paramsMap, headerMap, callBack);
+    }
 
     /**
      * get请求 (同步)
