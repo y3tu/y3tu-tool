@@ -7,7 +7,7 @@
 
     <groupId>com.y3tu</groupId>
     <artifactId>y3tu-tool</artifactId>
-    <version>2.2.1</version>
+    <version>2.2.2</version>
     <name>y3tu-tool</name>
     <description>常用工具集合</description>
     <url>https://github.com/y3tu/y3tu-tool</url>
