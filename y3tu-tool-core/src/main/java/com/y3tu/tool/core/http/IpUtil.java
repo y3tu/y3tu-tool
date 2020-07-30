@@ -130,7 +130,7 @@ public class IpUtil {
             String result = "未知";
             try {
                 String json = HttpUtil.getSync(url).getData().toString();
-                IpLocate locate = JsonUtil.fromJson(json, IpLocate.class);
+                IpLocate locate = JsonUtil.parseObject(json, IpLocate.class);
                 if (("200").equals(locate.getRetCode())) {
                     if (StrUtil.isNotBlank(locate.getResult().getProvince())) {
                         result = locate.getResult().getProvince() + " " + locate.getResult().getCity();

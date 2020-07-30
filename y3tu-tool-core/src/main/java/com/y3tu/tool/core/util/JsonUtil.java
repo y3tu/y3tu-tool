@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
+import java.util.List;
+
 /**
  * JSON 工具类
  * 使用com.alibaba.fastjson包的方法
@@ -38,7 +40,11 @@ public class JsonUtil {
      * @param <T>   返回类型
      * @return 转换后的实体
      */
-    public static <T> T fromJson(String json, Class<T> clazz) {
+    public static <T> T parseObject(String json, Class<T> clazz) {
         return JSONObject.parseObject(json, clazz);
+    }
+
+    public static <T> List<T> parseArray(String json, Class<T> clazz) {
+        return JSONObject.parseArray(json, clazz);
     }
 }
