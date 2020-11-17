@@ -1,0 +1,39 @@
+{
+  "groups": [
+    {
+      "name": "yao.cache",
+      "type": "com.y3tu.yao.cache.starter.properties.CacheProperties",
+      "sourceType": "com.y3tu.yao.cache.starter.properties.CacheProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "yao.cache.stats",
+      "type": "java.lang.Boolean",
+      "description": "是否开启缓存统计",
+      "sourceType": "om.y3tu.yao.cache.starter.properties.CacheProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "yao.cache.namespace",
+      "type": "java.lang.String",
+      "description": "命名空间，必须唯一般使用服务名",
+      "sourceType": "om.y3tu.yao.cache.starter.properties.CacheProperties"
+    },
+    {
+      "name": "yao.cache.servlet-enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启动 CacheServlet",
+      "sourceType": "om.y3tu.yao.cache.starter.properties.CacheProperties",
+      "defaultValue": false
+    },
+    {
+      "name": "yao.cache.url-pattern",
+      "type": "java.lang.String",
+      "description": "访问url",
+      "sourceType": "om.y3tu.yao.cache.starter.properties.CacheProperties",
+      "defaultValue": "/yao-cache/*"
+    }
+  ],
+  "hints": []
+}
