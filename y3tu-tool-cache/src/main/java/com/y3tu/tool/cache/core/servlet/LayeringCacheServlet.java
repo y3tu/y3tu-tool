@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.y3tu.tool.cache.core.manager.AbstractCacheManager;
 import com.y3tu.tool.cache.core.service.CacheService;
 import com.y3tu.tool.cache.core.stats.CacheStatsInfo;
-import com.y3tu.tool.cache.core.util.BeanFactory;
 import com.y3tu.tool.core.pojo.R;
+import com.y3tu.tool.core.util.BeanCacheUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.CollectionUtils;
@@ -78,7 +78,7 @@ public class LayeringCacheServlet extends HttpServlet {
             String cacheNameParam = request.getParameter("cacheName");
             String internalKey = request.getParameter("internalKey");
             String key = request.getParameter("key");
-            BeanFactory.getBean(CacheService.class).deleteCache(cacheNameParam, internalKey, key);
+            BeanCacheUtil.getBean(CacheService.class).deleteCache(cacheNameParam, internalKey, key);
             response.getWriter().write(JSON.toJSONString(R.success()));
         }
     }

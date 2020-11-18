@@ -27,6 +27,7 @@
         <junit-version>4.12</junit-version>
         <assertj.version>2.6.0</assertj.version>
         <slf4j-api-version>1.7.25</slf4j-api-version>
+        <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
     </properties>
 
     <dependencies>
@@ -173,7 +174,6 @@
                             </execution>
                         </executions>
                     </plugin>
-
                 </plugins>
             </build>
         </profile>

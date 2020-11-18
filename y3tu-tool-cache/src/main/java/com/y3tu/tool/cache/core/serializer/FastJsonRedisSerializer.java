@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.y3tu.tool.cache.core.support.NullValue;
-import com.y3tu.tool.cache.core.support.SerializationException;
 import com.y3tu.tool.cache.core.support.Type;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.serializer.RedisSerializer;

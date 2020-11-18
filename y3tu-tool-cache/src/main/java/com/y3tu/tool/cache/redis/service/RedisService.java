@@ -1,12 +1,11 @@
 package com.y3tu.tool.cache.redis.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.Cursor;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ScanOptions;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -16,8 +15,11 @@ import java.util.concurrent.TimeUnit;
  */
 public class RedisService {
 
-    @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+
+    public RedisService(RedisTemplate<String, Object> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     /**
      * 指定缓存失效时间
@@ -357,8 +359,9 @@ public class RedisService {
     public Long sSetAndTime(String key, Long time, Object... values) {
         try {
             Long count = redisTemplate.opsForSet().add(key, values);
-            if (time > 0)
+            if (time > 0) {
                 expire(key, time);
+            }
             return count;
         } catch (Exception e) {
             e.printStackTrace();
@@ -474,8 +477,9 @@ public class RedisService {
     public Boolean lSet(String key, Object value, Long time) {
         try {
             redisTemplate.opsForList().rightPush(key, value);
-            if (time > 0)
+            if (time > 0) {
                 expire(key, time);
+            }
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -511,8 +515,9 @@ public class RedisService {
     public Boolean lSet(String key, List<Object> value, Long time) {
         try {
             redisTemplate.opsForList().rightPushAll(key, value);
-            if (time > 0)
+            if (time > 0) {
                 expire(key, time);
+            }
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -553,5 +558,27 @@ public class RedisService {
             e.printStackTrace();
             return 0L;
         }
+    }
+
+    /**
+     * scan 实现
+     *
+     * @param pattern 表达式
+     */
+    public Set<String> scan(String pattern) {
+        return redisTemplate.execute((RedisCallback<Set<String>>) connection -> {
+            Set<String> keysTmp = new HashSet<>();
+            try (Cursor<byte[]> cursor = connection.scan(new ScanOptions.ScanOptionsBuilder()
+                    .match(pattern)
+                    .count(10000).build())) {
+
+                while (cursor.hasNext()) {
+                    keysTmp.add(new String(cursor.next(), "Utf-8"));
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            return keysTmp;
+        });
     }
 }

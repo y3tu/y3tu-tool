@@ -54,8 +54,8 @@ public class RedisAutoConfigure {
 
     @Bean
     @ConditionalOnBean(name = "redisTemplate")
-    public RedisService redisService() {
-        return new RedisService();
+    public RedisService redisService(RedisTemplate redisTemplate) {
+        return new RedisService(redisTemplate);
     }
 
 }

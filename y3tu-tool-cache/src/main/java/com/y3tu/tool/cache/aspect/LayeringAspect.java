@@ -6,7 +6,7 @@ import com.y3tu.tool.cache.core.manager.CacheManager;
 import com.y3tu.tool.cache.core.setting.FirstCacheSetting;
 import com.y3tu.tool.cache.core.setting.LayeringCacheSetting;
 import com.y3tu.tool.cache.core.setting.SecondaryCacheSetting;
-import com.y3tu.tool.cache.core.support.SerializationException;
+import com.y3tu.tool.cache.core.serializer.SerializationException;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

@@ -7,8 +7,8 @@ import com.y3tu.tool.cache.core.manager.AbstractCacheManager;
 import com.y3tu.tool.cache.core.manager.CacheManager;
 import com.y3tu.tool.cache.core.setting.LayeringCacheSetting;
 import com.y3tu.tool.cache.core.util.RedisHelper;
-import com.y3tu.tool.cache.core.util.StringUtils;
 import com.y3tu.tool.cache.redis.support.Lock;
+import com.y3tu.tool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.CollectionUtils;
@@ -57,7 +57,7 @@ public class StatsService {
         // 遍历找出对应统计数据
         List<CacheStatsInfo> statsList = new ArrayList<>();
         for (String key : layeringCacheKeys) {
-            if (StringUtils.isNotBlank(cacheNameParam) && !key.startsWith(CACHE_STATS_KEY_PREFIX + cacheNameParam)) {
+            if (StrUtil.isNotBlank(cacheNameParam) && !key.startsWith(CACHE_STATS_KEY_PREFIX + cacheNameParam)) {
                 continue;
             }
 

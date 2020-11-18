@@ -4,6 +4,8 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
+ * 缓存基本配置
+ *
  * @author yuhao.wang3
  */
 @ConfigurationProperties("y3tu.tool.cache")

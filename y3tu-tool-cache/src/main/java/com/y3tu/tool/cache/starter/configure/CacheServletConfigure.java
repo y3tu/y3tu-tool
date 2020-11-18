@@ -14,7 +14,7 @@ import javax.servlet.Servlet;
  * @author yuhao.wang3
  */
 @ConditionalOnWebApplication
-@ConditionalOnProperty(name = "tool.cache.servlet-enabled", havingValue = "true", matchIfMissing = false)
+@ConditionalOnProperty(name = "yao.tool.cache.servlet-enabled", havingValue = "true", matchIfMissing = false)
 public class CacheServletConfigure {
     @Bean
     public ServletRegistrationBean<Servlet> layeringCacheStatViewServletRegistrationBean(CacheProperties properties) {

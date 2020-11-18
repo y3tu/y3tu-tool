@@ -1,6 +1,5 @@
 package com.y3tu.tool.cache.core.serializer;
 
-import com.y3tu.tool.cache.core.support.SerializationException;
 import com.y3tu.tool.cache.core.support.Type;
 
 import java.util.List;

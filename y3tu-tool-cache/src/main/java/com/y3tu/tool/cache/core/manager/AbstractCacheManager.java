@@ -5,7 +5,7 @@ import com.y3tu.tool.cache.core.listener.RedisMessageListener;
 import com.y3tu.tool.cache.core.setting.LayeringCacheSetting;
 import com.y3tu.tool.cache.core.stats.CacheStatsInfo;
 import com.y3tu.tool.cache.core.stats.StatsService;
-import com.y3tu.tool.cache.core.util.BeanFactory;
+import com.y3tu.tool.core.util.BeanCacheUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.DisposableBean;
@@ -186,21 +186,21 @@ public abstract class AbstractCacheManager implements CacheManager, Initializing
         container.afterPropertiesSet();
         messageListener.afterPropertiesSet();
 
-        BeanFactory.getBean(StatsService.class).setCacheManager(this);
+        BeanCacheUtil.getBean(StatsService.class).setCacheManager(this);
         if (getStats()) {
             // 采集缓存命中率数据
-            BeanFactory.getBean(StatsService.class).syncCacheStats();
+            BeanCacheUtil.getBean(StatsService.class).syncCacheStats();
         }
     }
 
     @Override
     public List<CacheStatsInfo> listCacheStats(String cacheName) {
-        return BeanFactory.getBean(StatsService.class).listCacheStats(cacheName);
+        return BeanCacheUtil.getBean(StatsService.class).listCacheStats(cacheName);
     }
 
     @Override
     public void resetCacheStat() {
-        BeanFactory.getBean(StatsService.class).resetCacheStat();
+        BeanCacheUtil.getBean(StatsService.class).resetCacheStat();
     }
 
     @Override
@@ -211,7 +211,7 @@ public abstract class AbstractCacheManager implements CacheManager, Initializing
     @Override
     public void destroy() throws Exception {
         container.destroy();
-        BeanFactory.getBean(StatsService.class).shutdownExecutor();
+        BeanCacheUtil.getBean(StatsService.class).shutdownExecutor();
     }
 
     @Override

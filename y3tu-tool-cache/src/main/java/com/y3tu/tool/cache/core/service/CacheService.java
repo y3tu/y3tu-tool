@@ -6,8 +6,8 @@ import com.y3tu.tool.cache.core.setting.FirstCacheSetting;
 import com.y3tu.tool.cache.core.setting.LayeringCacheSetting;
 import com.y3tu.tool.cache.core.setting.SecondaryCacheSetting;
 import com.y3tu.tool.cache.core.stats.StatsService;
-import com.y3tu.tool.cache.core.util.BeanFactory;
-import com.y3tu.tool.cache.core.util.StringUtils;
+import com.y3tu.tool.core.util.BeanCacheUtil;
+import com.y3tu.tool.core.util.StrUtil;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
@@ -27,17 +27,17 @@ public class CacheService {
      * @param key         key，可以为NULL，如果是NULL则清空缓存
      */
     public void deleteCache(String cacheName, String internalKey, String key) {
-        if (StringUtils.isBlank(cacheName) || StringUtils.isBlank(internalKey)) {
+        if (StrUtil.isBlank(cacheName) || StrUtil.isBlank(internalKey)) {
             return;
         }
         LayeringCacheSetting defaultSetting = new LayeringCacheSetting(new FirstCacheSetting(), new SecondaryCacheSetting(), "默认缓存配置（删除时生成）");
         Set<AbstractCacheManager> cacheManagers = AbstractCacheManager.getCacheManager();
-        if (StringUtils.isBlank(key)) {
+        if (StrUtil.isBlank(key)) {
             // 清空缓存
             for (AbstractCacheManager cacheManager : cacheManagers) {
                 // 删除缓存统计信息
                 String redisKey = StatsService.CACHE_STATS_KEY_PREFIX + cacheName + internalKey;
-                BeanFactory.getBean(StatsService.class).resetCacheStat(redisKey);
+                BeanCacheUtil.getBean(StatsService.class).resetCacheStat(redisKey);
 
                 // 删除缓存
                 Collection<Cache> caches = cacheManager.getCache(cacheName);
@@ -48,7 +48,7 @@ public class CacheService {
 
                     // 删除统计信息
                     redisKey = StatsService.CACHE_STATS_KEY_PREFIX + cacheName + defaultSetting.getInternalKey();
-                    BeanFactory.getBean(StatsService.class).resetCacheStat(redisKey);
+                    BeanCacheUtil.getBean(StatsService.class).resetCacheStat(redisKey);
                 } else {
                     for (Cache cache : caches) {
                         cache.clear();
