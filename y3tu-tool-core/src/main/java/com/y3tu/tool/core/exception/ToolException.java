@@ -1,6 +1,5 @@
 package com.y3tu.tool.core.exception;
 
-
 /**
  * 工具类异常
  *

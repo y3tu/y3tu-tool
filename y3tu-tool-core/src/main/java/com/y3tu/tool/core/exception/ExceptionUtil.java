@@ -6,8 +6,9 @@ import java.io.StringWriter;
 
 /**
  * 异常工具类
- * @see cn.hutool.core.exceptions.ExceptionUtil
+ *
  * @author y3tu
+ * @see cn.hutool.core.exceptions.ExceptionUtil
  */
 public class ExceptionUtil extends cn.hutool.core.exceptions.ExceptionUtil {
     /**

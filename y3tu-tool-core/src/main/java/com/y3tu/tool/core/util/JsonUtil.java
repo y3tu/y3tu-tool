@@ -44,10 +44,6 @@ public class JsonUtil {
         return JSONObject.parseObject(json, clazz);
     }
 
-
-    /**
-     * JSON数据，转成Object
-     */
     public static <T> List<T> parseArray(String json, Class<T> clazz) {
         return JSONObject.parseArray(json, clazz);
     }
