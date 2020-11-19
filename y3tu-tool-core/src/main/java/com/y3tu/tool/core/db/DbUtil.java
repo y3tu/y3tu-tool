@@ -22,12 +22,12 @@ import java.sql.*;
 
 /**
  * 数据库操作工具类
- * @author y3tu
  *
+ * @author y3tu
  * @see cn.hutool.db.DbUtil
  */
 @Slf4j
-public class DbUtil  {
+public class DbUtil {
     /**
      * 实例化一个新的SQL运行对象
      *
@@ -57,6 +57,7 @@ public class DbUtil  {
     public static SqlConnRunner newSqlConnRunner(Connection conn) {
         return SqlConnRunner.create(DialectFactory.newDialect(conn));
     }
+
     /**
      * 实例化一个新的Db，使用默认数据源
      *
@@ -215,6 +216,6 @@ public class DbUtil  {
      * @param isShowParams 是否打印参数
      */
     public static void setShowSqlGlobal(boolean isShowSql, boolean isFormatSql, boolean isShowParams, Level level) {
-        SqlLog.INSTASNCE.init(isShowSql, isFormatSql, isShowParams,level);
+        SqlLog.INSTANCE.init(isShowSql, isFormatSql, isShowParams, level);
     }
 }
