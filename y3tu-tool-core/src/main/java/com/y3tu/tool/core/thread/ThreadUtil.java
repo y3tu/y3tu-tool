@@ -116,6 +116,37 @@ public class ThreadUtil {
     }
 
     /**
+     * 获得一个新的线程池，并指定最大任务队列大小和自定义线程创建器<br>
+     *
+     * <pre>
+     * 线程池对拒绝任务(无限程可用)的处理策略
+     * ThreadPoolExecutor.AbortPolicy:丢弃任务并抛出RejectedExecutionException异常。
+     * ThreadPoolExecutor.DiscardPolicy：也是丢弃任务，但是不抛出异常。
+     * ThreadPoolExecutor.DiscardOldestPolicy：丢弃队列最前面的任务，然后重新尝试执行任务（重复此过程）
+     * ThreadPoolExecutor.CallerRunsPolicy：由调用线程处理该任务,如果执行器已关闭,则丢弃.
+     *
+     * </pre>
+     *
+     * @param corePoolSize     初始线程池大小
+     * @param maximumPoolSize  最大线程池大小
+     * @param maximumQueueSize 最大任务队列大小
+     * @param keepAliveTime    线程保留时间 单位秒
+     * @param threadFactory    自定义线程创建器
+     * @param rejectPolicy     线程池对拒绝任务(无限程可用)的处理策略
+     * @return {@link ThreadPoolExecutor}
+     */
+    public static ExecutorService newExecutor(int corePoolSize, int maximumPoolSize, int maximumQueueSize, long keepAliveTime, ThreadFactory threadFactory, RejectPolicy rejectPolicy) {
+        return ExecutorBuilder.create()
+                .setCorePoolSize(corePoolSize)
+                .setMaxPoolSize(maximumPoolSize)
+                .setWorkQueue(new LinkedBlockingQueue<>(maximumQueueSize))
+                .setThreadFactory(threadFactory)
+                .setHandler(rejectPolicy.getValue())
+                .setKeepAliveTime(keepAliveTime)
+                .build();
+    }
+
+    /**
      * 获得一个新的线程池<br>
      * 传入阻塞系数，线程池的大小计算公式为：CPU可用核心数 / (1 - 阻塞因子)<br>
      * Blocking Coefficient(阻塞系数) = 阻塞时间／（阻塞时间+使用CPU的时间）<br>

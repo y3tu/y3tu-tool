@@ -1,12 +1,13 @@
-package com.y3tu.tool.cache.core.support;
+package com.y3tu.tool.core.thread;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.Map;
+import java.util.concurrent.*;
 
 /**
- * 这是{@link ThreadPoolTaskExecutor}的一个简单替换，可以在每个任务之前设置子线程的MDC数据。
+ * 可以在每个任务之前设置子线程的MDC数据。
  * <p>
  * 在记录日志的时候，一般情况下我们会使用MDC来存储每个线程的特有参数，如身份信息等，以便更好的查询日志。
  * 但是Logback在最新的版本中因为性能问题，不会自动的将MDC的内存传给子线程。所以Logback建议在执行异步线程前
@@ -17,7 +18,25 @@ import java.util.Map;
  *
  * @author yuhao.wang3
  */
-public class MdcThreadPoolTaskExecutor extends ThreadPoolTaskExecutor {
+@Slf4j
+public class MdcThreadPoolTaskExecutor extends ThreadPoolExecutor {
+
+
+    public MdcThreadPoolTaskExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
+        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
+    }
+
+    public MdcThreadPoolTaskExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory) {
+        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory);
+    }
+
+    public MdcThreadPoolTaskExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, RejectedExecutionHandler handler) {
+        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, handler);
+    }
+
+    public MdcThreadPoolTaskExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler) {
+        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
+    }
 
     /**
      * 所有线程都会委托给这个execute方法，在这个方法中我们把父线程的MDC内容赋值给子线程
@@ -44,7 +63,7 @@ public class MdcThreadPoolTaskExecutor extends ThreadPoolTaskExecutor {
             try {
                 MDC.setContextMap(context);
             } catch (Exception e) {
-                logger.error(e.getMessage(), e);
+                log.error(e.getMessage(), e);
             }
         }
         try {

@@ -232,7 +232,7 @@ public class ExecutorBuilder implements Builder<ThreadPoolExecutor> {
         final ThreadFactory threadFactory = (null != builder.threadFactory) ? builder.threadFactory : Executors.defaultThreadFactory();
         RejectedExecutionHandler handler = ObjectUtil.defaultIfNull(builder.handler, new ThreadPoolExecutor.AbortPolicy());
 
-        final ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
+        final ThreadPoolExecutor threadPoolExecutor = new MdcThreadPoolTaskExecutor(
                 corePoolSize,
                 maxPoolSize,
                 keepAliveTime, TimeUnit.NANOSECONDS,

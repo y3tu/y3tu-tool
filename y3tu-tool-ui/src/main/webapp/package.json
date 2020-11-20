@@ -8,28 +8,17 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "dayjs": "^1.8.12",
-    "echarts": "^4.2.1",
-    "element-ui": "^2.7.2",
-    "js-cookie": "^2.2.0",
-    "lodash": "^4.17.10",
-    "normalize.css": "^8.0.0",
-    "nprogress": "^0.2.0",
-    "v-charts": "^1.19.0",
-    "v-distpicker": "^1.2.0",
     "vue": "^2.6.10",
-    "vue-awesome": "^3.5.1",
-    "vue-i18n": "^5.0.3",
     "vue-router": "^3.0.2",
-    "vuex": "^3.1.0"
+    "vuex": "^3.1.0",
+    "ant-design-vue": "^2.0.0-rc.1"
   },
   "devDependencies": {
     "@babel/polyfill": "^7.4.3",
     "@vue/cli-plugin-babel": "^3.5.5",
     "@vue/cli-service": "^3.5.3",
     "css-loader": "^0.28.0",
-    "node-sass": "^4.9.0",
-    "sass-loader": "^7.0.1",
+    "less-loader": "^7.1.0",
     "vue-template-compiler": "^2.6.10"
   },
   "postcss": {

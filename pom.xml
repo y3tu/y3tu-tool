@@ -17,6 +17,7 @@
         <module>y3tu-tool-web</module>
         <module>y3tu-tool-cache</module>
         <module>y3tu-tool-ui</module>
+        <module>y3tu-tool-report</module>
     </modules>
 
     <properties>
