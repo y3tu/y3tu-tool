@@ -18,7 +18,7 @@
     <url>https://github.com/y3tu/y3tu-tool</url>
 
     <properties>
-        <java.version>1.8</java.version>
+        <mysql.version>5.1.38</mysql.version>
     </properties>
 
     <dependencies>
@@ -27,7 +27,19 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <version>${spring-boot.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
             <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>${spring-boot.version}</version>
         </dependency>
 
     </dependencies>
