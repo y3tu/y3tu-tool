@@ -1,0 +1,19 @@
+{
+  "groups": [
+    {
+      "name": "y3tu.tool.report",
+      "type": "com.y3tu.tool.report.config.ReportProperties",
+      "sourceType": "com.y3tu.tool.report.config.ReportProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "y3tu.tool.report.enable",
+      "type": "java.lang.Boolean",
+      "description": "是否开启",
+      "sourceType": "com.y3tu.tool.report.config.ReportProperties",
+      "defaultValue": true
+    }
+  ],
+  "hints": []
+}

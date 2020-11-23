@@ -8,8 +8,8 @@ import java.io.Serializable;
 /**
  * @author y3tu
  */
-@Table(name = "report")
 @Entity
+@Table(name = "report")
 @Data
 public class Report implements Serializable {
 

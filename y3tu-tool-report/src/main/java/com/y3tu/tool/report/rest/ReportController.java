@@ -13,6 +13,6 @@ public class ReportController {
 
     @GetMapping("/test")
     public String test() {
-        return "succes1s";
+        return "success";
     }
 }
