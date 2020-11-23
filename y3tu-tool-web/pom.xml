@@ -21,7 +21,6 @@
         <velocity-engine-version>2.0</velocity-engine-version>
         <jasypt-version>1.9.2</jasypt-version>
         <jjwt-version>0.9.0</jjwt-version>
-        <spring-boot-version>2.0.3.RELEASE</spring-boot-version>
         <mysql.version>5.1.38</mysql.version>
         <redis-version>2.9.0</redis-version>
         <jsch-version>0.1.55</jsch-version>
@@ -46,27 +45,27 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-            <version>${spring-boot-version}</version>
+            <version>${spring-boot.version}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>${spring-boot-version}</version>
+            <version>${spring-boot.version}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
-            <version>${spring-boot-version}</version>
+            <version>${spring-boot.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring-boot-version}</version>
+            <version>${spring-boot.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -74,7 +73,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
-            <version>${spring-boot-version}</version>
+            <version>${spring-boot.version}</version>
             <scope>provided</scope>
         </dependency>
 

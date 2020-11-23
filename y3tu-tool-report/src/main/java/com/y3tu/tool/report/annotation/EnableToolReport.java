@@ -1,17 +1,18 @@
 package com.y3tu.tool.report.annotation;
 
-import org.springframework.context.annotation.ComponentScan;
+import com.y3tu.tool.report.config.ReportConfigure;
+import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
 
 /**
- * 开始报表功能
+ * 开启报表功能
  *
  * @author y3tu
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented
-@ComponentScan("com.y3tu.tool.report")
+@Import(ReportConfigure.class)
 public @interface EnableToolReport {
 }

@@ -1,15 +1,16 @@
 package com.y3tu.tool.report.domain;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.Data;
+
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
  * @author y3tu
  */
 @Table(name = "report")
+@Entity
+@Data
 public class Report implements Serializable {
 
     @Id

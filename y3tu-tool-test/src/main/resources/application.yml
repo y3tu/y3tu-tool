@@ -1,0 +1,17 @@
+server:
+  port: 8901
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://cdb-plx1fn42.cd.tencentcdb.com:10149/yao-support??allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: yxy46262966
+
+  jpa:
+    properties:
+      hibernate:
+        show-sql: true
+        format-sql: true
+    hibernate:
+      ddl-auto: update
