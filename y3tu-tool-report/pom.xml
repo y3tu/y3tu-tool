@@ -18,7 +18,7 @@
     <url>https://github.com/y3tu/y3tu-tool</url>
 
     <properties>
-        <mysql.version>5.1.38</mysql.version>
+        <mysql.version>8.0.16</mysql.version>
     </properties>
 
     <dependencies>
