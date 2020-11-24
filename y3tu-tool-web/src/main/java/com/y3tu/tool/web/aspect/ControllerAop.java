@@ -17,6 +17,7 @@ import java.util.Arrays;
 
 /**
  * Controller拦截器，主要获取一次请求包含的信息和处理时间
+ * 对所有Controller中返回R数据进行拦截打印请求日志
  *
  * @author y3tu
  */
