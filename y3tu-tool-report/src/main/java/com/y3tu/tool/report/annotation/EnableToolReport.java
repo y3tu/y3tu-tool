@@ -1,6 +1,6 @@
 package com.y3tu.tool.report.annotation;
 
-import com.y3tu.tool.report.config.ReportConfigure;
+import com.y3tu.tool.report.configure.ToolReportConfigure;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
@@ -13,6 +13,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented
-@Import(ReportConfigure.class)
+@Import(ToolReportConfigure.class)
 public @interface EnableToolReport {
 }

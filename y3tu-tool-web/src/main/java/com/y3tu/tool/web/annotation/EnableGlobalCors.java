@@ -1,6 +1,6 @@
 package com.y3tu.tool.web.annotation;
 
-import com.y3tu.tool.web.config.CorsConfig;
+import com.y3tu.tool.web.configure.CorsConfig;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;

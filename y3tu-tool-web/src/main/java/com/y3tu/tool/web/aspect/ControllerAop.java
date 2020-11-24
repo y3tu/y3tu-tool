@@ -46,22 +46,6 @@ public class ControllerAop {
         return methodHandler(pjp);
     }
 
-
-    @Pointcut("execution(public com.baomidou.mybatisplus.extension.plugins.pagination.Page *(..))")
-    public void pointCutPage() {
-    }
-
-    /**
-     * 拦截器具体实现
-     *
-     * @param pjp 切点 所有返回对象Page
-     * @return R  结果包装
-     */
-    @Around("pointCutPage()")
-    public Object methodPageHandler(ProceedingJoinPoint pjp) throws Throwable {
-        return methodHandler(pjp);
-    }
-
     private Object methodHandler(ProceedingJoinPoint pjp) throws Throwable {
         Throwable failed = null;
 

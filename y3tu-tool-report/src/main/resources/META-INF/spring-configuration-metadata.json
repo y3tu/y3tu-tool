@@ -2,8 +2,8 @@
   "groups": [
     {
       "name": "y3tu.tool.report",
-      "type": "com.y3tu.tool.report.config.ReportProperties",
-      "sourceType": "com.y3tu.tool.report.config.ReportProperties"
+      "type": "com.y3tu.tool.report.configure.ToolReportProperties",
+      "sourceType": "com.y3tu.tool.report.configure.ToolReportProperties"
     }
   ],
   "properties": [
@@ -11,7 +11,7 @@
       "name": "y3tu.tool.report.enable",
       "type": "java.lang.Boolean",
       "description": "是否开启",
-      "sourceType": "com.y3tu.tool.report.config.ReportProperties",
+      "sourceType": "com.y3tu.tool.report.configure.ToolReportProperties",
       "defaultValue": true
     }
   ],

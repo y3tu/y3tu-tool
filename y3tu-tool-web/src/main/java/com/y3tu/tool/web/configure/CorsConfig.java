@@ -1,4 +1,4 @@
-package com.y3tu.tool.web.config;
+package com.y3tu.tool.web.configure;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
