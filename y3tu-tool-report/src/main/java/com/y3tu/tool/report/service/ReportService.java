@@ -1,8 +1,7 @@
 package com.y3tu.tool.report.service;
 
+import com.y3tu.tool.report.base.PageInfo;
 import com.y3tu.tool.report.domain.Report;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 
 /**
@@ -13,8 +12,8 @@ public interface ReportService {
     /**
      * 分页查询
      *
-     * @param pageable
+     * @param
      * @return
      */
-    Page<Report> page(com.y3tu.tool.report.base.Page pageable);
+    PageInfo<Report> page(PageInfo page);
 }
