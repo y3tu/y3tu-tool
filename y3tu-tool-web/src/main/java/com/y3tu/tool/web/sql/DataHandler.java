@@ -3,10 +3,13 @@ package com.y3tu.tool.web.sql;
 import java.util.List;
 
 /**
+ * 数据处理接口
+ *
  * @author y3tu
- * @date 2020/10/22
  */
 @FunctionalInterface
-public interface SelectHandler<T> {
-    public List<T> handle(List<T> dataList);
+public interface DataHandler<T> {
+
+    List<T> handle(List<T> dataList);
+
 }

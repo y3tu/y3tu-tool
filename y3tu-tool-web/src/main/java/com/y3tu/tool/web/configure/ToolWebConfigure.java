@@ -11,4 +11,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan("com.y3tu.tool.web")
 public class ToolWebConfigure {
+
+
 }

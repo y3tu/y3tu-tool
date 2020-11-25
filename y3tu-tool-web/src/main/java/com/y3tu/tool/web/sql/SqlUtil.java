@@ -1,125 +1,99 @@
 package com.y3tu.tool.web.sql;
 
+import com.y3tu.tool.core.thread.ThreadUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.ExecutorService;
+import java.util.stream.Collectors;
 
 /**
  * 封装常用sql操作
  *
  * @author y3tu
  */
-@Component
 @Slf4j
 public class SqlUtil {
 
-    /**
-     * 单线程处理查询插入操作
-     *
-     * @param insertSql     插入语句
-     * @param selectSql     查询数据语句
-     * @param insertDsName  插入执行数据源名
-     * @param selectDsName  查询数据数据源名
-     * @param params        查询参数 格式为 key:1 value:"servId"； key值代表查询sql语句中?占位符的位置
-     * @param selectHandler 对查询结果进行处理
-     * @throws Exception
-     */
-    public void insertIntoSelect(String insertSql, String selectSql, String insertDsName, String selectDsName, Map<Integer, Object> params, SelectHandler selectHandler) throws Exception {
-        CountDownLatch cdl1 = new CountDownLatch(1);
-        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
-        Map<String, ThreadRes> threadMap = new HashMap<String, ThreadRes>();
-
-        executor.execute(new InsertIntoSelectRunnable(1, 0, cdl1, threadMap, insertSql, selectSql, insertDsName, selectDsName, params, dataUtil, selectHandler));
-
-        while (true) {
-            if (cdl1.getCount() == 0) {
-                log.info("------入表线程执行完了------");
-                break;
-            }
-        }
-        executor.shutdownNow();
-        JobUtil.getThreadsOne(1, threadMap);
-    }
 
     /**
-     * 多线程处理查询插入操作
+     * 多线程处理大数据分页查询操作
+     * <p>
      * 注意 sql居中需要包含$MOD('取模字段',?)=?
      *
-     * @param size          线程数
-     * @param insertSql     插入语句
-     * @param selectSql     查询数据语句
-     * @param insertDsName  插入执行数据源名
-     * @param selectDsName  查询数据数据源名
-     * @param params        查询参数 格式为 key:1 value:"servId"； key值代表查询sql语句中?占位符的位置
-     * @param selectHandler 对查询结果进行处理
+     * @param size         线程数
+     * @param selectSql    查询数据语句
+     * @param selectDsName 查询数据数据源名称
+     * @param params       查询参数 格式为 key:1 value:"servId"； key值代表查询sql语句中?占位符的位置
+     * @param dataHandler  对查询结果进行处理
+     * @return true: 正常处理 false:处理失败或某个线程出现异常
      * @throws Exception
      */
-    public void insertIntoSelect(int size, String insertSql, String selectSql, String insertDsName, String selectDsName, Map<Integer, Object> params, SelectHandler selectHandler) throws Exception {
+    public static boolean dataHandler(int size, String selectSql, String selectDsName, Map<Integer, Object> params, DataHandler dataHandler) throws Exception {
 
-        if (selectSql.indexOf("$MOD") == -1) {
+        if (!selectSql.toUpperCase().contains("$MOD")) {
             throw new Exception("多线程处理查询数据sql语句必须包含$MOD");
         }
 
-        CountDownLatch cdl1 = new CountDownLatch(size);
-        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(size);
-        Map<String, ThreadRes> threadMap = new HashMap<String, ThreadRes>();
+        CountDownLatch cdl1 = ThreadUtil.newCountDownLatch(size);
+
+        ExecutorService executor = ThreadUtil.newFixedExecutor(size, "dataHandler多线程");
+        Map<String, ThreadResult> threadResultMap = new HashMap<>();
 
         for (int i = 0; i < size; i++) {
-            executor.execute(new com.ztesoft.mrss.backend.service.common.sql.InsertIntoSelectRunnable(size, i, cdl1, threadMap, insertSql, selectSql, insertDsName, selectDsName, params, dataUtil, selectHandler));
+            executor.execute(new DataPageHandlerRunnable(selectSql, selectDsName, params, dataHandler, size, i, cdl1, threadResultMap));
         }
         while (true) {
             if (cdl1.getCount() == 0) {
-                log.info("------入表线程执行完了------");
+                log.info("------线程执行完成------");
                 break;
             }
         }
         executor.shutdownNow();
-        JobUtil.getThreadsOne(size, threadMap);
+
+        List<Boolean> resultList = threadResultMap.keySet().stream().map(key -> threadResultMap.get(key).isSuccess()).collect(Collectors.toList());
+
+        if (resultList.contains(false)) {
+            return false;
+        }
+        return true;
     }
 
     /**
-     * 根据表的分片数开启线程处理查询插入操作
+     * 单线程处理数据分页查询操作
      *
-     * @param selectTableName 查询表名
-     * @param insertSql       插入语句
-     * @param selectSql       查询语句
-     * @param insertDsName    插入数据源
-     * @param selectDsName    查询数据源
-     * @param params          查询参数
-     * @param selectHandler   对查询结果进行处理
+     * @param selectSql    查询数据语句
+     * @param selectDsName 查询数据数据源名称
+     * @param params       查询参数 格式为 key:1 value:"servId"； key值代表查询sql语句中?占位符的位置
+     * @param dataHandler  对查询结果进行处理
+     * @return true: 正常处理 false:处理失败或某个线程出现异常
      * @throws Exception
      */
-    public void insertIntoSelect(String selectTableName, String insertSql, String selectSql, String insertDsName, String selectDsName, Map<Integer, Object> params, SelectHandler selectHandler) throws Exception {
+    public boolean dataHandler(String selectSql, String selectDsName, Map<Integer, Object> params, DataHandler dataHandler) throws Exception {
+        Map<String, ThreadResult> threadResultMap = new HashMap<>();
+        ThreadUtil.execute(new DataPageHandlerRunnable(selectSql, selectDsName, params, dataHandler, 1, 1, null, threadResultMap));
+        List<Boolean> resultList = threadResultMap.keySet().stream().map(key -> threadResultMap.get(key).isSuccess()).collect(Collectors.toList());
 
-        List<String> dataNodes = getDataNodes(selectTableName, selectDsName);
-        CountDownLatch cdl1 = new CountDownLatch(dataNodes.size());
-        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(dataNodes.size());
-        Map<String, ThreadRes> threadMap = new HashMap<String, ThreadRes>();
-
-        for (int i = 0; i < dataNodes.size(); i++) {
-            executor.execute(new com.ztesoft.mrss.backend.service.common.sql.InsertIntoSelectRunnable(dataNodes.get(i), cdl1, threadMap, insertSql, selectSql, insertDsName, selectDsName, params, dataUtil, selectHandler));
+        if (resultList.contains(false)) {
+            return false;
         }
-        while (true) {
-            if (cdl1.getCount() == 0) {
-                log.info("------入表线程执行完了------");
-                break;
-            }
-        }
-        executor.shutdownNow();
-        JobUtil.getThreadsOne(dataNodes, threadMap);
+        return true;
     }
 
 
-    public int insertIntoSelect(List<Map<String, Object>> dataList, String insertSql, String insertDsName) {
+    /**
+     * 大数据插入更新操作
+     *
+     * @param sql      插入sql
+     * @param dsName   插入数据源名称
+     * @param dataList 待插入或者更新的数据
+     * @return
+     */
+    public static int batchUpdate(String sql, String dsName, List<Map<String, Object>> dataList) {
         List<Object[]> argsList = new ArrayList<>();
         for (Map<String, Object> dto : dataList) {
             List<Object> insertObjList = new ArrayList<>();
@@ -128,44 +102,9 @@ public class SqlUtil {
             }
             argsList.add(insertObjList.toArray());
         }
-        return dataUtil.getDbService(insertDsName).batchUpdate(insertSql, argsList).length;
+        return JdbcTemplateUtil.getJdbcTemplate(dsName).batchUpdate(sql, argsList).length;
     }
 
-
-    public void select(int size, String selectSql, String selectDsName, Map<Integer, Object> params, SelectHandler selectHandler) throws Exception {
-        CountDownLatch cdl1 = new CountDownLatch(size);
-        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(size);
-        Map<String, ThreadRes> threadMap = new HashMap<String, ThreadRes>();
-
-        for (int i = 0; i < size; i++) {
-            executor.execute(new com.ztesoft.mrss.backend.service.common.sql.SelectRunnable(size, i, cdl1, threadMap, selectSql, selectDsName, params, dataUtil, selectHandler));
-        }
-        while (true) {
-            if (cdl1.getCount() == 0) {
-                log.info("------入表线程执行完了------");
-                break;
-            }
-        }
-        executor.shutdownNow();
-        JobUtil.getThreadsOne(size, threadMap);
-    }
-
-    public void select(String selectSql, String selectDsName, Map<Integer, Object> params, SelectHandler selectHandler) throws Exception {
-        CountDownLatch cdl1 = new CountDownLatch(1);
-        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
-        Map<String, ThreadRes> threadMap = new HashMap<String, ThreadRes>();
-
-        executor.execute(new com.ztesoft.mrss.backend.service.common.sql.SelectRunnable(1, 0, cdl1, threadMap, selectSql, selectDsName, params, dataUtil, selectHandler));
-
-        while (true) {
-            if (cdl1.getCount() == 0) {
-                log.info("------入表线程执行完了------");
-                break;
-            }
-        }
-        executor.shutdownNow();
-        JobUtil.getThreadsOne(1, threadMap);
-    }
 
     /**
      * 清空表数据
@@ -173,11 +112,11 @@ public class SqlUtil {
      * @param tableName 表名
      * @param dsName    表数据源名
      */
-    public void truncate(String tableName, String dsName) {
+    public static void truncate(String tableName, String dsName) {
         StringBuilder sql = new StringBuilder();
         sql.append(" truncate table ").append(tableName);
-        log.info("truncate:" + sql.toString());
-        dataUtil.getDbService(dsName).execute(sql.toString());
+        log.info("执行SQL语句:" + sql.toString());
+        JdbcTemplateUtil.getJdbcTemplate(dsName).execute(sql.toString());
     }
 
     /**
@@ -187,9 +126,9 @@ public class SqlUtil {
      * @param dsName 数据源名
      * @return
      */
-    public int update(String sql, String dsName) {
-        log.info("update:" + sql);
-        return dataUtil.getDbService(dsName).update(sql);
+    public static int update(String sql, String dsName) {
+        log.info("执行SQL语句:" + sql);
+        return JdbcTemplateUtil.getJdbcTemplate(dsName).update(sql);
     }
 
     /**
@@ -198,68 +137,29 @@ public class SqlUtil {
      * @param sql    sql语句
      * @param dsName 数据源名
      */
-    public void execute(String sql, String dsName) {
-        log.info("execute:" + sql);
-        dataUtil.getDbService(dsName).execute(sql);
+    public static void execute(String sql, String dsName) {
+        log.info("执行SQL语句:" + sql);
+        JdbcTemplateUtil.getJdbcTemplate(dsName).execute(sql);
     }
 
-    public Map<String, Object> queryMap(String sql, Map<Integer, Object> params, String dsName) {
-        List<Object> objList = new ArrayList<>();
-        for (int key : params.keySet()) {
-            objList.add(params.get(key));
-        }
-        Map<String, Object> mapList = dataUtil.getDbService(dsName).queryForMap(sql, objList.toArray());
-        return mapList;
-    }
-
-    public List<Map<String, Object>> queryList(String sql, Map<Integer, Object> params, String dsName) {
-        List<Object> objList = new ArrayList<>();
-        for (int key : params.keySet()) {
-            objList.add(params.get(key));
-        }
-        List<Map<String, Object>> mapList = dataUtil.getDbService(dsName).queryForList(sql, objList.toArray());
-        return mapList;
-    }
 
     /**
-     * 批量更新
+     * 计算数据量
      *
      * @param sql
-     * @param params
      * @param dsName
      * @return
      */
-    public int batchUpdate(String sql, List<Map<String, Object>> params, String dsName) {
-        List<Object[]> argsList = new ArrayList<>();
-        for (Map<String, Object> dto : params) {
-            List<Object> insertObjList = new ArrayList<>();
-            for (String key : dto.keySet()) {
-                insertObjList.add(dto.get(key));
-            }
-            argsList.add(insertObjList.toArray());
+    public static int count(String sql, String dsName) {
+        StringBuilder countSql = new StringBuilder();
+        countSql.append("select count(*) as count from (").append(sql).append(") countTable ");
+        Map<String, Object> data = JdbcTemplateUtil.getJdbcTemplate(dsName).queryForMap(countSql.toString());
+        log.info(countSql.toString());
+        if (data.get("count") != null) {
+            int count = Integer.parseInt(data.get("count").toString());
+            return count;
         }
-        int num = dataUtil.getDbService(dsName).batchUpdate(sql, argsList).length;
-        return num;
-    }
-
-    /**
-     * 获取表的分片
-     *
-     * @param tableName 表名
-     * @param dsName    数据源名
-     * @return
-     */
-    public List<String> getDataNodes(String tableName, String dsName) {
-        List<String> dataNodes = new ArrayList<String>();
-        String sql = "/* !HINT({'getDataNodes':'{0}'})*/ SELECT 1";
-        sql = sql.replace("{0}", tableName);
-        List<Map<String, Object>> dataNodeList = dataUtil.getDbService(dsName).queryForList(sql);
-        if (!CollectionUtils.isEmpty(dataNodeList)) {
-            for (int i = 0; i < dataNodeList.size(); i++) {
-                dataNodes.add(dataNodeList.get(i).get("dataNodes").toString());
-            }
-        }
-        return dataNodes;
+        return 0;
     }
 
 

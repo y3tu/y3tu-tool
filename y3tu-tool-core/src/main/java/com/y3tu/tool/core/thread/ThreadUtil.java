@@ -169,6 +169,33 @@ public class ThreadUtil {
 
 
     /**
+     * 创建固定大小的线程池
+     *
+     * @param size          线程池大小
+     * @param threadFactory 自定义线程创建器
+     * @return
+     */
+    public static ExecutorService newFixedExecutor(int size, ThreadFactory threadFactory) {
+        return ExecutorBuilder.create()
+                .setCorePoolSize(size)
+                .setMaxPoolSize(size)
+                .setThreadFactory(threadFactory)
+                .build();
+    }
+
+    /**
+     * 创建固定大小的线程池
+     *
+     * @param size
+     * @param prefix 线程名前缀
+     * @return
+     */
+    public static ExecutorService newFixedExecutor(int size, String prefix) {
+        ThreadFactory threadFactory = ThreadUtil.newNamedThreadFactory(prefix, false);
+        return ThreadUtil.newFixedExecutor(size, threadFactory);
+    }
+
+    /**
      * 构造有定时功能的线程池
      *
      * @param corePoolSize  初始线程池大小

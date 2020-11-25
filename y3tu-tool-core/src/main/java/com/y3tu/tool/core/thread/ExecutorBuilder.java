@@ -18,7 +18,6 @@ import java.util.concurrent.*;
  * @author looly
  */
 public class ExecutorBuilder implements Builder<ThreadPoolExecutor> {
-    private static final long serialVersionUID = 1L;
 
     /**
      * 默认的等待队列容量
