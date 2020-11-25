@@ -3,7 +3,43 @@ server:
 
 spring:
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://cdb-plx1fn42.cd.tencentcdb.com:10149/yao-support??allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
-    username: root
-    password: yxy46262966
+    druid:
+      stat-view-servlet:
+        loginUsername: admin
+        loginPassword: 123456
+    dynamic:
+      p6spy: true # 默认false,建议线上关闭。
+      druid:
+        initial-size: 3
+        max-active: 8
+        min-idle: 2
+        max-wait: -1
+        min-evictable-idle-time-millis: 30000
+        max-evictable-idle-time-millis: 30000
+        time-between-eviction-runs-millis: 0
+        validation-query: select 1
+        validation-query-timeout: -1
+        test-on-borrow: false
+        test-on-return: false
+        test-while-idle: true
+        pool-prepared-statements: true
+        filters: stat,wall
+        share-prepared-statements: true
+        max-pool-prepared-statement-per-connection-size: 100
+      datasource:
+        support:
+          username: root
+          password: yxy46262966
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://cdb-plx1fn42.cd.tencentcdb.com:10149/yao-support??allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+        book:
+          username: root
+          password: yxy46262966
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://cdb-plx1fn42.cd.tencentcdb.com:10149/yao-book??allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+        blog:
+          username: root
+          password: yxy46262966
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://cdb-plx1fn42.cd.tencentcdb.com:10149/yao-blog??allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+      primary: support
