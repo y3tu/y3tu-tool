@@ -6,6 +6,8 @@ import java.io.Serializable;
 
 /**
  * 线程执行结果
+ *
+ * @author y3tu
  */
 @Data
 public class ThreadResult implements Serializable {

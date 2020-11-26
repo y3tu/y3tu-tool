@@ -8,10 +8,9 @@ spring:
         loginUsername: admin
         loginPassword: 123456
     dynamic:
-      p6spy: true # 默认false,建议线上关闭。
       druid:
         initial-size: 3
-        max-active: 8
+        max-active: 100
         min-idle: 2
         max-wait: -1
         min-evictable-idle-time-millis: 30000
@@ -32,11 +31,11 @@ spring:
           password: yxy46262966
           driver-class-name: com.mysql.jdbc.Driver
           url: jdbc:mysql://cdb-plx1fn42.cd.tencentcdb.com:10149/yao-support??allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
-        book:
+        report:
           username: root
           password: yxy46262966
           driver-class-name: com.mysql.jdbc.Driver
-          url: jdbc:mysql://cdb-plx1fn42.cd.tencentcdb.com:10149/yao-book??allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+          url: jdbc:mysql://cdb-plx1fn42.cd.tencentcdb.com:10149/yao-report??allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
         blog:
           username: root
           password: yxy46262966

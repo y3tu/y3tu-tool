@@ -1,7 +1,7 @@
 package com.y3tu.tool.web.runner;
 
 import cn.hutool.core.util.ReflectUtil;
-import com.y3tu.tool.web.sql.JdbcTemplateUtil;
+import com.y3tu.tool.web.sql.JdbcTemplateContainer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -47,16 +47,16 @@ public class StartedUpRunner implements ApplicationRunner {
             if (dataSourceMap != null && dataSourceMap.keySet().size() > 0) {
                 for (Object key : dataSourceMap.keySet()) {
                     JdbcTemplate jdbcTemplate = new JdbcTemplate((DataSource) dataSourceMap.get(key));
-                    JdbcTemplateUtil.setJdbcTemplate(key.toString(), jdbcTemplate);
+                    JdbcTemplateContainer.addJdbcTemplate(key.toString(), jdbcTemplate);
                     log.info(String.format("检查到数据源:%s,放入JdbcTemplateUtil工具类中", key.toString()));
                 }
             } else {
                 JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-                JdbcTemplateUtil.setJdbcTemplate(name, jdbcTemplate);
+                JdbcTemplateContainer.addJdbcTemplate(name, jdbcTemplate);
                 log.info(String.format("检查到数据源:%s,放入JdbcTemplateUtil工具类中", name));
             }
             //设置默认
-            JdbcTemplateUtil.setDefaultJdbcTemplate(new JdbcTemplate(dataSource));
+            JdbcTemplateContainer.setDefaultJdbcTemplate(new JdbcTemplate(dataSource));
         }
 
     }

@@ -1,6 +1,5 @@
 package com.y3tu.tool.web.excel.converter;
 
-
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateTime;
 import com.alibaba.excel.converters.Converter;
@@ -16,6 +15,8 @@ import java.text.SimpleDateFormat;
 
 /**
  * Timestamp 数据类型转换
+ *
+ * @author y3tu
  */
 public class TimestampConverter implements Converter<Timestamp> {
 
@@ -31,7 +32,7 @@ public class TimestampConverter implements Converter<Timestamp> {
 
     @Override
     public Timestamp convertToJavaData(CellData cellData, ExcelContentProperty excelContentProperty, GlobalConfiguration globalConfiguration) throws Exception {
-        DateTime dateTime = DateUtil.parse(cellData.getStringValue(),DatePattern.NORM_DATETIME_PATTERN);
+        DateTime dateTime = DateUtil.parse(cellData.getStringValue(), DatePattern.NORM_DATETIME_PATTERN);
         return Timestamp.valueOf(dateTime.toString());
     }
 

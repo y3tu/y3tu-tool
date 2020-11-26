@@ -1,5 +1,6 @@
 package com.y3tu.tool.web.sql;
 
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.thread.ThreadUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,9 +24,10 @@ public class SqlUtil {
     /**
      * 多线程处理大数据分页查询操作
      * <p>
-     * 注意 sql居中需要包含$MOD('取模字段',?)=?
+     * 要求 sql居中需要包含$MOD('取模字段',?)=?
      *
      * @param size         线程数
+     * @param pageSize     分页每页数据数量
      * @param selectSql    查询数据语句
      * @param selectDsName 查询数据数据源名称
      * @param params       查询参数 格式为 key:1 value:"servId"； key值代表查询sql语句中?占位符的位置
@@ -33,25 +35,32 @@ public class SqlUtil {
      * @return true: 正常处理 false:处理失败或某个线程出现异常
      * @throws Exception
      */
-    public static boolean dataHandler(int size, String selectSql, String selectDsName, Map<Integer, Object> params, DataHandler dataHandler) throws Exception {
+    public static boolean dataPageHandler(int size, int pageSize, String selectSql, String selectDsName, Map<Integer, Object> params, DataHandler dataHandler) {
 
-        if (!selectSql.toUpperCase().contains("$MOD")) {
-            throw new Exception("多线程处理查询数据sql语句必须包含$MOD");
+        if (!selectSql.contains("$MOD")) {
+            throw new ToolException("多线程处理查询数据sql语句必须包含$MOD");
         }
 
-        CountDownLatch cdl1 = ThreadUtil.newCountDownLatch(size);
+        CountDownLatch cdl = ThreadUtil.newCountDownLatch(size);
 
         ExecutorService executor = ThreadUtil.newFixedExecutor(size, "dataHandler多线程");
         Map<String, ThreadResult> threadResultMap = new HashMap<>();
 
         for (int i = 0; i < size; i++) {
-            executor.execute(new DataPageHandlerRunnable(selectSql, selectDsName, params, dataHandler, size, i, cdl1, threadResultMap));
+            executor.execute(new DataPageHandlerRunnable(selectSql, selectDsName, params, dataHandler, size, i, pageSize, cdl, threadResultMap));
         }
         while (true) {
-            if (cdl1.getCount() == 0) {
+            if (cdl.getCount() == 0) {
                 log.info("------线程执行完成------");
                 break;
             }
+            threadResultMap.keySet().stream().forEach(key -> {
+                if (!threadResultMap.get(key).isSuccess()) {
+                    //出现异常
+                    log.info(key + " 异常:" + threadResultMap.get(key).getMsg());
+                }
+            });
+            ThreadUtil.sleep(5000);
         }
         executor.shutdownNow();
 
@@ -66,6 +75,8 @@ public class SqlUtil {
     /**
      * 单线程处理数据分页查询操作
      *
+     * @param block        是否阻塞调用线程
+     * @param pageSize     分页每页数据数量
      * @param selectSql    查询数据语句
      * @param selectDsName 查询数据数据源名称
      * @param params       查询参数 格式为 key:1 value:"servId"； key值代表查询sql语句中?占位符的位置
@@ -73,9 +84,18 @@ public class SqlUtil {
      * @return true: 正常处理 false:处理失败或某个线程出现异常
      * @throws Exception
      */
-    public boolean dataHandler(String selectSql, String selectDsName, Map<Integer, Object> params, DataHandler dataHandler) throws Exception {
+    public static boolean dataPageHandler(boolean block, int pageSize, String selectSql, String selectDsName, Map<Integer, Object> params, DataHandler dataHandler) throws Exception {
+        CountDownLatch cdl = ThreadUtil.newCountDownLatch(1);
         Map<String, ThreadResult> threadResultMap = new HashMap<>();
-        ThreadUtil.execute(new DataPageHandlerRunnable(selectSql, selectDsName, params, dataHandler, 1, 1, null, threadResultMap));
+        ThreadUtil.execute(new DataPageHandlerRunnable(selectSql, selectDsName, params, dataHandler, 1, 1, pageSize, cdl, threadResultMap));
+        if (block) {
+            while (true) {
+                if (cdl.getCount() == 0) {
+                    log.info("------线程执行完成------");
+                    break;
+                }
+            }
+        }
         List<Boolean> resultList = threadResultMap.keySet().stream().map(key -> threadResultMap.get(key).isSuccess()).collect(Collectors.toList());
 
         if (resultList.contains(false)) {
@@ -102,7 +122,9 @@ public class SqlUtil {
             }
             argsList.add(insertObjList.toArray());
         }
-        return JdbcTemplateUtil.getJdbcTemplate(dsName).batchUpdate(sql, argsList).length;
+        int count = JdbcTemplateContainer.getJdbcTemplate(dsName).batchUpdate(sql, argsList).length;
+        log.info(String.format("执行SQL语句:%s 操作数据量:%s", sql, count));
+        return count;
     }
 
 
@@ -116,7 +138,7 @@ public class SqlUtil {
         StringBuilder sql = new StringBuilder();
         sql.append(" truncate table ").append(tableName);
         log.info("执行SQL语句:" + sql.toString());
-        JdbcTemplateUtil.getJdbcTemplate(dsName).execute(sql.toString());
+        JdbcTemplateContainer.getJdbcTemplate(dsName).execute(sql.toString());
     }
 
     /**
@@ -128,7 +150,7 @@ public class SqlUtil {
      */
     public static int update(String sql, String dsName) {
         log.info("执行SQL语句:" + sql);
-        return JdbcTemplateUtil.getJdbcTemplate(dsName).update(sql);
+        return JdbcTemplateContainer.getJdbcTemplate(dsName).update(sql);
     }
 
     /**
@@ -139,7 +161,7 @@ public class SqlUtil {
      */
     public static void execute(String sql, String dsName) {
         log.info("执行SQL语句:" + sql);
-        JdbcTemplateUtil.getJdbcTemplate(dsName).execute(sql);
+        JdbcTemplateContainer.getJdbcTemplate(dsName).execute(sql);
     }
 
 
@@ -153,7 +175,7 @@ public class SqlUtil {
     public static int count(String sql, String dsName) {
         StringBuilder countSql = new StringBuilder();
         countSql.append("select count(*) as count from (").append(sql).append(") countTable ");
-        Map<String, Object> data = JdbcTemplateUtil.getJdbcTemplate(dsName).queryForMap(countSql.toString());
+        Map<String, Object> data = JdbcTemplateContainer.getJdbcTemplate(dsName).queryForMap(countSql.toString());
         log.info(countSql.toString());
         if (data.get("count") != null) {
             int count = Integer.parseInt(data.get("count").toString());

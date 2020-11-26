@@ -4,11 +4,14 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.excel.write.metadata.WriteSheet;
+import com.y3tu.tool.core.exception.ToolException;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Excel工具类
@@ -18,6 +21,7 @@ import java.util.List;
  *
  * @author y3tu
  */
+@Slf4j
 public class ExcelUtil extends EasyExcel {
 
     /**
@@ -48,9 +52,24 @@ public class ExcelUtil extends EasyExcel {
      * @param response  响应请求
      * @throws IOException
      */
-    public static void downExcel(String fileName, String sheetName, List<?> list, Class clazz, ExcelTypeEnum excelType, HttpServletResponse response) throws Exception {
-        response = decorateResponse(fileName, excelType, response);
-        EasyExcel.write(response.getOutputStream(), clazz).sheet(sheetName).doWrite(list);
+    public static void downExcel(String fileName, String sheetName, List<?> list, Class clazz, ExcelTypeEnum excelType, HttpServletResponse response) {
+        try {
+            response = decorateResponse(fileName, excelType, response);
+            EasyExcel.write(response.getOutputStream(), clazz).sheet(sheetName).doWrite(list);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ToolException("导出excel文件异常:" + e.getMessage());
+        }
+    }
+
+    public static void downExcel(String fileName, String sheetName, List<?> list, Class clazz, Set<String> includeColumnFiledNames, ExcelTypeEnum excelType, HttpServletResponse response) {
+        try {
+            response = decorateResponse(fileName, excelType, response);
+            EasyExcel.write(response.getOutputStream(), clazz).includeColumnFiledNames(includeColumnFiledNames).sheet(sheetName).doWrite(list);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ToolException("导出excel文件异常:" + e.getMessage());
+        }
     }
 
     /**

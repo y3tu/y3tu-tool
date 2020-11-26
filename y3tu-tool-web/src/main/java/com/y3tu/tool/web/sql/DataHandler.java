@@ -10,6 +10,11 @@ import java.util.List;
 @FunctionalInterface
 public interface DataHandler<T> {
 
-    List<T> handle(List<T> dataList);
+    /**
+     * 处理数据
+     *
+     * @param dataList
+     */
+    void handle(List<T> dataList);
 
 }

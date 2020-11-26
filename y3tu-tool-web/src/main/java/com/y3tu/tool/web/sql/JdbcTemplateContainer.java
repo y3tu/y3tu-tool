@@ -8,11 +8,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
- * 数据操作工具类
+ * JdbcTemplate容器
  *
  * @author y3tu
  */
-public class JdbcTemplateUtil {
+public class JdbcTemplateContainer {
 
     /**
      * 默认JdbcTemplate
@@ -27,6 +27,7 @@ public class JdbcTemplateUtil {
 
     /**
      * 获取默认的JdbcTemplate
+     *
      * @return
      */
     public static JdbcTemplate getDefaultJdbcTemplate() {
@@ -57,7 +58,7 @@ public class JdbcTemplateUtil {
         return dataSourceContainer.getOrDefault(dataSourceBeanName, getDefaultJdbcTemplate());
     }
 
-    public static void setJdbcTemplate(String dataSourceBeanName, JdbcTemplate jdbcTemplate) {
+    public static void addJdbcTemplate(String dataSourceBeanName, JdbcTemplate jdbcTemplate) {
         dataSourceContainer.put(dataSourceBeanName, jdbcTemplate);
     }
 
