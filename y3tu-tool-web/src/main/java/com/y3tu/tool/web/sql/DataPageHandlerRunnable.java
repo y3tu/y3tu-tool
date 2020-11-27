@@ -1,6 +1,7 @@
 package com.y3tu.tool.web.sql;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,10 +38,27 @@ public class DataPageHandlerRunnable implements Runnable {
     private final String selectDsName;
     private final DataHandler dataHandler;
     private final Map<String, ThreadResult> threadResultMap;
+    /**
+     * 查询结果类型
+     */
+    private Class clazz;
 
     public DataPageHandlerRunnable(String selectSql, String selectDsName, Map<Integer, Object> params, DataHandler dataHandler, int threadCount, int currentThread, int pageSize, CountDownLatch cdl, Map<String, ThreadResult> threadResultMap) {
         this.selectSql = selectSql;
         this.selectDsName = selectDsName;
+        this.params = params;
+        this.dataHandler = dataHandler;
+        this.threadCount = threadCount;
+        this.currentThread = currentThread;
+        this.pageSize = pageSize;
+        this.cdl = cdl;
+        this.threadResultMap = threadResultMap;
+    }
+
+    public DataPageHandlerRunnable(String selectSql, String selectDsName, Class clazz, Map<Integer, Object> params, DataHandler dataHandler, int threadCount, int currentThread, int pageSize, CountDownLatch cdl, Map<String, ThreadResult> threadResultMap) {
+        this.selectSql = selectSql;
+        this.selectDsName = selectDsName;
+        this.clazz = clazz;
         this.params = params;
         this.dataHandler = dataHandler;
         this.threadCount = threadCount;
@@ -60,7 +78,7 @@ public class DataPageHandlerRunnable implements Runnable {
         } catch (Exception e) {
             threadResult.setSuccess(false);
             threadResult.setMsg(e.getMessage());
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
         }
 
         if (cdl != null) {
@@ -108,12 +126,21 @@ public class DataPageHandlerRunnable implements Runnable {
                     paramPageList.addAll(paramList);
                     paramPageList.add(startPage);
                     paramPageList.add(pageSize);
-                    List<Map<String, Object>> dataList = JdbcTemplateContainer.getJdbcTemplate(selectDsName).queryForList(selectSql, paramPageList.toArray());
-                    paramPageList.clear();
                     log.info("执行SQL语句:" + selectSql);
-                    if (dataHandler != null) {
-                        dataHandler.handle(dataList);
+                    if (clazz != null) {
+                        //指定了获取数据的类型
+                        List dataList = JdbcTemplateContainer.getJdbcTemplate(selectDsName).query(selectSql, new BeanPropertyRowMapper<>(clazz), paramPageList.toArray());
+                        if (dataHandler != null) {
+                            dataHandler.handle(dataList);
+                        }
+                    } else {
+                        //默认返回map类型
+                        List<Map<String, Object>> dataList = JdbcTemplateContainer.getJdbcTemplate(selectDsName).queryForList(selectSql, paramPageList.toArray());
+                        if (dataHandler != null) {
+                            dataHandler.handle(dataList);
+                        }
                     }
+                    paramPageList.clear();
                 }
             }
         }

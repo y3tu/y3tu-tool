@@ -30,12 +30,13 @@ public class SqlUtil {
      * @param pageSize     分页每页数据数量
      * @param selectSql    查询数据语句
      * @param selectDsName 查询数据数据源名称
+     * @param clazz        查询结果类型
      * @param params       查询参数 格式为 key:1 value:"servId"； key值代表查询sql语句中?占位符的位置
      * @param dataHandler  对查询结果进行处理
      * @return true: 正常处理 false:处理失败或某个线程出现异常
      * @throws Exception
      */
-    public static boolean dataPageHandler(int size, int pageSize, String selectSql, String selectDsName, Map<Integer, Object> params, DataHandler dataHandler) {
+    public static boolean dataPageHandler(int size, int pageSize, String selectSql, String selectDsName, Class clazz, Map<Integer, Object> params, DataHandler dataHandler) {
 
         if (!selectSql.contains("$MOD")) {
             throw new ToolException("多线程处理查询数据sql语句必须包含$MOD");
@@ -47,7 +48,7 @@ public class SqlUtil {
         Map<String, ThreadResult> threadResultMap = new HashMap<>();
 
         for (int i = 0; i < size; i++) {
-            executor.execute(new DataPageHandlerRunnable(selectSql, selectDsName, params, dataHandler, size, i, pageSize, cdl, threadResultMap));
+            executor.execute(new DataPageHandlerRunnable(selectSql, selectDsName, clazz, params, dataHandler, size, i, pageSize, cdl, threadResultMap));
         }
         while (true) {
             if (cdl.getCount() == 0) {
@@ -72,6 +73,14 @@ public class SqlUtil {
         return true;
     }
 
+    public static boolean dataPageHandler(int size, int pageSize, String selectSql, String selectDsName, Map<Integer, Object> params, DataHandler dataHandler) {
+        return SqlUtil.dataPageHandler(size, pageSize, selectSql, selectDsName, null, params, dataHandler);
+    }
+
+    public static boolean dataPageHandler(int size, int pageSize, String selectSql, String selectDsName, DataHandler dataHandler) {
+        return SqlUtil.dataPageHandler(size, pageSize, selectSql, selectDsName, null, null, dataHandler);
+    }
+
     /**
      * 单线程处理数据分页查询操作
      *
@@ -79,15 +88,16 @@ public class SqlUtil {
      * @param pageSize     分页每页数据数量
      * @param selectSql    查询数据语句
      * @param selectDsName 查询数据数据源名称
+     * @param clazz        查询结果类型
      * @param params       查询参数 格式为 key:1 value:"servId"； key值代表查询sql语句中?占位符的位置
      * @param dataHandler  对查询结果进行处理
      * @return true: 正常处理 false:处理失败或某个线程出现异常
      * @throws Exception
      */
-    public static boolean dataPageHandler(boolean block, int pageSize, String selectSql, String selectDsName, Map<Integer, Object> params, DataHandler dataHandler) throws Exception {
+    public static boolean dataPageHandler(boolean block, int pageSize, String selectSql, String selectDsName, Class clazz, Map<Integer, Object> params, DataHandler dataHandler) throws Exception {
         CountDownLatch cdl = ThreadUtil.newCountDownLatch(1);
         Map<String, ThreadResult> threadResultMap = new HashMap<>();
-        ThreadUtil.execute(new DataPageHandlerRunnable(selectSql, selectDsName, params, dataHandler, 1, 1, pageSize, cdl, threadResultMap));
+        ThreadUtil.execute(new DataPageHandlerRunnable(selectSql, selectDsName, clazz, params, dataHandler, 1, 1, pageSize, cdl, threadResultMap));
         if (block) {
             while (true) {
                 if (cdl.getCount() == 0) {
