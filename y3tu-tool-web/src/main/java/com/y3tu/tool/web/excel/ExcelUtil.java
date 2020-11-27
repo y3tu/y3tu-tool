@@ -41,7 +41,7 @@ public class ExcelUtil extends EasyExcel {
     }
 
     /**
-     * 分页查询、写数据,避免导出大数据量时OOM
+     * 单线程分页查询、写数据,避免导出大数据量时OOM
      *
      * @param fileName      文件名
      * @param sheetName     sheet页名称
@@ -87,6 +87,13 @@ public class ExcelUtil extends EasyExcel {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+    }
+
+    /**
+     * 多线程分页查询，单线程写数据到文件
+     */
+    public static void downExcelByThreadAndPage(){
 
     }
 
