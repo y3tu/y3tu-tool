@@ -3,6 +3,7 @@ package com.y3tu.tool.web.sql;
 import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.thread.ThreadUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -137,7 +138,6 @@ public class SqlUtil {
         return count;
     }
 
-
     /**
      * 清空表数据
      *
@@ -192,6 +192,42 @@ public class SqlUtil {
             return count;
         }
         return 0;
+    }
+
+
+    /**
+     * 查询数据集合
+     *
+     * @param sql    查询sql
+     * @param params 参数参数
+     * @param dsName 数据源名
+     * @return
+     */
+    public static List queryList(String sql, Map<Integer, Object> params, String dsName) {
+        List<Object> paramList = new ArrayList<>();
+        for (int key : params.keySet()) {
+            paramList.add(params.get(key));
+        }
+        List<Map<String, Object>> dataList = JdbcTemplateContainer.getJdbcTemplate(dsName).queryForList(sql, paramList.toArray());
+        return dataList;
+    }
+
+    /**
+     * 查询数据集合
+     *
+     * @param sql    查询sql
+     * @param params 参数参数
+     * @param clazz  数据对应实体
+     * @param dsName 数据源名
+     * @return
+     */
+    public static List queryList(String sql, Map<Integer, Object> params, Class clazz, String dsName) {
+        List<Object> paramList = new ArrayList<>();
+        for (int key : params.keySet()) {
+            paramList.add(params.get(key));
+        }
+        List dataList = JdbcTemplateContainer.getJdbcTemplate(dsName).query(sql, new BeanPropertyRowMapper<>(clazz), paramList.toArray());
+        return dataList;
     }
 
 

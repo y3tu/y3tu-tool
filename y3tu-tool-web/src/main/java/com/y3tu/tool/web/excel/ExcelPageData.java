@@ -10,14 +10,13 @@ import java.util.List;
  * @author y3tu
  */
 @FunctionalInterface
-public interface ExcelPageCollect<E> {
-
+public interface ExcelPageData<E> {
     /**
      * 分页获取数据
      *
-     * @param current 当前页，从 1 开始
-     * @param size    分页大小
+     * @param startNum 从第几条数据开始
+     * @param pageSize 分页大小
      * @return
      */
-    List<E> pageData(int current, int size);
+    List<E> queryDataByPage(int startNum, int pageSize);
 }
