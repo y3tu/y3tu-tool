@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @Slf4j
 @Component
-public class StartedUpRunner implements ApplicationRunner {
+public class ToolStartRunner implements ApplicationRunner {
 
     @Autowired
     private ConfigurableApplicationContext context;

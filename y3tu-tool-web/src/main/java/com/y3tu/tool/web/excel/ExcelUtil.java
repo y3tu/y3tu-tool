@@ -67,16 +67,15 @@ public class ExcelUtil extends EasyExcel {
      * 创建ExcelWriter对象
      *
      * @param fileName      文件名
-     * @param sheetName     sheet名
      * @param clazz         导出的实体类型
      * @param excelTypeEnum excel文件类型
      * @param response      浏览器响应
      * @return
      */
-    public static ExcelWriter buildExcelWriter(String fileName, String sheetName, Class clazz, ExcelTypeEnum excelTypeEnum, HttpServletResponse response) {
+    public static ExcelWriter buildExcelWriter(String fileName, Class clazz, ExcelTypeEnum excelTypeEnum, HttpServletResponse response) {
         try {
             ExcelUtil.decorateResponse(fileName, excelTypeEnum, response);
-            ExcelWriterBuilder excelWriterBuilder = EasyExcel.write(response.getOutputStream(), clazz);
+            ExcelWriterBuilder excelWriterBuilder = EasyExcel.write(response.getOutputStream(), clazz).autoCloseStream(false);
             ExcelWriter excelWriter = excelWriterBuilder.build();
             return excelWriter;
         } catch (Exception e) {
@@ -97,7 +96,7 @@ public class ExcelUtil extends EasyExcel {
      */
     public static void downExcelByPage(String fileName, String sheetName, Class clazz, ExcelTypeEnum excelTypeEnum, ExcelPageData excelPageData, HttpServletResponse response) {
         try {
-            ExcelWriter excelWriter = buildExcelWriter(fileName, sheetName, clazz, excelTypeEnum, response);
+            ExcelWriter excelWriter = buildExcelWriter(fileName, clazz, excelTypeEnum, response);
             //使用默认的 xlsx, page size 10000, sheet max row 1000000
             int pageSize = XLSX_PAGE_SIZE;
             int sheetMaxRow = XLSX_SHEET_MAX_ROW;
@@ -110,6 +109,10 @@ public class ExcelUtil extends EasyExcel {
             int count = 0;
             // 分页写数据
             WriteSheet sheet = EasyExcel.writerSheet(sheetNbr, sheetName).build();
+
+            //导出开始时间 单位秒
+            long startTime = System.currentTimeMillis() / 1000;
+
             while (true) {
                 //分页获取数据
                 List data = excelPageData.queryDataByPage(startNbr, pageSize);
@@ -127,9 +130,12 @@ public class ExcelUtil extends EasyExcel {
                 excelWriter.write(data, sheet);
                 data.clear();
                 startNbr += pageSize;
+
             }
             //关闭流
             excelWriter.finish();
+            long endTime = System.currentTimeMillis() / 1000;
+            log.info("导出耗时：" + (endTime - startTime) + " 秒");
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new ToolException("分页导出数据到excel异常", e.getMessage());
@@ -158,7 +164,7 @@ public class ExcelUtil extends EasyExcel {
             AtomicInteger start = new AtomicInteger(0);
             ThreadFactory threadFactory = ThreadUtil.newNamedThreadFactory("多线程分页查询导出", true);
             ExecutorService executorService = ThreadUtil.newFixedExecutor(poolSize, threadFactory);
-            ExcelWriter excelWriter = buildExcelWriter(fileName, sheetName, clazz, excelTypeEnum, response);
+            ExcelWriter excelWriter = buildExcelWriter(fileName, clazz, excelTypeEnum, response);
             //默认分页大小1000条
             int pageSize = XLSX_PAGE_SIZE;
             int sheetMaxRow = XLSX_SHEET_MAX_ROW;
@@ -168,6 +174,10 @@ public class ExcelUtil extends EasyExcel {
             }
             final int size = pageSize;
             final int maxRow = sheetMaxRow;
+
+            //导出开始时间 单位秒
+            long startTime = System.currentTimeMillis() / 1000;
+
             //多线程获取分页数据
             for (int i = 0; i < N; i++) {
                 executorService.submit(() -> {
@@ -206,31 +216,35 @@ public class ExcelUtil extends EasyExcel {
                     List data = null;
                     try {
                         data = queue.take();
+
+                        if (CollectionUtil.isEmpty(data)) {
+                            emptyCount++;
+                            // 当获取到两次空集合时，说明已经读完
+                            if (emptyCount == N) {
+                                break;
+                            }
+                            continue;
+                        }
+                        if (count + data.size() > maxRow) {
+                            //如果超出一个sheet的最大数据条数,需另建sheet页
+                            sheet = EasyExcel.writerSheet(++sheetNbr, sheetName + sheetNbr).build();
+                            //清空计数
+                            count = 0;
+                        }
+                        count += data.size();
+                        excelWriter.write(data, sheet);
+                        data.clear();
+
                     } catch (Exception e) {
                         log.error(e.getMessage(), e);
                         throw new ToolException("获取数据异常!", e.getMessage());
                     }
-                    if (CollectionUtil.isEmpty(data)) {
-                        emptyCount++;
-                        // 当获取到两次空集合时，说明已经读完
-                        if (emptyCount == N) {
-                            break;
-                        }
-                        continue;
-                    }
-                    if (count + data.size() > maxRow) {
-                        //如果超出一个sheet的最大数据条数,需另建sheet页
-                        sheet = EasyExcel.writerSheet(++sheetNbr, sheetName + sheetNbr).build();
-                        //清空计数
-                        count = 0;
-                    }
-                    count += data.size();
-                    excelWriter.write(data, sheet);
-                    data.clear();
                 }
                 //关闭流
                 excelWriter.finish();
             });
+            long endTime = System.currentTimeMillis() / 1000;
+            log.info("导出耗时：" + (endTime - startTime) + " 秒");
             //阻塞，等到数据导出完成
             submit.get();
         } catch (Exception e) {

@@ -1,13 +1,12 @@
 package com.y3tu.tool.web.configure;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -15,8 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  *
  * @author y3tu
  */
-@Configuration
-@EnableWebMvc
+@ConditionalOnClass(WebMvcConfigurer.class)
 public class CorsConfig implements WebMvcConfigurer {
 
     @Bean
