@@ -119,7 +119,7 @@ public class ExcelUtil extends EasyExcel {
                 }
                 if (count + data.size() > sheetMaxRow) {
                     //如果超出一个sheet的最大数据条数,需另建sheet页
-                    sheet = EasyExcel.writerSheet(sheetNbr++, sheetName + startNbr).build();
+                    sheet = EasyExcel.writerSheet(++sheetNbr, sheetName + sheetNbr).build();
                     //清空计数
                     count = 0;
                 }
@@ -220,7 +220,7 @@ public class ExcelUtil extends EasyExcel {
                     }
                     if (count + data.size() > maxRow) {
                         //如果超出一个sheet的最大数据条数,需另建sheet页
-                        sheet = EasyExcel.writerSheet(sheetNbr++, sheetName + sheetNbr).build();
+                        sheet = EasyExcel.writerSheet(++sheetNbr, sheetName + sheetNbr).build();
                         //清空计数
                         count = 0;
                     }
