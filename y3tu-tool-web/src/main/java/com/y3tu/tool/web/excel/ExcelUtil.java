@@ -31,7 +31,7 @@ public class ExcelUtil extends EasyExcel {
     /**
      * xlsx分页大小
      */
-    public static final int XLSX_PAGE_SIZE = 1000;
+    public static final int XLSX_PAGE_SIZE = 50000;
     /**
      * xlsx每个sheet页最大数据条数
      */
@@ -39,7 +39,7 @@ public class ExcelUtil extends EasyExcel {
     /**
      * xls分页大小
      */
-    public static final int XLS_PAGE_SIZE = 1000;
+    public static final int XLS_PAGE_SIZE = 50000;
     /**
      * xls每个sheet页最大数据条数
      */
@@ -243,10 +243,11 @@ public class ExcelUtil extends EasyExcel {
                 //关闭流
                 excelWriter.finish();
             });
-            long endTime = System.currentTimeMillis() / 1000;
-            log.info("导出耗时：" + (endTime - startTime) + " 秒");
+
             //阻塞，等到数据导出完成
             submit.get();
+            long endTime = System.currentTimeMillis() / 1000;
+            log.info("导出耗时：" + (endTime - startTime) + " 秒");
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new ToolException("分页导出数据到excel异常", e.getMessage());
