@@ -75,7 +75,7 @@ public class ExcelUtil extends EasyExcel {
     public static ExcelWriter buildExcelWriter(String fileName, Class clazz, ExcelTypeEnum excelTypeEnum, HttpServletResponse response) {
         try {
             ExcelUtil.decorateResponse(fileName, excelTypeEnum, response);
-            ExcelWriterBuilder excelWriterBuilder = EasyExcel.write(response.getOutputStream(), clazz).autoCloseStream(false);
+            ExcelWriterBuilder excelWriterBuilder = EasyExcel.write(response.getOutputStream(), clazz).autoCloseStream(true);
             ExcelWriter excelWriter = excelWriterBuilder.build();
             return excelWriter;
         } catch (Exception e) {
