@@ -1,13 +1,15 @@
 package com.y3tu.tool.test.rest;
 
 import com.alibaba.excel.support.ExcelTypeEnum;
+import com.y3tu.tool.core.pojo.R;
 import com.y3tu.tool.test.dto.UserDto;
 import com.y3tu.tool.web.excel.ExcelPageData;
 import com.y3tu.tool.web.excel.ExcelUtil;
+import com.y3tu.tool.web.excel.listener.CustomExcelListener;
 import com.y3tu.tool.web.sql.SqlUtil;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -21,6 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("excel")
+@Slf4j
 public class ExcelController {
 
     @GetMapping("downPage")
@@ -36,6 +39,18 @@ public class ExcelController {
                 return data;
             }
         }, response);
+    }
+
+    @PostMapping("upload")
+    @ResponseBody
+    public R readExcel(MultipartFile file) {
+        ExcelUtil.readExcel(file, UserDto.class, new CustomExcelListener<UserDto>() {
+            @Override
+            protected void handleData(List<UserDto> dataList) {
+                dataList.stream().forEach(userDto -> log.info(userDto.getName()));
+            }
+        });
+        return R.success();
     }
 
 

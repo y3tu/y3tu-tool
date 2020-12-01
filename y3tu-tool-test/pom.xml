@@ -20,13 +20,13 @@
         <dependency>
             <groupId>com.y3tu</groupId>
             <artifactId>y3tu-tool-report</artifactId>
-            <version>2.2.2</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.y3tu</groupId>
             <artifactId>y3tu-tool-web</artifactId>
-            <version>2.2.2</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
 

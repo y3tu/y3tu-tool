@@ -1,7 +1,10 @@
 package com.y3tu.tool.web.excel;
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.event.AnalysisEventListener;
+import com.alibaba.excel.read.metadata.ReadSheet;
 import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.metadata.WriteSheet;
@@ -9,6 +12,7 @@ import com.y3tu.tool.core.collection.CollectionUtil;
 import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.thread.ThreadUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLEncoder;
@@ -272,5 +276,32 @@ public class ExcelUtil extends EasyExcel {
             log.error(e.getMessage(), e);
             throw new ToolException("导出excel文件异常:" + e.getMessage());
         }
+    }
+
+
+    /**
+     * 读取web上传excel文件
+     *
+     * @param file 上传文件
+     * @param clazz  转换的实体对象
+     * @param listener 读取数据处理
+     */
+    public static void readExcel(MultipartFile file, Class clazz, AnalysisEventListener listener) {
+        ExcelReader excelReader = null;
+        try {
+
+            excelReader = EasyExcel.read(file.getInputStream(), clazz, listener).build();
+            ReadSheet readSheet = EasyExcel.readSheet(0).build();
+            excelReader.read(readSheet);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ToolException("读取excel文件失败");
+        } finally {
+            if (excelReader != null) {
+                // 这里千万别忘记关闭，读的时候会创建临时文件，到时磁盘会崩的
+                excelReader.finish();
+            }
+        }
+
     }
 }
