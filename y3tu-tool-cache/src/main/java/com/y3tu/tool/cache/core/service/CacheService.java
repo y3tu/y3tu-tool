@@ -2,6 +2,7 @@ package com.y3tu.tool.cache.core.service;
 
 import com.y3tu.tool.cache.core.cache.Cache;
 import com.y3tu.tool.cache.core.manager.AbstractCacheManager;
+import com.y3tu.tool.cache.core.manager.LayeringCacheManager;
 import com.y3tu.tool.cache.core.setting.FirstCacheSetting;
 import com.y3tu.tool.cache.core.setting.LayeringCacheSetting;
 import com.y3tu.tool.cache.core.setting.SecondaryCacheSetting;
@@ -31,7 +32,7 @@ public class CacheService {
             return;
         }
         LayeringCacheSetting defaultSetting = new LayeringCacheSetting(new FirstCacheSetting(), new SecondaryCacheSetting(), "默认缓存配置（删除时生成）");
-        Set<AbstractCacheManager> cacheManagers = AbstractCacheManager.getCacheManager();
+        Set<LayeringCacheManager> cacheManagers = LayeringCacheManager.getCacheManager();
         if (StrUtil.isBlank(key)) {
             // 清空缓存
             for (AbstractCacheManager cacheManager : cacheManagers) {

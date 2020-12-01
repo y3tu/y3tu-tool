@@ -2,6 +2,7 @@ package com.y3tu.tool.cache.core.servlet;
 
 import com.alibaba.fastjson.JSON;
 import com.y3tu.tool.cache.core.manager.AbstractCacheManager;
+import com.y3tu.tool.cache.core.manager.LayeringCacheManager;
 import com.y3tu.tool.cache.core.service.CacheService;
 import com.y3tu.tool.cache.core.stats.CacheStatsInfo;
 import com.y3tu.tool.core.pojo.R;
@@ -52,7 +53,7 @@ public class LayeringCacheServlet extends HttpServlet {
 
         // 重置缓存统计数据
         if (UrlConstant.RESET_CACHE_STAT.equals(path)) {
-            Set<AbstractCacheManager> cacheManagers = AbstractCacheManager.getCacheManager();
+            Set<LayeringCacheManager> cacheManagers = LayeringCacheManager.getCacheManager();
             for (AbstractCacheManager cacheManager : cacheManagers) {
                 cacheManager.resetCacheStat();
             }
@@ -62,7 +63,7 @@ public class LayeringCacheServlet extends HttpServlet {
         // 缓存统计列表
         if (UrlConstant.CACHE_STATS_LIST.equals(path)) {
             String cacheName = request.getParameter("cacheName");
-            Set<AbstractCacheManager> cacheManagers = AbstractCacheManager.getCacheManager();
+            Set<LayeringCacheManager> cacheManagers = LayeringCacheManager.getCacheManager();
             List<CacheStatsInfo> statsList = new ArrayList<>();
             for (AbstractCacheManager cacheManager : cacheManagers) {
                 List<CacheStatsInfo> cacheStats = cacheManager.listCacheStats(cacheName);
@@ -84,8 +85,8 @@ public class LayeringCacheServlet extends HttpServlet {
     }
 
     private RedisTemplate<String, Object> getRedisTemplate() {
-        Set<AbstractCacheManager> cacheManagers = AbstractCacheManager.getCacheManager();
-        for (AbstractCacheManager cacheManager : cacheManagers) {
+        Set<LayeringCacheManager> cacheManagers = LayeringCacheManager.getCacheManager();
+        for (LayeringCacheManager cacheManager : cacheManagers) {
             return cacheManager.getRedisTemplate();
         }
         return null;

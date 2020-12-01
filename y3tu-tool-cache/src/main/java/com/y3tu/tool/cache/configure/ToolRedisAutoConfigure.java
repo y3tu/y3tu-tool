@@ -4,12 +4,14 @@ import com.alibaba.fastjson.parser.ParserConfig;
 import com.y3tu.tool.cache.core.serializer.FastJsonRedisSerializer;
 import com.y3tu.tool.cache.core.serializer.StringRedisSerializer;
 import com.y3tu.tool.cache.redis.service.RedisService;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 
 /**
@@ -18,6 +20,7 @@ import org.springframework.data.redis.core.RedisTemplate;
  * @author y3tu
  */
 @ConditionalOnClass(RedisConnectionFactory.class)
+@AutoConfigureAfter({RedisAutoConfiguration.class})
 @Configuration
 public class ToolRedisAutoConfigure {
 
@@ -28,8 +31,9 @@ public class ToolRedisAutoConfigure {
      * @param factory
      * @return
      */
+    @ConditionalOnBean(RedisConnectionFactory.class)
     @Bean("ToolCacheRedisTemplate")
-    @ConditionalOnClass(RedisOperations.class)
+    @Order(1)
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(factory);

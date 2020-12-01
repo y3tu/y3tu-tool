@@ -1,4 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.y3tu.tool.cache.configure.ToolCacheAutoConfigure,\
-com.y3tu.tool.cache.configure.ToolRedisAutoConfigure
+com.y3tu.tool.cache.configure.ToolCacheAutoConfigure
 

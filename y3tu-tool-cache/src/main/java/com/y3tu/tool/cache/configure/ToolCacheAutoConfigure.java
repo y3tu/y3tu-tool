@@ -1,19 +1,22 @@
 package com.y3tu.tool.cache.configure;
 
 import com.y3tu.tool.cache.aspect.LayeringAspect;
+import com.y3tu.tool.cache.core.manager.AbstractCacheManager;
 import com.y3tu.tool.cache.core.manager.CacheManager;
+import com.y3tu.tool.cache.core.manager.FirstCacheManager;
+import com.y3tu.tool.cache.core.support.CacheMode;
 import com.y3tu.tool.cache.properties.CacheProperties;
 import com.y3tu.tool.cache.core.manager.LayeringCacheManager;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import com.y3tu.tool.cache.runner.ToolCacheStartedRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.RedisTemplate;
 
 /**
@@ -22,23 +25,31 @@ import org.springframework.data.redis.core.RedisTemplate;
  * @author xiaolyuh
  */
 @Configuration
-@ConditionalOnBean(RedisTemplate.class)
-@AutoConfigureAfter({RedisAutoConfiguration.class})
 @EnableAspectJAutoProxy
 @EnableConfigurationProperties({CacheProperties.class})
-@Import({CacheServletConfigure.class})
+@Import({CacheServletConfigure.class,ToolCacheStartedRunner.class})
 public class ToolCacheAutoConfigure {
 
-    @Qualifier("ToolCacheRedisTemplate")
-    RedisTemplate<String, Object> redisTemplate;
+    @Autowired
+    ApplicationContext applicationContext;
 
     @Bean
     @ConditionalOnMissingBean(CacheManager.class)
+    @Order(2)
     public CacheManager layeringCacheManager(CacheProperties properties) {
-        LayeringCacheManager layeringCacheManager = new LayeringCacheManager(redisTemplate);
+
+        AbstractCacheManager cacheManager = null;
+        if (properties.getCacheMode() == CacheMode.ONLY_FIRST) {
+            //只开启一级缓存
+            cacheManager = new FirstCacheManager();
+        } else {
+            RedisTemplate<String, Object> redisTemplate = applicationContext.getBean("ToolCacheRedisTemplate", RedisTemplate.class);
+            cacheManager = new LayeringCacheManager(redisTemplate);
+        }
+
         // 默认开启统计功能
-        layeringCacheManager.setStats(properties.isStats());
-        return layeringCacheManager;
+        cacheManager.setStats(properties.isStats());
+        return cacheManager;
     }
 
     /**

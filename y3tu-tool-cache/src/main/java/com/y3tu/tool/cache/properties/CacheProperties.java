@@ -1,5 +1,6 @@
 package com.y3tu.tool.cache.properties;
 
+import com.y3tu.tool.cache.core.support.CacheMode;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -31,6 +32,10 @@ public class CacheProperties {
      * contextPath
      */
     private String urlPattern;
+    /**
+     * 缓存模式
+     */
+    private CacheMode cacheMode = CacheMode.ONLY_FIRST;
 
 
 }

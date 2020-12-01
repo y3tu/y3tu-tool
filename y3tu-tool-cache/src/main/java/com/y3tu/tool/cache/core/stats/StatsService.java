@@ -5,6 +5,7 @@ import com.y3tu.tool.cache.core.cache.Cache;
 import com.y3tu.tool.cache.core.cache.LayeringCache;
 import com.y3tu.tool.cache.core.manager.AbstractCacheManager;
 import com.y3tu.tool.cache.core.manager.CacheManager;
+import com.y3tu.tool.cache.core.manager.LayeringCacheManager;
 import com.y3tu.tool.cache.core.setting.LayeringCacheSetting;
 import com.y3tu.tool.cache.redis.service.RedisService;
 import com.y3tu.tool.cache.redis.support.Lock;
@@ -39,7 +40,7 @@ public class StatsService {
     /**
      * {@link AbstractCacheManager }
      */
-    private AbstractCacheManager cacheManager;
+    private LayeringCacheManager cacheManager;
 
     /**
      * 获取缓存统计list
@@ -79,7 +80,7 @@ public class StatsService {
         resetCacheStat();
         executor.scheduleWithFixedDelay(() -> {
             log.debug("执行缓存统计数据采集定时任务");
-            Set<AbstractCacheManager> cacheManagers = AbstractCacheManager.getCacheManager();
+            Set<LayeringCacheManager> cacheManagers = LayeringCacheManager.getCacheManager();
             for (AbstractCacheManager abstractCacheManager : cacheManagers) {
                 // 获取CacheManager
                 CacheManager cacheManager = abstractCacheManager;
@@ -184,7 +185,7 @@ public class StatsService {
         }
     }
 
-    public void setCacheManager(AbstractCacheManager cacheManager) {
+    public void setCacheManager(LayeringCacheManager cacheManager) {
         this.cacheManager = cacheManager;
     }
 }
