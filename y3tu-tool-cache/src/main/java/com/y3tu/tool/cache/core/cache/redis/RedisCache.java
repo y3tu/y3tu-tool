@@ -185,7 +185,7 @@ public class RedisCache extends AbstractValueAdaptingCache {
         if (usePrefix) {
             log.info("清空redis缓存 ，缓存前缀为{}", getName());
 
-            Set<String> keys = RedisService.scan(getName() + "*");
+            Set<String> keys = new RedisService(redisTemplate).scan(getName() + "*");
             if (!CollectionUtils.isEmpty(keys)) {
                 redisTemplate.delete(keys);
             }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
 
@@ -11,49 +10,38 @@
         <version>2.2.3</version>
     </parent>
 
-    <artifactId>y3tu-tool-report</artifactId>
-
+    <artifactId>y3tu-tool-all</artifactId>
     <name>${project.artifactId}</name>
-    <description>报表相关工具类</description>
+    <description>工具集合 包含web工具、缓存工具、报表工具</description>
     <url>https://github.com/y3tu/y3tu-tool</url>
-
-    <properties>
-        <mysql.version>5.1.38</mysql.version>
-    </properties>
 
     <dependencies>
 
         <dependency>
             <groupId>com.y3tu</groupId>
             <artifactId>y3tu-tool-core</artifactId>
-            <version>2.2.2</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.y3tu</groupId>
             <artifactId>y3tu-tool-web</artifactId>
-            <version>2.2.2</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring-boot.version}</version>
+            <groupId>com.y3tu</groupId>
+            <artifactId>y3tu-tool-cache</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-            <version>${spring-boot.version}</version>
+            <groupId>com.y3tu</groupId>
+            <artifactId>y3tu-tool-report</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
 
     </dependencies>
+
 
 </project>

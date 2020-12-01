@@ -19,41 +19,39 @@ import org.springframework.data.redis.core.RedisTemplate;
  */
 @ConditionalOnClass(RedisConnectionFactory.class)
 @Configuration
-public class RedisAutoConfigure {
+public class ToolRedisAutoConfigure {
 
     /**
+     * 加载程序默认配置的redis连接
      * 配置自定义redisTemplate
      *
      * @param factory
      * @return
      */
-    @Bean
+    @Bean("ToolCacheRedisTemplate")
     @ConditionalOnClass(RedisOperations.class)
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(factory);
-
 
         FastJsonRedisSerializer<Object> fastJsonRedisSerializer = new FastJsonRedisSerializer<>(Object.class);
         // 全局开启AutoType，不建议使用
         // ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
         // 建议使用这种方式，小范围指定白名单
         ParserConfig.getGlobalInstance().addAccept("com.y3tu.");
-
         // 设置值（value）的序列化采用KryoRedisSerializer。
         redisTemplate.setValueSerializer(fastJsonRedisSerializer);
         redisTemplate.setHashValueSerializer(fastJsonRedisSerializer);
         // 设置键（key）的序列化采用StringRedisSerializer。
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-
         redisTemplate.afterPropertiesSet();
 
         return redisTemplate;
     }
 
-    @Bean
-    @ConditionalOnBean(name = "redisTemplate")
+    @Bean("ToolCacheRedisService")
+    @ConditionalOnBean(name = "ToolCacheRedisTemplate")
     public RedisService redisService(RedisTemplate redisTemplate) {
         return new RedisService(redisTemplate);
     }

@@ -4,6 +4,7 @@ import com.y3tu.tool.cache.aspect.LayeringAspect;
 import com.y3tu.tool.cache.core.manager.CacheManager;
 import com.y3tu.tool.cache.properties.CacheProperties;
 import com.y3tu.tool.cache.core.manager.LayeringCacheManager;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -26,17 +27,25 @@ import org.springframework.data.redis.core.RedisTemplate;
 @EnableAspectJAutoProxy
 @EnableConfigurationProperties({CacheProperties.class})
 @Import({CacheServletConfigure.class})
-public class CacheAutoConfigure {
+public class ToolCacheAutoConfigure {
+
+    @Qualifier("ToolCacheRedisTemplate")
+    RedisTemplate<String, Object> redisTemplate;
 
     @Bean
     @ConditionalOnMissingBean(CacheManager.class)
-    public CacheManager layeringCacheManager(RedisTemplate<String, Object> redisTemplate, CacheProperties properties) {
+    public CacheManager layeringCacheManager(CacheProperties properties) {
         LayeringCacheManager layeringCacheManager = new LayeringCacheManager(redisTemplate);
         // 默认开启统计功能
         layeringCacheManager.setStats(properties.isStats());
         return layeringCacheManager;
     }
 
+    /**
+     * 开启缓存切面操作
+     *
+     * @return
+     */
     @Bean
     public LayeringAspect layeringAspect() {
         return new LayeringAspect();
