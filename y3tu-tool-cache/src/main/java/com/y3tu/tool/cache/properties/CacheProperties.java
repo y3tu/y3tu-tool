@@ -1,4 +1,4 @@
-package com.y3tu.tool.cache.starter.properties;
+package com.y3tu.tool.cache.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -8,8 +8,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  *
  * @author yuhao.wang3
  */
-@ConfigurationProperties("y3tu.tool.cache")
 @Data
+@ConfigurationProperties("y3tu.tool.cache")
 public class CacheProperties {
 
     /**

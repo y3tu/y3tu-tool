@@ -6,7 +6,7 @@ import com.y3tu.tool.cache.core.cache.LayeringCache;
 import com.y3tu.tool.cache.core.manager.AbstractCacheManager;
 import com.y3tu.tool.cache.core.manager.CacheManager;
 import com.y3tu.tool.cache.core.setting.LayeringCacheSetting;
-import com.y3tu.tool.cache.core.util.RedisHelper;
+import com.y3tu.tool.cache.redis.service.RedisService;
 import com.y3tu.tool.cache.redis.support.Lock;
 import com.y3tu.tool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +50,7 @@ public class StatsService {
     public List<CacheStatsInfo> listCacheStats(String cacheNameParam) {
         log.debug("获取缓存统计数据");
 
-        Set<String> layeringCacheKeys = RedisHelper.scan(cacheManager.getRedisTemplate(), CACHE_STATS_KEY_PREFIX + "*");
+        Set<String> layeringCacheKeys = new RedisService(cacheManager.getRedisTemplate()).scan(CACHE_STATS_KEY_PREFIX + "*");
         if (CollectionUtils.isEmpty(layeringCacheKeys)) {
             return Collections.emptyList();
         }
@@ -158,7 +158,7 @@ public class StatsService {
      */
     public void resetCacheStat() {
         RedisTemplate<String, Object> redisTemplate = cacheManager.getRedisTemplate();
-        Set<String> layeringCacheKeys = RedisHelper.scan(redisTemplate, CACHE_STATS_KEY_PREFIX + "*");
+        Set<String> layeringCacheKeys = new RedisService(cacheManager.getRedisTemplate()).scan(CACHE_STATS_KEY_PREFIX + "*");
 
         for (String key : layeringCacheKeys) {
             resetCacheStat(key);

@@ -6,8 +6,8 @@ import com.y3tu.tool.cache.core.setting.SecondaryCacheSetting;
 import com.y3tu.tool.cache.core.support.AwaitThreadContainer;
 import com.y3tu.tool.cache.core.support.NullValue;
 import com.y3tu.tool.cache.core.support.ThreadTaskUtils;
-import com.y3tu.tool.cache.core.util.RedisHelper;
 import com.y3tu.tool.cache.redis.support.Lock;
+import com.y3tu.tool.cache.redis.service.RedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.Assert;
@@ -185,7 +185,7 @@ public class RedisCache extends AbstractValueAdaptingCache {
         if (usePrefix) {
             log.info("清空redis缓存 ，缓存前缀为{}", getName());
 
-            Set<String> keys = RedisHelper.scan(redisTemplate, getName() + "*");
+            Set<String> keys = RedisService.scan(getName() + "*");
             if (!CollectionUtils.isEmpty(keys)) {
                 redisTemplate.delete(keys);
             }

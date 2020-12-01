@@ -3,7 +3,6 @@ package com.y3tu.tool.core.exception;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-
 /**
  * 异常工具类
  *

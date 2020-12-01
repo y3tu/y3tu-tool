@@ -1,4 +1,4 @@
-package com.y3tu.tool.cache.redis.configure;
+package com.y3tu.tool.cache.configure;
 
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.y3tu.tool.cache.core.serializer.FastJsonRedisSerializer;
@@ -6,7 +6,6 @@ import com.y3tu.tool.cache.core.serializer.StringRedisSerializer;
 import com.y3tu.tool.cache.redis.service.RedisService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -14,11 +13,11 @@ import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 
 /**
- * Redis配置
+ * Redis自动配置
  *
  * @author y3tu
  */
-@EnableCaching
+@ConditionalOnClass(RedisConnectionFactory.class)
 @Configuration
 public class RedisAutoConfigure {
 
@@ -49,6 +48,7 @@ public class RedisAutoConfigure {
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
 
         redisTemplate.afterPropertiesSet();
+
         return redisTemplate;
     }
 

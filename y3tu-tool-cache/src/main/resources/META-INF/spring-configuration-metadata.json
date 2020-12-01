@@ -2,8 +2,8 @@
   "groups": [
     {
       "name": "y3tu.tool.cache",
-      "type": "com.y3tu.tool.cache.starter.properties.CacheProperties",
-      "sourceType": "com.y3tu.tool.cache.starter.properties.CacheProperties"
+      "type": "com.y3tu.tool.cache.properties.CacheProperties",
+      "sourceType": "com.y3tu.tool.cache.properties.CacheProperties"
     }
   ],
   "properties": [
@@ -11,27 +11,27 @@
       "name": "y3tu.tool.cache.stats",
       "type": "java.lang.Boolean",
       "description": "是否开启缓存统计",
-      "sourceType": "com.y3tu.tool.cache.starter.properties.CacheProperties",
+      "sourceType": "com.y3tu.tool.cache.properties.CacheProperties",
       "defaultValue": true
     },
     {
       "name": "y3tu.tool.cache.namespace",
       "type": "java.lang.String",
       "description": "命名空间，必须唯一般使用服务名",
-      "sourceType": "com.y3tu.tool.cache.starter.properties.CacheProperties"
+      "sourceType": "com.y3tu.tool.cache.properties.CacheProperties"
     },
     {
       "name": "y3tu.tool.cache.servlet-enabled",
       "type": "java.lang.Boolean",
       "description": "是否启动 CacheServlet",
-      "sourceType": "com.y3tu.tool.cache.starter.properties.CacheProperties",
+      "sourceType": "com.y3tu.tool.cache.properties.CacheProperties",
       "defaultValue": false
     },
     {
       "name": "y3tu.tool.cache.url-pattern",
       "type": "java.lang.String",
       "description": "访问url",
-      "sourceType": "com.y3tu.tool.cache.starter.properties.CacheProperties",
+      "sourceType": "com.y3tu.tool.cache.properties.CacheProperties",
       "defaultValue": "/yao-cache/*"
     }
   ],

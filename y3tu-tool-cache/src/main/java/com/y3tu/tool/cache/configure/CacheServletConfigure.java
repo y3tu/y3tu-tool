@@ -1,7 +1,7 @@
-package com.y3tu.tool.cache.starter.configure;
+package com.y3tu.tool.cache.configure;
 
 import com.y3tu.tool.cache.core.servlet.LayeringCacheServlet;
-import com.y3tu.tool.cache.starter.properties.CacheProperties;
+import com.y3tu.tool.cache.properties.CacheProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
