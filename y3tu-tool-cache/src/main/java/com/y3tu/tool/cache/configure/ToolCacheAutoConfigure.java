@@ -27,7 +27,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 @Configuration
 @EnableAspectJAutoProxy
 @EnableConfigurationProperties({CacheProperties.class})
-@Import({CacheServletConfigure.class,ToolCacheStartedRunner.class})
+@Import({CacheServletConfigure.class, ToolCacheStartedRunner.class})
 public class ToolCacheAutoConfigure {
 
     @Autowired
@@ -47,7 +47,7 @@ public class ToolCacheAutoConfigure {
             cacheManager = new LayeringCacheManager(redisTemplate);
         }
 
-        // 默认开启统计功能
+        // 默认关闭统计功能
         cacheManager.setStats(properties.isStats());
         return cacheManager;
     }
