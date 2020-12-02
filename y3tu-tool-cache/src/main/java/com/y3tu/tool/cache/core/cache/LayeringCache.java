@@ -35,12 +35,6 @@ public class LayeringCache extends AbstractValueAdaptingCache {
      * 二级缓存
      */
     private AbstractValueAdaptingCache secondCache;
-
-    /**
-     * 多级缓存配置
-     */
-    private LayeringCacheSetting layeringCacheSetting;
-
     /**
      * 是否使用一级缓存， 默认true
      */
@@ -71,12 +65,11 @@ public class LayeringCache extends AbstractValueAdaptingCache {
      */
     public LayeringCache(RedisTemplate<String, Object> redisTemplate, AbstractValueAdaptingCache firstCache,
                          AbstractValueAdaptingCache secondCache, boolean useFirstCache, boolean stats, String name, LayeringCacheSetting layeringCacheSetting) {
-        super(stats, name);
+        super(name, stats, layeringCacheSetting);
         this.redisTemplate = redisTemplate;
         this.firstCache = firstCache;
         this.secondCache = secondCache;
         this.useFirstCache = useFirstCache;
-        this.layeringCacheSetting = layeringCacheSetting;
     }
 
     @Override
@@ -212,10 +205,6 @@ public class LayeringCache extends AbstractValueAdaptingCache {
 
         setCacheStats(cacheStats);
         return cacheStats;
-    }
-
-    public LayeringCacheSetting getLayeringCacheSetting() {
-        return layeringCacheSetting;
     }
 
     @Override

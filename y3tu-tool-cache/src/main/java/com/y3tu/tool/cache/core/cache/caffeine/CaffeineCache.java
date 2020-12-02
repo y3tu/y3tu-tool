@@ -6,6 +6,7 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.y3tu.tool.cache.core.cache.AbstractValueAdaptingCache;
 import com.y3tu.tool.cache.core.setting.FirstCacheSetting;
+import com.y3tu.tool.cache.core.setting.LayeringCacheSetting;
 import com.y3tu.tool.cache.core.support.ExpireMode;
 import com.y3tu.tool.cache.core.support.NullValue;
 import lombok.extern.slf4j.Slf4j;
@@ -25,17 +26,17 @@ public class CaffeineCache extends AbstractValueAdaptingCache {
      */
     private final Cache<Object, Object> cache;
 
+
     /**
      * 使用name和{@link FirstCacheSetting}创建一个 {@link CaffeineCache} 实例
      *
-     * @param name              缓存名称
-     * @param firstCacheSetting 一级缓存配置 {@link FirstCacheSetting}
-     * @param stats             是否开启统计模式
+     * @param name                 缓存名称
+     * @param layeringCacheSetting 缓存配置 {@link LayeringCacheSetting}
+     * @param stats                是否开启统计模式
      */
-    public CaffeineCache(String name, FirstCacheSetting firstCacheSetting, boolean stats) {
-
-        super(stats, name);
-        this.cache = getCache(firstCacheSetting);
+    public CaffeineCache(String name, boolean stats, LayeringCacheSetting layeringCacheSetting) {
+        super(name, stats, layeringCacheSetting);
+        this.cache = getCache(layeringCacheSetting.getFirstCacheSetting());
     }
 
     @Override

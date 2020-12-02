@@ -205,8 +205,10 @@ public class SqlUtil {
      */
     public static List queryList(String sql, Map<Integer, Object> params, String dsName) {
         List<Object> paramList = new ArrayList<>();
-        for (int key : params.keySet()) {
-            paramList.add(params.get(key));
+        if (params != null) {
+            for (int key : params.keySet()) {
+                paramList.add(params.get(key));
+            }
         }
         List<Map<String, Object>> dataList = JdbcTemplateContainer.getJdbcTemplate(dsName).queryForList(sql, paramList.toArray());
         return dataList;
@@ -223,9 +225,12 @@ public class SqlUtil {
      */
     public static List queryList(String sql, Map<Integer, Object> params, Class clazz, String dsName) {
         List<Object> paramList = new ArrayList<>();
-        for (int key : params.keySet()) {
-            paramList.add(params.get(key));
+        if (params != null) {
+            for (int key : params.keySet()) {
+                paramList.add(params.get(key));
+            }
         }
+
         List dataList = JdbcTemplateContainer.getJdbcTemplate(dsName).query(sql, new BeanPropertyRowMapper<>(clazz), paramList.toArray());
         return dataList;
     }

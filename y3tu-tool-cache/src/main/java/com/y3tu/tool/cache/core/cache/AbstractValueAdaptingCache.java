@@ -1,6 +1,7 @@
 package com.y3tu.tool.cache.core.cache;
 
 import com.alibaba.fastjson.JSON;
+import com.y3tu.tool.cache.core.setting.LayeringCacheSetting;
 import com.y3tu.tool.cache.core.stats.CacheStats;
 import com.y3tu.tool.cache.core.support.NullValue;
 import org.springframework.util.Assert;
@@ -32,15 +33,21 @@ public abstract class AbstractValueAdaptingCache implements Cache {
     private CacheStats cacheStats = new CacheStats();
 
     /**
+     * 缓存配置
+     */
+    private LayeringCacheSetting layeringCacheSetting;
+
+    /**
      * 通过构造方法设置缓存配置
      *
-     * @param stats 是否开启监控统计
      * @param name  缓存名称
+     * @param stats 是否开启监控统计
      */
-    protected AbstractValueAdaptingCache(boolean stats, String name) {
+    protected AbstractValueAdaptingCache(String name, boolean stats, LayeringCacheSetting layeringCacheSetting) {
         Assert.notNull(name, "缓存名称不能为NULL");
         this.stats = stats;
         this.name = name;
+        this.layeringCacheSetting = layeringCacheSetting;
     }
 
     /**
@@ -128,5 +135,13 @@ public abstract class AbstractValueAdaptingCache implements Cache {
 
     public void setCacheStats(CacheStats cacheStats) {
         this.cacheStats = cacheStats;
+    }
+
+    public LayeringCacheSetting getLayeringCacheSetting() {
+        return layeringCacheSetting;
+    }
+
+    public void setLayeringCacheSetting(LayeringCacheSetting layeringCacheSetting) {
+        this.layeringCacheSetting = layeringCacheSetting;
     }
 }

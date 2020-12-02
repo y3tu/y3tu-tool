@@ -2,6 +2,7 @@ package com.y3tu.tool.cache.core.cache.redis;
 
 import com.alibaba.fastjson.JSON;
 import com.y3tu.tool.cache.core.cache.AbstractValueAdaptingCache;
+import com.y3tu.tool.cache.core.setting.LayeringCacheSetting;
 import com.y3tu.tool.cache.core.setting.SecondaryCacheSetting;
 import com.y3tu.tool.cache.core.support.AwaitThreadContainer;
 import com.y3tu.tool.cache.core.support.NullValue;
@@ -81,43 +82,24 @@ public class RedisCache extends AbstractValueAdaptingCache {
     private final int magnification;
 
     /**
-     * @param name                  缓存名称
-     * @param redisTemplate         redis客户端 redis 客户端
-     * @param secondaryCacheSetting 二级缓存配置{@link SecondaryCacheSetting}
-     * @param stats                 是否开启统计模式
+     * @param name                 缓存名称
+     * @param stats                是否开启统计模式
+     * @param redisTemplate        redis客户端 redis 客户端
+     * @param layeringCacheSetting 缓存配置{@link LayeringCacheSetting}
      */
-    public RedisCache(String name, RedisTemplate<String, Object> redisTemplate, SecondaryCacheSetting secondaryCacheSetting, boolean stats) {
-
-        this(name, redisTemplate, secondaryCacheSetting.getTimeUnit().toMillis(secondaryCacheSetting.getExpiration()),
-                secondaryCacheSetting.getTimeUnit().toMillis(secondaryCacheSetting.getPreloadTime()),
-                secondaryCacheSetting.isForceRefresh(), secondaryCacheSetting.isUsePrefix(),
-                secondaryCacheSetting.isAllowNullValue(), secondaryCacheSetting.getMagnification(), stats);
-    }
-
-    /**
-     * @param name            缓存名称
-     * @param redisTemplate   redis客户端   redis 客户端
-     * @param expiration      key的有效时间
-     * @param preloadTime     缓存主动在失效前强制刷新缓存的时间
-     * @param forceRefresh    是否强制刷新（执行被缓存的方法），默认是false
-     * @param usePrefix       是否使用缓存名称作为前缀
-     * @param allowNullValues 是否允许存NULL值，模式允许
-     * @param magnification   非空值和null值之间的时间倍率
-     * @param stats           是否开启统计模式
-     */
-    public RedisCache(String name, RedisTemplate<String, Object> redisTemplate, long expiration, long preloadTime,
-                      boolean forceRefresh, boolean usePrefix, boolean allowNullValues, int magnification, boolean stats) {
-        super(stats, name);
-
+    public RedisCache(String name, boolean stats, RedisTemplate<String, Object> redisTemplate, LayeringCacheSetting layeringCacheSetting) {
+        super(name, stats, layeringCacheSetting);
         Assert.notNull(redisTemplate, "RedisTemplate 不能为NULL");
+        SecondaryCacheSetting secondaryCacheSetting = layeringCacheSetting.getSecondaryCacheSetting();
         this.redisTemplate = redisTemplate;
-        this.expiration = expiration;
-        this.preloadTime = preloadTime;
-        this.forceRefresh = forceRefresh;
-        this.usePrefix = usePrefix;
-        this.allowNullValues = allowNullValues;
-        this.magnification = magnification;
+        this.expiration = secondaryCacheSetting.getExpiration();
+        this.preloadTime = secondaryCacheSetting.getPreloadTime();
+        this.forceRefresh = secondaryCacheSetting.isForceRefresh();
+        this.usePrefix = secondaryCacheSetting.isUsePrefix();
+        this.allowNullValues = secondaryCacheSetting.isAllowNullValue();
+        this.magnification = secondaryCacheSetting.getMagnification();
     }
+
 
     @Override
     public RedisTemplate<String, Object> getNativeCache() {

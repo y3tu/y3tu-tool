@@ -74,7 +74,7 @@ public class LayeringAspect {
     public Object cacheablePointcut(ProceedingJoinPoint joinPoint) {
         CacheOperationInvoker aopAllianceInvoker = getCacheOperationInvoker(joinPoint);
         // 获取method
-        Method method = this.getSpecificmethod(joinPoint);
+        Method method = this.getSpecificMethod(joinPoint);
         // 获取注解
         Cacheable cacheable = AnnotationUtils.findAnnotation(method, Cacheable.class);
 
@@ -108,7 +108,7 @@ public class LayeringAspect {
         CacheOperationInvoker aopAllianceInvoker = getCacheOperationInvoker(joinPoint);
 
         // 获取method
-        Method method = this.getSpecificmethod(joinPoint);
+        Method method = this.getSpecificMethod(joinPoint);
         // 获取注解
         CacheEvict cacheEvict = AnnotationUtils.findAnnotation(method, CacheEvict.class);
 
@@ -130,7 +130,7 @@ public class LayeringAspect {
         CacheOperationInvoker aopAllianceInvoker = getCacheOperationInvoker(joinPoint);
 
         // 获取method
-        Method method = this.getSpecificmethod(joinPoint);
+        Method method = this.getSpecificMethod(joinPoint);
         // 获取注解
         CachePut cacheEvict = AnnotationUtils.findAnnotation(method, CachePut.class);
 
@@ -330,7 +330,7 @@ public class LayeringAspect {
      * @param pjp ProceedingJoinPoint
      * @return {@link Method}
      */
-    private Method getSpecificmethod(ProceedingJoinPoint pjp) {
+    private Method getSpecificMethod(ProceedingJoinPoint pjp) {
         MethodSignature methodSignature = (MethodSignature) pjp.getSignature();
         Method method = methodSignature.getMethod();
         Class<?> targetClass = AopProxyUtils.ultimateTargetClass(pjp.getTarget());

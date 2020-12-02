@@ -215,7 +215,7 @@ public class ThreadUtil {
      * @param unit         单位
      * @return 表示挂起任务完成的ScheduledFuture，并且其{@code get()}方法在完成后将返回{@code null}
      */
-    public ScheduledFuture<?> schedule(ScheduledExecutorService scheduleExec, final Runnable command, final long delay, final TimeUnit unit) {
+    public static ScheduledFuture<?> schedule(ScheduledExecutorService scheduleExec, final Runnable command, final long delay, final TimeUnit unit) {
         return scheduleExec.schedule(command, delay, unit);
     }
 
@@ -229,7 +229,7 @@ public class ThreadUtil {
      * @param <V>          泛型
      * @return 可用于提取结果或取消的ScheduledFuture
      */
-    public <V> ScheduledFuture<V> schedule(ScheduledExecutorService scheduleExec, final Callable<V> callable, final long delay, final TimeUnit unit) {
+    public static <V> ScheduledFuture<V> schedule(ScheduledExecutorService scheduleExec, final Callable<V> callable, final long delay, final TimeUnit unit) {
         return scheduleExec.schedule(callable, delay, unit);
     }
 
@@ -243,8 +243,8 @@ public class ThreadUtil {
      * @param unit         时间单位
      * @return 表示挂起任务完成的ScheduledFuture，并且其{@code get()}方法在取消后将抛出异常
      */
-    public ScheduledFuture<?> scheduleWithFixedRate(ScheduledExecutorService scheduleExec, final Runnable command, final long initialDelay,
-                                                    final long period, final TimeUnit unit) {
+    public static ScheduledFuture<?> scheduleWithFixedRate(ScheduledExecutorService scheduleExec, final Runnable command, final long initialDelay,
+                                                           final long period, final TimeUnit unit) {
         return scheduleExec.scheduleAtFixedRate(command, initialDelay, period, unit);
     }
 
@@ -258,8 +258,8 @@ public class ThreadUtil {
      * @param unit         时间单位
      * @return 表示挂起任务完成的ScheduledFuture，并且其{@code get()}方法在取消后将抛出异常
      */
-    public ScheduledFuture<?> scheduleWithFixedDelay(ScheduledExecutorService scheduleExec, final Runnable command, final long initialDelay,
-                                                     final long delay, final TimeUnit unit) {
+    public static ScheduledFuture<?> scheduleWithFixedDelay(ScheduledExecutorService scheduleExec, final Runnable command, final long initialDelay,
+                                                            final long delay, final TimeUnit unit) {
         return scheduleExec.scheduleWithFixedDelay(command, initialDelay, delay, unit);
     }
 

@@ -1,12 +1,9 @@
 package com.y3tu.tool.cache.configure;
 
 import com.y3tu.tool.cache.aspect.LayeringAspect;
-import com.y3tu.tool.cache.core.manager.AbstractCacheManager;
-import com.y3tu.tool.cache.core.manager.CacheManager;
-import com.y3tu.tool.cache.core.manager.FirstCacheManager;
+import com.y3tu.tool.cache.core.manager.*;
 import com.y3tu.tool.cache.core.support.CacheMode;
 import com.y3tu.tool.cache.properties.CacheProperties;
-import com.y3tu.tool.cache.core.manager.LayeringCacheManager;
 import com.y3tu.tool.cache.runner.ToolCacheStartedRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -27,7 +24,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 @Configuration
 @EnableAspectJAutoProxy
 @EnableConfigurationProperties({CacheProperties.class})
-@Import({CacheServletConfigure.class, ToolCacheStartedRunner.class})
+@Import(ToolCacheStartedRunner.class)
 public class ToolCacheAutoConfigure {
 
     @Autowired
@@ -42,7 +39,12 @@ public class ToolCacheAutoConfigure {
         if (properties.getCacheMode() == CacheMode.ONLY_FIRST) {
             //只开启一级缓存
             cacheManager = new FirstCacheManager();
+        } else if (properties.getCacheMode() == CacheMode.ONLY_SECOND) {
+            //只开启二级缓存
+            RedisTemplate<String, Object> redisTemplate = applicationContext.getBean("ToolCacheRedisTemplate", RedisTemplate.class);
+            cacheManager = new SecondaryCacheManager(redisTemplate);
         } else {
+            //开启多级缓存
             RedisTemplate<String, Object> redisTemplate = applicationContext.getBean("ToolCacheRedisTemplate", RedisTemplate.class);
             cacheManager = new LayeringCacheManager(redisTemplate);
         }
