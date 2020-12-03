@@ -4,6 +4,7 @@ import com.y3tu.tool.cache.core.support.CacheMode;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+
 /**
  * 缓存基本配置
  *
@@ -25,5 +26,10 @@ public class CacheProperties {
      * 缓存模式
      */
     private CacheMode cacheMode = CacheMode.ONLY_FIRST;
+
+    /**
+     * 静态数据handler包
+     */
+    private String handlerPackage;
 
 }
