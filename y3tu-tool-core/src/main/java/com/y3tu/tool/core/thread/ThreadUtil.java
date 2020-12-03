@@ -207,64 +207,6 @@ public class ThreadUtil {
     }
 
     /**
-     * 延迟执行Runnable命令
-     *
-     * @param scheduleExec 定时功能的线程池
-     * @param command      命令
-     * @param delay        延迟时间
-     * @param unit         单位
-     * @return 表示挂起任务完成的ScheduledFuture，并且其{@code get()}方法在完成后将返回{@code null}
-     */
-    public static ScheduledFuture<?> schedule(ScheduledExecutorService scheduleExec, final Runnable command, final long delay, final TimeUnit unit) {
-        return scheduleExec.schedule(command, delay, unit);
-    }
-
-    /**
-     * 延迟执行Callable命令
-     *
-     * @param scheduleExec 定时功能的线程池
-     * @param callable     命令
-     * @param delay        延迟时间
-     * @param unit         时间单位
-     * @param <V>          泛型
-     * @return 可用于提取结果或取消的ScheduledFuture
-     */
-    public static <V> ScheduledFuture<V> schedule(ScheduledExecutorService scheduleExec, final Callable<V> callable, final long delay, final TimeUnit unit) {
-        return scheduleExec.schedule(callable, delay, unit);
-    }
-
-    /**
-     * 延迟并循环执行命令
-     *
-     * @param scheduleExec 定时功能的线程池
-     * @param command      命令
-     * @param initialDelay 首次执行的延迟时间
-     * @param period       连续执行之间的周期
-     * @param unit         时间单位
-     * @return 表示挂起任务完成的ScheduledFuture，并且其{@code get()}方法在取消后将抛出异常
-     */
-    public static ScheduledFuture<?> scheduleWithFixedRate(ScheduledExecutorService scheduleExec, final Runnable command, final long initialDelay,
-                                                           final long period, final TimeUnit unit) {
-        return scheduleExec.scheduleAtFixedRate(command, initialDelay, period, unit);
-    }
-
-    /**
-     * 延迟并以固定休息时间循环执行命令
-     *
-     * @param scheduleExec 定时功能的线程池
-     * @param command      命令
-     * @param initialDelay 首次执行的延迟时间
-     * @param delay        每一次执行终止和下一次执行开始之间的延迟
-     * @param unit         时间单位
-     * @return 表示挂起任务完成的ScheduledFuture，并且其{@code get()}方法在取消后将抛出异常
-     */
-    public static ScheduledFuture<?> scheduleWithFixedDelay(ScheduledExecutorService scheduleExec, final Runnable command, final long initialDelay,
-                                                            final long delay, final TimeUnit unit) {
-        return scheduleExec.scheduleWithFixedDelay(command, initialDelay, delay, unit);
-    }
-
-
-    /**
      * 直接在公共线程池中执行线程
      *
      * @param runnable 可运行对象

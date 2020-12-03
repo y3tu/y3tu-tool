@@ -12,27 +12,20 @@
       "type": "java.lang.Boolean",
       "description": "是否开启缓存统计",
       "sourceType": "com.y3tu.tool.cache.properties.CacheProperties",
-      "defaultValue": true
+      "defaultValue": false
     },
     {
-      "name": "y3tu.tool.cache.namespace",
-      "type": "java.lang.String",
-      "description": "命名空间，必须唯一般使用服务名",
-      "sourceType": "com.y3tu.tool.cache.properties.CacheProperties"
-    },
-    {
-      "name": "y3tu.tool.cache.servlet-enabled",
+      "name": "y3tu.tool.cache.enableApi",
       "type": "java.lang.Boolean",
-      "description": "是否启动 CacheServlet",
+      "description": "是否启动接口请求",
       "sourceType": "com.y3tu.tool.cache.properties.CacheProperties",
       "defaultValue": false
     },
     {
-      "name": "y3tu.tool.cache.url-pattern",
-      "type": "java.lang.String",
-      "description": "访问url",
-      "sourceType": "com.y3tu.tool.cache.properties.CacheProperties",
-      "defaultValue": "/yao-cache/*"
+      "name": "y3tu.tool.cache.cacheMode",
+      "type": "com.y3tu.tool.cache.core.support.CacheMode",
+      "description": "缓存模式",
+      "sourceType": "com.y3tu.tool.cache.properties.CacheProperties"
     }
   ],
   "hints": []

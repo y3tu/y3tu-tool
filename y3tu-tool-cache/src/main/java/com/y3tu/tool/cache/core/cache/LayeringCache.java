@@ -6,6 +6,7 @@ import com.y3tu.tool.cache.core.listener.RedisPubSubMessageType;
 import com.y3tu.tool.cache.core.listener.RedisPublisher;
 import com.y3tu.tool.cache.core.setting.LayeringCacheSetting;
 import com.y3tu.tool.cache.core.stats.CacheStats;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
@@ -18,13 +19,13 @@ import java.util.concurrent.Callable;
  * @author yuhao.wang
  */
 @Slf4j
+@Data
 public class LayeringCache extends AbstractValueAdaptingCache {
 
     /**
      * redis 客户端
      */
     private RedisTemplate<String, Object> redisTemplate;
-
 
     /**
      * 一级缓存

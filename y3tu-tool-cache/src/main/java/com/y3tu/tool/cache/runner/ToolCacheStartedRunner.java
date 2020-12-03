@@ -25,7 +25,7 @@ public class ToolCacheStartedRunner implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         if (context.isActive()) {
 
-            //todo 加载静态数据 对于一些经验用到又不经常变动的数据，可以在程序启动后加载到内存中
+            //todo 加载静态数据 对于一些经常用到又不经常变动的数据，可以在程序启动后加载到内存中
             //todo 1.从配置文件中获取需要加载的表数据和sql配置 2.从数据库中加载配置
 
             log.info("  _   _   _   _   _   _   _   _");

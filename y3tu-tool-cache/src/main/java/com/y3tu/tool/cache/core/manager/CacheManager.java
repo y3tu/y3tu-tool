@@ -40,10 +40,17 @@ public interface CacheManager {
     Collection<String> getCacheNames();
 
     /**
+     * 获取所有缓存的统计信息
+     *
+     * @return
+     */
+    List<CacheStatsInfo> listCacheStats();
+
+    /**
      * 获取缓存命中率统计信息
      *
      * @param cacheName 缓存名称，为Blank则查询全部
-     * @return List&lt;CacheStatsInfo&gt;
+     * @return
      */
     List<CacheStatsInfo> listCacheStats(String cacheName);
 
@@ -51,4 +58,23 @@ public interface CacheManager {
      * 重置缓存统计数据
      */
     void resetCacheStat();
+
+    /**
+     * 根据缓存名称重置缓存统计数据
+     *
+     * @param cacheName 缓存名称
+     */
+    void resetCacheStat(String cacheName);
+
+    /**
+     * 根据缓存名称清空缓存
+     *
+     * @param cacheName 缓存名称
+     */
+    void clearCache(String cacheName);
+
+    /**
+     * 清空所有缓存
+     */
+    void clearCache();
 }

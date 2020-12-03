@@ -42,3 +42,10 @@ spring:
           driver-class-name: com.mysql.jdbc.Driver
           url: jdbc:mysql://cdb-plx1fn42.cd.tencentcdb.com:10149/yao-blog??allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
       primary: support
+
+y3tu:
+  tool:
+    cache:
+      enableApi: true
+      cacheMode: only_first
+      stats: true

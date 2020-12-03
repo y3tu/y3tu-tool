@@ -24,7 +24,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 @Configuration
 @EnableAspectJAutoProxy
 @EnableConfigurationProperties({CacheProperties.class})
-@Import(ToolCacheStartedRunner.class)
+@Import({ToolCacheStartedRunner.class, ToolCacheApiConfigure.class})
 public class ToolCacheAutoConfigure {
 
     @Autowired
@@ -38,19 +38,16 @@ public class ToolCacheAutoConfigure {
         AbstractCacheManager cacheManager = null;
         if (properties.getCacheMode() == CacheMode.ONLY_FIRST) {
             //只开启一级缓存
-            cacheManager = new FirstCacheManager();
+            cacheManager = new FirstCacheManager(properties.isStats());
         } else if (properties.getCacheMode() == CacheMode.ONLY_SECOND) {
             //只开启二级缓存
             RedisTemplate<String, Object> redisTemplate = applicationContext.getBean("ToolCacheRedisTemplate", RedisTemplate.class);
-            cacheManager = new SecondaryCacheManager(redisTemplate);
+            cacheManager = new SecondaryCacheManager(redisTemplate, properties.isStats());
         } else {
             //开启多级缓存
             RedisTemplate<String, Object> redisTemplate = applicationContext.getBean("ToolCacheRedisTemplate", RedisTemplate.class);
-            cacheManager = new LayeringCacheManager(redisTemplate);
+            cacheManager = new LayeringCacheManager(redisTemplate, properties.isStats());
         }
-
-        // 默认关闭统计功能
-        cacheManager.setStats(properties.isStats());
         return cacheManager;
     }
 

@@ -4,10 +4,6 @@ import com.y3tu.tool.cache.core.cache.Cache;
 import com.y3tu.tool.cache.core.setting.LayeringCacheSetting;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.BeanNameAware;
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.SmartLifecycle;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
@@ -22,7 +18,7 @@ import java.util.concurrent.ConcurrentMap;
  */
 @Slf4j
 @Data
-public abstract class AbstractCacheManager implements CacheManager, InitializingBean, DisposableBean, BeanNameAware, SmartLifecycle {
+public abstract class AbstractCacheManager implements CacheManager {
 
     /**
      * 缓存容器
@@ -39,7 +35,7 @@ public abstract class AbstractCacheManager implements CacheManager, Initializing
     /**
      * 是否开启统计
      */
-    public boolean stats = true;
+    public boolean stats = false;
 
 
     @Override
@@ -140,26 +136,20 @@ public abstract class AbstractCacheManager implements CacheManager, Initializing
         return cacheContainer;
     }
 
-
     @Override
-    public void setBeanName(String name) {
-
+    public void clearCache(String cacheName) {
+        Collection<Cache> caches = getCache(cacheName);
+        for (Cache cache : caches) {
+            cache.clear();
+        }
     }
 
     @Override
-    public void start() {
-
+    public void clearCache() {
+        Collection<String> cacheNames = getCacheNames();
+        cacheNames.stream().forEach(cacheName -> {
+            clearCache(cacheName);
+        });
     }
-
-    @Override
-    public void stop() {
-
-    }
-
-    @Override
-    public boolean isRunning() {
-        return false;
-    }
-
 
 }

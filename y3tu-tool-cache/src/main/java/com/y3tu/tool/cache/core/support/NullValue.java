@@ -10,7 +10,6 @@ import java.io.Serializable;
  *
  * @author Juergen Hoeller
  * @see AbstractValueAdaptingCache
- * @since 4.2.2
  */
 public final class NullValue implements Serializable {
 
