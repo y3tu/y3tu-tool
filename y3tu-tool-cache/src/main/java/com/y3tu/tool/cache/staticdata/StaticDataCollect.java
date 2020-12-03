@@ -37,9 +37,13 @@ public class StaticDataCollect {
 
     private String handlerPackage;
 
+    ExecutorService executor;
+
 
     public StaticDataCollect(ToolCacheService cacheService) {
         this.cacheService = cacheService;
+        ThreadFactory factory = ThreadUtil.newNamedThreadFactory("静态资料收集线程池", true);
+        executor = ThreadUtil.newFixedExecutor(20, factory);
     }
 
     /**
@@ -49,20 +53,18 @@ public class StaticDataCollect {
      */
     public void dataCollect(List<StaticDataConfig> configDtoList) {
 
-        ThreadFactory factory = ThreadUtil.newNamedThreadFactory("静态资料收集线程池", true);
-        ExecutorService executor = ThreadUtil.newFixedExecutor(20, factory);
-
         for (StaticDataConfig config : configDtoList) {
             executor.execute(() -> {
                 try {
+                    log.info("开始加载静态数据：" + config.getName());
                     cacheService.loadStaticData(config.getName(), config.getLayeringCacheSetting(), config.getClazz(), config.getMethod());
+                    log.info("加载静态数据完成：" + config.getName());
                 } catch (Exception e) {
                     log.error("静态数据加载异常:" + e.getMessage(), e);
                 }
             });
         }
 
-        //todo 关闭线程池
     }
 
     public List<StaticDataConfig> readHandler() {
@@ -84,7 +86,7 @@ public class StaticDataCollect {
                 for (Method method : methods) {
                     //判断是否有指定主解
                     StaticData staticData = method.getAnnotation(StaticData.class);
-                    if (staticData != null) {
+                    if (staticData != null && staticData.isStartUp()) {
                         // 从注解中获取缓存配置
                         FirstCache firstCache = staticData.firstCache();
                         SecondaryCache secondaryCache = staticData.secondaryCache();

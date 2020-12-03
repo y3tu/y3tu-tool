@@ -4,6 +4,7 @@ import com.y3tu.tool.cache.core.cache.Cache;
 import com.y3tu.tool.cache.core.manager.CacheManager;
 import com.y3tu.tool.cache.core.setting.LayeringCacheSetting;
 import com.y3tu.tool.core.util.BeanCacheUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.Collection;
  * @author y3tu
  */
 @Service
+@Slf4j
 public class ToolCacheService {
 
     @Autowired
