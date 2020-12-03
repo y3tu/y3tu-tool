@@ -43,9 +43,22 @@ spring:
           url: jdbc:mysql://cdb-plx1fn42.cd.tencentcdb.com:10149/yao-blog??allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
       primary: support
 
+  redis:
+    database: 0
+    host: 132.232.11.210
+    port: 6379
+    password: y3tu
+    lettuce:
+      pool:
+        min-idle: 8
+        max-idle: 500
+        max-active: 2000
+        max-wait: 10000
+    timeout: 5000
+
 y3tu:
   tool:
     cache:
       enableApi: true
-      cacheMode: only_first
+      cacheMode: all
       stats: true

@@ -19,7 +19,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 基于Redis实现的二级缓存
+ * 基于Redis实现的缓存
  *
  * @author yuhao.wang
  */
@@ -32,9 +32,9 @@ public class RedisCache extends AbstractValueAdaptingCache {
     private static final int RETRY_COUNT = 20;
 
     /**
-     * 刷新缓存等待时间，单位毫秒
+     * 刷新缓存等待时间
      */
-    private static final long WAIT_TIME = 20;
+    private static final long WAIT_TIME = 10;
 
     /**
      * 等待线程容器
@@ -47,13 +47,17 @@ public class RedisCache extends AbstractValueAdaptingCache {
     private RedisTemplate<String, Object> redisTemplate;
 
     /**
-     * 缓存有效时间,毫秒
+     * 缓存有效时间
      */
     private long expiration;
 
     /**
+     * 时间单位 默认小时
+     */
+    private TimeUnit timeUnit;
+
+    /**
      * 缓存主动在失效前强制刷新缓存的时间
-     * 单位：毫秒
      */
     private long preloadTime = 0;
 
@@ -93,6 +97,7 @@ public class RedisCache extends AbstractValueAdaptingCache {
         SecondaryCacheSetting secondaryCacheSetting = layeringCacheSetting.getSecondaryCacheSetting();
         this.redisTemplate = redisTemplate;
         this.expiration = secondaryCacheSetting.getExpiration();
+        this.timeUnit = secondaryCacheSetting.getTimeUnit();
         this.preloadTime = secondaryCacheSetting.getPreloadTime();
         this.forceRefresh = secondaryCacheSetting.isForceRefresh();
         this.usePrefix = secondaryCacheSetting.isUsePrefix();
@@ -182,8 +187,7 @@ public class RedisCache extends AbstractValueAdaptingCache {
      * @return RedisCacheKey
      */
     public RedisCacheKey getRedisCacheKey(Object key) {
-        return new RedisCacheKey(key, redisTemplate.getKeySerializer())
-                .cacheName(getName()).usePrefix(usePrefix);
+        return new RedisCacheKey(key, redisTemplate.getKeySerializer()).cacheName(getName()).usePrefix(usePrefix);
     }
 
     /**
@@ -266,7 +270,7 @@ public class RedisCache extends AbstractValueAdaptingCache {
             expirationTime = expirationTime / getMagnification();
         }
         // 将数据放到缓存
-        redisTemplate.opsForValue().set(key.getKey(), result, expirationTime, TimeUnit.MILLISECONDS);
+        redisTemplate.opsForValue().set(key.getKey(), result, expirationTime, timeUnit);
         return result;
     }
 
@@ -281,7 +285,7 @@ public class RedisCache extends AbstractValueAdaptingCache {
         if (flag) {
             preload = preload / getMagnification();
         }
-        if (null != ttl && ttl > 0 && TimeUnit.SECONDS.toMillis(ttl) <= preload) {
+        if (null != ttl && ttl > 0 && ttl <= preload) {
             // 判断是否需要强制刷新在开启刷新线程
             if (!getForceRefresh()) {
                 log.debug("redis缓存 key={} 软刷新缓存模式", redisCacheKey.getKey());
@@ -303,7 +307,7 @@ public class RedisCache extends AbstractValueAdaptingCache {
         Lock redisLock = new Lock(redisTemplate, redisCacheKey.getKey() + "_lock");
         try {
             if (redisLock.tryLock()) {
-                redisTemplate.expire(redisCacheKey.getKey(), this.expiration, TimeUnit.MILLISECONDS);
+                redisTemplate.expire(redisCacheKey.getKey(), this.expiration, timeUnit);
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -327,7 +331,7 @@ public class RedisCache extends AbstractValueAdaptingCache {
                 if (redisLock.lock()) {
                     // 获取锁之后再判断一下过期时间，看是否需要加载数据
                     Long ttl = redisTemplate.getExpire(redisCacheKey.getKey());
-                    if (null != ttl && ttl > 0 && TimeUnit.SECONDS.toMillis(ttl) <= preloadTime) {
+                    if (null != ttl && ttl > 0 && ttl <= preloadTime) {
                         // 加载数据并放到缓存
                         loaderAndPutValue(redisCacheKey, valueLoader, false);
                     }

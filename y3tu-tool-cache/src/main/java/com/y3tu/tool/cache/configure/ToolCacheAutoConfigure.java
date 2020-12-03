@@ -5,6 +5,7 @@ import com.y3tu.tool.cache.core.manager.*;
 import com.y3tu.tool.cache.core.support.CacheMode;
 import com.y3tu.tool.cache.properties.CacheProperties;
 import com.y3tu.tool.cache.runner.ToolCacheStartedRunner;
+import com.y3tu.tool.core.exception.ToolException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -24,7 +25,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 @Configuration
 @EnableAspectJAutoProxy
 @EnableConfigurationProperties({CacheProperties.class})
-@Import({ToolCacheStartedRunner.class, ToolCacheApiConfigure.class})
+@Import({ToolRedisAutoConfigure.class, ToolCacheStartedRunner.class, ToolCacheApiConfigure.class})
 public class ToolCacheAutoConfigure {
 
     @Autowired
@@ -36,18 +37,23 @@ public class ToolCacheAutoConfigure {
     public CacheManager layeringCacheManager(CacheProperties properties) {
 
         AbstractCacheManager cacheManager = null;
-        if (properties.getCacheMode() == CacheMode.ONLY_FIRST) {
-            //只开启一级缓存
-            cacheManager = new FirstCacheManager(properties.isStats());
-        } else if (properties.getCacheMode() == CacheMode.ONLY_SECOND) {
-            //只开启二级缓存
-            RedisTemplate<String, Object> redisTemplate = applicationContext.getBean("ToolCacheRedisTemplate", RedisTemplate.class);
-            cacheManager = new SecondaryCacheManager(redisTemplate, properties.isStats());
-        } else {
-            //开启多级缓存
-            RedisTemplate<String, Object> redisTemplate = applicationContext.getBean("ToolCacheRedisTemplate", RedisTemplate.class);
-            cacheManager = new LayeringCacheManager(redisTemplate, properties.isStats());
+        try {
+            if (properties.getCacheMode() == CacheMode.ONLY_FIRST) {
+                //只开启一级缓存
+                cacheManager = new FirstCacheManager(properties.isStats());
+            } else if (properties.getCacheMode() == CacheMode.ONLY_SECOND) {
+                //只开启二级缓存
+                RedisTemplate<String, Object> redisTemplate = applicationContext.getBean("ToolCacheRedisTemplate", RedisTemplate.class);
+                cacheManager = new SecondaryCacheManager(redisTemplate, properties.isStats());
+            } else {
+                //开启多级缓存
+                RedisTemplate<String, Object> redisTemplate = applicationContext.getBean("ToolCacheRedisTemplate", RedisTemplate.class);
+                cacheManager = new LayeringCacheManager(redisTemplate, properties.isStats());
+            }
+        } catch (NoClassDefFoundError e) {
+            throw new ToolException("二级或多级缓存需要添加Redis依赖！");
         }
+
         return cacheManager;
     }
 

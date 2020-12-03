@@ -7,6 +7,7 @@ import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.y3tu.tool.cache.core.cache.AbstractValueAdaptingCache;
 import com.y3tu.tool.cache.core.setting.FirstCacheSetting;
 import com.y3tu.tool.cache.core.setting.LayeringCacheSetting;
+import com.y3tu.tool.cache.core.stats.CacheStats;
 import com.y3tu.tool.cache.core.support.ExpireMode;
 import com.y3tu.tool.cache.core.support.NullValue;
 import lombok.extern.slf4j.Slf4j;
@@ -113,6 +114,8 @@ public class CaffeineCache extends AbstractValueAdaptingCache {
     public void clear() {
         log.debug("caffeine缓存 key={} 清空缓存");
         this.cache.invalidateAll();
+        //重新赋值CacheStats对象
+        this.setCacheStats(new CacheStats());
     }
 
     /**

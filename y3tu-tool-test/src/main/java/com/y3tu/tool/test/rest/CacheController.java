@@ -2,6 +2,7 @@ package com.y3tu.tool.test.rest;
 
 import com.y3tu.tool.cache.annotation.Cacheable;
 import com.y3tu.tool.cache.annotation.FirstCache;
+import com.y3tu.tool.cache.annotation.SecondaryCache;
 import com.y3tu.tool.core.pojo.R;
 import com.y3tu.tool.test.dto.UserDto;
 import com.y3tu.tool.web.sql.SqlUtil;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 缓存测试
@@ -25,7 +27,8 @@ public class CacheController {
 
     @GetMapping("query/{id}")
     @Cacheable(value = "user", key = "#id", depict = "用户查询缓存",
-            firstCache = @FirstCache(expireTime = 4))
+            firstCache = @FirstCache(expireTime = 1000000, timeUnit = TimeUnit.MILLISECONDS),
+            secondaryCache = @SecondaryCache(expireTime = 10000000, preloadTime = 50000, timeUnit = TimeUnit.MILLISECONDS))
     public R query(@PathVariable String id) {
         String sql = "select id,name,age from user where id = " + id;
         List<UserDto> list = SqlUtil.queryList(sql, null, UserDto.class, "support");

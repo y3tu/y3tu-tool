@@ -74,7 +74,7 @@ public abstract class AbstractCacheManager implements CacheManager {
                 cacheMap = new ConcurrentHashMap<>(16);
                 cacheContainer.put(name, cacheMap);
                 // 更新缓存名称
-                updateCacheNames(name);
+                updateCacheName(name);
             }
 
             // 新建一个Cache对象
@@ -99,14 +99,13 @@ public abstract class AbstractCacheManager implements CacheManager {
     }
 
     /**
-     * 更新缓存名称容器
+     * 增加缓存名称容器
      *
      * @param name 需要添加的缓存名称
      */
-    public void updateCacheNames(String name) {
+    public void updateCacheName(String name) {
         cacheNames.add(name);
     }
-
 
     /**
      * 获取Cache对象的装饰示例

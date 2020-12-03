@@ -31,7 +31,6 @@ public class ToolRedisAutoConfigure {
      * @param factory
      * @return
      */
-    @ConditionalOnBean(RedisConnectionFactory.class)
     @Bean("ToolCacheRedisTemplate")
     @Order(1)
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
