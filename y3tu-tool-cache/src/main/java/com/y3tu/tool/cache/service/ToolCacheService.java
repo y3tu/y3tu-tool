@@ -29,7 +29,7 @@ public class ToolCacheService {
      * @param cacheName 缓存名
      * @return
      */
-    public Object getStaticData(String cacheName) {
+    public Object getDefaultStaticData(String cacheName) {
         return getCacheData(cacheName, "staticData_" + cacheName);
     }
 

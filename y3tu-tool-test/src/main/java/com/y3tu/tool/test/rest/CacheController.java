@@ -41,9 +41,9 @@ public class CacheController {
         return R.success(list);
     }
 
-    @GetMapping("queryCache}")
+    @GetMapping("queryCache")
     public R queryCache() {
-        List<UserDto> list = (List<UserDto>) cacheService.getStaticData("user_static");
+        List<UserDto> list = (List<UserDto>) cacheService.getDefaultStaticData("user_static");
         return R.success(list);
     }
 

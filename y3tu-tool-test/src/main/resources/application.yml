@@ -54,7 +54,7 @@ spring:
         max-idle: 500
         max-active: 2000
         max-wait: 10000
-    timeout: 5000
+    timeout: 500000
 
 y3tu:
   tool:
