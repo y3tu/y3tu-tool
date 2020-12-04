@@ -2,15 +2,13 @@ package com.y3tu.tool.cache.service;
 
 import com.y3tu.tool.cache.core.cache.Cache;
 import com.y3tu.tool.cache.core.manager.CacheManager;
-import com.y3tu.tool.cache.core.setting.LayeringCacheSetting;
-import com.y3tu.tool.core.util.BeanCacheUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
-
+import java.util.List;
 
 /**
  * 操作缓存的服务
@@ -24,26 +22,47 @@ public class ToolCacheService {
     @Autowired
     CacheManager cacheManager;
 
+
     /**
-     * 根据静态数据名和配置获取数据
+     * 根据缓存名获取静态数据
      *
-     * @param cacheName            缓存名
-     * @param layeringCacheSetting 缓存配置
+     * @param cacheName 缓存名
      * @return
      */
-    public Object loadStaticData(String cacheName, LayeringCacheSetting layeringCacheSetting, Class clazz, Method method) {
-        Object object = BeanCacheUtil.getBean(clazz);
-        Cache cache = cacheManager.getCache(cacheName, layeringCacheSetting);
-        // 通Cache获取值
-        return cache.get(layeringCacheSetting.getInternalKey(), () -> method.invoke(object));
+    public Object getStaticData(String cacheName) {
+        return getCacheData(cacheName, "staticData_" + cacheName);
     }
 
     /**
-     * 清除静态数据
+     * 根据缓存名和key获取缓存数据
+     *
+     * @param cacheName 缓存名
+     * @param key       主键
+     * @return
+     */
+    public Object getCacheData(String cacheName, String key) {
+        Collection<Cache> caches = cacheManager.getCache(cacheName);
+        if (caches.size() > 1) {
+            List<Object> list = new ArrayList<>();
+            for (Cache cache : caches) {
+                list.add(cache.get(key));
+            }
+            return list;
+        } else if (caches.size() == 1) {
+            for (Cache cache : caches) {
+                return cache.get(key);
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * 清除缓存
      *
      * @param cacheName 缓存名
      */
-    public void clearStaticData(String cacheName) {
+    public void clearCache(String cacheName) {
         Collection<Cache> caches = cacheManager.getCache(cacheName);
         for (Cache cache : caches) {
             cache.clear();

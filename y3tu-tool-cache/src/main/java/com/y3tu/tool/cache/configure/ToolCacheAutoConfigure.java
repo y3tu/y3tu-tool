@@ -6,6 +6,7 @@ import com.y3tu.tool.cache.core.support.CacheMode;
 import com.y3tu.tool.cache.properties.CacheProperties;
 import com.y3tu.tool.cache.runner.ToolCacheStartedRunner;
 import com.y3tu.tool.cache.service.ToolCacheService;
+import com.y3tu.tool.cache.staticdata.StaticDataService;
 import com.y3tu.tool.core.exception.ToolException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -26,7 +27,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 @Configuration
 @EnableAspectJAutoProxy
 @EnableConfigurationProperties({CacheProperties.class})
-@Import({ToolRedisAutoConfigure.class, ToolCacheStartedRunner.class, ToolCacheApiConfigure.class, ToolCacheService.class})
+@Import({ToolRedisAutoConfigure.class, ToolCacheStartedRunner.class, ToolCacheApiConfigure.class, ToolCacheService.class, StaticDataService.class})
 public class ToolCacheAutoConfigure {
 
     @Autowired
@@ -67,5 +68,6 @@ public class ToolCacheAutoConfigure {
     public LayeringAspect layeringAspect() {
         return new LayeringAspect();
     }
+
 
 }

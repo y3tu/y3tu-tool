@@ -54,14 +54,15 @@ public class ControllerAop {
         TimeInterval timer = DateUtil.timer();
 
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = attributes.getRequest();
-
-        log.info("URL : " + request.getRequestURL().toString());
-        log.info("HTTP_METHOD : " + request.getMethod());
-        log.info("IP : " + request.getRemoteAddr());
-        log.info("CLASS_METHOD : " + pjp.getSignature().getDeclaringTypeName() + "." + pjp.getSignature().getName());
-        log.info("ARGS : " + Arrays.toString(pjp.getArgs()));
-        log.info("---------------------------");
+        if (attributes != null) {
+            HttpServletRequest request = attributes.getRequest();
+            log.info("URL : " + request.getRequestURL().toString());
+            log.info("HTTP_METHOD : " + request.getMethod());
+            log.info("IP : " + request.getRemoteAddr());
+            log.info("CLASS_METHOD : " + pjp.getSignature().getDeclaringTypeName() + "." + pjp.getSignature().getName());
+            log.info("ARGS : " + Arrays.toString(pjp.getArgs()));
+            log.info("---------------------------");
+        }
 
         Object result;
 

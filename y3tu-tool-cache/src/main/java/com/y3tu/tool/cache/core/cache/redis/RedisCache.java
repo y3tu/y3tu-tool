@@ -151,9 +151,9 @@ public class RedisCache extends AbstractValueAdaptingCache {
     @Override
     public Object putIfAbsent(Object key, Object value) {
         log.debug("redis缓存 key= {} putIfAbsent缓存，缓存值：{}", getRedisCacheKey(key).getKey(), JSON.toJSONString(value));
-        Object reult = get(key);
-        if (reult != null) {
-            return reult;
+        Object result = get(key);
+        if (result != null) {
+            return result;
         }
         put(key, value);
         return null;

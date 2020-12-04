@@ -1,11 +1,15 @@
 package com.y3tu.tool.cache.annotation;
 
+import com.y3tu.tool.cache.staticdata.handler.DefaultHandler;
+import com.y3tu.tool.cache.staticdata.handler.StaticDataHandler;
 import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.*;
 
 /**
  * 加载静态数据注解
+ *
+ * @author y3tu
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
@@ -19,7 +23,7 @@ public @interface StaticData {
      * @return String[]
      */
     @AliasFor("cacheName")
-    String[] value() default {};
+    String value() default "";
 
     /**
      * 缓存名称，支持SpEL表达式
@@ -65,4 +69,6 @@ public @interface StaticData {
      * @return SecondaryCache
      */
     SecondaryCache secondaryCache() default @SecondaryCache();
+
+    Class<? extends StaticDataHandler> handler() default DefaultHandler.class;
 }

@@ -26,6 +26,12 @@
       "type": "com.y3tu.tool.cache.core.support.CacheMode",
       "description": "缓存模式",
       "sourceType": "com.y3tu.tool.cache.properties.CacheProperties"
+    },
+    {
+      "name": "y3tu.tool.cache.staticDataPackage",
+      "type": "java.lang.String[]",
+      "description": "静态数据处理包",
+      "sourceType": "com.y3tu.tool.cache.properties.CacheProperties"
     }
   ],
   "hints": []

@@ -28,8 +28,8 @@ public class CacheProperties {
     private CacheMode cacheMode = CacheMode.ONLY_FIRST;
 
     /**
-     * 静态数据handler包
+     * 静态数据处理包
      */
-    private String handlerPackage;
+    private String[] staticDataPackage;
 
 }
