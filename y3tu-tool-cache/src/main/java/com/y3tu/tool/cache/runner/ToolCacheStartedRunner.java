@@ -31,14 +31,14 @@ public class ToolCacheStartedRunner implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         if (context.isActive()) {
 
-            //加载配置isStartUp=true的静态数据
-            staticDataService.dataCollect(staticDataService.readHandler().stream().filter(staticDataConfig -> staticDataConfig.isStartUp()).collect(Collectors.toList()));
-
             log.info("  _   _   _   _   _   _   _   _");
             log.info(" / \\ / \\ / \\ / \\ / \\ / \\ / \\ / \\");
             log.info("( c | o | m | p | l | e | t | e )");
             log.info(" \\_/ \\_/ \\_/ \\_/ \\_/ \\_/ \\_/ \\_/");
             log.info("Y3tu-Tool-Cache准备完毕，时间：{}", LocalDateTime.now());
+
+            //加载配置isStartUp=true的静态数据
+            staticDataService.dataCollect(staticDataService.readHandler().stream().filter(staticDataConfig -> staticDataConfig.isStartUp()).collect(Collectors.toList()));
 
         }
     }
