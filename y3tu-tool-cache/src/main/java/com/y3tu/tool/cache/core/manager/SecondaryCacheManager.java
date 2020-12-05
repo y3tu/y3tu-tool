@@ -135,16 +135,14 @@ public class SecondaryCacheManager extends AbstractCacheManager implements Dispo
 
     @Override
     public void clearCache(String cacheName) {
-        Collection<Cache> caches = getCache(cacheName);
-        for (Cache cache : caches) {
-            //删除缓存统计
-            RedisCache redisCache = (RedisCache) cache;
-            LayeringCacheSetting layeringCacheSetting = redisCache.getLayeringCacheSetting();
-            String redisKey = CACHE_STATS_KEY_PREFIX + cacheName + layeringCacheSetting.getInternalKey();
-            redisTemplate.delete(redisKey);
-            //清空缓存
-            cache.clear();
-        }
+        Cache cache = getCache(cacheName);
+        //删除缓存统计
+        RedisCache redisCache = (RedisCache) cache;
+        LayeringCacheSetting layeringCacheSetting = redisCache.getLayeringCacheSetting();
+        String redisKey = CACHE_STATS_KEY_PREFIX + cacheName;
+        redisTemplate.delete(redisKey);
+        //清空缓存
+        cache.clear();
     }
 
     /**
@@ -162,52 +160,49 @@ public class SecondaryCacheManager extends AbstractCacheManager implements Dispo
             Collection<String> cacheNames = this.getCacheNames();
             for (String cacheName : cacheNames) {
                 // 获取Cache
-                Collection<Cache> caches = this.getCache(cacheName);
-                for (Cache cache : caches) {
-                    RedisCache redisCache = (RedisCache) cache;
-                    LayeringCacheSetting layeringCacheSetting = redisCache.getLayeringCacheSetting();
-                    // 加锁并增量缓存统计数据，缓存key=固定前缀 +缓存名称加 + 内部缓存名
-                    String redisKey = CACHE_STATS_KEY_PREFIX + cacheName + layeringCacheSetting.getInternalKey();
-                    Lock lock = new Lock(redisTemplate, redisKey, 60, 5000);
-                    try {
-                        if (lock.tryLock()) {
-                            CacheStatsInfo cacheStatsInfo = (CacheStatsInfo) redisTemplate.opsForValue().get(redisKey);
-                            if (Objects.isNull(cacheStatsInfo)) {
-                                cacheStatsInfo = new CacheStatsInfo();
-                            }
-
-                            // 设置缓存唯一标示
-                            cacheStatsInfo.setCacheName(cacheName);
-                            cacheStatsInfo.setInternalKey(layeringCacheSetting.getInternalKey());
-                            cacheStatsInfo.setDepict(layeringCacheSetting.getDepict());
-                            // 设置缓存配置信息
-                            cacheStatsInfo.setLayeringCacheSetting(layeringCacheSetting);
-                            // 设置缓存统计数据
-                            CacheStats cacheStats = redisCache.getCacheStats();
-
-
-                            // 清空加载缓存时间
-                            cacheStats.getAndResetCachedMethodRequestTime();
-
-                            cacheStatsInfo.setRequestCount(cacheStatsInfo.getRequestCount() + cacheStats.getAndResetCacheRequestCount());
-                            cacheStatsInfo.setMissCount(cacheStatsInfo.getMissCount() + cacheStats.getAndResetCachedMethodRequestCount());
-                            cacheStatsInfo.setTotalLoadTime(cacheStatsInfo.getTotalLoadTime() + cacheStats.getAndResetCachedMethodRequestTime());
-                            cacheStatsInfo.setHitRate((cacheStatsInfo.getRequestCount() - cacheStatsInfo.getMissCount()) / (double) cacheStatsInfo.getRequestCount() * 100);
-                            cacheStatsInfo.setFirstCacheRequestCount(cacheStatsInfo.getFirstCacheRequestCount() + cacheStats.getAndResetCacheRequestCount());
-                            cacheStatsInfo.setFirstCacheMissCount(cacheStatsInfo.getFirstCacheMissCount() + cacheStats.getAndResetCachedMethodRequestCount());
-                            cacheStatsInfo.setSecondCacheRequestCount(cacheStatsInfo.getSecondCacheRequestCount() + cacheStats.getAndResetCacheRequestCount());
-                            cacheStatsInfo.setSecondCacheMissCount(cacheStatsInfo.getSecondCacheMissCount() + cacheStats.getAndResetCachedMethodRequestCount());
-
-                            // 将缓存统计数据写到redis
-                            redisTemplate.opsForValue().set(redisKey, cacheStatsInfo, 24, TimeUnit.HOURS);
-
-                            log.info("Layering Cache 统计信息：{}", JSON.toJSONString(cacheStatsInfo));
+                Cache cache = this.getCache(cacheName);
+                RedisCache redisCache = (RedisCache) cache;
+                LayeringCacheSetting layeringCacheSetting = redisCache.getLayeringCacheSetting();
+                // 加锁并增量缓存统计数据，缓存key=固定前缀 +缓存名称
+                String redisKey = CACHE_STATS_KEY_PREFIX + cacheName;
+                Lock lock = new Lock(redisTemplate, redisKey, 60, 5000);
+                try {
+                    if (lock.tryLock()) {
+                        CacheStatsInfo cacheStatsInfo = (CacheStatsInfo) redisTemplate.opsForValue().get(redisKey);
+                        if (Objects.isNull(cacheStatsInfo)) {
+                            cacheStatsInfo = new CacheStatsInfo();
                         }
-                    } catch (Exception e) {
-                        log.error(e.getMessage(), e);
-                    } finally {
-                        lock.unlock();
+
+                        // 设置缓存唯一标示
+                        cacheStatsInfo.setCacheName(cacheName);
+                        cacheStatsInfo.setDepict(layeringCacheSetting.getDepict());
+                        // 设置缓存配置信息
+                        cacheStatsInfo.setLayeringCacheSetting(layeringCacheSetting);
+                        // 设置缓存统计数据
+                        CacheStats cacheStats = redisCache.getCacheStats();
+
+
+                        // 清空加载缓存时间
+                        cacheStats.getAndResetCachedMethodRequestTime();
+
+                        cacheStatsInfo.setRequestCount(cacheStatsInfo.getRequestCount() + cacheStats.getAndResetCacheRequestCount());
+                        cacheStatsInfo.setMissCount(cacheStatsInfo.getMissCount() + cacheStats.getAndResetCachedMethodRequestCount());
+                        cacheStatsInfo.setTotalLoadTime(cacheStatsInfo.getTotalLoadTime() + cacheStats.getAndResetCachedMethodRequestTime());
+                        cacheStatsInfo.setHitRate((cacheStatsInfo.getRequestCount() - cacheStatsInfo.getMissCount()) / (double) cacheStatsInfo.getRequestCount() * 100);
+                        cacheStatsInfo.setFirstCacheRequestCount(cacheStatsInfo.getFirstCacheRequestCount() + cacheStats.getAndResetCacheRequestCount());
+                        cacheStatsInfo.setFirstCacheMissCount(cacheStatsInfo.getFirstCacheMissCount() + cacheStats.getAndResetCachedMethodRequestCount());
+                        cacheStatsInfo.setSecondCacheRequestCount(cacheStatsInfo.getSecondCacheRequestCount() + cacheStats.getAndResetCacheRequestCount());
+                        cacheStatsInfo.setSecondCacheMissCount(cacheStatsInfo.getSecondCacheMissCount() + cacheStats.getAndResetCachedMethodRequestCount());
+
+                        // 将缓存统计数据写到redis
+                        redisTemplate.opsForValue().set(redisKey, cacheStatsInfo, 24, TimeUnit.HOURS);
+
+                        log.info("Layering Cache 统计信息：{}", JSON.toJSONString(cacheStatsInfo));
                     }
+                } catch (Exception e) {
+                    log.error(e.getMessage(), e);
+                } finally {
+                    lock.unlock();
                 }
             }
 

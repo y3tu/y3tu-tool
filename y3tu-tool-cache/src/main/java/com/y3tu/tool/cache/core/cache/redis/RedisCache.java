@@ -223,7 +223,7 @@ public class RedisCache extends AbstractValueAdaptingCache {
                 redisLock.unlock();
             }
         }
-        log.debug("redis缓存 key={} 等待{}次，共{}毫秒，任未获取到缓存，直接去执行被缓存的方法", redisCacheKey.getKey(), RETRY_COUNT, RETRY_COUNT * WAIT_TIME, WAIT_TIME);
+        log.debug("redis缓存 key={} 等待{}次，共{}毫秒，任未获取到缓存，直接去执行被缓存的方法", redisCacheKey.getKey(), RETRY_COUNT, RETRY_COUNT * WAIT_TIME);
         return loaderAndPutValue(redisCacheKey, valueLoader, true);
     }
 

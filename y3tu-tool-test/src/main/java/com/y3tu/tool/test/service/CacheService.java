@@ -18,12 +18,23 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class CacheService {
 
-    @StaticData(value = "user_static", depict = "用户静态数据",
-            firstCache = @FirstCache(expireTime = 1000000, timeUnit = TimeUnit.MILLISECONDS),
-            secondaryCache = @SecondaryCache(expireTime = 10000000, preloadTime = 50000, timeUnit = TimeUnit.MILLISECONDS))
+    @StaticData(value = "user_static",key = "测试key",depict = "用户静态数据",
+            firstCache = @FirstCache(expireTime = 2, timeUnit = TimeUnit.MINUTES),
+            secondaryCache = @SecondaryCache(expireTime = 4, preloadTime = 1, timeUnit = TimeUnit.MINUTES))
     public List<UserDto> queryUser() {
-        String sql = "select id,name,age from user limit 0,1000000";
+        String sql = "select id,name,age from user limit 0,5000";
         List<UserDto> list = SqlUtil.queryList(sql, null, UserDto.class, "support");
         return list;
     }
+
+
+    @StaticData(value = "user_static",key = "测试key1",depict = "用户静态数据",
+            firstCache = @FirstCache(expireTime = 2, timeUnit = TimeUnit.MINUTES),
+            secondaryCache = @SecondaryCache(expireTime = 4, preloadTime = 1, timeUnit = TimeUnit.MINUTES))
+    public List<UserDto> queryUse1() {
+        String sql = "select id,name,age from user limit 0,1000";
+        List<UserDto> list = SqlUtil.queryList(sql, null, UserDto.class, "support");
+        return list;
+    }
+
 }

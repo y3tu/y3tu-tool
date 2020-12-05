@@ -4,7 +4,6 @@ import com.y3tu.tool.cache.core.setting.LayeringCacheSetting;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * 缓存命中率统计实体类
@@ -18,11 +17,6 @@ public class CacheStatsInfo implements Serializable {
      * 缓存名称
      */
     private String cacheName;
-
-    /**
-     * 内部缓存名，由[一级缓存有效时间-二级缓存有效时间-二级缓存自动刷新时间]组成
-     */
-    private String internalKey;
 
     /**
      * 描述,数据监控页面使用
@@ -74,30 +68,6 @@ public class CacheStatsInfo implements Serializable {
      */
     private LayeringCacheSetting layeringCacheSetting;
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        CacheStatsInfo that = (CacheStatsInfo) o;
-
-        if (!Objects.equals(cacheName, that.cacheName)) {
-            return false;
-        }
-        return Objects.equals(internalKey, that.internalKey);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = cacheName != null ? cacheName.hashCode() : 0;
-        result = 31 * result + (internalKey != null ? internalKey.hashCode() : 0);
-        return result;
-    }
 
     /**
      * 清空统计信息

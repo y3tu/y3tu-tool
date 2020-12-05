@@ -18,20 +18,20 @@ import java.lang.annotation.*;
 public @interface Cacheable {
 
     /**
-     * 别名是 {@link #cacheNames}.
+     * 别名是 {@link #cacheName}.
      *
      * @return String[]
      */
-    @AliasFor("cacheNames")
-    String[] value() default {};
+    @AliasFor("cacheName")
+    String value() default "";
 
     /**
      * 缓存名称，支持SpEL表达式
      *
-     * @return String[]
+     * @return String
      */
     @AliasFor("value")
-    String[] cacheNames() default {};
+    String cacheName() default "";
 
     /**
      * 描述

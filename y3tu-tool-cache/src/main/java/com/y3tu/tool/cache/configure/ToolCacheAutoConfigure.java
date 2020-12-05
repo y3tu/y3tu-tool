@@ -1,6 +1,6 @@
 package com.y3tu.tool.cache.configure;
 
-import com.y3tu.tool.cache.aspect.LayeringAspect;
+import com.y3tu.tool.cache.aspect.CacheAspect;
 import com.y3tu.tool.cache.core.manager.*;
 import com.y3tu.tool.cache.core.support.CacheMode;
 import com.y3tu.tool.cache.properties.CacheProperties;
@@ -65,8 +65,8 @@ public class ToolCacheAutoConfigure {
      * @return
      */
     @Bean
-    public LayeringAspect layeringAspect() {
-        return new LayeringAspect();
+    public CacheAspect layeringAspect() {
+        return new CacheAspect();
     }
 
 

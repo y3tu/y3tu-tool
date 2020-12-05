@@ -4,7 +4,6 @@ import com.y3tu.tool.cache.core.cache.Cache;
 import com.y3tu.tool.cache.core.setting.LayeringCacheSetting;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,10 +21,9 @@ public abstract class AbstractCacheManager implements CacheManager {
 
     /**
      * 缓存容器
-     * 外层key是cache_name
-     * 里层key是[一级缓存有效时间-二级缓存有效时间-二级缓存自动刷新时间]
+     * key是cache_name
      */
-    public final ConcurrentMap<String, ConcurrentMap<String, Cache>> cacheContainer = new ConcurrentHashMap<>(16);
+    public final ConcurrentMap<String, Cache> cacheContainer = new ConcurrentHashMap<>(16);
 
     /**
      * 缓存名称容器
@@ -39,56 +37,30 @@ public abstract class AbstractCacheManager implements CacheManager {
 
 
     @Override
-    public Collection<Cache> getCache(String name) {
-        ConcurrentMap<String, Cache> cacheMap = this.cacheContainer.get(name);
-        if (CollectionUtils.isEmpty(cacheMap)) {
-            return Collections.emptyList();
-        }
-        return cacheMap.values();
+    public Cache getCache(String name) {
+        Cache cache = this.cacheContainer.get(name);
+        return cache;
     }
 
     @Override
-    public Cache getCache(String name, LayeringCacheSetting layeringCacheSetting) {
+    public Cache getCache(String cacheName, LayeringCacheSetting layeringCacheSetting) {
         // 第一次获取缓存Cache，如果有直接返回,如果没有加锁往容器里里面放Cache
-        ConcurrentMap<String, Cache> cacheMap = this.cacheContainer.get(name);
-        if (!CollectionUtils.isEmpty(cacheMap)) {
-            if (cacheMap.size() > 1) {
-                log.warn("缓存名称为 {} 的缓存,存在两个不同的过期时间配置，请一定注意保证缓存的key唯一性，否则会出现缓存过期时间错乱的情况", name);
-            }
-            Cache cache = cacheMap.get(layeringCacheSetting.getInternalKey());
-            if (cache != null) {
-                return cache;
-            }
+        Cache cache = this.cacheContainer.get(cacheName);
+        if (cache != null) {
+            return cache;
         }
-
         // 第二次获取缓存Cache，加锁往容器里里面放Cache
         synchronized (this.cacheContainer) {
-            cacheMap = this.cacheContainer.get(name);
-            if (!CollectionUtils.isEmpty(cacheMap)) {
-                // 从容器中获取缓存
-                Cache cache = cacheMap.get(layeringCacheSetting.getInternalKey());
-                if (cache != null) {
-                    return cache;
-                }
-            } else {
-                cacheMap = new ConcurrentHashMap<>(16);
-                cacheContainer.put(name, cacheMap);
-                // 更新缓存名称
-                updateCacheName(name);
-            }
-
             // 新建一个Cache对象
-            Cache cache = getMissingCache(name, layeringCacheSetting);
+            cache = getMissingCache(cacheName, layeringCacheSetting);
             if (cache != null) {
                 // 装饰Cache对象
                 cache = decorateCache(cache);
                 // 将新的Cache对象放到容器
-                cacheMap.put(layeringCacheSetting.getInternalKey(), cache);
-                if (cacheMap.size() > 1) {
-                    log.warn("缓存名称为 {} 的缓存,存在两个不同的过期时间配置，请一定注意保证缓存的key唯一性，否则会出现缓存过期时间错乱的情况", name);
-                }
+                this.cacheContainer.put(cacheName, cache);
             }
-
+            //更新缓存名称
+            updateCacheName(cacheName);
             return cache;
         }
     }
@@ -101,10 +73,10 @@ public abstract class AbstractCacheManager implements CacheManager {
     /**
      * 增加缓存名称容器
      *
-     * @param name 需要添加的缓存名称
+     * @param cacheName 需要添加的缓存名称
      */
-    public void updateCacheName(String name) {
-        cacheNames.add(name);
+    public void updateCacheName(String cacheName) {
+        cacheNames.add(cacheName);
     }
 
     /**
@@ -131,16 +103,14 @@ public abstract class AbstractCacheManager implements CacheManager {
      *
      * @return 返回缓存容器
      */
-    public ConcurrentMap<String, ConcurrentMap<String, Cache>> getCacheContainer() {
+    public ConcurrentMap<String, Cache> getCacheContainer() {
         return cacheContainer;
     }
 
     @Override
     public void clearCache(String cacheName) {
-        Collection<Cache> caches = getCache(cacheName);
-        for (Cache cache : caches) {
-            cache.clear();
-        }
+        Cache cache = getCache(cacheName);
+        cache.clear();
     }
 
     @Override

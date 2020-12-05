@@ -19,6 +19,10 @@ public class StaticDataConfig {
     private String name;
 
     /**
+     * 缓存key
+     */
+    private String key;
+    /**
      * 数据收集实现类
      */
     private Class clazz;
@@ -29,6 +33,11 @@ public class StaticDataConfig {
     private Method method;
 
     /**
+     * 缓存数据
+     */
+    private Object cacheData;
+
+    /**
      * 是否程序启动后就加载
      */
     private boolean isStartUp;
@@ -37,6 +46,8 @@ public class StaticDataConfig {
      * 缓存配置
      */
     LayeringCacheSetting layeringCacheSetting;
-
+    /**
+     * 缓存数据特殊处理
+     */
     Class<? extends StaticDataHandler> staticDataHandler;
 }

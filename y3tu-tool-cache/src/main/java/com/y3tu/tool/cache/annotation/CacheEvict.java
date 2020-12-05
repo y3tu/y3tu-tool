@@ -16,20 +16,20 @@ import java.lang.annotation.*;
 public @interface CacheEvict {
 
     /**
-     * 别名 {@link #cacheNames}.
+     * 别名 {@link #cacheName}.
      *
      * @return String[]
      */
-    @AliasFor("cacheNames")
-    String[] value() default {};
+    @AliasFor("cacheName")
+    String value() default "";
 
     /**
      * 缓存名称
      *
-     * @return String[]
+     * @return String
      */
     @AliasFor("value")
-    String[] cacheNames() default {};
+    String cacheName() default "";
 
     /**
      * 缓存key，支持SpEL表达式

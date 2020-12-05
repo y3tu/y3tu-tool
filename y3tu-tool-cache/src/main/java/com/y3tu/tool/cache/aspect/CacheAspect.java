@@ -7,6 +7,7 @@ import com.y3tu.tool.cache.core.setting.FirstCacheSetting;
 import com.y3tu.tool.cache.core.setting.LayeringCacheSetting;
 import com.y3tu.tool.cache.core.setting.SecondaryCacheSetting;
 import com.y3tu.tool.cache.core.serializer.SerializationException;
+import com.y3tu.tool.core.util.ObjectUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -24,10 +25,8 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
-import org.springframework.util.CollectionUtils;
 
 import java.lang.reflect.Method;
-import java.util.Collection;
 
 /**
  * 缓存切面拦截，用于注册方法信息
@@ -36,7 +35,7 @@ import java.util.Collection;
  */
 @Aspect
 @Slf4j
-public class LayeringAspect {
+public class CacheAspect {
 
     private static final String CACHE_KEY_ERROR_MESSAGE = "缓存Key %s 不能为NULL";
     private static final String CACHE_NAME_ERROR_MESSAGE = "缓存名称不能为NULL";
@@ -71,7 +70,7 @@ public class LayeringAspect {
     }
 
     @Around("cacheablePointcut()")
-    public Object cacheablePointcut(ProceedingJoinPoint joinPoint) {
+    public Object cacheblePointcut(ProceedingJoinPoint joinPoint) {
         CacheOperationInvoker aopAllianceInvoker = getCacheOperationInvoker(joinPoint);
         // 获取method
         Method method = this.getSpecificMethod(joinPoint);
@@ -83,9 +82,9 @@ public class LayeringAspect {
             return executeCacheable(aopAllianceInvoker, cacheable, method, joinPoint.getArgs());
         } catch (SerializationException e) {
             // 如果是序列化异常需要先删除原有缓存
-            String[] cacheNames = cacheable.cacheNames();
+            String cacheName = cacheable.cacheName();
             // 删除缓存
-            delete(cacheNames, cacheable.key(), method, joinPoint.getArgs());
+            delete(cacheName, cacheable.key(), method, joinPoint.getArgs());
 
             // 忽略操作缓存过程中遇到的异常
             if (cacheable.ignoreException()) {
@@ -158,9 +157,8 @@ public class LayeringAspect {
      */
     private Object executeCacheable(CacheOperationInvoker invoker, Cacheable cacheable, Method method, Object[] args) {
         // 解析SpEL表达式获取cacheName和key
-        String[] cacheNames = cacheable.cacheNames();
-        Assert.notEmpty(cacheable.cacheNames(), CACHE_NAME_ERROR_MESSAGE);
-        String cacheName = cacheNames[0];
+        String cacheName = cacheable.cacheName();
+        Assert.notNull(cacheName, CACHE_NAME_ERROR_MESSAGE);
         Object key = generateKeyBySpEL(cacheable.key(), method, args);
         Assert.notNull(key, String.format(CACHE_KEY_ERROR_MESSAGE, cacheable.key()));
 
@@ -186,8 +184,8 @@ public class LayeringAspect {
      * @return {@link Object}
      */
     private Object executePut(CacheOperationInvoker invoker, CachePut cachePut, Method method, Object[] args, Object target) {
-        String[] cacheNames = cachePut.cacheNames();
-        Assert.notEmpty(cachePut.cacheNames(), CACHE_NAME_ERROR_MESSAGE);
+        String cacheName = cachePut.cacheName();
+        Assert.notNull(cacheName, CACHE_NAME_ERROR_MESSAGE);
         // 解析SpEL表达式获取 key
         Object key = generateKeyBySpEL(cachePut.key(), method, args);
         Assert.notNull(key, String.format(CACHE_KEY_ERROR_MESSAGE, cachePut.key()));
@@ -197,11 +195,9 @@ public class LayeringAspect {
         String depict = cachePut.depict();
         // 指定调用方法获取缓存值
         Object result = invoker.invoke();
-        for (String cacheName : cacheNames) {
-            // 通过cacheName和缓存配置获取Cache
-            Cache cache = cacheManager.getCache(cacheName, buildCacheSetting(firstCache, secondaryCache, depict));
-            cache.put(key, result);
-        }
+        // 通过cacheName和缓存配置获取Cache
+        Cache cache = cacheManager.getCache(cacheName, buildCacheSetting(firstCache, secondaryCache, depict));
+        cache.put(key, result);
         return result;
     }
 
@@ -216,27 +212,22 @@ public class LayeringAspect {
      */
     private Object executeEvict(CacheOperationInvoker invoker, CacheEvict cacheEvict, Method method, Object[] args) {
         // 解析SpEL表达式获取cacheName和key
-        String[] cacheNames = cacheEvict.cacheNames();
-        Assert.notEmpty(cacheEvict.cacheNames(), CACHE_NAME_ERROR_MESSAGE);
+        String cacheName = cacheEvict.cacheName();
+        Assert.notNull(cacheName, CACHE_NAME_ERROR_MESSAGE);
         // 判断是否删除所有缓存数据
         if (cacheEvict.allEntries()) {
             // 删除所有缓存数据（清空）
-            for (String cacheName : cacheNames) {
-                Collection<Cache> caches = cacheManager.getCache(cacheName);
-                if (CollectionUtils.isEmpty(caches)) {
-                    // 如果没有找到Cache就新建一个默认的
-                    Cache cache = cacheManager.getCache(cacheName,
-                            new LayeringCacheSetting(new FirstCacheSetting(), new SecondaryCacheSetting(), "默认缓存配置（清除时生成）"));
-                    cache.clear();
-                } else {
-                    for (Cache cache : caches) {
-                        cache.clear();
-                    }
-                }
+            Cache cache = cacheManager.getCache(cacheName);
+            if (ObjectUtil.isEmpty(cache)) {
+                // 如果没有找到Cache就新建一个默认的
+                cache = cacheManager.getCache(cacheName, new LayeringCacheSetting(new FirstCacheSetting(), new SecondaryCacheSetting(), "默认缓存配置（清除时生成）"));
+                cache.clear();
+            } else {
+                cache.clear();
             }
         } else {
             // 删除指定key
-            delete(cacheNames, cacheEvict.key(), method, args);
+            delete(cacheName, cacheEvict.key(), method, args);
         }
 
         // 执行方法
@@ -246,26 +237,22 @@ public class LayeringAspect {
     /**
      * 删除执行缓存名称上的指定key
      *
-     * @param cacheNames 缓存名称
-     * @param keySpEL    key的SpEL表达式
-     * @param method     {@link Method}
-     * @param args       参数列表
+     * @param cacheName 缓存名称
+     * @param keySpEL   key的SpEL表达式
+     * @param method    {@link Method}
+     * @param args      参数列表
      */
-    private void delete(String[] cacheNames, String keySpEL, Method method, Object[] args) {
+    private void delete(String cacheName, String keySpEL, Method method, Object[] args) {
         Object key = generateKeyBySpEL(keySpEL, method, args);
         Assert.notNull(key, String.format(CACHE_KEY_ERROR_MESSAGE, keySpEL));
-        for (String cacheName : cacheNames) {
-            Collection<Cache> caches = cacheManager.getCache(cacheName);
-            if (CollectionUtils.isEmpty(caches)) {
-                // 如果没有找到Cache就新建一个默认的
-                Cache cache = cacheManager.getCache(cacheName,
-                        new LayeringCacheSetting(new FirstCacheSetting(), new SecondaryCacheSetting(), "默认缓存配置（删除时生成）"));
-                cache.evict(key);
-            } else {
-                for (Cache cache : caches) {
-                    cache.evict(key);
-                }
-            }
+        Cache cache = cacheManager.getCache(cacheName);
+        if (cache == null) {
+            // 如果没有找到Cache就新建一个默认的
+            cache = cacheManager.getCache(cacheName,
+                    new LayeringCacheSetting(new FirstCacheSetting(), new SecondaryCacheSetting(), "默认缓存配置（删除时生成）"));
+            cache.evict(key);
+        } else {
+            cache.evict(key);
         }
     }
 

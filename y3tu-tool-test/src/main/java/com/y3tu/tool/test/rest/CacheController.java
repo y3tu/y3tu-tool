@@ -4,6 +4,7 @@ import com.y3tu.tool.cache.annotation.Cacheable;
 import com.y3tu.tool.cache.annotation.FirstCache;
 import com.y3tu.tool.cache.annotation.SecondaryCache;
 import com.y3tu.tool.cache.service.ToolCacheService;
+import com.y3tu.tool.cache.staticdata.StaticDataService;
 import com.y3tu.tool.core.pojo.R;
 import com.y3tu.tool.test.dto.UserDto;
 import com.y3tu.tool.web.sql.SqlUtil;
@@ -28,7 +29,10 @@ import java.util.concurrent.TimeUnit;
 public class CacheController {
 
     @Autowired
-    ToolCacheService cacheService;
+    StaticDataService staticDataService;
+
+    @Autowired
+    ToolCacheService toolCacheService;
 
     @GetMapping("query/{id}")
     @Cacheable(value = "user", key = "#id", depict = "用户查询缓存",
@@ -43,8 +47,19 @@ public class CacheController {
 
     @GetMapping("queryCache")
     public R queryCache() {
-        List<UserDto> list = (List<UserDto>) cacheService.getDefaultStaticData("user_static");
-        return R.success(list);
+        List<UserDto> list = (List<UserDto>) staticDataService.getStaticData("user_static","测试key");
+        return R.success(list.size());
+    }
+
+    @GetMapping("queryCache1")
+    public R queryCache1() {
+        List<UserDto> list = (List<UserDto>) staticDataService.getStaticData("user_static","测试key1");
+        return R.success(list.size());
+    }
+
+    @GetMapping("clear")
+    public void clear(){
+        toolCacheService.clearCache("user_static");
     }
 
 }

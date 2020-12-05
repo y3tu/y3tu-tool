@@ -11,10 +11,10 @@ public interface StaticDataHandler {
     /**
      * 处理缓存
      *
-     * @param cacheName 缓存名
+     * @param key       缓存key
      * @param cache     缓存处理接口
      * @param cacheData 缓存数据
      * @return
      */
-    void handler(String cacheName, Cache cache, Object cacheData);
+    void handler(String key, Cache cache, Object cacheData);
 }

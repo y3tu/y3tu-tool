@@ -34,6 +34,13 @@ public @interface StaticData {
     String cacheName() default "";
 
     /**
+     * 缓存key
+     *
+     * @return
+     */
+    String key() default "";
+
+    /**
      * 描述
      *
      * @return String
@@ -70,5 +77,10 @@ public @interface StaticData {
      */
     SecondaryCache secondaryCache() default @SecondaryCache();
 
+    /**
+     * 数据特殊处理
+     *
+     * @return
+     */
     Class<? extends StaticDataHandler> handler() default DefaultHandler.class;
 }

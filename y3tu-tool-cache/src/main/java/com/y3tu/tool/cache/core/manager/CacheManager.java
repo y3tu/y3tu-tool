@@ -18,19 +18,19 @@ public interface CacheManager {
     /**
      * 根据缓存名称返回对应的{@link Collection}.
      *
-     * @param name 缓存的名称 (不能为 {@code null})
+     * @param cacheName 缓存的名称 (不能为 {@code null})
      * @return 返回对应名称的Cache, 如果没找到返回 {@code null}
      */
-    Collection<Cache> getCache(String name);
+    Cache getCache(String cacheName);
 
     /**
      * 根据缓存名称返回对应的{@link Cache}，如果没有找到就新建一个并放到容器
      *
-     * @param name                 缓存名称
+     * @param cacheName                 缓存名称
      * @param layeringCacheSetting 多级缓存配置
      * @return {@link Cache}
      */
-    Cache getCache(String name, LayeringCacheSetting layeringCacheSetting);
+    Cache getCache(String cacheName, LayeringCacheSetting layeringCacheSetting);
 
     /**
      * 获取所有缓存名称的集合

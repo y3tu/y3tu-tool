@@ -48,25 +48,22 @@ public class FirstCacheManager extends AbstractCacheManager {
     public List<CacheStatsInfo> listCacheStats(String cacheName) {
         List<CacheStatsInfo> cacheStatsInfoList = new ArrayList<>();
 
-        Collection<Cache> cacheCollection = this.getCache(cacheName);
-        for (Cache cache : cacheCollection) {
-            CaffeineCache caffeineCache = (CaffeineCache) cache;
-            CacheStatsInfo cacheStatsInfo = new CacheStatsInfo();
-            cacheStatsInfo.setCacheName(cacheName);
-            cacheStatsInfo.setInternalKey(caffeineCache.getLayeringCacheSetting().getInternalKey());
-            cacheStatsInfo.setDepict(caffeineCache.getLayeringCacheSetting().getDepict());
-            cacheStatsInfo.setLayeringCacheSetting(caffeineCache.getLayeringCacheSetting());
-            CacheStats cacheStats = caffeineCache.getCacheStats();
-            cacheStats.getAndResetCachedMethodRequestTime();
-            cacheStatsInfo.setRequestCount(cacheStatsInfo.getRequestCount() + cacheStats.getAndResetCacheRequestCount());
-            cacheStatsInfo.setMissCount(cacheStatsInfo.getMissCount() + cacheStats.getAndResetCachedMethodRequestCount());
-            cacheStatsInfo.setTotalLoadTime(cacheStatsInfo.getTotalLoadTime() + cacheStats.getAndResetCachedMethodRequestTime());
-            cacheStatsInfo.setHitRate((cacheStatsInfo.getRequestCount() - cacheStatsInfo.getMissCount()) / (double) cacheStatsInfo.getRequestCount() * 100);
-            cacheStatsInfo.setFirstCacheRequestCount(cacheStatsInfo.getFirstCacheRequestCount() + cacheStats.getAndResetCacheRequestCount());
-            cacheStatsInfo.setFirstCacheMissCount(cacheStatsInfo.getFirstCacheMissCount() + cacheStats.getAndResetCachedMethodRequestCount());
-            // 清空加载缓存时间
-            cacheStatsInfoList.add(cacheStatsInfo);
-        }
+        Cache cache = this.getCache(cacheName);
+        CaffeineCache caffeineCache = (CaffeineCache) cache;
+        CacheStatsInfo cacheStatsInfo = new CacheStatsInfo();
+        cacheStatsInfo.setCacheName(cacheName);
+        cacheStatsInfo.setDepict(caffeineCache.getLayeringCacheSetting().getDepict());
+        cacheStatsInfo.setLayeringCacheSetting(caffeineCache.getLayeringCacheSetting());
+        CacheStats cacheStats = caffeineCache.getCacheStats();
+        cacheStats.getAndResetCachedMethodRequestTime();
+        cacheStatsInfo.setRequestCount(cacheStatsInfo.getRequestCount() + cacheStats.getAndResetCacheRequestCount());
+        cacheStatsInfo.setMissCount(cacheStatsInfo.getMissCount() + cacheStats.getAndResetCachedMethodRequestCount());
+        cacheStatsInfo.setTotalLoadTime(cacheStatsInfo.getTotalLoadTime() + cacheStats.getAndResetCachedMethodRequestTime());
+        cacheStatsInfo.setHitRate((cacheStatsInfo.getRequestCount() - cacheStatsInfo.getMissCount()) / (double) cacheStatsInfo.getRequestCount() * 100);
+        cacheStatsInfo.setFirstCacheRequestCount(cacheStatsInfo.getFirstCacheRequestCount() + cacheStats.getAndResetCacheRequestCount());
+        cacheStatsInfo.setFirstCacheMissCount(cacheStatsInfo.getFirstCacheMissCount() + cacheStats.getAndResetCachedMethodRequestCount());
+        // 清空加载缓存时间
+        cacheStatsInfoList.add(cacheStatsInfo);
 
         return cacheStatsInfoList;
     }
@@ -81,11 +78,9 @@ public class FirstCacheManager extends AbstractCacheManager {
 
     @Override
     public void resetCacheStat(String cacheName) {
-        Collection<Cache> cacheCollection = this.getCache(cacheName);
-        for (Cache cache : cacheCollection) {
-            CaffeineCache caffeineCache = (CaffeineCache) cache;
-            caffeineCache.setCacheStats(new CacheStats());
-        }
+        Cache cache = this.getCache(cacheName);
+        CaffeineCache caffeineCache = (CaffeineCache) cache;
+        caffeineCache.setCacheStats(new CacheStats());
     }
 
 }

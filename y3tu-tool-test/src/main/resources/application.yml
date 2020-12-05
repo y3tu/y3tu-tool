@@ -60,7 +60,7 @@ y3tu:
   tool:
     cache:
       enableApi: true
-      cacheMode: only_first
+      cacheMode: all
       stats: true
 
 
