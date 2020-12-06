@@ -1,8 +1,7 @@
-package com.y3tu.tool.web.base.service;
+package com.y3tu.tool.web.base.mybatis;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.y3tu.tool.web.base.pojo.Page;
 
 import java.util.Collection;
 import java.util.List;

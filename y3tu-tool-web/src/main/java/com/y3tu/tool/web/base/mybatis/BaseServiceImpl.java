@@ -1,4 +1,4 @@
-package com.y3tu.tool.web.base.service.impl;
+package com.y3tu.tool.web.base.mybatis;
 
 import cn.hutool.core.lang.Editor;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -10,9 +10,6 @@ import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.util.IdUtil;
 import com.y3tu.tool.core.util.ObjectUtil;
 import com.y3tu.tool.core.util.StrUtil;
-import com.y3tu.tool.web.base.mapper.BaseMapper;
-import com.y3tu.tool.web.base.pojo.Page;
-import com.y3tu.tool.web.base.service.BaseService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;

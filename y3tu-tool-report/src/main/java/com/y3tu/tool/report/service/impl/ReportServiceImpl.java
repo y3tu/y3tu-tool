@@ -31,4 +31,9 @@ public class ReportServiceImpl implements ReportService {
         System.out.println(page1);
         return null;
     }
+
+    public Object queryAll(AppQueryCriteria criteria, Pageable pageable){
+        Page<App> page = reportRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),pageable);
+        return PageUtil.toPage(page.map(appMapper::toDto));
+    }
 }

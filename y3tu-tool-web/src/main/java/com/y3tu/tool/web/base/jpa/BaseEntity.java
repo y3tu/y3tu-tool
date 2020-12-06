@@ -1,4 +1,4 @@
-package com.y3tu.tool.report.base;
+package com.y3tu.tool.web.base.jpa;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;

@@ -1,6 +1,6 @@
 package com.y3tu.tool.report.domain;
 
-import com.y3tu.tool.report.base.BaseEntity;
+import com.y3tu.tool.web.base.jpa.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.*;

@@ -1,5 +1,4 @@
-package com.y3tu.tool.web.base.entity;
-
+package com.y3tu.tool.web.base.mybatis;
 
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 

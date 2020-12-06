@@ -1,6 +1,4 @@
-package com.y3tu.tool.web.base.mapper;
-
-import com.y3tu.tool.web.base.pojo.Page;
+package com.y3tu.tool.web.base.mybatis;
 
 import java.util.List;
 import java.util.Map;

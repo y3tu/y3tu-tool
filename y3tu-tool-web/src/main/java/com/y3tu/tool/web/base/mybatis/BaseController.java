@@ -1,9 +1,6 @@
-package com.y3tu.tool.web.base.controller;
+package com.y3tu.tool.web.base.mybatis;
 
 import com.y3tu.tool.core.collection.CollectionUtil;
-import com.y3tu.tool.web.base.entity.BaseEntity;
-import com.y3tu.tool.web.base.pojo.Page;
-import com.y3tu.tool.web.base.service.BaseService;
 import com.y3tu.tool.core.pojo.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

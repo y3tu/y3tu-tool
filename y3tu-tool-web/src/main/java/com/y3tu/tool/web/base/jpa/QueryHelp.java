@@ -1,4 +1,4 @@
-package com.y3tu.tool.web.util;
+package com.y3tu.tool.web.base.jpa;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
