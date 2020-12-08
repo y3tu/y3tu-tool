@@ -33,17 +33,17 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends Servic
     int dataCenterId = 1;
 
     @Override
-    public Page<T> page(Page<T> pageInfo) {
+    public PageInfo<T> page(PageInfo<T> pageInfo) {
         //每次查询前把total置为0
         pageInfo.setTotal(0);
         return baseMapper.page(pageInfo);
     }
 
     @Override
-    public Page<T> page(Page<T> pageInfo, Wrapper<T> wrapper) {
+    public PageInfo<T> page(PageInfo<T> pageInfo, Wrapper<T> wrapper) {
         //每次查询前把total置为0
         pageInfo.setTotal(0);
-        return (Page<T>) baseMapper.selectPage(pageInfo, wrapper);
+        return (PageInfo<T>) baseMapper.selectPage(pageInfo, wrapper);
     }
 
     @Override

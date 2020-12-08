@@ -20,7 +20,7 @@ public interface BaseService<T> extends IService<T> {
      * @param pageInfo 分页信息 包含每页多少条,当前页数,排序,查询条件
      * @return 分页查询数据
      */
-    Page<T> page(Page<T> pageInfo);
+    PageInfo<T> page(PageInfo<T> pageInfo);
 
     /**
      * 分页查询
@@ -29,7 +29,7 @@ public interface BaseService<T> extends IService<T> {
      * @param wrapper  查询条件
      * @return 分页查询数据
      */
-    Page<T> page(Page<T> pageInfo, Wrapper<T> wrapper);
+    PageInfo<T> page(PageInfo<T> pageInfo, Wrapper<T> wrapper);
 
     /**
      * 不分页查询

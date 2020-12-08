@@ -20,7 +20,7 @@ public abstract class BaseController<K extends BaseService<T>, T extends BaseEnt
     /**
      * 分页查询
      *
-     * @param page 查询参数 包含分页信息和查询条件
+     * @param pageInfo 查询参数 包含分页信息和查询条件
      *             前台传入参数params封装规则
      *             current：当前页
      *             size：每页条数
@@ -30,8 +30,8 @@ public abstract class BaseController<K extends BaseService<T>, T extends BaseEnt
      * @return 分页数据
      */
     @PostMapping
-    public R page(@RequestBody Page<T> page) {
-        return R.success(service.page(page));
+    public R page(@RequestBody PageInfo<T> pageInfo) {
+        return R.success(service.page(pageInfo));
     }
 
     /**

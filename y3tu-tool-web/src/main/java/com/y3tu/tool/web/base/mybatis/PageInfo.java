@@ -11,7 +11,7 @@ import java.util.Map;
  * @author y3tu
  */
 @Data
-public class Page<T> extends com.baomidou.mybatisplus.extension.plugins.pagination.Page<T> {
+public class PageInfo<T> extends com.baomidou.mybatisplus.extension.plugins.pagination.Page<T> {
 
     /**
      * 查询条件参数实体

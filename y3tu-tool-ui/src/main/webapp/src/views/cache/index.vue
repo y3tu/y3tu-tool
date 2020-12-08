@@ -50,8 +50,8 @@
                 :total="total"
                 style="margin-top: 8px;"
                 layout="total, prev, pager, next, sizes"
-                :current-page="currentPage"
-                :page-size="pageSize"
+                :current-pageInfo="currentPage"
+                :pageInfo-size="pageSize"
                 @size-change="sizeChange"
                 @current-change="pageChange">
         </el-pagination>

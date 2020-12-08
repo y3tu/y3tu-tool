@@ -8,7 +8,7 @@ import java.util.Map;
 
 
 @Data
-public class Page<T>{
+public class PageInfo<T>{
     /**
      * 查询条件参数实体
      */
@@ -19,8 +19,6 @@ public class Page<T>{
      */
     Map params;
 
-    org.springframework.data.domain.Page<T> page;
-
     /**
      * 查询数据列表
      */
@@ -29,7 +27,7 @@ public class Page<T>{
     /**
      * 总数
      */
-    private int total = 0;
+    private long total = 0;
     /**
      * 每页显示条数，默认 10
      */
