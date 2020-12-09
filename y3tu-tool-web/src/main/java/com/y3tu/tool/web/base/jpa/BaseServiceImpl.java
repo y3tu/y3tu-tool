@@ -8,7 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Set;
 
-
+/**
+ * 基本服务实现
+ *
+ * @author y3tu
+ */
 public class BaseServiceImpl<R extends BaseRepository, T> implements BaseService<T> {
 
     @Autowired

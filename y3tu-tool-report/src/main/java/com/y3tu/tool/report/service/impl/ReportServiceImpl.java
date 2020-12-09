@@ -6,8 +6,6 @@ import com.y3tu.tool.report.service.ReportService;
 import com.y3tu.tool.web.base.jpa.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
-
-
 /**
  * @author y3tu
  */

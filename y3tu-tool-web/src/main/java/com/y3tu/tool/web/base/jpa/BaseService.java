@@ -3,6 +3,11 @@ package com.y3tu.tool.web.base.jpa;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * 基础服务接口
+ *
+ * @author y3tu
+ */
 public interface BaseService<T> {
 
     /**
