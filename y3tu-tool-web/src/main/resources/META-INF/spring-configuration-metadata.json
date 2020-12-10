@@ -1,0 +1,19 @@
+{
+  "groups": [
+    {
+      "name": "y3tu.tool.web.upload",
+      "type": "com.y3tu.tool.web.updownload.properties.UpDownLoadProperties",
+      "sourceType": "com.y3tu.tool.web.updownload.properties.UpDownLoadProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "y3tu.tool.file.enableSftp",
+      "type": "java.lang.Boolean",
+      "description": "是否开启Sftp服务",
+      "sourceType": "com.y3tu.tool.web.updownload.properties.UpDownLoadProperties",
+      "defaultValue": false
+    }
+  ],
+  "hints": []
+}

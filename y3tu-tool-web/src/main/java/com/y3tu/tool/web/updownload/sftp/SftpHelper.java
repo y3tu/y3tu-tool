@@ -1,4 +1,4 @@
-package com.y3tu.tool.web.sftp;
+package com.y3tu.tool.web.updownload.sftp;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -21,82 +21,18 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Sftp服务
+ *
+ * @author y3tu
+ */
 @Slf4j
-public class SftpService {
+public class SftpHelper {
 
-    //创建一个map用于存放channel对象
-    private static final Map<String, Channel> SFTP_CHANNEL_POOL = new HashMap<String, Channel>();
+    private SftpPool pool;
 
-    private SftpInfo sftpInfo;
-
-    /**
-     * 获取sftp连接
-     *
-     * @param ip
-     * @param port
-     * @param user
-     * @param pwd
-     * @return
-     * @throws JSchException
-     */
-    public static Channel getChannelSftp(String ip, String port, String user, String pwd) throws JSchException {
-        Session session = null;
-        Channel channel = null;
-
-        int sftpPort = Integer.parseInt(port);
-        String key = ip + "," + port + "," + user + "," + pwd;
-
-        if (SFTP_CHANNEL_POOL.get(key) == null) {
-            JSch jsch = new JSch();
-            session = jsch.getSession(user, ip, sftpPort);
-            session.setPassword(pwd);
-            // 设置是否需要确认连接为no
-            session.setConfig("StrictHostKeyChecking", "no");
-            session.setConfig("PreferredAuthentications",
-                    "publickey,keyboard-interactive,password");
-            session.connect(6000000);
-
-            channel = session.openChannel("sftp");
-            channel.getId();
-            channel.connect();
-            SFTP_CHANNEL_POOL.put(key, channel);
-            log.info("该channel是新连接的，ID为：" + channel.getId());
-
-        } else {
-            channel = SFTP_CHANNEL_POOL.get(key);
-            session = channel.getSession();
-            if (!session.isConnected()) {
-                session.connect();
-            }
-            if (!channel.isConnected()) {
-                channel.connect();
-            }
-            log.info("该channel从map中获取的，ID为：" + channel.getId());
-        }
-        return channel;
-
-    }
-
-    public static Channel getChannel(String ip, String port, String user, String pwd) {
-        Session session = null;
-        Channel channel = null;
-        int sftpPort = Integer.parseInt(port);
-        try {
-            JSch jsch = new JSch();
-            session = jsch.getSession(user, ip, sftpPort);
-            session.setPassword(pwd);
-            session.setConfig("StrictHostKeyChecking", "no");
-            session.setConfig("PreferredAuthentications",
-                    "publickey,keyboard-interactive,password");
-            session.connect(60000);
-
-            channel = session.openChannel("sftp");
-            channel.connect();
-        } catch (Exception e) {
-            throw new ToolException("获取SFTP连接异常");
-        }
-        return channel;
-
+    public SftpHelper(SftpPool pool) {
+        this.pool = pool;
     }
 
     /**
@@ -172,7 +108,6 @@ public class SftpService {
      * @param sftp sftp连接
      * @throws SftpException 异常
      */
-    @SuppressWarnings("null")
     public static boolean mkdir(final String dir, final ChannelSftp sftp) throws SftpException {
         if (dir == null && dir.length() == 0) {
             return false;
@@ -247,7 +182,6 @@ public class SftpService {
         return list;
     }
 
-    @SuppressWarnings("unused")
     private static void exit(final ChannelSftp sftp) {
         sftp.exit();
     }
@@ -454,10 +388,6 @@ public class SftpService {
         } finally {
             giveBack(sftp);
         }
-    }
-
-    public SftpService(SftpInfo sftpInfo) {
-        this.sftpInfo = sftpInfo;
     }
 
 }

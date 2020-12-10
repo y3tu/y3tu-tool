@@ -1,4 +1,4 @@
-package com.y3tu.tool.web.sftp;
+package com.y3tu.tool.web.updownload.sftp;
 
 import com.jcraft.jsch.ChannelSftp;
 import lombok.extern.slf4j.Slf4j;
@@ -7,13 +7,15 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
+ * sftp上传监控
+ *
  * @author y3tu
  */
 @Slf4j
 public class SftpUploadProgressMonitor implements com.jcraft.jsch.SftpProgressMonitor {
 
     private ChannelSftp channelSftp;
-    private SftpService sftpService;
+    private SftpHelper sftpHelper;
     private InputStream inputStream;
 
     private long transferSize = 0;
@@ -33,7 +35,7 @@ public class SftpUploadProgressMonitor implements com.jcraft.jsch.SftpProgressMo
     public void end() {
         log.info("完成传输");
         //放回连接池
-        sftpService.giveBack(channelSftp);
+        sftpHelper.giveBack(channelSftp);
         if (inputStream != null) {
             try {
                 inputStream.close();
@@ -43,8 +45,8 @@ public class SftpUploadProgressMonitor implements com.jcraft.jsch.SftpProgressMo
         }
     }
 
-    SftpUploadProgressMonitor(SftpService sftpService, ChannelSftp channelSftp, InputStream inputStream) {
-        this.sftpService = sftpService;
+    SftpUploadProgressMonitor(SftpHelper sftpHelper, ChannelSftp channelSftp, InputStream inputStream) {
+        this.sftpHelper = sftpHelper;
         this.channelSftp = channelSftp;
         this.inputStream = inputStream;
     }

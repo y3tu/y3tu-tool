@@ -22,8 +22,8 @@
         <jasypt-version>1.9.2</jasypt-version>
         <jjwt-version>0.9.0</jjwt-version>
         <mysql.version>5.1.38</mysql.version>
-        <redis-version>2.9.0</redis-version>
         <jsch-version>0.1.55</jsch-version>
+        <commons-net.version>3.6</commons-net.version>
         <easyexcel-version>2.1.7</easyexcel-version>
     </properties>
 
@@ -70,14 +70,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!--Redis start-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-            <version>${spring-boot.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
         <!--Excel工具-->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -85,17 +77,24 @@
             <version>${easyexcel-version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>${redis-version}</version>
-        </dependency>
-
-        <!-- SSH安全连接所使用的类库 -->
+        <!-- SSH安全连接所使用的类库 SFTP -->
         <dependency>
             <groupId>com.jcraft</groupId>
             <artifactId>jsch</artifactId>
             <version>${jsch-version}</version>
+        </dependency>
+
+        <!--FTP-->
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>${commons-net.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+            <version>2.9.0</version>
         </dependency>
 
         <!--Redis end-->

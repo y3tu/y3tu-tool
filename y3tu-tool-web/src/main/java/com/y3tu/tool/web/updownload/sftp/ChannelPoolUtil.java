@@ -1,4 +1,4 @@
-package com.y3tu.tool.web.sftp;
+package com.y3tu.tool.web.updownload.sftp;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.JSchException;
@@ -9,20 +9,33 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * channel池
+ *
+ * @author y3tu
+ */
 @Slf4j
 @Data
 public class ChannelPoolUtil {
 
+    /**
+     * 指定channel池中channel数量
+     */
     private int channelNum = 10;
-    // 正在执行状态的channel池
+    /**
+     * 正在执行状态的channel池
+     */
     private Map<Integer, Channel> runningChannelPool = new HashMap<>(channelNum);
-    // 空闲状态的channel池
+    /**
+     * 空闲状态的channel池
+     */
     private Map<Integer, Channel> sleepChannelPool = new HashMap<>(channelNum);
 
 
     /**
      * 获取Channel
-     * @param sftpInfo
+     *
+     * @param sftpInfo 配置信息
      * @return
      * @throws JSchException
      */
@@ -33,11 +46,10 @@ public class ChannelPoolUtil {
         if (sleepChannelPool.size() == 0) {
             // 判断已连接channel总数是否大于指定数量，否则创建新的channel,并返回
             if ((sleepChannelPool.size() + runningChannelPool.size()) < channelNum) {
-                channel = SftpService.getChannel(sftpInfo.getIp(),
+                channel = SftpHelper.getChannel(sftpInfo.getIp(),
                         sftpInfo.getPort(), sftpInfo.getUser(),
                         sftpInfo.getPwd());
-                log.info("创建了一个新的channel,ID为："
-                        + String.valueOf(channel.getId()));
+                log.info("创建了一个新的channel,ID为：" + channel.getId());
                 runningChannelPool.put(channel.getId(), channel);
                 log.info("新channel已塞入到：runningChannelPool");
                 return channel;
@@ -50,9 +62,9 @@ public class ChannelPoolUtil {
             Integer[] keys = sleepChannelPool.keySet().toArray(new Integer[0]);
             Integer channelId = keys[0];
             channel = sleepChannelPool.get(channelId);
-            System.out.println("从池中获取到channel,ID为：" + channelId);
+            log.info("从池中获取到channel,ID为：" + channelId);
             // 检查channel是否关闭，重连
-            if (channel.isClosed()||!channel.isConnected()) {
+            if (channel.isClosed() || !channel.isConnected()) {
                 Session session;
                 try {
                     session = channel.getSession();
@@ -67,28 +79,26 @@ public class ChannelPoolUtil {
                     sleepChannelPool.remove(channelId);
                     channel.getSession().disconnect();
 
-                    channel = SftpService.getChannel(sftpInfo.getIp(),
+                    channel = SftpHelper.getChannel(sftpInfo.getIp(),
                             sftpInfo.getPort(), sftpInfo.getUser(),
                             sftpInfo.getPwd());
-                    log.info("创建了一个新的channel,ID为："
-                            + String.valueOf(channel.getId()));
+                    log.info("创建了一个新的channel,ID为：" + channel.getId());
                     runningChannelPool.put(channel.getId(), channel);
                     log.info("新channel已塞入到：runningChannelPool");
                     return channel;
                 }
             }
-            try{
+            try {
                 channel.connect();
-            }catch (Exception e){
+            } catch (Exception e) {
                 log.info("channel已关闭且重连出错！将其移出池并关闭！");
                 sleepChannelPool.remove(channelId);
                 channel.getSession().disconnect();
 
-                channel = SftpService.getChannel(sftpInfo.getIp(),
+                channel = SftpHelper.getChannel(sftpInfo.getIp(),
                         sftpInfo.getPort(), sftpInfo.getUser(),
                         sftpInfo.getPwd());
-                log.info("创建了一个新的channel,ID为："
-                        + String.valueOf(channel.getId()));
+                log.info("创建了一个新的channel,ID为：" + channel.getId());
                 runningChannelPool.put(channel.getId(), channel);
                 log.info("新channel已塞入到：runningChannelPool");
                 return channel;
@@ -116,10 +126,11 @@ public class ChannelPoolUtil {
 
     /**
      * 彻底删除channel
+     *
      * @param channel
      * @return
      */
-    public synchronized boolean delete(Channel channel){
+    public synchronized boolean delete(Channel channel) {
         runningChannelPool.remove(channel.getId());
         sleepChannelPool.remove(channel.getId());
         return true;

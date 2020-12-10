@@ -1,4 +1,4 @@
-package com.y3tu.tool.web.sftp;
+package com.y3tu.tool.web.updownload.sftp;
 
 import com.jcraft.jsch.Channel;
 import com.y3tu.tool.core.exception.ToolException;
@@ -8,6 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+/**
+ * 池管理
+ *
+ * @author y3tu
+ */
 @Slf4j
 public class PoolMapUtil {
 

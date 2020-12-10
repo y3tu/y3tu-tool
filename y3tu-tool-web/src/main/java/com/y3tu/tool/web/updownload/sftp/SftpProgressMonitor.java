@@ -1,4 +1,4 @@
-package com.y3tu.tool.web.sftp;
+package com.y3tu.tool.web.updownload.sftp;
 
 import com.jcraft.jsch.ChannelSftp;
 import lombok.SneakyThrows;
@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 
 /**
+ * sftp进度监控
+ *
  * @author y3tu
  */
 @Slf4j
@@ -15,7 +17,7 @@ public class SftpProgressMonitor implements com.jcraft.jsch.SftpProgressMonitor 
 
     private ChannelSftp channelSftp;
 
-    private SftpService sftpService;
+    private SftpHelper sftpHelper;
 
     private HttpServletResponse response;
 
@@ -37,16 +39,16 @@ public class SftpProgressMonitor implements com.jcraft.jsch.SftpProgressMonitor 
     public void end() {
         log.info("完成传输");
         //放回连接池
-        sftpService.giveBack(channelSftp);
+        sftpHelper.giveBack(channelSftp);
     }
 
-    SftpProgressMonitor(SftpService sftpService, ChannelSftp channelSftp) {
-        this.sftpService = sftpService;
+    SftpProgressMonitor(SftpHelper sftpHelper, ChannelSftp channelSftp) {
+        this.sftpHelper = sftpHelper;
         this.channelSftp = channelSftp;
     }
 
-    SftpProgressMonitor(SftpService sftpService, ChannelSftp channelSftp, HttpServletResponse response) {
-        this.sftpService = sftpService;
+    SftpProgressMonitor(SftpHelper sftpHelper, ChannelSftp channelSftp, HttpServletResponse response) {
+        this.sftpHelper = sftpHelper;
         this.channelSftp = channelSftp;
         this.response = response;
     }
