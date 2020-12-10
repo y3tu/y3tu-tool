@@ -71,7 +71,7 @@ public class FtpFactory implements PooledObjectFactory<FTPClient> {
         ftpClient.setBufferSize(BUFF_SIZE);
         ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
         ftpClient.setFileTransferMode(FTP.COMPRESSED_TRANSFER_MODE);
-        ftpClient.changeWorkingDirectory(ftpProperties.getWorkPath());
+        ftpClient.changeWorkingDirectory(ftpProperties.getUploadPath());
         return new DefaultPooledObject(ftpClient);
     }
 

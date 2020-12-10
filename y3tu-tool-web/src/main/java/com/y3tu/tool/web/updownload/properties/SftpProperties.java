@@ -30,7 +30,7 @@ public class SftpProperties {
     /**
      * ip
      */
-    private String ip;
+    private String host;
     /**
      * 上传到文件服务器的那个目录
      */

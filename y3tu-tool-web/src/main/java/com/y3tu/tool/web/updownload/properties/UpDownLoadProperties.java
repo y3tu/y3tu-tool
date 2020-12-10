@@ -24,13 +24,5 @@ public class UpDownLoadProperties {
      */
     private Long avatarMaxSize;
 
-    /**
-     * 是否开启sftp 默认关闭
-     */
-    private boolean enableSftp = false;
 
-
-    private FtpProperties ftpProperties;
-
-    private SftpProperties sftpProperties;
 }

@@ -16,7 +16,10 @@ public class FtpProperties {
     private String username;
     private String password;
     private String encoding = "UTF-8";
-    private String workPath;
+    /**
+     * 上传到文件服务器的那个目录
+     */
+    private String uploadPath;
 
     /**
      * 池中最多数量的ftp连接

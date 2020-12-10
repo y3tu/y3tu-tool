@@ -4,16 +4,104 @@
       "name": "y3tu.tool.web.upload",
       "type": "com.y3tu.tool.web.updownload.properties.UpDownLoadProperties",
       "sourceType": "com.y3tu.tool.web.updownload.properties.UpDownLoadProperties"
+    },
+    {
+      "name": "y3tu.tool.web.ftp",
+      "type": "com.y3tu.tool.web.updownload.properties.FtpProperties",
+      "sourceType": "com.y3tu.tool.web.updownload.properties.FtpProperties"
+    },
+    {
+      "name": "y3tu.tool.web.sftp",
+      "type": "com.y3tu.tool.web.updownload.properties.SftpProperties",
+      "sourceType": "com.y3tu.tool.web.updownload.properties.SftpProperties"
     }
   ],
   "properties": [
     {
-      "name": "y3tu.tool.file.enableSftp",
-      "type": "java.lang.Boolean",
-      "description": "是否开启Sftp服务",
-      "sourceType": "com.y3tu.tool.web.updownload.properties.UpDownLoadProperties",
-      "defaultValue": false
+      "name": "y3tu.tool.web.ftp.host",
+      "type": "java.lang.String",
+      "description": "FTP主机地址",
+      "sourceType": "com.y3tu.tool.web.updownload.properties.FtpProperties"
+    },
+    {
+      "name": "y3tu.tool.web.ftp.port",
+      "type": "java.lang.String",
+      "description": "端口",
+      "sourceType": "com.y3tu.tool.web.updownload.properties.FtpProperties"
+    },
+    {
+      "name": "y3tu.tool.web.ftp.username",
+      "type": "java.lang.String",
+      "description": "用户名",
+      "sourceType": "com.y3tu.tool.web.updownload.properties.FtpProperties"
+    },
+    {
+      "name": "y3tu.tool.web.ftp.password",
+      "type": "java.lang.String",
+      "description": "密码",
+      "sourceType": "com.y3tu.tool.web.updownload.properties.FtpProperties"
+    },
+    {
+      "name": "y3tu.tool.web.ftp.uploadPath",
+      "type": "java.lang.String",
+      "description": "FTP上传路径",
+      "sourceType": "com.y3tu.tool.web.updownload.properties.FtpProperties"
+    },
+    {
+      "name": "y3tu.tool.web.ftp.maxTotal",
+      "type": "java.lang.Integer",
+      "description": "ftp池中最大连接",
+      "sourceType": "com.y3tu.tool.web.updownload.properties.FtpProperties"
+    },
+    {
+      "name": "y3tu.tool.web.ftp.maxWaitMillis",
+      "type": "java.lang.Integer",
+      "description": "ftp连接最长等待时间 单位毫秒",
+      "sourceType": "com.y3tu.tool.web.updownload.properties.FtpProperties"
+    },
+    {
+      "name": "y3tu.tool.web.sftp.host",
+      "type": "java.lang.String",
+      "description": "SFTP主机地址",
+      "sourceType": "com.y3tu.tool.web.updownload.properties.SftpProperties"
+    },
+    {
+      "name": "y3tu.tool.web.sftp.port",
+      "type": "java.lang.String",
+      "description": "端口",
+      "sourceType": "com.y3tu.tool.web.updownload.properties.SftpProperties"
+    },
+    {
+      "name": "y3tu.tool.web.sftp.username",
+      "type": "java.lang.String",
+      "description": "用户名",
+      "sourceType": "com.y3tu.tool.web.updownload.properties.SftpProperties"
+    },
+    {
+      "name": "y3tu.tool.web.ftp.password",
+      "type": "java.lang.String",
+      "description": "密码",
+      "sourceType": "com.y3tu.tool.web.updownload.properties.SftpProperties"
+    },
+    {
+      "name": "y3tu.tool.web.ftp.uploadPath",
+      "type": "java.lang.String",
+      "description": "SFTP上传路径",
+      "sourceType": "com.y3tu.tool.web.updownload.properties.SftpProperties"
+    },
+    {
+      "name": "y3tu.tool.web.sftp.maxTotal",
+      "type": "java.lang.Integer",
+      "description": "sftp池中最大连接",
+      "sourceType": "com.y3tu.tool.web.updownload.properties.SftpProperties"
+    },
+    {
+      "name": "y3tu.tool.web.sftp.maxWaitMillis",
+      "type": "java.lang.Integer",
+      "description": "sftp连接最长等待时间 单位毫秒",
+      "sourceType": "com.y3tu.tool.web.updownload.properties.SftpProperties"
     }
   ],
   "hints": []
 }
+

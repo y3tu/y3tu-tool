@@ -31,7 +31,7 @@ public class SftpFactory implements PooledObjectFactory<ChannelSftp> {
     public PooledObject<ChannelSftp> makeObject() throws Exception {
         try {
             JSch jsch = new JSch();
-            Session sshSession = jsch.getSession(sftpProperties.getUsername(), sftpProperties.getIp(), sftpProperties.getPort());
+            Session sshSession = jsch.getSession(sftpProperties.getUsername(), sftpProperties.getHost(), sftpProperties.getPort());
             sshSession.setPassword(sftpProperties.getPassword());
             Properties sshConfig = new Properties();
             sshConfig.put("StrictHostKeyChecking", "no");
@@ -66,7 +66,7 @@ public class SftpFactory implements PooledObjectFactory<ChannelSftp> {
 
     }
 
-    public SftpProperties getSftpProperties(){
+    public SftpProperties getSftpProperties() {
         return sftpProperties;
     }
 }
