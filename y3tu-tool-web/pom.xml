@@ -21,7 +21,7 @@
         <velocity-engine-version>2.0</velocity-engine-version>
         <jasypt-version>1.9.2</jasypt-version>
         <jjwt-version>0.9.0</jjwt-version>
-        <mysql.version>5.1.38</mysql.version>
+        <mysql.version>8.0.16</mysql.version>
         <jsch-version>0.1.55</jsch-version>
         <commons-net.version>3.6</commons-net.version>
         <easyexcel-version>2.1.7</easyexcel-version>
