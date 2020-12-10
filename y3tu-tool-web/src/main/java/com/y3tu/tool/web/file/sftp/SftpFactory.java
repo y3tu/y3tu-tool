@@ -1,11 +1,11 @@
-package com.y3tu.tool.web.updownload.sftp;
+package com.y3tu.tool.web.file.sftp;
 
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.y3tu.tool.web.exception.UpDownLoadException;
-import com.y3tu.tool.web.updownload.properties.SftpProperties;
+import com.y3tu.tool.web.file.properties.SftpProperties;
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.PooledObjectFactory;
 import org.apache.commons.pool2.impl.DefaultPooledObject;

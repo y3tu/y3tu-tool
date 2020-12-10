@@ -1,4 +1,4 @@
-package com.y3tu.tool.web.updownload.util;
+package com.y3tu.tool.web.file.util;
 
 import cn.hutool.http.HttpRequest;
 import com.y3tu.tool.core.http.HttpUtil;
@@ -7,7 +7,7 @@ import com.y3tu.tool.core.util.IdUtil;
 import com.y3tu.tool.core.util.JsonUtil;
 import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.web.exception.UpDownLoadException;
-import com.y3tu.tool.web.updownload.dto.PictureDto;
+import com.y3tu.tool.web.file.dto.PictureDto;
 import com.y3tu.tool.web.util.TranslatorUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;

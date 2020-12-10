@@ -1,4 +1,4 @@
-package com.y3tu.tool.web.updownload.ftp;
+package com.y3tu.tool.web.file.ftp;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.ftp.FTPClient;

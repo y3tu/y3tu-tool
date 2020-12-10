@@ -1,4 +1,4 @@
-package com.y3tu.tool.web.updownload.sftp;
+package com.y3tu.tool.web.file.sftp;
 
 import java.io.*;
 import java.util.ArrayList;

@@ -1,9 +1,9 @@
-package com.y3tu.tool.web.updownload.configure;
+package com.y3tu.tool.web.file.configure;
 
-import com.y3tu.tool.web.updownload.ftp.FtpHelper;
-import com.y3tu.tool.web.updownload.ftp.FtpPool;
-import com.y3tu.tool.web.updownload.ftp.FtpFactory;
-import com.y3tu.tool.web.updownload.properties.FtpProperties;
+import com.y3tu.tool.web.file.ftp.FtpHelper;
+import com.y3tu.tool.web.file.ftp.FtpPool;
+import com.y3tu.tool.web.file.ftp.FtpFactory;
+import com.y3tu.tool.web.file.properties.FtpProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;

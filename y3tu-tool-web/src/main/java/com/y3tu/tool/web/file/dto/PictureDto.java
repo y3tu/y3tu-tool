@@ -1,4 +1,4 @@
-package com.y3tu.tool.web.updownload.dto;
+package com.y3tu.tool.web.file.dto;
 
 import lombok.Data;
 

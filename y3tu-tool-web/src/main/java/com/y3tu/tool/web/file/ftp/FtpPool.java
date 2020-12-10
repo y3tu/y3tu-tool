@@ -1,6 +1,6 @@
-package com.y3tu.tool.web.updownload.ftp;
+package com.y3tu.tool.web.file.ftp;
 
-import com.y3tu.tool.web.updownload.properties.FtpProperties;
+import com.y3tu.tool.web.file.properties.FtpProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.pool2.impl.GenericObjectPool;

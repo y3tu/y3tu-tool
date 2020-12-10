@@ -1,7 +1,7 @@
-package com.y3tu.tool.web.updownload.sftp;
+package com.y3tu.tool.web.file.sftp;
 
 import com.jcraft.jsch.ChannelSftp;
-import com.y3tu.tool.web.updownload.properties.SftpProperties;
+import com.y3tu.tool.web.file.properties.SftpProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;

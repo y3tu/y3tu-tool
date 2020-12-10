@@ -1,4 +1,4 @@
-package com.y3tu.tool.web.updownload.properties;
+package com.y3tu.tool.web.file.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -9,8 +9,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author y3tu
  */
 @Data
-@ConfigurationProperties(prefix = "y3tu.tool.web.up")
-public class UpDownLoadProperties {
+@ConfigurationProperties(prefix = "y3tu.tool.web.file")
+public class FileProperties {
 
     /**
      * 文件大小限制

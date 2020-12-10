@@ -1,6 +1,6 @@
-package com.y3tu.tool.web.updownload.configure;
+package com.y3tu.tool.web.file.configure;
 
-import com.y3tu.tool.web.updownload.properties.UpDownLoadProperties;
+import com.y3tu.tool.web.file.properties.FileProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -11,11 +11,11 @@ import org.springframework.context.annotation.Configuration;
  * @author y3tu
  */
 @Configuration
-@EnableConfigurationProperties({UpDownLoadProperties.class})
-public class UpDownLoadConfigure {
+@EnableConfigurationProperties({FileProperties.class})
+public class FileConfigure {
 
     @Autowired
-    UpDownLoadProperties properties;
+    FileProperties properties;
 
 
 }

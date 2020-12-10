@@ -1,4 +1,4 @@
-package com.y3tu.tool.web.updownload.properties;
+package com.y3tu.tool.web.file.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
