@@ -15,7 +15,7 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 public class SftpPool {
     private GenericObjectPool<ChannelSftp> pool;
 
-    public SftpPool(SftpPoolFactory factory) {
+    public SftpPool(SftpFactory factory) {
         SftpProperties sftpProperties = factory.getSftpProperties();
         GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
         // 不设置的话默认是8

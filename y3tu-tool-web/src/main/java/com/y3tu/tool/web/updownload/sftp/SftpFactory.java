@@ -15,14 +15,14 @@ import java.util.Properties;
 /**
  * @author y3tu
  */
-public class SftpPoolFactory implements PooledObjectFactory<ChannelSftp> {
+public class SftpFactory implements PooledObjectFactory<ChannelSftp> {
 
     /**
      * sftp配置
      */
     private SftpProperties sftpProperties;
 
-    public SftpPoolFactory(SftpProperties sftpProperties) {
+    public SftpFactory(SftpProperties sftpProperties) {
         this.sftpProperties = sftpProperties;
     }
 

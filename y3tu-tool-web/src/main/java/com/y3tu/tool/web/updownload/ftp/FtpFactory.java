@@ -20,7 +20,7 @@ import java.net.SocketException;
  * @author y3tu
  */
 @Slf4j
-public class FtpPoolFactory implements PooledObjectFactory<FTPClient> {
+public class FtpFactory implements PooledObjectFactory<FTPClient> {
 
     /**
      * ftp配置
@@ -28,7 +28,7 @@ public class FtpPoolFactory implements PooledObjectFactory<FTPClient> {
     private FtpProperties ftpProperties;
     private static int BUFF_SIZE = 256000;
 
-    public FtpPoolFactory(FtpProperties ftpProperties) {
+    public FtpFactory(FtpProperties ftpProperties) {
         this.ftpProperties = ftpProperties;
     }
 

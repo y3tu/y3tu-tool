@@ -35,7 +35,12 @@ public class SftpProperties {
      * 上传到文件服务器的那个目录
      */
     private String uploadPath;
-
+    /**
+     * 池中最多数量的sftp连接
+     */
     private int maxTotal;
+    /**
+     * 连接最长等待时间
+     */
     private int maxWaitMillis;
 }

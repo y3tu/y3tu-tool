@@ -15,9 +15,15 @@ public class FtpProperties {
     private int port;
     private String username;
     private String password;
-    private String encoding;
+    private String encoding = "UTF-8";
     private String workPath;
 
+    /**
+     * 池中最多数量的ftp连接
+     */
     private int maxTotal;
+    /**
+     * 连接最长等待时间
+     */
     private int maxWaitMillis;
 }

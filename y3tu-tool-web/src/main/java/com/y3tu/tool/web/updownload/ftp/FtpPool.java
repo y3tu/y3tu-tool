@@ -16,7 +16,7 @@ public class FtpPool {
 
     private final GenericObjectPool<FTPClient> pool;
 
-    public FtpPool(FtpPoolFactory factory) {
+    public FtpPool(FtpFactory factory) {
         FtpProperties ftpProperties = factory.getFtpProperties();
         GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
         // 不设置的话默认是8

@@ -2,7 +2,7 @@ package com.y3tu.tool.web.updownload.configure;
 
 import com.y3tu.tool.web.updownload.ftp.FtpHelper;
 import com.y3tu.tool.web.updownload.ftp.FtpPool;
-import com.y3tu.tool.web.updownload.ftp.FtpPoolFactory;
+import com.y3tu.tool.web.updownload.ftp.FtpFactory;
 import com.y3tu.tool.web.updownload.properties.FtpProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -25,19 +25,19 @@ public class FtpConfigure {
      * @return
      */
     @Bean
-    FtpPoolFactory ftpPoolFactory(FtpProperties ftpProperties) {
-        return new FtpPoolFactory(ftpProperties);
+    FtpFactory ftpPoolFactory(FtpProperties ftpProperties) {
+        return new FtpFactory(ftpProperties);
     }
 
     /**
      * ftp连接池
      *
-     * @param ftpPoolFactory
+     * @param ftpFactory
      * @return
      */
     @Bean
-    FtpPool ftpPool(FtpPoolFactory ftpPoolFactory) {
-        return new FtpPool(ftpPoolFactory);
+    FtpPool ftpPool(FtpFactory ftpFactory) {
+        return new FtpPool(ftpFactory);
     }
 
     @Bean
