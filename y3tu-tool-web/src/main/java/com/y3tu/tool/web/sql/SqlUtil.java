@@ -230,7 +230,6 @@ public class SqlUtil {
                 paramList.add(params.get(key));
             }
         }
-
         List dataList = JdbcTemplateContainer.getJdbcTemplate(dsName).query(sql, new BeanPropertyRowMapper<>(clazz), paramList.toArray());
         return dataList;
     }

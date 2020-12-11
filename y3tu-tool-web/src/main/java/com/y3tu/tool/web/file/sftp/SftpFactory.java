@@ -13,6 +13,8 @@ import org.apache.commons.pool2.impl.DefaultPooledObject;
 import java.util.Properties;
 
 /**
+ * Sftp工厂
+ *
  * @author y3tu
  */
 public class SftpFactory implements PooledObjectFactory<ChannelSftp> {
@@ -53,7 +55,8 @@ public class SftpFactory implements PooledObjectFactory<ChannelSftp> {
 
     @Override
     public boolean validateObject(PooledObject<ChannelSftp> pooledObject) {
-        return false;
+        ChannelSftp channelSftp = pooledObject.getObject();
+        return channelSftp.isConnected();
     }
 
     @Override

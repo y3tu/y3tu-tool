@@ -78,13 +78,13 @@
       "sourceType": "com.y3tu.tool.web.file.properties.SftpProperties"
     },
     {
-      "name": "y3tu.tool.web.ftp.password",
+      "name": "y3tu.tool.web.sftp.password",
       "type": "java.lang.String",
       "description": "密码",
       "sourceType": "com.y3tu.tool.web.file.properties.SftpProperties"
     },
     {
-      "name": "y3tu.tool.web.ftp.uploadPath",
+      "name": "y3tu.tool.web.sftp.uploadPath",
       "type": "java.lang.String",
       "description": "SFTP上传路径",
       "sourceType": "com.y3tu.tool.web.file.properties.SftpProperties"
