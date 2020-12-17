@@ -1,10 +1,13 @@
 <template>
-    <div class="app-container">
+    <div class="main-container">
         <div class="head-container">
-            <label class="el-form-item-label">缓存名称</label>
-            <el-input clearable v-model="cacheName" placeholder="请输入缓存名" style="width:200px" class="filter-item" @keyup.enter="search"/>
-            <el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="search">搜索</el-button>
-            <el-button class="filter-item" size="mini" type="warning" icon="el-icon-reset" @click="resetCacheStats">重置缓存统计数据</el-button>
+            <label class="form-item-label">缓存名称</label>
+            <el-input clearable v-model="cacheName" placeholder="请输入缓存名" style="width:200px" class="form-item"
+                      @keyup.enter="search"/>
+            <el-button class="form-item" size="mini" type="success" icon="el-icon-search" @click="search">搜索</el-button>
+            <el-button class="form-item" size="mini" type="warning" icon="el-icon-refresh-left"
+                       @click="resetCacheStats">重置缓存统计数据
+            </el-button>
         </div>
 
         <el-table
@@ -23,7 +26,6 @@
                 </template>
             </el-table-column>
             <el-table-column :show-overflow-tooltip="true" align="center" prop="cacheName" label="缓存名"/>
-            <el-table-column :show-overflow-tooltip="true" align="center" prop="internalKey" label="内部缓存名" width="150px"/>
             <el-table-column :show-overflow-tooltip="true" align="center" prop="depict" label="描述"/>
             <el-table-column prop="requestCount" align="center" label="请求总数"/>
             <el-table-column prop="missCount" align="center" label="未命中总数" width="150px"/>
@@ -49,9 +51,9 @@
         <el-pagination
                 :total="total"
                 style="margin-top: 8px;"
-                layout="total, prev, pager, next, sizes"
-                :current-pageInfo="currentPage"
-                :pageInfo-size="pageSize"
+                layout="prev, pager, next"
+                :currentPage="currentPage"
+                :page-size="pageSize"
                 @size-change="sizeChange"
                 @current-change="pageChange">
         </el-pagination>
@@ -60,7 +62,7 @@
 </template>
 
 <script>
-    import {getCacheStats, deleteCache, resetCacheStats} from './api'
+    import {listCacheStats, resetAllCacheStat} from './api'
 
     export default {
         name: 'cacheManager',
@@ -70,7 +72,7 @@
                 tableData: [],
                 pageLoading: false,
                 currentPage: 1, // 当前页码
-                total: 20, // 总条数
+                total: 0, // 总条数
                 pageSize: 10, // 每页的数据条数
             }
 
@@ -85,7 +87,7 @@
             },
             search() {
                 this.pageLoading = true;
-                getCacheStats().then(res => {
+                listCacheStats().then(res => {
                     this.tableData = res.data;
                     let list = this.tableData.filter((item) =>
                         item.cacheName.includes(this.cacheName)
@@ -101,19 +103,9 @@
                 })
             },
             deleteCache(row) {
-                deleteCache({
-                    cacheName: row.cacheName,
-                    internalKey: row.internalKey
-                }).then(() => {
-                    this.$notify({
-                        title: '删除缓存成功',
-                        type: 'success',
-                        duration: 6000
-                    })
-                })
             },
             resetCacheStats() {
-                resetCacheStats().then(() => {
+                resetAllCacheStat().then(() => {
                     this.$notify({
                         title: '重置缓存统计数据',
                         type: 'success',

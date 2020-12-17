@@ -1,4 +1,4 @@
-package com.y3tu.tool.ui.config;
+package com.y3tu.tool.ui.configure;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -13,7 +13,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class UiProperties {
 
     /**
-     * 设置拦截的url
+     * 访问ui的url
      */
     private String urlPattern;
 

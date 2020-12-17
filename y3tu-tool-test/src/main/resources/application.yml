@@ -62,6 +62,8 @@ y3tu:
       enableApi: true
       cacheMode: all
       stats: true
+    ui:
+      urlPattern: /tool/*
 
 
 

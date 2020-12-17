@@ -1,6 +1,6 @@
 package com.y3tu.tool.ui.annotation;
 
-import com.y3tu.tool.ui.config.UiAutoConfiguration;
+import com.y3tu.tool.ui.configure.UiAutoConfigure;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
@@ -13,6 +13,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented
-@Import(UiAutoConfiguration.class)
+@Import(UiAutoConfigure.class)
 public @interface EnableToolUI {
 }

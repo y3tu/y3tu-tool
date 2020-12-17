@@ -17,7 +17,7 @@ import java.util.List;
  * @author y3tu
  */
 @RestController
-@RequestMapping("/tool/cache")
+@RequestMapping("${y3tu.tool.cache.urlPattern:y3tu-tool-cache}")
 public class ToolCacheController {
 
     @Autowired

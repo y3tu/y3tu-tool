@@ -107,23 +107,28 @@ public class SecondaryCacheManager extends AbstractCacheManager implements Dispo
         RedisTemplate<String, Object> redisTemplate = this.getRedisTemplate();
         Set<String> layeringCacheKeys = new RedisService(this.getRedisTemplate()).scan(CACHE_STATS_KEY_PREFIX + "*");
         for (String key : layeringCacheKeys) {
-            resetCacheStat(key);
+            resetCacheStatByKey(key);
+        }
+    }
+
+    private void resetCacheStatByKey(String key) {
+        RedisTemplate<String, Object> redisTemplate = this.getRedisTemplate();
+        try {
+            CacheStatsInfo cacheStats = (CacheStatsInfo) redisTemplate.opsForValue().get(key);
+            if (Objects.nonNull(cacheStats)) {
+                cacheStats.clearStatsInfo();
+                // 将缓存统计数据写到redis
+                redisTemplate.opsForValue().set(key, cacheStats, 24, TimeUnit.HOURS);
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
         }
     }
 
     @Override
     public void resetCacheStat(String cacheName) {
-        RedisTemplate<String, Object> redisTemplate = this.getRedisTemplate();
-        try {
-            CacheStatsInfo cacheStats = (CacheStatsInfo) redisTemplate.opsForValue().get(CACHE_STATS_KEY_PREFIX + cacheName);
-            if (Objects.nonNull(cacheStats)) {
-                cacheStats.clearStatsInfo();
-                // 将缓存统计数据写到redis
-                redisTemplate.opsForValue().set(CACHE_STATS_KEY_PREFIX + cacheName, cacheStats, 24, TimeUnit.HOURS);
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-        }
+        String key = CACHE_STATS_KEY_PREFIX + cacheName;
+        resetCacheStatByKey(key);
     }
 
     @Override

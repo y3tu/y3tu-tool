@@ -1,7 +1,7 @@
-package com.y3tu.tool.ui.config;
+package com.y3tu.tool.ui.configure;
 
 import com.y3tu.tool.ui.web.UiViewServlet;
-import com.y3tu.tool.ui.web.filter.CacheFilter;
+import com.y3tu.tool.ui.web.filter.UiFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -18,9 +18,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableConfigurationProperties(UiProperties.class)
 @ConditionalOnWebApplication
-public class UiAutoConfiguration {
+public class UiAutoConfigure {
 
-    @Value("${y3tu.tool.cache.layer.url-pattern:/y3tu-tool-cache/*}")
+    @Value("${y3tu.tool.cache.url-pattern:/y3tu-tool-cache/*}")
     private String cacheUrlPattern;
 
     @Value("${y3tu.tool.ui.url-pattern:/y3tu-tool-ui/*}")
@@ -57,9 +57,12 @@ public class UiAutoConfiguration {
     public FilterRegistrationBean cacheFilterRegistration() {
 
         FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(new CacheFilter(cacheUrlPattern, uiUrlPattern));
+        UiFilter uiFilter = new UiFilter();
+        uiFilter.setCacheUrlPattern(cacheUrlPattern);
+        uiFilter.setUiUrlPattern(uiUrlPattern);
+        registration.setFilter(uiFilter);
         registration.addUrlPatterns(uiUrlPattern);
-        registration.setName("cacheFilter");
+        registration.setName("uiFilter");
         registration.setOrder(1);
         return registration;
     }

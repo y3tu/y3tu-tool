@@ -1,12 +1,14 @@
-import {createRouter, createWebHistory} from 'vue-router';
+import {createRouter, createWebHashHistory} from 'vue-router';
 
 const routes = [
     {
-        path: '/cache',
-        hidden: true,
+        path: '/',
         component: () => import('@/views/cache/index.vue'),
     },
-
+    {
+        path: '/reportList',
+        component: () => import('@/views/report/reportList/index.vue'),
+    },
     {
         path: '/404',
         hidden: true,
@@ -25,11 +27,9 @@ const routes = [
 ];
 
 
-
 let router = createRouter({
-    history: createWebHistory(),
+    history: createWebHashHistory(process.env.VUE_APP_BASE_API),
     routes,
-    strict: true,
 });
 
 export default router

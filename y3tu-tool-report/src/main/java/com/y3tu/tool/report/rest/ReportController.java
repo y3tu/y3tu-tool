@@ -7,7 +7,6 @@ import com.y3tu.tool.web.base.jpa.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-
 /**
  * @author y3tu
  */

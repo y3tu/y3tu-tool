@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * 缓存基本配置
  *
- * @author yuhao.wang3
+ * @author y3tu
  */
 @Data
 @ConfigurationProperties("y3tu.tool.cache")
@@ -22,6 +22,11 @@ public class CacheProperties {
      * 启动请求接口 默认关闭
      */
     private boolean enableApi = false;
+    /**
+     * 请求接口访问前缀
+     * 默认y3tu-tool-cache
+     */
+    private String urlPattern = "y3tu-tool-cache";
     /**
      * 缓存模式
      */

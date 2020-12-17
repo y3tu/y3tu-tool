@@ -8,7 +8,8 @@ import {
     ElMessage,
     ElInput,
     ElTableColumn,
-    ElPagination
+    ElPagination,
+    ElLoading,
 } from 'element-plus';
 
 export default {
@@ -23,5 +24,6 @@ export default {
         app.use(ElInput)
         app.use(ElTableColumn)
         app.use(ElPagination)
+        app.use(ElLoading)
     }
 }

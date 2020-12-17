@@ -3,6 +3,9 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+import '@/styles/index.scss' //全局css
+
+
 const app = createApp(App)
 
 import plugin from './plugin'

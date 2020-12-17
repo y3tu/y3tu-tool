@@ -203,7 +203,7 @@ public class SqlUtil {
      * @param dsName 数据源名
      * @return
      */
-    public static List queryList(String sql, Map<Integer, Object> params, String dsName) {
+    public static List<Map<String, Object>> queryList(String sql, Map<Integer, Object> params, String dsName) {
         List<Object> paramList = new ArrayList<>();
         if (params != null) {
             for (int key : params.keySet()) {

@@ -10,6 +10,8 @@ const messageDuration = 3 * 1000;
 export const service = axios.create({
     baseURL: process.env.VUE_APP_BASE_API,
     timeout: requestTimeOut,
+    // 跨域请求，允许保存cookie
+    withCredentials: true,
     responseType: 'json',
     validateStatus(status) {
         return status === success
