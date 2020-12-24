@@ -6,7 +6,10 @@
                       @keyup.enter="search"/>
             <el-button class="form-item" size="mini" type="success" icon="el-icon-search" @click="search">搜索</el-button>
             <el-button class="form-item" size="mini" type="warning" icon="el-icon-refresh-left"
-                       @click="resetCacheStats">重置缓存统计数据
+                       @click="resetAllCacheStat">重置缓存统计数据
+            </el-button>
+            <el-button class="form-item" size="mini" type="warning" icon="el-icon-refresh-left"
+                       @click="clearAllCache">清除缓存
             </el-button>
         </div>
 
@@ -39,8 +42,11 @@
 
             <el-table-column label="操作" align="center" fixed="right" width="150px">
                 <template #default="scope">
-                    <el-button size="mini" type="danger" icon="el-icon-delete" @click="deleteCache(scope.row)">
+                    <el-button size="mini" type="danger" icon="el-icon-delete" @click="clearCacheByName(scope.row)">
                         清除缓存
+                    </el-button>
+                    <el-button size="mini" type="danger" icon="el-icon-delete" @click="resetCacheStatByCacheName(scope.row)">
+                        重置统计
                     </el-button>
                 </template>
             </el-table-column>
@@ -62,7 +68,7 @@
 </template>
 
 <script>
-    import {listCacheStats, resetAllCacheStat} from './api'
+    import {listCacheStats, resetAllCacheStat, resetCacheStatByCacheName, clearAllCache, clearCacheByName} from './api'
 
     export default {
         name: 'cacheManager',
@@ -102,15 +108,40 @@
                     this.pageLoading = false;
                 })
             },
-            deleteCache(row) {
-            },
-            resetCacheStats() {
-                resetAllCacheStat().then(() => {
-                    this.$notify({
-                        title: '重置缓存统计数据',
+            clearAllCache() {
+                clearAllCache().then(() => {
+                    this.$message({
+                        message: '清除缓存',
                         type: 'success',
-                        duration: 6000
-                    })
+                        duration: 3 * 1000
+                    });
+                })
+            },
+            clearCacheByName(row) {
+                clearCacheByName(row.cacheName).then(() => {
+                    this.$message({
+                        message: '清除缓存',
+                        type: 'success',
+                        duration: 3 * 1000
+                    });
+                })
+            },
+            resetCacheStatByCacheName(row) {
+                resetCacheStatByCacheName(row.cacheName).then(() => {
+                    this.$message({
+                        message: '重置缓存统计',
+                        type: 'success',
+                        duration: 3 * 1000
+                    });
+                })
+            },
+            resetAllCacheStat() {
+                resetAllCacheStat().then(() => {
+                    this.$message({
+                        message: '重置缓存统计',
+                        type: 'success',
+                        duration: 3 * 1000
+                    });
                 })
             },
             sizeChange(val) {
@@ -122,9 +153,6 @@
                 this.currentPage = val;
                 this.search();
             },
-            handleSelect() {
-
-            }
         }
 
     }

@@ -23,8 +23,12 @@ public class UiAutoConfigure {
     @Value("${y3tu.tool.cache.url-pattern:/y3tu-tool-cache/*}")
     private String cacheUrlPattern;
 
+    @Value("${y3tu.tool.report.url-pattern:/y3tu-tool-report/*}")
+    private String reportUrlPattern;
+
     @Value("${y3tu.tool.ui.url-pattern:/y3tu-tool-ui/*}")
     private String uiUrlPattern;
+
 
     /**
      * 配置url拦截
@@ -60,6 +64,7 @@ public class UiAutoConfigure {
         UiFilter uiFilter = new UiFilter();
         uiFilter.setCacheUrlPattern(cacheUrlPattern);
         uiFilter.setUiUrlPattern(uiUrlPattern);
+        uiFilter.setReportUrlPattern(reportUrlPattern);
         registration.setFilter(uiFilter);
         registration.addUrlPatterns(uiUrlPattern);
         registration.setName("uiFilter");

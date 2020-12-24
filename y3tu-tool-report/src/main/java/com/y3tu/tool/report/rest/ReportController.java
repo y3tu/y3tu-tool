@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
  * @author y3tu
  */
 @RestController
-@RequestMapping("report")
+@RequestMapping("${y3tu.tool.report.urlPattern:y3tu-tool-report}/report")
 public class ReportController {
 
     @Autowired
@@ -26,7 +26,6 @@ public class ReportController {
     public R get(@PathVariable long id) {
         return R.success(reportService.findById(id));
     }
-
 
 
 }

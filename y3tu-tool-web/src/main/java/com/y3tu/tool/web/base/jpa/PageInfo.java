@@ -6,9 +6,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * 分页实体
+ *
+ * @author y3tu
+ */
 @Data
-public class PageInfo<T>{
+public class PageInfo<T> {
     /**
      * 查询条件参数实体
      */

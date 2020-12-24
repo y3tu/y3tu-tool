@@ -13,6 +13,13 @@
       "description": "是否开启",
       "sourceType": "com.y3tu.tool.report.configure.ToolReportProperties",
       "defaultValue": true
+    },
+    {
+      "name": "y3tu.tool.report.urlPattern",
+      "type": "java.lang.String",
+      "description": "请求接口访问前缀",
+      "sourceType": "com.y3tu.tool.report.configure.ToolReportProperties",
+      "defaultValue": "y3tu-tool-report"
     }
   ],
   "hints": []

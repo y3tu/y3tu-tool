@@ -12,10 +12,13 @@
   },
   "dependencies": {
     "axios": "^0.21.0",
-    "element-plus": "^1.0.1-beta.1",
+    "element-plus": "^1.0.1-beta.10",
     "vue": "^3.0.2",
     "vue-router": "^4.0.0-rc.6",
-    "vuex": "^4.0.0-rc.2"
+    "vuex": "^4.0.0-rc.2",
+    "x-data-spreadsheet": "^1.1.8",
+    "lodash": "^4.17.15",
+    "html2canvas": "^1.0.0-rc.5"
   },
   "devDependencies": {
     "@popperjs/core": "^2.5.4",
@@ -27,7 +30,8 @@
     "babel-plugin-component": "^1.1.1",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0-0",
-    "sass": "^1.30.0"
+    "sass": "^1.30.0",
+    "less": "3.13.0"
   },
   "eslintConfig": {
     "root": true,

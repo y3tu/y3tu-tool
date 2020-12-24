@@ -34,6 +34,9 @@ public class UiFilter implements Filter {
         if (requestUrl.indexOf(formatUrl(cacheUrlPattern)) > 0) {
             requestUrl = StrUtil.replace(requestUrl, formatSuffixUrl(uiUrlPattern), "");
             httpRequest.getRequestDispatcher(requestUrl).forward(httpRequest, httpResponse);
+        } else if (requestUrl.indexOf(formatUrl(reportUrlPattern)) > 0) {
+            requestUrl = StrUtil.replace(requestUrl, formatSuffixUrl(uiUrlPattern), "");
+            httpRequest.getRequestDispatcher(requestUrl).forward(httpRequest, httpResponse);
         } else {
             chain.doFilter(httpRequest, httpResponse);
         }
