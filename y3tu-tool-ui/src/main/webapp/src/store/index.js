@@ -1,9 +1,9 @@
 import {createStore} from 'vuex'
 
-import editor from './modules/editor'
+import visualDesign from './modules/visual-design'
 
 export default createStore({
     modules: {
-        editor
+        visualDesign
     }
 })

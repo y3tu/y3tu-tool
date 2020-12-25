@@ -17,7 +17,6 @@
     "vue-router": "^4.0.0-rc.6",
     "vuex": "^4.0.0-rc.2",
     "x-data-spreadsheet": "^1.1.8",
-    "lodash": "^4.17.15",
     "html2canvas": "^1.0.0-rc.5"
   },
   "devDependencies": {

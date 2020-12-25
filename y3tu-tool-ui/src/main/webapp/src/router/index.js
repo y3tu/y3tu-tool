@@ -6,16 +6,8 @@ const routes = [
         component: () => import('@/views/cache/index.vue'),
     },
     {
-        path: '/list',
-        component: () => import('@/views/report/list/index.vue'),
-    },
-    {
-        path: '/design',
-        component: () => import('@/views/report/design/index.vue'),
-    },
-    {
         path: '/',
-        component: () => import('@/views/visual-design/editor/index.vue'),
+        component: () => import('@/views/visual-design/Index.vue'),
     },
     {
         path: '/404',

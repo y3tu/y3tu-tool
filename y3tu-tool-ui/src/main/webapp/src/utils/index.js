@@ -50,3 +50,9 @@ export const deepClone = function (obj, cache = []) {
 
     return copy
 }
+
+export function swap(arr, i, j) {
+    const temp = arr[i]
+    arr[i] = arr[j]
+    arr[j] = temp
+}
