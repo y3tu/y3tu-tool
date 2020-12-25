@@ -22,9 +22,11 @@
                 type: Object,
             },
         },
-        computed: mapState([
-            'editMode',
-        ]),
+        computed: {
+            ...mapState({
+                editMode: state => state.visualDesign.editMode
+            })
+        },
         methods: {
             handleInput(e) {
                 this.$emit('input', this.element, e.target.value)

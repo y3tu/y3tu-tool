@@ -1,5 +1,7 @@
 <template>
-    <div class="shape" @click="selectCurComponent" @mousedown="handleMouseDown"
+    <div class="shape"
+         @click="selectCurComponent"
+         @mousedown="handleMouseDown"
          @contextmenu="handleContextMenu">
         <div
                 class="shape-point"
@@ -97,7 +99,7 @@
             },
 
             handleMouseDown(e) {
-                if (this.element.component != 'v-text') {
+                if (this.element.component !== 'v-text') {
                     e.preventDefault()
                 }
 

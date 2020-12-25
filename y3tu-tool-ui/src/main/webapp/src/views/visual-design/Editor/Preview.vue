@@ -28,10 +28,12 @@ export default {
         },
     },
     components: { ComponentWrapper },
-    computed: mapState([
-        'componentData',
-        'canvasStyleData',
-    ]),
+    computed: {
+        ...mapState({
+            componentData: state => state.visualDesign.componentData,
+            canvasStyleData: state => state.visualDesign.canvasStyleData,
+        })
+    },
     methods: {
         getStyle,
 

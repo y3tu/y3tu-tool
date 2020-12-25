@@ -6,8 +6,8 @@
                 class="line"
                 :class="line.includes('x')? 'xline' : 'yline'"
                 :ref="line"
-                v-show="lineStatus[line] || false"
-        ></div>
+                v-show="lineStatus[line] || false">
+        </div>
     </div>
 </template>
 
@@ -32,7 +32,6 @@
         mounted() {
             this.editor = document.querySelector('#editor')
             // 监听元素移动和不移动的事件
-
             this.$bus.$on('move', (dragNode, isDownward, isRightward) => {
                 this.showLine(dragNode, isDownward, isRightward)
             })
@@ -66,14 +65,14 @@
                         top: [
                             {
                                 isNearly: this.isNearly(dragNodeRectInfo.top, top),
-                                lineNode: lines.xt[0], // xt
+                                lineNode: lines.xt, // xt
                                 line: 'xt',
                                 dragShift: top,
                                 lineShift: top,
                             },
                             {
                                 isNearly: this.isNearly(dragNodeRectInfo.bottom, top),
-                                lineNode: lines.xt[0], // xt
+                                lineNode: lines.xt, // xt
                                 line: 'xt',
                                 dragShift: top - dragNodeRectInfo.height,
                                 lineShift: top,
@@ -81,21 +80,21 @@
                             {
                                 // 组件与拖拽节点的中间是否对齐
                                 isNearly: this.isNearly(dragNodeRectInfo.top + dragNodeHalfHeight, top + nodeHalfHeight),
-                                lineNode: lines.xc[0], // xc
+                                lineNode: lines.xc, // xc
                                 line: 'xc',
                                 dragShift: top + nodeHalfHeight - dragNodeHalfHeight,
                                 lineShift: top + nodeHalfHeight,
                             },
                             {
                                 isNearly: this.isNearly(dragNodeRectInfo.top, bottom),
-                                lineNode: lines.xb[0], // xb
+                                lineNode: lines.xb, // xb
                                 line: 'xb',
                                 dragShift: bottom,
                                 lineShift: bottom,
                             },
                             {
                                 isNearly: this.isNearly(dragNodeRectInfo.bottom, bottom),
-                                lineNode: lines.xb[0], // xb
+                                lineNode: lines.xb, // xb
                                 line: 'xb',
                                 dragShift: bottom - dragNodeRectInfo.height,
                                 lineShift: bottom,
@@ -104,14 +103,14 @@
                         left: [
                             {
                                 isNearly: this.isNearly(dragNodeRectInfo.left, left),
-                                lineNode: lines.yl[0], // yl
+                                lineNode: lines.yl, // yl
                                 line: 'yl',
                                 dragShift: left,
                                 lineShift: left,
                             },
                             {
                                 isNearly: this.isNearly(dragNodeRectInfo.right, left),
-                                lineNode: lines.yl[0], // yl
+                                lineNode: lines.yl, // yl
                                 line: 'yl',
                                 dragShift: left - dragNodeRectInfo.width,
                                 lineShift: left,
@@ -119,21 +118,21 @@
                             {
                                 // 组件与拖拽节点的中间是否对齐
                                 isNearly: this.isNearly(dragNodeRectInfo.left + dragNodeHalfwidth, left + nodeHalfwidth),
-                                lineNode: lines.yc[0], // yc
+                                lineNode: lines.yc, // yc
                                 line: 'yc',
                                 dragShift: left + nodeHalfwidth - dragNodeHalfwidth,
                                 lineShift: left + nodeHalfwidth,
                             },
                             {
                                 isNearly: this.isNearly(dragNodeRectInfo.left, right),
-                                lineNode: lines.yr[0], // yr
+                                lineNode: lines.yr, // yr
                                 line: 'yr',
                                 dragShift: right,
                                 lineShift: right,
                             },
                             {
                                 isNearly: this.isNearly(dragNodeRectInfo.right, right),
-                                lineNode: lines.yr[0], // yr
+                                lineNode: lines.yr, // yr
                                 line: 'yr',
                                 dragShift: right - dragNodeRectInfo.width,
                                 lineShift: right,

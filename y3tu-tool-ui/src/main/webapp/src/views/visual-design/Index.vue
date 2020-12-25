@@ -43,8 +43,7 @@
                                         v-for="(tag, index) in curComponent.animations"
                                         :key="index"
                                         closable
-                                        @close="removeAnimation(index)"
-                                >
+                                        @close="removeAnimation(index)">
                                     {{ tag.label }}
                                 </el-tag>
                             </div>
@@ -59,8 +58,7 @@
                                         v-for="event in Object.keys(curComponent.events)"
                                         :key="event"
                                         closable
-                                        @close="removeEvent(event)"
-                                >
+                                        @close="removeEvent(event)">
                                     {{ event }}
                                 </el-tag>
                             </div>
@@ -72,17 +70,20 @@
         </main>
 
         <!-- 选择动画 -->
-        <Modal v-model="isShowAnimation">
-            <el-tabs v-model="animationActiveName">
+
+        <el-drawer
+                v-model="isShowAnimation"
+                direction="ltr"
+                :with-header="false"
+                destroy-on-close>
+            <el-tabs v-model="animationActiveName" style="height: 1000px">
                 <el-tab-pane v-for="item in animationClassData" :key="item.label" :label="item.label" :name="item.label">
                     <el-scrollbar class="animate-container">
-                        <div
-                                class="animate"
-                                v-for="(animate, index) in item.children"
-                                :key="index"
-                                @mouseover="hoverPreviewAnimate = animate.value"
-                                @click="addAnimation(animate)"
-                        >
+                        <div class="animate"
+                             v-for="(animate, index) in item.children"
+                             :key="index"
+                             @mouseover="hoverPreviewAnimate = animate.value"
+                             @click="addAnimation(animate)">
                             <div :class="[hoverPreviewAnimate === animate.value && animate.value + ' animated']">
                                 {{ animate.label }}
                             </div>
@@ -90,10 +91,14 @@
                     </el-scrollbar>
                 </el-tab-pane>
             </el-tabs>
-        </Modal>
+        </el-drawer>
 
         <!-- 选择事件 -->
-        <Modal v-model="isShowEvent">
+        <el-drawer
+                v-model="isShowEvent"
+                direction="ltr"
+                :with-header="false"
+                destroy-on-close>
             <el-tabs v-model="eventActiveName">
                 <el-tab-pane v-for="item in eventList" :key="item.key" :label="item.label" :name="item.key" style="padding: 0 20px">
                     <el-input v-if="item.key == 'redirect'" v-model="item.param" type="textarea" placeholder="请输入完整的 URL"/>
@@ -101,10 +106,10 @@
                     <el-button style="margin-top: 20px;" @click="addEvent(item.key, item.param)">确定</el-button>
                 </el-tab-pane>
             </el-tabs>
-        </Modal>
+        </el-drawer>
 
         <!-- 预览 -->
-        <Preview v-model="isShowPreview" @change="handlePreviewChange"/>
+        <Preview :show="isShowPreview" @change="handlePreviewChange"/>
     </div>
 </template>
 
@@ -113,7 +118,6 @@
     import './styles/animate.css'
     import './styles/reset.css'
 
-    import Modal from './Modal'
     import Editor from './Editor/index'
     import ComponentList from './ComponentList' // 左侧列表组件
     import AttrList from './AttrList' // 右侧属性列表
@@ -121,12 +125,11 @@
     import {deepClone, createUUID} from '@/utils'
     import toast from '@/utils/toast'
     import animationClassData from '@/utils/animationClassData'
-    import eventBus from '@/utils/eventBus'
     import Preview from './Editor/Preview'
     import {eventList} from '@/utils/events'
 
     export default {
-        components: {Editor, ComponentList, AttrList, Modal, Preview},
+        components: {Editor, ComponentList, AttrList, Preview},
         data() {
             return {
                 isShowPreview: false,
@@ -244,7 +247,7 @@
             },
 
             previewAnimate() {
-                eventBus.$emit('runAnimation')
+                this.$bus.$emit('runAnimation')
             },
 
             removeAnimation(index) {
@@ -257,6 +260,7 @@
             },
 
             handlePreviewChange() {
+                this.isShowPreview = false
                 this.$store.commit('setEditMode', 'edit')
             },
 
@@ -340,7 +344,7 @@
         }
 
         .el-scrollbar__view {
-            display: flex;
+            display: inline-block;
             align-items: center;
             flex-wrap: wrap;
             padding-left: 14px;
