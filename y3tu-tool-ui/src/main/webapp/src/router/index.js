@@ -2,12 +2,16 @@ import {createRouter, createWebHashHistory} from 'vue-router';
 
 const routes = [
     {
+        path: '/',
+        component: () => import('@/views/home/index.vue'),
+    },
+    {
         path: '/cache',
         component: () => import('@/views/cache/index.vue'),
     },
     {
-        path: '/',
-        component: () => import('@/views/home/index.vue'),
+        path: '/visual',
+        component: () => import('@/views/visual-design/home/index.vue'),
     },
     {
         path: '/404',

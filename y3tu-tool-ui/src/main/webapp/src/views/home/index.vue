@@ -9,10 +9,10 @@
                 </div>
             </div>
             <div id="up" class="btn item">
-                <span @click="toCache">缓存</span>
+                <span @click="this.$router.push('/cache')">缓存</span>
             </div>
             <div id="right" class="btn item">
-                <span>设计</span>
+                <span @click="this.$router.push('/visual')">设计</span>
             </div>
             <div id="bottom" class="btn item">
                 <span>报表</span>
@@ -53,12 +53,6 @@
                     document.querySelector('#center').classList.toggle('close')
                 })
             })
-        },
-        methods: {
-            toCache() {
-                this.$router.push("/cache")
-            }
-
         }
     }
 </script>

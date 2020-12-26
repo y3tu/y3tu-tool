@@ -10,7 +10,7 @@
             <div class="bullshit">
                 <div class="bullshit__oops">Sorry!</div>
                 <div class="bullshit__headline">{{ message }}</div>
-                <a href="" class="bullshit__return-home">返回</a>
+                <a href="/#" class="bullshit__return-home">返回</a>
             </div>
         </div>
     </div>
