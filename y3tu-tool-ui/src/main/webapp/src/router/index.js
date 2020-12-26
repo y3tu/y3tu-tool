@@ -7,7 +7,7 @@ const routes = [
     },
     {
         path: '/',
-        component: () => import('@/views/visual-design/Index.vue'),
+        component: () => import('@/views/home/index.vue'),
     },
     {
         path: '/404',

@@ -51,6 +51,12 @@ export const deepClone = function (obj, cache = []) {
     return copy
 }
 
+/**
+ * 交换数组中元素的位置
+ * @param arr
+ * @param i
+ * @param j
+ */
 export function swap(arr, i, j) {
     const temp = arr[i]
     arr[i] = arr[j]
