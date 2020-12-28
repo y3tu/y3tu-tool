@@ -152,7 +152,7 @@
             pageChange(val) {
                 this.currentPage = val;
                 this.search();
-            },
+            }
         }
 
     }

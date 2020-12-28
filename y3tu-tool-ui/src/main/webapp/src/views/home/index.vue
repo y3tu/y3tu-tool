@@ -15,7 +15,7 @@
                 <span @click="this.$router.push('/visual')">设计</span>
             </div>
             <div id="bottom" class="btn item">
-                <span>报表</span>
+                <span @click="this.$router.push('/report')">报表</span>
             </div>
             <div id="left" class="btn item">
                 <span>...</span>
@@ -24,17 +24,17 @@
     </div>
 
     <coding/>
-    <logo/>
+    <changeText/>
 
 </template>
 
 <script>
     import coding from './coding'
-    import logo from './logo'
+    import changeText from './changeText'
     import {onMounted, onBeforeUnmount} from 'vue'
 
     export default {
-        components: {coding, logo},
+        components: {coding, changeText},
         setup() {
             onMounted(() => {
                 document.querySelector('body').setAttribute('style', 'background-color:#BEEDC7')

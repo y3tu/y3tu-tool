@@ -10,6 +10,6 @@ import org.springframework.stereotype.Service;
  * @author y3tu
  */
 @Service
-public class ReportServiceImpl extends BaseServiceImpl<ReportRepository,Report> implements ReportService {
+public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report> implements ReportService {
 
 }

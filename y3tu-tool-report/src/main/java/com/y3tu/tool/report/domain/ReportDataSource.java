@@ -21,13 +21,10 @@ public class ReportDataSource extends BaseEntity {
     @Column(columnDefinition = "varchar(100) COMMENT '数据源名称'")
     String name;
 
-    @Column(columnDefinition = "varchar(100) COMMENT '编码'")
-    String code;
-
     @Column(columnDefinition = "varchar(200) COMMENT '备注'")
     String remark;
 
-    @Column(name = "db_type", columnDefinition = "varchar(10) COMMENT '数据库类型'")
+    @Column(name = "db_type", columnDefinition = "varchar(10) COMMENT '数据库类型'  ")
     String dbType;
 
     @Column(name = "db_driver", columnDefinition = "varchar(100) COMMENT '驱动类'")

@@ -1,5 +1,5 @@
 <template>
-    <div id="logoText">
+    <div id="changeText">
 
     </div>
 </template>
@@ -21,7 +21,7 @@
                 var tail = 5;
                 var timeout = 80;
                 var p = document.createElement('p');
-                document.getElementById("logoText").appendChild(p);
+                document.getElementById("changeText").appendChild(p);
                 var colors = [
                     "rgb(110,64,170)",
                     "rgb(150,61,179)",

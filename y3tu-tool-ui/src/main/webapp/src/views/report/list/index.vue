@@ -1,18 +1,5 @@
 <template>
     <el-container>
-        <el-aside style="width: 200px">
-            <h2 class="title">报表设计器</h2>
-            <el-menu>
-                <el-submenu index="1">
-                    <template #title>报表管理</template>
-                    <el-menu-item-group>
-                        <el-menu-item index="1-1">打印设计</el-menu-item>
-                        <el-menu-item index="1-2">数据报表</el-menu-item>
-                        <el-menu-item index="1-3">图形报表</el-menu-item>
-                    </el-menu-item-group>
-                </el-submenu>
-            </el-menu>
-        </el-aside>
         <el-main>
             <el-tabs>
                 <el-tab-pane>

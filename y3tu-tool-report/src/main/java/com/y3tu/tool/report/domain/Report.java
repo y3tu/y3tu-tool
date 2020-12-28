@@ -27,20 +27,30 @@ public class Report extends BaseEntity {
     @Query(type = Query.Type.INNER_LIKE)
     String name;
 
+    @Column(columnDefinition = "varchar(1000) comment '备注'")
+    String remarks;
+
     @Column(columnDefinition = "varchar(10) comment '状态'")
     String status;
 
     @Column(columnDefinition = "varchar(10) comment '类型'")
     String type;
 
-    @Column(columnDefinition = "varchar(4000) comment 'json字符串'")
-    String jsonStr;
+    @Column(name = "ds_id", columnDefinition = "int(10) comment '数据源ID'")
+    long dsId;
 
-    @Column(columnDefinition = "varchar(4000) comment '缩略图'")
-    String thumb;
+    @Column(columnDefinition = "varchar(2000) comment '参数配置'")
+    String params;
+
+    @Column(name = "is_common", columnDefinition = "int comment '是否通用报表' ")
+    boolean isCommon;
+
+    @Column(name = "query_sql", columnDefinition = "varchar(2000) comment '报表查询sql'")
+    String querySql;
 
     @Column(name = "view_count", columnDefinition = "int(15) default 0 comment '浏览次数' ")
     int viewCount;
+
 
     /**
      * 数据库中不存在此字段用@Transient注解
