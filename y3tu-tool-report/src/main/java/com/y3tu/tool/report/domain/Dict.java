@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "report_dict")
 @Data
-public class ReportDict {
+public class Dict {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -33,4 +33,25 @@ public class ReportDict {
 
     @Column(columnDefinition = "varchar(500) comment '备注'")
     String remarks;
+
+    public enum DictType {
+        /**
+         * 普通字典
+         */
+        DATA(0),
+        /**
+         * SQL字典
+         */
+        SQL(1);
+
+        private int value;
+
+        DictType(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
 }

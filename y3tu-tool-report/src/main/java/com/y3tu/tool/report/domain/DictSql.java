@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "report_dict_sql")
 @Data
-public class ReportDictSql {
+public class DictSql {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -29,12 +29,18 @@ public class ReportDictSql {
     long dsId;
 
     @Column(columnDefinition = "varchar(3) comment '状态'")
-    String status;
+    int status;
 
     @Column(columnDefinition = "varchar(500) comment '备注'")
     String remarks;
 
     @Column(name = "query_sql", columnDefinition = "varchar(2000) comment 'sql语句'")
     String querySql;
+
+    @Column(name = "where_column", columnDefinition = "varchar(300) comment '条件字段 多个字段用逗号分隔' ")
+    String whereColumn;
+
+    @Column(name = "max_rows", columnDefinition = "int comment '最大行数'")
+    int maxRows;
 
 }

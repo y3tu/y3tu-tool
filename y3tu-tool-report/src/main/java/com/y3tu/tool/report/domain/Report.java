@@ -31,7 +31,7 @@ public class Report extends BaseEntity {
     String remarks;
 
     @Column(columnDefinition = "varchar(10) comment '状态'")
-    String status;
+    int status;
 
     @Column(columnDefinition = "varchar(10) comment '类型'")
     String type;

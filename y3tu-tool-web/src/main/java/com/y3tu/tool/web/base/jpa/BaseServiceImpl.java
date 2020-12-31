@@ -6,7 +6,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * 基本服务实现
@@ -16,7 +15,7 @@ import java.util.Set;
 public class BaseServiceImpl<R extends BaseRepository, T> implements BaseService<T> {
 
     @Autowired
-    R repository;
+    public R repository;
 
     @Override
     public PageInfo page(PageInfo pageInfo) {
@@ -55,9 +54,15 @@ public class BaseServiceImpl<R extends BaseRepository, T> implements BaseService
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void delete(Set<Object> keys) {
+    public void delete(Object[] keys) {
         for (Object id : keys) {
             repository.deleteById(id);
         }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(Object key) {
+        repository.deleteById(key);
     }
 }

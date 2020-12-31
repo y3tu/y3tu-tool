@@ -53,6 +53,13 @@ public interface BaseService<T> {
      *
      * @param
      */
-    void delete(Set<Object> keys);
+    void delete(Object[] keys);
 
+
+    /**
+     * 删除
+     *
+     * @param
+     */
+    void delete(Object key);
 }

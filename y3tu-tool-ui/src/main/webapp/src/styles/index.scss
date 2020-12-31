@@ -2,43 +2,47 @@
   padding: 20px;
   margin: 10px;
   background: #fff;
-}
 
-.head-container {
-  padding-bottom: 10px;
+  .head-container {
+    padding-bottom: 10px;
 
-  .form-item-label {
-    margin: 0 3px 9px 0;
-    display: inline-block;
-    text-align: right;
-    vertical-align: middle;
-    font-size: 14px;
-    color: #606266;
-    line-height: 30.5px;
-    padding: 0 7px 0 7px;
-  }
+    .form-item-label {
+      margin: 0 3px 9px 0;
+      display: inline-block;
+      text-align: right;
+      vertical-align: middle;
+      font-size: 14px;
+      color: #606266;
+      line-height: 30.5px;
+      padding: 0 7px 0 7px;
+    }
 
-  .form-item {
-    display: inline-block;
-    vertical-align: middle;
-    margin-bottom: 10px;
-    margin-left: 10px;
-  }
+    .form-item {
+      display: inline-block;
+      vertical-align: middle;
+      margin-bottom: 10px;
+      margin-left: 10px;
+    }
 
-  input {
-    height: 30.5px;
-    line-height: 30.5px;
-  }
+    input {
+      height: 30.5px;
+      line-height: 30.5px;
+    }
 
-  .el-input__icon {
-    line-height: 31px;
+    .el-input__icon {
+      line-height: 31px;
+    }
+
   }
 
   .table-operation {
     margin-right: 10px;
-    font-size: 1rem;
-    font-weight: 500;
+    font-size: 1.5rem;
+    font-weight: 400;
     cursor: pointer;
   }
 
 }
+
+
+

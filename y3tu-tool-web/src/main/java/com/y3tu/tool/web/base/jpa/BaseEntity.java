@@ -1,5 +1,8 @@
 package com.y3tu.tool.web.base.jpa;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
@@ -12,6 +15,7 @@ import java.util.Date;
  * @author y3tu
  */
 @MappedSuperclass
+@Data
 public class BaseEntity implements Serializable {
 
     @Column(name = "create_by")
@@ -21,9 +25,11 @@ public class BaseEntity implements Serializable {
     private String updatedBy;
 
     @Column(name = "create_time")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     @Column(name = "update_time")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     @Override

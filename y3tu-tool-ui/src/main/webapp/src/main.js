@@ -6,11 +6,13 @@ import store from './store'
 import '@/styles/index.scss' //全局css
 
 import EventBus from '@/utils/eventBus'
+import toast from '@/utils/toast'
 
 const app = createApp(App)
 
 
 app.config.globalProperties.$bus = new EventBus();
+app.config.globalProperties.$toast = toast
 
 import plugin from './plugin'
 import componentLib from '@/views/visual-design/component-lib' // 注册自定义组件

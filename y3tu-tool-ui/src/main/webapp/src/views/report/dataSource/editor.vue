@@ -25,7 +25,7 @@
         <el-row type="flex" justify="end">
             <el-col :span="3">
                 <el-tooltip effect="dark" content="保存" placement="top">
-                    <el-button type="success" icon="el-icon-check" circle></el-button>
+                    <el-button :loading="buttonLoading" @click="submitForm" type="success" icon="el-icon-check" circle></el-button>
                 </el-tooltip>
             </el-col>
             <el-col :span="3">
@@ -41,6 +41,9 @@
 </template>
 
 <script>
+
+    import {create, update} from "./api";
+
     export default {
         data() {
             return {
@@ -68,33 +71,27 @@
                     dbPassword: ''
                 }
             },
+            setDataSource(val) {
+                this.dataSource = {...val}
+            },
             submitForm() {
                 this.$refs.form.validate((valid) => {
                     if (valid) {
                         this.buttonLoading = true;
                         if (!this.dataSource.id) {
                             // create
-                            this.$post('base/dataSource/create', {...this.dataSource}).then(() => {
+                            create(this.dataSource).then(() => {
                                 this.buttonLoading = false;
-                                this.isVisible = false;
-                                this.$message({
-                                    message: this.$t('tips.createSuccess'),
-                                    type: 'success'
-                                });
+                                this.$toast('创建成功', 'success', 3000);
                                 this.$emit('success')
                             }).catch(() => {
                                 this.buttonLoading = false;
                             });
                         } else {
                             // update
-                            this.dataSource.createTime = this.dataSource.modifyTime = null;
-                            this.$put('base/dataSource/update', {...this.dataSource}).then(() => {
+                            update(this.dataSource).then(() => {
                                 this.buttonLoading = false;
-                                this.isVisible = false;
-                                this.$message({
-                                    message: this.$t('tips.updateSuccess'),
-                                    type: 'success'
-                                });
+                                this.$toast('更新成功', 'success', 3000);
                                 this.$emit('success')
                             }).catch(() => {
                                 this.buttonLoading = false;

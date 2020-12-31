@@ -20,7 +20,7 @@
         <!-- versions -->
         <hutool-version>5.5.1</hutool-version>
         <servlet-api-version>3.1.0</servlet-api-version>
-        <fastjson-version>1.2.73</fastjson-version>
+        <fastjson.version>1.2.75</fastjson.version>
         <okhttp-version>3.8.1</okhttp-version>
         <ip2region-version>1.7</ip2region-version>
     </properties>
@@ -38,7 +38,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>${fastjson-version}</version>
+            <version>${fastjson.version}</version>
         </dependency>
 
         <!--okhttp3 网络客户端-->

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import toast from '@/utils/toast'
 
 // 请求超时时间，10s
 const requestTimeOut = 30 * 1000;
@@ -37,53 +38,36 @@ service.interceptors.request.use(
 
 //响应拦截
 service.interceptors.response.use(response => {
+
     if (response.data !== undefined && response.data !== null && response.data !== '') {
         let status = response.data.status;
         if (status !== undefined && status === "ERROR") {
-            this.$message({
-                message: response.data.message,
-                type: 'error',
-                duration: 5 * 1000
-            });
+            toast(response.data.message, 'error', 5 * 1000)
             throw new Error(response.data.message);
         }
 
         if (status !== undefined && status === 'WARN') {
-            this.$message({
-                message: response.data.message,
-                type: 'warning',
-                duration: 5 * 1000
-            });
+            toast(response.data.message, 'warning', 5 * 1000)
             throw new Error(response.data.message);
         }
     }
     return response.data;
 }, (error) => {
-    if (error.response) {
-
+    if (error) {
         if (error.toString().indexOf('Error: timeout') !== -1) {
-            this.$message({
-                message: '网络请求超时',
-                type: 'error',
-                duration: 5 * 1000
-            });
+
+            toast('网络请求超时', 'error', 5 * 1000)
             return Promise.reject(error)
         }
         if (error.toString().indexOf('Error: Network Error') !== -1) {
-            this.$message({
-                message: '网络请求错误',
-                type: 'error',
-                duration: 5 * 1000
-            });
+
+            toast('网络请求错误', 'error', 5 * 1000)
             return Promise.reject(error)
         }
 
         if (error.toString().indexOf('503') !== -1) {
-            this.$message({
-                message: '服务暂时不可用，请稍后再试!' || 'Error',
-                type: 'error',
-                duration: 5 * 1000
-            });
+
+            toast('服务暂时不可用，请稍后再试!', 'error', 5 * 1000)
             return Promise.reject(error)
         }
 
@@ -94,32 +78,16 @@ service.interceptors.response.use(response => {
         const errorMessage = error.response.data === null ? '系统内部异常，请联系网站管理员' : error.response.data.message;
         switch (error.response.status) {
             case 404:
-                this.$message({
-                    message: '很抱歉，资源未找到',
-                    type: 'error',
-                    duration: messageDuration
-                });
+                toast('很抱歉，资源未找到!', 'error', 5 * 1000)
                 break;
             case 403:
-                this.$message({
-                    message: '很抱歉，您暂无该操作权限',
-                    type: 'error',
-                    duration: messageDuration
-                });
+                toast('很抱歉，您暂无该操作权限!', 'error', 5 * 1000)
                 break;
             case 401:
-                this.$message({
-                    message: '很抱歉，您没有权限',
-                    type: 'error',
-                    duration: messageDuration
-                });
+                toast('很抱歉，您没有权限!', 'error', 5 * 1000)
                 break;
             default:
-                this.$message({
-                    message: errorMessage,
-                    type: 'error',
-                    duration: messageDuration
-                });
+                toast(errorMessage, 'error', messageDuration)
                 break
         }
     }

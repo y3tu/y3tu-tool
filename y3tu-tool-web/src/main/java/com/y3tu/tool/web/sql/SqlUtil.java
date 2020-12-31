@@ -38,40 +38,30 @@ public class SqlUtil {
      * @throws Exception
      */
     public static boolean dataPageHandler(int size, int pageSize, String selectSql, String selectDsName, Class clazz, Map<Integer, Object> params, DataHandler dataHandler) {
-
-        if (!selectSql.contains("$MOD")) {
-            throw new ToolException("多线程处理查询数据sql语句必须包含$MOD");
-        }
-
-        CountDownLatch cdl = ThreadUtil.newCountDownLatch(size);
-
-        ExecutorService executor = ThreadUtil.newFixedExecutor(size, "dataHandler多线程");
-        Map<String, ThreadResult> threadResultMap = new HashMap<>();
-
-        for (int i = 0; i < size; i++) {
-            executor.execute(new DataPageHandlerRunnable(selectSql, selectDsName, clazz, params, dataHandler, size, i, pageSize, cdl, threadResultMap));
-        }
-        while (true) {
-            if (cdl.getCount() == 0) {
-                log.info("------线程执行完成------");
-                break;
+        try {
+            if (!selectSql.contains("$MOD")) {
+                throw new ToolException("多线程处理查询数据sql语句必须包含$MOD");
             }
-            threadResultMap.keySet().stream().forEach(key -> {
-                if (!threadResultMap.get(key).isSuccess()) {
-                    //出现异常
-                    log.info(key + " 异常:" + threadResultMap.get(key).getMsg());
-                }
-            });
-            ThreadUtil.sleep(5000);
-        }
-        executor.shutdownNow();
 
-        List<Boolean> resultList = threadResultMap.keySet().stream().map(key -> threadResultMap.get(key).isSuccess()).collect(Collectors.toList());
+            CountDownLatch cdl = ThreadUtil.newCountDownLatch(size);
 
-        if (resultList.contains(false)) {
-            return false;
+            ExecutorService executor = ThreadUtil.newFixedExecutor(size, "dataHandler多线程");
+            Map<String, ThreadResult> threadResultMap = new HashMap<>();
+
+            for (int i = 0; i < size; i++) {
+                executor.execute(new DataPageHandlerRunnable(selectSql, selectDsName, clazz, params, dataHandler, size, i, pageSize, cdl, threadResultMap));
+            }
+            cdl.await();
+            log.info("------多线程执行完成------");
+            executor.shutdown();
+
+            List<Boolean> resultList = threadResultMap.keySet().stream().map(key -> threadResultMap.get(key).isSuccess()).collect(Collectors.toList());
+
+            return !resultList.contains(false);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
         }
-        return true;
+        return false;
     }
 
     public static boolean dataPageHandler(int size, int pageSize, String selectSql, String selectDsName, Map<Integer, Object> params, DataHandler dataHandler) {
@@ -100,19 +90,12 @@ public class SqlUtil {
         Map<String, ThreadResult> threadResultMap = new HashMap<>();
         ThreadUtil.execute(new DataPageHandlerRunnable(selectSql, selectDsName, clazz, params, dataHandler, 1, 1, pageSize, cdl, threadResultMap));
         if (block) {
-            while (true) {
-                if (cdl.getCount() == 0) {
-                    log.info("------线程执行完成------");
-                    break;
-                }
-            }
+            cdl.await();
+            log.info("------线程执行完成------");
         }
         List<Boolean> resultList = threadResultMap.keySet().stream().map(key -> threadResultMap.get(key).isSuccess()).collect(Collectors.toList());
 
-        if (resultList.contains(false)) {
-            return false;
-        }
-        return true;
+        return !resultList.contains(false);
     }
 
 

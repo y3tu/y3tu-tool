@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "report_dict_data")
 @Data
-public class ReportDictData {
+public class DictData {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -32,7 +32,7 @@ public class ReportDictData {
     String value;
 
     @Column(columnDefinition = "varchar(3) comment '状态'")
-    String status;
+    int status;
 
     @Column(columnDefinition = "int comment '排序'")
     int seq;

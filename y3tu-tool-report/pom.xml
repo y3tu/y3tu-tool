@@ -25,6 +25,12 @@
 
         <dependency>
             <groupId>com.y3tu</groupId>
+            <artifactId>y3tu-tool-ui</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.y3tu</groupId>
             <artifactId>y3tu-tool-core</artifactId>
             <version>${project.parent.version}</version>
         </dependency>

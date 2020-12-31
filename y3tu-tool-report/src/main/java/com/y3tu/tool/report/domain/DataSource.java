@@ -1,5 +1,6 @@
 package com.y3tu.tool.report.domain;
 
+import com.y3tu.tool.web.annotation.Query;
 import com.y3tu.tool.web.base.jpa.BaseEntity;
 import lombok.Data;
 
@@ -13,11 +14,12 @@ import javax.persistence.*;
 @Entity
 @Table(name = "report_data_source")
 @Data
-public class ReportDataSource extends BaseEntity {
+public class DataSource extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Query(propName = "name", type = Query.Type.INNER_LIKE)
     @Column(columnDefinition = "varchar(100) COMMENT '数据源名称'")
     String name;
 

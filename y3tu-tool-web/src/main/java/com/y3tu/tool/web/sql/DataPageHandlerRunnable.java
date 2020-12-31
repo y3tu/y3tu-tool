@@ -79,12 +79,12 @@ public class DataPageHandlerRunnable implements Runnable {
             threadResult.setSuccess(false);
             threadResult.setMsg(e.getMessage());
             log.error(e.getMessage(), e);
+        } finally {
+            threadResultMap.put(mapKey, threadResult);
+            if (cdl != null) {
+                cdl.countDown();
+            }
         }
-
-        if (cdl != null) {
-            cdl.countDown();
-        }
-        threadResultMap.put(mapKey, threadResult);
     }
 
     /**
