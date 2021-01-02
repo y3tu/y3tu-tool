@@ -1,6 +1,6 @@
 package com.y3tu.tool.report.service.impl;
 
-import com.y3tu.tool.report.domain.DictSql;
+import com.y3tu.tool.report.entity.domain.DictSql;
 import com.y3tu.tool.report.repository.DictSqlRepository;
 import com.y3tu.tool.report.service.DictSqlService;
 import com.y3tu.tool.web.base.jpa.BaseServiceImpl;

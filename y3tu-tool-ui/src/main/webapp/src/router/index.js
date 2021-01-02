@@ -26,6 +26,14 @@ const routes = [
                 meta: {
                     keepAlive: true,
                 }
+            },
+            {
+                path: '/report/dict',
+                name: 'dict',
+                component: () => import('@/views/report/dict/index.vue'),
+                meta: {
+                    keepAlive: true,
+                }
             }
         ]
     },
@@ -48,6 +56,10 @@ const routes = [
     {
         path: '/visual',
         component: () => import('@/views/visual-design/home/index.vue'),
+    },
+    {
+        path: '/test',
+        component: () => import('@/views/test/index.vue'),
     },
     {
         path: '/404',

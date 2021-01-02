@@ -3,7 +3,7 @@ package com.y3tu.tool.report.util;
 import cn.hutool.db.ds.DSFactory;
 import cn.hutool.db.ds.DataSourceWrapper;
 import cn.hutool.setting.Setting;
-import com.y3tu.tool.report.domain.DataSource;
+import com.y3tu.tool.report.entity.domain.DataSource;
 import com.y3tu.tool.report.service.DataSourceService;
 import com.y3tu.tool.web.util.SpringContextUtil;
 
@@ -22,7 +22,7 @@ public class DataSourceUtil {
      */
     public static javax.sql.DataSource getDataSourceByDsId(long dsId) {
         DataSourceService dataSourceService = (DataSourceService) SpringContextUtil.getBean(DataSourceService.class);
-        DataSource dataSource = (DataSource) dataSourceService.findById(dsId);
+        DataSource dataSource = (DataSource) dataSourceService.getById(dsId);
         return getDataSource(dataSource);
     }
 

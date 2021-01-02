@@ -2,10 +2,10 @@ package com.y3tu.tool.report.service.impl;
 
 import com.y3tu.tool.core.util.ObjectUtil;
 import com.y3tu.tool.core.util.StrUtil;
-import com.y3tu.tool.report.domain.Dict;
-import com.y3tu.tool.report.domain.Dict.DictType;
-import com.y3tu.tool.report.domain.DictData;
-import com.y3tu.tool.report.domain.DictSql;
+import com.y3tu.tool.report.entity.domain.Dict;
+import com.y3tu.tool.report.entity.domain.Dict.DictType;
+import com.y3tu.tool.report.entity.domain.DictData;
+import com.y3tu.tool.report.entity.domain.DictSql;
 import com.y3tu.tool.report.emums.DataStatusEnum;
 import com.y3tu.tool.report.exception.ReportException;
 import com.y3tu.tool.report.repository.DictDataRepository;
@@ -46,6 +46,11 @@ public class DictServiceImpl extends BaseServiceImpl<DictRepository, Dict> imple
     @Override
     public Dict getByName(String name) {
         return repository.getByNameLike(name);
+    }
+
+    @Override
+    public Dict getByNameOrCode(String param) {
+        return repository.getByNameLikeOrCodeLike("%" + param + "%", "%" + param + "%");
     }
 
     @Override
@@ -96,7 +101,6 @@ public class DictServiceImpl extends BaseServiceImpl<DictRepository, Dict> imple
                 throw new ReportException(String.format("字典[%s]解析异常", code), e);
             }
             JdbcTemplate jdbcTemplate = new JdbcTemplate(DataSourceUtil.getDataSourceByDsId(dictSql.getDsId()));
-            jdbcTemplate.setMaxRows(dictSql.getMaxRows());
             List<DictData> dictDataList = jdbcTemplate.query(sqlText, new BeanPropertyRowMapper(DictData.class));
             return dictDataList;
         }

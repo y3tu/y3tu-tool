@@ -1,4 +1,4 @@
-package com.y3tu.tool.report.domain;
+package com.y3tu.tool.report.entity.domain;
 
 import com.y3tu.tool.web.annotation.Query;
 import com.y3tu.tool.web.base.jpa.BaseEntity;

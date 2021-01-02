@@ -3,7 +3,7 @@ package com.y3tu.tool.report.util;
 import cn.hutool.core.bean.BeanUtil;
 import com.y3tu.tool.core.collection.CollectionUtil;
 import com.y3tu.tool.core.util.ObjectUtil;
-import com.y3tu.tool.report.domain.DictData;
+import com.y3tu.tool.report.entity.domain.DictData;
 import com.y3tu.tool.report.exception.ReportException;
 import com.y3tu.tool.report.service.DictService;
 import com.y3tu.tool.web.util.SpringContextUtil;

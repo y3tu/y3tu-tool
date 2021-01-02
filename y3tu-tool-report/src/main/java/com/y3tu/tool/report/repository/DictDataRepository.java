@@ -1,6 +1,6 @@
 package com.y3tu.tool.report.repository;
 
-import com.y3tu.tool.report.domain.DictData;
+import com.y3tu.tool.report.entity.domain.DictData;
 import com.y3tu.tool.web.base.jpa.BaseRepository;
 
 import java.util.List;

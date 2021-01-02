@@ -1,7 +1,6 @@
 package com.y3tu.tool.web.base.jpa;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * 基础服务接口
@@ -24,7 +23,7 @@ public interface BaseService<T> {
      * @param criteria 条件
      * @return
      */
-    List<T> queryAll(T criteria);
+    List<T> getAll(T criteria);
 
     /**
      * 根据主键查询
@@ -32,7 +31,7 @@ public interface BaseService<T> {
      * @param key 主键
      * @return
      */
-    Object findById(Object key);
+    Object getById(Object key);
 
     /**
      * 创建

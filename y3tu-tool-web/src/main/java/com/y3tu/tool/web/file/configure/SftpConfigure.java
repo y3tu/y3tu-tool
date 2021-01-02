@@ -9,6 +9,11 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * SFTP配置
+ *
+ * @author y3tu
+ */
 @Configuration
 @ConditionalOnProperty("y3tu.tool.web.sftp")
 @EnableConfigurationProperties({SftpProperties.class})

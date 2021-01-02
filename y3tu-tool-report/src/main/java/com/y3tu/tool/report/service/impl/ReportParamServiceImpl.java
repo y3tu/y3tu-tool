@@ -1,6 +1,6 @@
 package com.y3tu.tool.report.service.impl;
 
-import com.y3tu.tool.report.domain.ReportParam;
+import com.y3tu.tool.report.entity.domain.ReportParam;
 import com.y3tu.tool.report.repository.ReportParamRepository;
 import com.y3tu.tool.report.service.ReportParamService;
 import com.y3tu.tool.web.base.jpa.BaseServiceImpl;

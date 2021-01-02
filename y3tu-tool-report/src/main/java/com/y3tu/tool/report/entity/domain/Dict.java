@@ -1,4 +1,4 @@
-package com.y3tu.tool.report.domain;
+package com.y3tu.tool.report.entity.domain;
 
 import lombok.Data;
 

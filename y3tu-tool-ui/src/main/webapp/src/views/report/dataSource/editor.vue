@@ -64,7 +64,7 @@
                 return {
                     id: '',
                     name: '',
-                    dbType: '',
+                    dbType: {},
                     dbDriver: '',
                     dbUrl: '',
                     dbUsername: '',

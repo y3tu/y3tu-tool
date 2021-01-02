@@ -1,4 +1,4 @@
-package com.y3tu.tool.report.domain;
+package com.y3tu.tool.report.entity.domain;
 
 import lombok.Data;
 
@@ -39,8 +39,5 @@ public class DictSql {
 
     @Column(name = "where_column", columnDefinition = "varchar(300) comment '条件字段 多个字段用逗号分隔' ")
     String whereColumn;
-
-    @Column(name = "max_rows", columnDefinition = "int comment '最大行数'")
-    int maxRows;
 
 }

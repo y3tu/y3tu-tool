@@ -1,7 +1,7 @@
 package com.y3tu.tool.report.rest;
 
 import com.y3tu.tool.core.pojo.R;
-import com.y3tu.tool.report.domain.DataSource;
+import com.y3tu.tool.report.entity.domain.DataSource;
 import com.y3tu.tool.report.service.DataSourceService;
 import com.y3tu.tool.web.base.jpa.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,12 @@ public class DataSourceController {
 
     @GetMapping("get/{id}")
     public R get(@PathVariable int id) {
-        return R.success(dataSourceService.findById(id));
+        return R.success(dataSourceService.getById(id));
+    }
+
+    @GetMapping("getByName/{name}")
+    public R getByName(@PathVariable String name) {
+        return R.success(dataSourceService.getByName(name));
     }
 
     @PostMapping("create")
@@ -58,7 +63,7 @@ public class DataSourceController {
 
     @GetMapping("testConnect/{id}")
     public R testConnect(@PathVariable long id) {
-        DataSource dataSource = (DataSource) dataSourceService.findById(id);
+        DataSource dataSource = (DataSource) dataSourceService.getById(id);
         return R.success(dataSourceService.testConnection(dataSource));
     }
 }

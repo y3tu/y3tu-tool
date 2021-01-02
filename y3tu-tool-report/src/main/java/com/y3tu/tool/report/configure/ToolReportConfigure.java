@@ -17,6 +17,4 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories(basePackages = {"com.y3tu.tool.report"})
 @EnableConfigurationProperties(ToolReportProperties.class)
 public class ToolReportConfigure {
-
-
 }

@@ -4,99 +4,128 @@
             <el-tabs>
                 <el-tab-pane>
                     <template #label>
-                        <span><i class="el-icon-edit"></i>报表设计</span>
+                        <span><i class="el-icon-edit" style="padding-right: 5px"/>报表列表</span>
                     </template>
 
-                    <el-pagination
-                            class="page"
-                            @size-change="sizeChange"
-                            @current-change="pageChange"
-                            :current-page="currentPage"
-                            :page-sizes="[10, 20, 30, 40]"
-                            :page-size="pageSize"
-                            layout="total, sizes, prev, pager, next, jumper"
-                            :total="total">
-                    </el-pagination>
-
-                    <div style="display: flex;flex-wrap: wrap;">
-
-                        <div class="excel-view-item excel-list-add">
-                            <a @click="createExcel">
-                                <i class="el-icon-plus" style="font-size:20px; padding-bottom: 5px;"></i>
-                                <p style="letter-spacing: 2px;font-size: 14px;">新建报表</p>
-                            </a>
+                    <div class="main-container" style="padding: 0">
+                        <div class="head-container">
+                            <label class="form-item-label">报表名称</label>
+                            <el-input clearable v-model="pageInfo.entity.name" placeholder="请输入报表名称" style="width:200px" class="form-item"
+                                      @keyup.enter="search"/>
+                            <el-button class="form-item" size="mini" type="success" icon="el-icon-search" plain @click="search">
+                                搜索
+                            </el-button>
+                            <el-button class="form-item" size="mini" type="warning" icon="el-icon-refresh-left" plain @click="reset">
+                                重置
+                            </el-button>
                         </div>
 
+                        <el-divider/>
+                        <div style="display: flex;flex-wrap: wrap;">
 
-                        <div v-for="(item,index) in reportList"
-                             :key="index"
-                             class="excel-view-item"
-                             @mouseover="item.editable=true"
-                             @mouseout="item.editable=false">
-
-                            <!--缩略图-->
-                            <div class="thumb">
-                                <img src="../../../assets/images/excel.jpg"/>
-                                <div class="excel-edit-container" v-show="item.editable">
-                                    <a :href="getExcelEditUrl(item)" target="_blank">
-                                        设计
-                                    </a>
-                                </div>
+                            <div class="excel-view-item excel-list-add">
+                                <a @click="createExcel">
+                                    <i class="el-icon-plus" style="font-size:20px; padding-bottom: 5px;"></i>
+                                    <p style="letter-spacing: 2px;font-size: 14px;">新建报表</p>
+                                </a>
                             </div>
 
-                            <!--底部-->
-                            <div class="item-footer">
-                                <span class="item-name">{{ item.name }}</span>
-                                <div style="margin-left: 20%;">
-                                    <a class="opt-show" :href="getExcelViewUrl(item)" target="_blank">
-                                        <el-tooltip content="预览模板" placement="top">
-                                            <i class="el-icon-view" style="font-size: 16px"></i>
-                                        </el-tooltip>
-                                    </a>
-                                    <a class="opt-show">
-                                        <el-tooltip content="收藏模板" placement="top">
-                                            <i class="el-icon-folder-add" style="font-size: 16px"></i>
-                                        </el-tooltip>
-                                    </a>
-                                    <a class="opt-show">
-                                        <el-tooltip content="删除模板" placement="top">
-                                            <i class="el-icon-delete" style="font-size: 16px"></i>
-                                        </el-tooltip>
-                                    </a>
-                                    <a class="opt-show">
-                                        <el-tooltip content="复制模板" placement="top">
-                                            <i class="el-icon-copy-document" style="font-size: 16px"></i>
-                                        </el-tooltip>
-                                    </a>
-                                </div>
-                            </div>
 
+                            <div v-for="(item,index) in reportList"
+                                 :key="index"
+                                 class="excel-view-item"
+                                 @mouseover="item.editable=true"
+                                 @mouseout="item.editable=false">
+
+                                <!--缩略图-->
+                                <div class="thumb">
+                                    <img src="../../../assets/images/excel.jpg"/>
+                                    <div class="excel-edit-container" v-show="item.editable">
+                                        <a :href="getExcelEditUrl(item)" target="_blank">
+                                            修改
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!--底部-->
+                                <div class="item-footer">
+                                    <span class="item-name">{{ item.name }}</span>
+                                    <div style="margin-left: 20%;">
+                                        <a class="opt-show" :href="getExcelViewUrl(item)" target="_blank">
+                                            <el-tooltip content="预览报表" placement="top">
+                                                <i class="el-icon-view" style="font-size: 16px"></i>
+                                            </el-tooltip>
+                                        </a>
+                                        <a class="opt-show">
+                                            <el-tooltip content="删除报表" placement="top">
+                                                <i class="el-icon-delete" style="font-size: 16px"></i>
+                                            </el-tooltip>
+                                        </a>
+                                        <a class="opt-show">
+                                            <el-tooltip content="复制报表" placement="top">
+                                                <i class="el-icon-copy-document" style="font-size: 16px"></i>
+                                            </el-tooltip>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
+
+                        <el-pagination
+                                class="page"
+                                @size-change="sizeChange"
+                                @current-change="pageChange"
+                                :current-page="pageInfo.current"
+                                :page-sizes="[10, 20, 30, 40]"
+                                :page-size="pageInfo.pageSize"
+                                layout="total, sizes, prev, pager, next, jumper"
+                                :total="pageInfo.total">
+                        </el-pagination>
                     </div>
-
                 </el-tab-pane>
                 <el-tab-pane>
                     <template #label>
-                        <span><i class="el-icon-guide"></i>模板案例</span>
+                        <span><i class="el-icon-guide" style="padding-right: 5px"/>模板案例</span>
                     </template>
                     模板案例
                 </el-tab-pane>
             </el-tabs>
         </el-main>
+
+        <el-drawer
+                size="70%"
+                title="报表配置"
+                v-model="drawer"
+                direction="rtl"
+                destroy-on-close>
+            <editor/>
+        </el-drawer>
+
+
     </el-container>
 </template>
 
 <script>
+
+    import editor from './editor'
+
     export default {
         name: 'reportList',
+        components: {editor},
         data() {
             return {
-                // 当前页码
-                currentPage: 1,
-                // 总条数
-                total: 0,
-                // 每页的数据条数
-                pageSize: 10,
+                pageInfo: {
+                    entity: {
+                        name: ''
+                    },
+                    pageLoading: false,
+                    current: 0,
+                    total: 0,
+                    pageSize: 10,
+                    records: [],
+                },
+                drawer: false,
                 reportList: [{
                     editable: false,
                     name: 'test'
@@ -104,15 +133,23 @@
             }
         },
         methods: {
-            sizeChange(val) {
-                this.currentPage = 1;
-                this.pageSize = val;
-            },
-            pageChange(val) {
-                this.currentPage = val;
-            },
-            createExcel(){
+            search() {
 
+            },
+            reset() {
+                this.pageInfo.entity.name = '';
+            },
+            sizeChange(e) {
+                this.pageInfo.current = 0;
+                this.pageInfo.size = e;
+                this.search()
+            },
+            pageChange(e) {
+                this.pageInfo.current = e;
+                this.search()
+            },
+            createExcel() {
+                this.drawer = true;
             },
             getExcelEditUrl() {
 
@@ -125,12 +162,6 @@
 </script>
 
 <style>
-    .title {
-        font-size: 20px;
-        text-align: center;
-        line-height: 60px;
-        font-weight: 500;
-    }
 
     .page {
         display: flex;
@@ -138,7 +169,7 @@
         -webkit-box-pack: center;
     }
 
-    .excel-list-add{
+    .excel-list-add {
         height: 184px;
         width: 258px;
         border: 1px solid #00baff;
@@ -148,40 +179,47 @@
         box-shadow: 0 0 10px 0 rgba(55, 224, 255, .3);
         cursor: pointer;
     }
-    .excel-list-add a{
+
+    .excel-list-add a {
         height: 100%;
-        color: #8eeeff;
+        color: black;
         flex-direction: column;
         display: flex;
         justify-content: center;
         align-items: center;
     }
-    .excel-list-add a:hover{
-        color:#2d8cf0;
+
+    .excel-list-add a:hover {
+        color: #d5a1b2;
     }
-    .excel-view-item{
+
+    .excel-view-item {
         position: relative;
         margin: 16px;
         display: flex;
         flex-direction: column;
-        width: 290px;
-        height: 200px;
+        width: 260px;
+        height: 170px;
         border: 1px solid #3a4659;
         overflow: hidden;
     }
 
-    .excel-view-item:hover{
+    .excel-view-item:hover {
         box-shadow: 0 0 20px 0 #000;
         border: 1px solid #00baff;
     }
+
     .excel-view-item .thumb {
         position: relative;
         height: calc(100% - 36px);
     }
-    .excel-view-item .thumb img{
-        width: 100%;height: 100%
+
+    .excel-view-item .thumb img {
+        width: 100%;
+        height: 100%
     }
-    .excel-view-item .item-footer{
+
+    .excel-view-item .item-footer {
         font-size: 12px;
         width: 100%;
         height: 36px;
@@ -195,7 +233,8 @@
         padding: 0 10px;
         color: #bcc9d4;
     }
-    .excel-view-item .item-name{
+
+    .excel-view-item .item-name {
         width: 100px;
         padding: 0 5px;
         line-height: 28px;
@@ -204,17 +243,18 @@
         white-space: nowrap;
         border: 1px solid transparent;
     }
-    .opt-show{
+
+    .opt-show {
         color: #bcc9d4;
         margin-right: 10px;
         cursor: pointer;
     }
 
-    .excel-edit-container{
+    .excel-edit-container {
         position: absolute;
         top: 0;
         left: 0;
-        background-color: rgba(29,38,46,0.8);
+        background-color: rgba(29, 38, 46, 0.8);
         width: 100%;
         height: 100%;
         display: flex;
@@ -222,7 +262,7 @@
         justify-content: center;
     }
 
-    .excel-edit-container a{
+    .excel-edit-container a {
         display: inline-block;
         vertical-align: middle;
         height: 32px;
@@ -237,5 +277,15 @@
         border: none;
         transition: .3s ease;
         cursor: pointer;
+    }
+
+    /*1.显示滚动条：当内容超出容器的时候，可以拖动：*/
+    .el-drawer__body {
+        overflow: auto;
+    }
+
+    /*2.隐藏滚动条，太丑了*/
+    .el-drawer__container ::-webkit-scrollbar {
+        display: none;
     }
 </style>

@@ -1,6 +1,6 @@
 package com.y3tu.tool.report.repository;
 
-import com.y3tu.tool.report.domain.Dict;
+import com.y3tu.tool.report.entity.domain.Dict;
 import com.y3tu.tool.web.base.jpa.BaseRepository;
 
 /**
@@ -23,4 +23,13 @@ public interface DictRepository extends BaseRepository<Dict> {
      * @return
      */
     Dict getByNameLike(String name);
+
+    /**
+     * 根据字典名称或编码获取字典
+     *
+     * @param name 名称
+     * @param code 编码
+     * @return
+     */
+    Dict getByNameLikeOrCodeLike(String name, String code);
 }

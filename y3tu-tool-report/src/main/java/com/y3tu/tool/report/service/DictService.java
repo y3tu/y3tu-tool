@@ -1,7 +1,7 @@
 package com.y3tu.tool.report.service;
 
-import com.y3tu.tool.report.domain.Dict;
-import com.y3tu.tool.report.domain.DictData;
+import com.y3tu.tool.report.entity.domain.Dict;
+import com.y3tu.tool.report.entity.domain.DictData;
 import com.y3tu.tool.web.base.jpa.BaseService;
 
 import java.util.List;
@@ -26,6 +26,14 @@ public interface DictService extends BaseService<Dict> {
      * @return
      */
     Dict getByName(String name);
+
+    /**
+     * 根据字典名称或编码获取字典
+     *
+     * @param param
+     * @return
+     */
+    Dict getByNameOrCode(String param);
 
     /**
      * 获取字段值

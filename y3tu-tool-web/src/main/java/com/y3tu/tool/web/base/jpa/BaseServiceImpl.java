@@ -28,13 +28,13 @@ public class BaseServiceImpl<R extends BaseRepository, T> implements BaseService
     }
 
     @Override
-    public List<T> queryAll(T criteria) {
+    public List<T> getAll(T criteria) {
         return repository.findAll((root, criteriaQuery, criteriaBuilder)
                 -> QueryHelp.getPredicate(root, criteria, criteriaBuilder));
     }
 
     @Override
-    public Object findById(Object key) {
+    public Object getById(Object key) {
         return repository.findById(key).get();
     }
 

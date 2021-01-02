@@ -1,7 +1,7 @@
 package com.y3tu.tool.report.rest;
 
 import com.y3tu.tool.core.pojo.R;
-import com.y3tu.tool.report.domain.Report;
+import com.y3tu.tool.report.entity.domain.Report;
 import com.y3tu.tool.report.service.ReportService;
 import com.y3tu.tool.web.base.jpa.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +24,11 @@ public class ReportController {
 
     @GetMapping("get/{id}")
     public R get(@PathVariable long id) {
-        return R.success(reportService.findById(id));
+        return R.success(reportService.getById(id));
     }
 
-
+    @PostMapping("create")
+    public R create() {
+        return R.success();
+    }
 }

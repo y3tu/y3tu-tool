@@ -1,9 +1,9 @@
 package com.y3tu.tool.report.rest;
 
 import com.y3tu.tool.core.pojo.R;
-import com.y3tu.tool.report.domain.Dict;
-import com.y3tu.tool.report.domain.DictData;
-import com.y3tu.tool.report.domain.DictSql;
+import com.y3tu.tool.report.entity.domain.Dict;
+import com.y3tu.tool.report.entity.domain.DictData;
+import com.y3tu.tool.report.entity.domain.DictSql;
 import com.y3tu.tool.report.service.DictDataService;
 import com.y3tu.tool.report.service.DictService;
 import com.y3tu.tool.report.service.DictSqlService;
@@ -46,6 +46,35 @@ public class DictController {
         return R.success(dictDataService.page(pageInfo));
     }
 
+    @GetMapping("/getDictSql/{dictId}")
+    public R getDictSql(@PathVariable long dictId) {
+        DictSql dictSql = dictSqlService.getByDictId(dictId);
+        return R.success(dictSql);
+    }
+
+    @GetMapping("/getDictData/{code}")
+    public R getDictData(@PathVariable String code) {
+        Dict dict = dictService.getByCode(code);
+        if (dict == null) {
+            return R.error(String.format("字典编码[%s]不存在", code));
+        }
+        return R.success(dictService.getDictData(dict.getCode()));
+    }
+
+    @GetMapping("/getDictDataByDictName/{name}")
+    public R getDictDataByDictName(@PathVariable String name) {
+        Dict dict = dictService.getByName(name);
+        if (dict == null) {
+            return R.error(String.format("字典名称[%s]不存在", name));
+        }
+        return R.success(dictService.getDictData(dict.getCode()));
+    }
+
+    @GetMapping("/getDictByNameOrCode/{param}")
+    public R getDictByNameOrCode(@PathVariable String param) {
+        return R.success(dictService.getByNameOrCode(param));
+    }
+
     @PostMapping("/createDict")
     public R createDict(@Valid Dict dict) {
         Dict dictOne = dictService.getByCode(dict.getCode());
@@ -58,7 +87,7 @@ public class DictController {
 
     @PostMapping("/createDictData")
     public R createDictData(@Valid DictData dictData) {
-        Dict dict = (Dict) dictService.findById(dictData.getDictId());
+        Dict dict = (Dict) dictService.getById(dictData.getDictId());
         if (dict == null) {
             return R.error(String.format("字典ID[%s]不存在", dictData.getDictId()));
         }
@@ -74,7 +103,7 @@ public class DictController {
 
     @PutMapping("/updateDict")
     public R updateDict(@Valid Dict dict) {
-        Dict old = (Dict) dictService.findById(dict.getId());
+        Dict old = (Dict) dictService.getById(dict.getId());
         // 若code修改需判断唯一
         if (!old.getCode().equals(dict.getCode()) && dictService.getByCode(dict.getCode()) != null) {
             return R.error(String.format("字典编码[%s]已存在", dict.getCode()));
@@ -99,30 +128,6 @@ public class DictController {
     public R deleteDictData(@RequestBody long[] ids) {
         dictDataService.delete(ids);
         return R.success();
-    }
-
-    @GetMapping("/getDictSql/{dictId}")
-    public R getDictSql(@PathVariable long dictId) {
-        DictSql dictSql = dictSqlService.getByDictId(dictId);
-        return R.success(dictSql);
-    }
-
-    @GetMapping("/getDictData/{code}")
-    public R getDictData(@PathVariable String code) {
-        Dict dict = dictService.getByCode(code);
-        if (dict == null) {
-            return R.error(String.format("字典编码[%s]不存在", code));
-        }
-        return R.success(dictService.getDictData(dict.getCode()));
-    }
-
-    @GetMapping("/getDictDataByDictName/{name}")
-    public R getDictDataByDictName(@PathVariable String name) {
-        Dict dict = dictService.getByName(name);
-        if (dict == null) {
-            return R.error(String.format("字典名称[%s]不存在", name));
-        }
-        return R.success(dictService.getDictData(dict.getCode()));
     }
 
 }

@@ -1,6 +1,6 @@
 package com.y3tu.tool.report.service.impl;
 
-import com.y3tu.tool.report.domain.DataSource;
+import com.y3tu.tool.report.entity.domain.DataSource;
 import com.y3tu.tool.report.repository.DataSourceRepository;
 import com.y3tu.tool.report.service.DataSourceService;
 import com.y3tu.tool.web.base.jpa.BaseServiceImpl;
@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.List;
 
 /**
  * @author y3tu
@@ -20,6 +21,11 @@ import java.sql.Statement;
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 @Service
 public class DataSourceServiceImpl extends BaseServiceImpl<DataSourceRepository, DataSource> implements DataSourceService {
+
+    @Override
+    public List<DataSource> getByName(String name) {
+        return repository.getByNameLike("%" + name + "%");
+    }
 
     @Override
     public boolean testConnection(DataSource dataSource) {
