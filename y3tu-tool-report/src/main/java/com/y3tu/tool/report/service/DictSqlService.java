@@ -13,5 +13,5 @@ public interface DictSqlService extends BaseService<DictSql> {
      * @param dictId
      * @return
      */
-    DictSql getByDictId(long dictId);
+    DictSql getByDictId(int dictId);
 }

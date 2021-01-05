@@ -32,7 +32,7 @@ const routes = [
                 name: 'dict',
                 component: () => import('@/views/report/dict/index.vue'),
                 meta: {
-                    keepAlive: true,
+                    keepAlive: false,
                 }
             }
         ]

@@ -11,9 +11,9 @@
                         <div class="head-container">
                             <label class="form-item-label">报表名称</label>
                             <el-input clearable v-model="pageInfo.entity.name" placeholder="请输入报表名称" style="width:200px" class="form-item"
-                                      @keyup.enter="search"/>
-                            <el-button class="form-item" size="mini" type="success" icon="el-icon-search" plain @click="search">
-                                搜索
+                                      @keyup.enter="query"/>
+                            <el-button class="form-item" size="mini" type="success" icon="el-icon-search" plain @click="query">
+                                查询
                             </el-button>
                             <el-button class="form-item" size="mini" type="warning" icon="el-icon-refresh-left" plain @click="reset">
                                 重置
@@ -99,9 +99,8 @@
                 v-model="drawer"
                 direction="rtl"
                 destroy-on-close>
-            <editor/>
+            <editor />
         </el-drawer>
-
 
     </el-container>
 </template>
@@ -133,7 +132,7 @@
             }
         },
         methods: {
-            search() {
+            query() {
 
             },
             reset() {
@@ -142,11 +141,11 @@
             sizeChange(e) {
                 this.pageInfo.current = 0;
                 this.pageInfo.size = e;
-                this.search()
+                this.query()
             },
             pageChange(e) {
                 this.pageInfo.current = e;
-                this.search()
+                this.query()
             },
             createExcel() {
                 this.drawer = true;
@@ -155,7 +154,6 @@
 
             },
             getExcelViewUrl() {
-
             }
         }
     }

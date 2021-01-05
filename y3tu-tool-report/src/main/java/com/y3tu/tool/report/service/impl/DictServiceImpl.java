@@ -44,12 +44,12 @@ public class DictServiceImpl extends BaseServiceImpl<DictRepository, Dict> imple
     }
 
     @Override
-    public Dict getByName(String name) {
+    public List<Dict> getByName(String name) {
         return repository.getByNameLike(name);
     }
 
     @Override
-    public Dict getByNameOrCode(String param) {
+    public List<Dict> getByNameOrCode(String param) {
         return repository.getByNameLikeOrCodeLike("%" + param + "%", "%" + param + "%");
     }
 

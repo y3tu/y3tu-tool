@@ -1,5 +1,6 @@
 package com.y3tu.tool.report.entity.domain;
 
+import com.y3tu.tool.web.base.jpa.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -17,16 +18,16 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "report_param")
 @Data
-public class ReportParam {
+public class ReportParam extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Integer id;
 
     @Column(columnDefinition = "int comment '参数序列'")
-    int seq;
+    Integer seq;
 
     @Column(name = "report_id", columnDefinition = "int comment '报表ID' ")
-    long reportId;
+    Integer reportId;
 
     @Column(columnDefinition = "varchar(100) comment '参数名称'")
     String name;

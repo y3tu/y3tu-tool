@@ -14,5 +14,5 @@ public interface DictSqlRepository extends BaseRepository<DictSql> {
      * @param dictId
      * @return
      */
-    DictSql findByDictId(long dictId);
+    DictSql findByDictId(int dictId);
 }

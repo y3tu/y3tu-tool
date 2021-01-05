@@ -18,7 +18,7 @@ public class Report extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Integer id;
 
     @Column(columnDefinition = "varchar(50) comment '名称'")
     @Query(type = Query.Type.INNER_LIKE)
@@ -28,13 +28,13 @@ public class Report extends BaseEntity {
     String remarks;
 
     @Column(columnDefinition = "varchar(10) comment '状态 0:正常 1：禁用'")
-    int status;
+    Integer status;
 
     @Column(columnDefinition = "int comment '类型 1:通用报表 2:个性化报表 '")
-    int type;
+    Integer type;
 
     @Column(name = "ds_id", columnDefinition = "int(10) comment '数据源ID'")
-    long dsId;
+    Integer dsId;
 
     @Column(name = "column_header", columnDefinition = "varchar(500) comment '列表头'")
     private String columnHeader;
@@ -43,7 +43,7 @@ public class Report extends BaseEntity {
     String querySql;
 
     @Column(name = "view_count", columnDefinition = "int(15) default 0 comment '浏览次数' ")
-    int viewCount;
+    Integer viewCount;
 
 
     /**

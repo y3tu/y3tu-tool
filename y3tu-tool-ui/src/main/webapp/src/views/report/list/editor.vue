@@ -74,11 +74,14 @@
 
     export default {
         name: 'editor',
+        props: {
+            value: {
+                type: Object
+            },
+        },
         components: {CodeEditor, QueryParam},
-
         data() {
             return {
-                report: this.initReport(),
                 dataSourceList: [],
                 rules: {
                     name: {required: true, message: "报表名称不能为空", trigger: 'blur'},
@@ -86,6 +89,15 @@
                 },
                 selectLoading: false,
                 buttonLoading: false,
+            }
+        },
+        computed: {
+            report() {
+                if (this.value) {
+                    return this.value;
+                } else {
+                    return this.initReport();
+                }
             }
         },
         created() {
@@ -97,7 +109,7 @@
                     name: '',
                     type: "1",
                     columnHeader: '',
-                    querySql: '',
+                    querySql: 'select',
                     dsId: {},
                     status: {},
                     templateType: {},

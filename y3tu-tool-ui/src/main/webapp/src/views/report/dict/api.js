@@ -1,45 +1,130 @@
-import request from '@/plugin/axios'
+import service from '@/plugin/axios'
 
-export function createDict(data) {
-    return request.post('base/dict/createDict',data);
+/**
+ * 获取字典列表
+ */
+export function dictPage(params) {
+    return service({
+        url: 'y3tu-tool-report/dict/dictPage',
+        method: 'post',
+        data: params
+    })
 }
 
-export function updateDict(data) {
-    return request.put('base/dict/updateDict',data);
+/**
+ * 获取字典列表
+ */
+export function dictDataPage(params) {
+    return service({
+        url: 'y3tu-tool-report/dict/dictDataPage',
+        method: 'post',
+        data: params
+    })
 }
 
-export function deleteDict(ids) {
-    return request.deleteData('base/dict/deleteDict',ids)
+/**
+ * 新增字典
+ * @param params
+ * @returns {*}
+ */
+export function createDict(params) {
+    return service({
+        url: 'y3tu-tool-report/dict/createDict',
+        method: 'post',
+        data: params
+    })
 }
 
-export function createDictData(data) {
-    return request.post('base/dict/createDictData',data);
+/**
+ * 更新字典
+ * @param data
+ * @returns {*}
+ */
+export function updateDict(params) {
+    return service({
+        url: 'y3tu-tool-report/dict/updateDict',
+        method: 'post',
+        data: params
+    })
 }
 
-export function deleteDictData(ids) {
-    return request.deleteData('base/dict/deleteDictData',ids)
+/**
+ * 删除字典
+ * @param id
+ */
+export function deleteDict(id) {
+    return service({
+        url: `y3tu-tool-report/dict/deleteDict/${id}`,
+        method: 'get',
+    })
 }
 
-export function updateDictData(data) {
-    return request.put('base/dict/updateDictData',data);
+/**
+ * 新增字典数据
+ * @param params
+ */
+export function createDictData(params) {
+    return service({
+        url: 'y3tu-tool-report/dict/createDictData',
+        method: 'post',
+        data: params
+    })
 }
 
-export function saveDictSql(data) {
-    return request.post('base/dict/saveDictSql',data);
+/**
+ * 更新字典数据
+ * @param params
+ * @returns {*}
+ */
+export function updateDictData(params) {
+    return service({
+        url: 'y3tu-tool-report/dict/updateDictData',
+        method: 'post',
+        data: params
+    })
 }
 
-export function getDictDataByDictName(name) {
-    return request.get('base/dict/getDictDataByDictName/'+name);
+/**
+ * 删除字典数据
+ * @param id
+ */
+export function deleteDictData(id) {
+    return service({
+        url: `y3tu-tool-report/dict/deleteDictData/${id}`,
+        method: 'get',
+    })
 }
 
-export function getDictData(code) {
-    return request.get('base/dict/getDictData/'+code);
+export function saveDictSql(params) {
+    return service({
+        url: 'y3tu-tool-report/dict/saveDictSql',
+        method: 'post',
+        data: params
+    })
 }
 
+/**
+ * 根据dictId获取字典sql数据
+ * @param dictId
+ */
 export function getDictSql(dictId) {
-    return request.get('base/dict/getDictSql/'+dictId);
+    return service({
+        url: `y3tu-tool-report/dict/getDictSql/${dictId}`,
+        method: 'get',
+    })
 }
 
+
+/**
+ * 根据数据源名称获取所有数据源
+ * @param name
+ */
+export function getDataSourceByName(name) {
+    return service({
+        url: `y3tu-tool-report/dataSource/getByName/${name}`,
+        method: 'get',
+    })
+}
 
 
 

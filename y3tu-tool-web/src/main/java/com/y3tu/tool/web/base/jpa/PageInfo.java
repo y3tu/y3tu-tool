@@ -41,4 +41,14 @@ public class PageInfo<T> {
      * 当前页
      */
     private int current = 1;
+
+    /**
+     * 正序字段
+     */
+    private List<String> asc;
+
+    /**
+     * 降序字段
+     */
+    private List<String> desc;
 }

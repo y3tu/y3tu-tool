@@ -1,5 +1,6 @@
 package com.y3tu.tool.report.entity.domain;
 
+import com.y3tu.tool.web.base.jpa.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -17,19 +18,19 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "report_dict_sql")
 @Data
-public class DictSql {
+public class DictSql extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Integer id;
 
     @Column(name = "dict_id", columnDefinition = "int comment '字典ID'")
-    long dictId;
+    Integer dictId;
 
     @Column(name = "ds_id", columnDefinition = "int comment '数据源ID'")
-    long dsId;
+    Integer dsId;
 
     @Column(columnDefinition = "varchar(3) comment '状态'")
-    int status;
+    Integer status;
 
     @Column(columnDefinition = "varchar(500) comment '备注'")
     String remarks;

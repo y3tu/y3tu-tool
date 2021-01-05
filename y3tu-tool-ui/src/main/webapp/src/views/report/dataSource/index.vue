@@ -3,9 +3,9 @@
         <div class="head-container">
             <label class="form-item-label">数据源名称</label>
             <el-input clearable v-model="pageInfo.entity.name" placeholder="请输入数据源名称" style="width:200px" class="form-item"
-                      @keyup.enter="search"/>
-            <el-button class="form-item" size="mini" type="success" icon="el-icon-search" plain @click="search">
-                搜索
+                      @keyup.enter="query"/>
+            <el-button class="form-item" size="mini" type="success" icon="el-icon-search" plain @click="query">
+                查询
             </el-button>
             <el-button class="form-item" size="mini" type="warning" icon="el-icon-refresh-left" plain @click="reset">
                 重置
@@ -87,7 +87,7 @@
             <div v-show="showEditor" style="margin-top: 20px">
                 <Editor ref="editor"
                         style="width: 30%"
-                        @success="search"/>
+                        @success="query"/>
             </div>
         </transition>
 
@@ -120,8 +120,13 @@
 
             }
         },
+        created() {
+            this.$nextTick(() => {
+                this.query();
+            })
+        },
         methods: {
-            search() {
+            query() {
                 this.showEditor = false;
                 this.pageInfo.pageLoading = true
                 page(this.pageInfo).then(res => {
@@ -150,7 +155,7 @@
                 }).then(() => {
                     del(row.id).then(() => {
                         this.$toast('删除成功', 'success', 3000);
-                        this.search()
+                        this.query()
                     })
                 })
             },
@@ -167,11 +172,11 @@
             sizeChange(e) {
                 this.pageInfo.current = 0;
                 this.pageInfo.size = e;
-                this.search()
+                this.query()
             },
             pageChange(e) {
                 this.pageInfo.current = e;
-                this.search()
+                this.query()
             }
         }
     }

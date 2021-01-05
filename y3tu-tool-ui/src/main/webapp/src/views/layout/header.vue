@@ -34,6 +34,10 @@
                         route: '/report/dataSource',
                         title: '数据源'
                     },
+                    {
+                        route: '/report/dict',
+                        title: '字典'
+                    },
                 ],
                 logo,
                 searchContent: ''

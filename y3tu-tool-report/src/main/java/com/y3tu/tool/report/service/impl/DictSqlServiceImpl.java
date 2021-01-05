@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DictSqlServiceImpl extends BaseServiceImpl<DictSqlRepository, DictSql> implements DictSqlService {
 
     @Override
-    public DictSql getByDictId(long dictId) {
+    public DictSql getByDictId(int dictId) {
         return repository.findByDictId(dictId);
     }
 }

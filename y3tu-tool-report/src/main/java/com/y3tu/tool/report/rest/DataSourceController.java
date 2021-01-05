@@ -56,13 +56,13 @@ public class DataSourceController {
     }
 
     @GetMapping("del/{id}")
-    public R del(@PathVariable long id) {
+    public R del(@PathVariable int id) {
         dataSourceService.delete(id);
         return R.success();
     }
 
     @GetMapping("testConnect/{id}")
-    public R testConnect(@PathVariable long id) {
+    public R testConnect(@PathVariable int id) {
         DataSource dataSource = (DataSource) dataSourceService.getById(id);
         return R.success(dataSourceService.testConnection(dataSource));
     }

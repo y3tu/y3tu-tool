@@ -17,7 +17,7 @@ import javax.persistence.*;
 public class DataSource extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Integer id;
 
     @Query(propName = "name", type = Query.Type.INNER_LIKE)
     @Column(columnDefinition = "varchar(100) COMMENT '数据源名称'")

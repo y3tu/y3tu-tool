@@ -1,5 +1,5 @@
 <template>
-    <textarea ref="textarea" v-model="value"/>
+    <textarea ref="textarea" v-model="content"/>
 </template>
 
 <script>
@@ -43,6 +43,11 @@
             return {
                 editor: null,
                 codeTypes: ['text/x-java', 'text/x-mysql']
+            }
+        },
+        computed: {
+            content() {
+                return this.value;
             }
         },
         created() {

@@ -25,7 +25,7 @@ public interface DictService extends BaseService<Dict> {
      * @param name
      * @return
      */
-    Dict getByName(String name);
+    List<Dict> getByName(String name);
 
     /**
      * 根据字典名称或编码获取字典
@@ -33,7 +33,7 @@ public interface DictService extends BaseService<Dict> {
      * @param param
      * @return
      */
-    Dict getByNameOrCode(String param);
+    List<Dict> getByNameOrCode(String param);
 
     /**
      * 获取字段值

@@ -1,5 +1,6 @@
 package com.y3tu.tool.report.entity.domain;
 
+import com.y3tu.tool.web.base.jpa.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -17,13 +18,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "report_attachment")
 @Data
-public class ReportAttachment {
+public class ReportAttachment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Integer id;
 
     @Column(name = "report_id", columnDefinition = "int comment '报表ID'")
-    long reportId;
+    Integer reportId;
 
     @Column(columnDefinition = "varchar(100) comment '附件名称'")
     String name;
@@ -32,8 +33,8 @@ public class ReportAttachment {
     String path;
 
     @Column(columnDefinition = "int comment '附件类型:1:数据模板;2:柱状图模板;3:折线图模板;4:饼图模板'")
-    int type;
+    Integer type;
 
     @Column(columnDefinition = "varchar(3) comment '状态：0:有效;1:失效'")
-    int status;
+    Integer status;
 }

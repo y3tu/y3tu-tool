@@ -1,7 +1,7 @@
 <template>
-    <el-card class="box-card" shadow="never">
-        <div slot="header" class="clearfix">
-            <span class="role-span">SQL字典</span>
+    <el-card shadow="never">
+        <template v-slot:header>
+            <span>SQL字典</span>
             <el-button
                     :loading="saveLoading"
                     icon="el-icon-check"
@@ -10,29 +10,31 @@
                     type="primary"
                     @click="doSave">保存
             </el-button>
-        </div>
+        </template>
         <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
             <el-form-item label="数据源" prop="dsId">
-                <el-select v-model="form.dsId" placeholder="请选择" style="width: 40%">
-                    <el-option v-for="item in dict.DATA_SOURCE"
+                <el-select v-model="form.dsId"
+                           filterable
+                           remote
+                           placeholder="请输入关键词"
+                           :remote-method="remoteMethod"
+                           :loading="selectLoading">
+                    <el-option v-for="item in dataSourceList"
                                :key="item.id"
                                :label="item.name"
-                               :value="item.value">
+                               :value="item.id">
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="SQL" prop="sqlText">
-                <code-edit :value="form.sqlText" height="150px" theme="rubyblue" code-type="text/x-mysql" @change="sqlTextChange"/>
+            <el-form-item label="SQL" prop="querySql">
+                <code-editor :value="form.querySql" height="250px" code-type="text/x-sql" @change="querySqlChange"/>
             </el-form-item>
             <el-form-item label="条件字段" prop="whereColumn">
                 <el-input v-model="form.whereColumn" style="width: 40%"/>
                 <span style="color: #C0C0C0;margin-left: 10px;">多个字段用逗号分隔</span>
             </el-form-item>
-            <el-form-item label="最大行数" prop="maxRows">
-                <el-input-number v-model="form.maxRows" :min="1" :max="500"/>
-            </el-form-item>
             <el-form-item label="描述" prop="description">
-                <el-input v-model="form.description" style="width: 40%"/>
+                <el-input v-model="form.remarks" style="width: 40%"/>
             </el-form-item>
             <el-form-item label="状态" prop="status" style="width: 40%">
                 <el-select
@@ -49,25 +51,26 @@
 </template>
 
 <script>
-    import CodeEdit from '@/components/CodeEditor/index'
+    import CodeEditor from '@/components/CodeEditor/index'
 
     import {getDictSql, saveDictSql} from './api'
+    import {getDataSourceByName} from "./api";
 
     export default {
         // 数据字典
-        dicts: ['DATA_SOURCE'],
-        components: {CodeEdit},
+        components: {CodeEditor},
         data() {
             return {
                 saveLoading: false,
+                selectLoading: false,
+                dataSourceList: [],
                 dictId: '',
                 form: {
                     dsId: '',
-                    sqlText: '',
+                    querySql: '',
                     whereColumn: '',
-                    maxRows: 99,
-                    description: '',
-                    status: 0
+                    remarks: '',
+                    status: ''
                 },
                 rules: {
                     dsId: [
@@ -85,44 +88,46 @@
             init() {
                 if (this.$isNotEmpty(this.dictId)) {
                     getDictSql(this.dictId).then(res => {
-                        if (this.$isNotEmpty(res.data)) {
-                            delete res.data.createTime;
-                            delete res.data.updateTime;
-                            this.form = res.data;
-                        } else {
-                            this.form = {
-                                dsId: '',
-                                sqlText: '',
-                                whereColumn: '',
-                                maxRows: 99,
-                                description: '',
-                                status: 0
-                            };
-                        }
+                        this.form = res.data;
                     })
                 }
             },
             doSave() {
-                this.$refs['form'].validate((valid) => {
+                this.$refs.form.validate((valid) => {
                     if (valid) {
                         this.saveLoading = true;
                         this.form.dictId = this.dictId;
-                        saveDictSql(this.form).then(res => {
+                        saveDictSql(this.form).then(() => {
                             this.saveLoading = false;
                             this.$notify({
                                 title: '保存成功',
                                 type: 'success',
                                 duration: 2500
                             });
-                        }).catch(err => {
+                        }).catch(() => {
                             this.saveLoading = false;
                         })
                     }
                 })
             },
-            sqlTextChange(value) {
-                this.form.sqlText = value;
-            }
+            querySqlChange(value) {
+                this.form.querySql = value;
+            },
+            remoteMethod(name) {
+                if (name !== '') {
+                    this.selectLoading = true;
+                    getDataSourceByName(name).then(res => {
+                        this.selectLoading = false;
+                        if (res.data && res.data.length > 0) {
+                            this.dataSourceList = res.data;
+                        } else {
+                            this.dataSourceList = [];
+                        }
+                    })
+                } else {
+                    this.dataSourceList = [];
+                }
+            },
         }
     }
 </script>

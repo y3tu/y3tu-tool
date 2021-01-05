@@ -1,5 +1,7 @@
 package com.y3tu.tool.report.entity.domain;
 
+import com.y3tu.tool.web.annotation.Query;
+import com.y3tu.tool.web.base.jpa.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -17,19 +19,22 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "report_dict")
 @Data
-public class Dict {
+public class Dict extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Integer id;
 
+    @Query(propName = "name", type = Query.Type.INNER_LIKE)
     @Column(columnDefinition = "varchar(100) comment '字典名称'")
     String name;
 
+    @Query(propName = "code", type = Query.Type.INNER_LIKE)
     @Column(columnDefinition = "varchar(100) comment '字典编码'")
     String code;
 
-    @Column(columnDefinition = "int comment '字典类型'")
-    int type;
+    @Query(propName = "type", type = Query.Type.EQUAL)
+    @Column(columnDefinition = "int comment '字典类型 0:普通字典 1:SQL字典'")
+    Integer type;
 
     @Column(columnDefinition = "varchar(500) comment '备注'")
     String remarks;
