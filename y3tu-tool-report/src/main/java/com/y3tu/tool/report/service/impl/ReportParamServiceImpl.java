@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @author y3tu
  */
@@ -17,4 +19,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class ReportParamServiceImpl extends BaseServiceImpl<ReportParamRepository, ReportParam> implements ReportParamService {
 
+    @Override
+    public List<ReportParam> getByReportId(int reportId) {
+        return repository.getByReportId(reportId);
+    }
+
+    @Override
+    public void deleteByReportId(int reportId) {
+        repository.deleteByReportId(reportId);
+    }
 }

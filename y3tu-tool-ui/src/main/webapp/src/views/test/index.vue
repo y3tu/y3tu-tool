@@ -1,24 +1,14 @@
 <template>
-    <code-editor :value="querySql" height="250px" code-type="text/x-sql" @change="querySqlChange"/>
-
+    <div v-loading="loading">
+        ddd
+    </div>
 </template>
 
 <script>
-    import CodeEditor from '@/components/CodeEditor'
-
     export default {
-        components: {CodeEditor},
-        data() {
-            return {
-                querySql:'select * from dual',
-                report: {
-                    querySql: 'select * from dual;'
-                },
-            }
-        },
-        methods: {
-            querySqlChange(val) {
-                this.querySql = val
+        data(){
+            return{
+                loading:true
             }
         }
     }

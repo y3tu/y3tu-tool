@@ -53,25 +53,23 @@
 <script>
     import CodeEditor from '@/components/CodeEditor/index'
 
-    import {getDictSql, saveDictSql} from './api'
+    import {saveDictSql} from './api'
     import {getDataSourceByName} from "./api";
 
     export default {
         // 数据字典
+        props: {
+            dictSql: {
+                type: Object,
+                required: true
+            }
+        },
         components: {CodeEditor},
         data() {
             return {
                 saveLoading: false,
                 selectLoading: false,
                 dataSourceList: [],
-                dictId: '',
-                form: {
-                    dsId: '',
-                    querySql: '',
-                    whereColumn: '',
-                    remarks: '',
-                    status: ''
-                },
                 rules: {
                     dsId: [
                         {required: true, message: '数据源不能为空', trigger: 'blur'}
@@ -79,24 +77,16 @@
                 }
             }
         },
+        computed: {
+            form() {
+                return this.dictSql;
+            }
+        },
         methods: {
-            created() {
-                this.$nextTick(() => {
-                    this.init();
-                })
-            },
-            init() {
-                if (this.$isNotEmpty(this.dictId)) {
-                    getDictSql(this.dictId).then(res => {
-                        this.form = res.data;
-                    })
-                }
-            },
             doSave() {
                 this.$refs.form.validate((valid) => {
                     if (valid) {
                         this.saveLoading = true;
-                        this.form.dictId = this.dictId;
                         saveDictSql(this.form).then(() => {
                             this.saveLoading = false;
                             this.$notify({

@@ -77,7 +77,7 @@
                 </el-card>
             </el-col>
             <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14">
-                <dict-sql ref="dictSql" v-if="isDictSql"/>
+                <dict-sql v-bind:dict-sql="dictSql" v-if="isDictSql"/>
                 <dict-data ref="dictData" v-show="!isDictSql"/>
             </el-col>
         </el-row>
@@ -116,7 +116,7 @@
 </template>
 
 <script>
-    import {dictPage, createDict, updateDict, deleteDict} from './api.js'
+    import {dictPage, createDict, updateDict, deleteDict,getDictSql} from './api.js'
 
     import dictData from './dictData'
     import dictSql from './dictSql'
@@ -162,7 +162,8 @@
                 delLoading: false,
                 dictId: '',
                 dictName: '',
-                isDictSql: false
+                isDictSql: false,
+                dictSql: {}
             }
         },
         created() {
@@ -204,9 +205,11 @@
                         this.$refs.dictData.pageInfo.entity.dictId = val.id;
                         this.$refs.dictData.init()
                     } else {
-                        this.isDictSql = true;
-                        this.$refs.dictSql.dictId = val.id;
-                        this.$refs.dictSql.init()
+                        this.isDictSql = false;
+                        getDictSql(val.id).then(res => {
+                            this.dictSql = res.data;
+                            this.isDictSql = true;
+                        })
                     }
                 }
             },

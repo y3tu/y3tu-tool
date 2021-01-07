@@ -11,6 +11,8 @@ import java.util.List;
  */
 @Data
 public class ReportDto {
+
+    Integer id;
     /**
      * 报表名
      */
@@ -22,15 +24,15 @@ public class ReportDto {
     /**
      * 状态
      */
-    int status;
+    Integer status;
     /**
      * 报表类型
      */
-    int type;
+    Integer type;
     /**
      * 数据源ID
      */
-    long dsId;
+    Integer dsId;
     /**
      * 表头
      */

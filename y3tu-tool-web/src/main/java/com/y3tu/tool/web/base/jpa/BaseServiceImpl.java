@@ -52,8 +52,8 @@ public class BaseServiceImpl<R extends BaseRepository, T> implements BaseService
     }
 
     @Override
-    public Object getById(Object key) {
-        return repository.findById(key).get();
+    public T getById(Object key) {
+        return (T) repository.findById(key).get();
     }
 
 

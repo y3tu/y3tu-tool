@@ -67,11 +67,11 @@
         methods: {
             add() {
                 this.paramArr.push({
-                    id: {},
+                    id: '',
                     name: '',
                     field: '',
-                    type: {},
-                    dictCode: {},
+                    type: '',
+                    dictCode: '',
                 })
             },
             del(index) {

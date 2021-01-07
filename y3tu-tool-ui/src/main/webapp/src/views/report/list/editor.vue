@@ -5,20 +5,20 @@
         </el-form-item>
         <el-form-item label="报表类型" prop="type">
             <el-select v-model="report.type" placeholder="请选择">
-                <el-option value="1" label="通用报表"/>
-                <el-option value="2" label="Jasper报表"/>
+                <el-option :value="1" label="通用报表"/>
+                <el-option :value="2" label="Jasper报表"/>
             </el-select>
         </el-form-item>
-        <el-form-item v-show="report.type==='1'" label="列头" prop="columnHeader">
+        <el-form-item v-show="report.type===1" label="列头" prop="columnHeader">
             <el-input v-model="report.columnHeader"/>
         </el-form-item>
-        <el-form-item v-show="report.type==='1'" label="查询SQL" prop="querySql">
+        <el-form-item v-show="report.type===1" label="查询SQL" prop="querySql">
             <code-editor :value="report.querySql" height="250px" code-type="text/x-sql" @change="querySqlChange"/>
         </el-form-item>
-        <el-form-item v-show="report.type==='2'" label="上传模板">
+        <el-form-item v-show="report.type===2" label="上传模板">
             <el-select v-model="report.templateType" placeholder="请选择">
-                <el-option value="1" label="主数据模板"/>
-                <el-option value="2" label="子数据模板"/>
+                <el-option :value="1" label="主数据模板"/>
+                <el-option :value="2" label="子数据模板"/>
             </el-select>
             <el-upload
                     ref="upload"
@@ -43,8 +43,8 @@
         </el-form-item>
         <el-form-item label="报表状态" prop="status">
             <el-select v-model="report.status" placeholder="请选择">
-                <el-option value="0" label="启用"/>
-                <el-option value="1" label="禁用"/>
+                <el-option :value="0" label="启用"/>
+                <el-option :value="1" label="禁用"/>
             </el-select>
         </el-form-item>
 
@@ -93,11 +93,7 @@
         },
         computed: {
             report() {
-                if (this.value) {
-                    return this.value;
-                } else {
-                    return this.initReport();
-                }
+                return this.value;
             }
         },
         created() {
@@ -107,12 +103,12 @@
                 return {
                     id: '',
                     name: '',
-                    type: "1",
+                    type: 1,
                     columnHeader: '',
-                    querySql: 'select',
-                    dsId: {},
-                    status: {},
-                    templateType: {},
+                    querySql: '',
+                    dsId: '',
+                    status: '',
+                    templateType: '',
                     params: [],
                 }
             },

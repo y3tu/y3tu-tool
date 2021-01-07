@@ -10,28 +10,29 @@
                     <div class="main-container" style="padding: 0">
                         <div class="head-container">
                             <label class="form-item-label">报表名称</label>
-                            <el-input clearable v-model="pageInfo.entity.name" placeholder="请输入报表名称" style="width:200px" class="form-item"
+                            <el-input clearable v-model="pageInfo.entity.name" placeholder="请输入报表名称" style="width:200px"
+                                      class="form-item"
                                       @keyup.enter="query"/>
-                            <el-button class="form-item" size="mini" type="success" icon="el-icon-search" plain @click="query">
+                            <el-button class="form-item" size="mini" type="success" icon="el-icon-search" plain
+                                       @click="query">
                                 查询
                             </el-button>
-                            <el-button class="form-item" size="mini" type="warning" icon="el-icon-refresh-left" plain @click="reset">
+                            <el-button class="form-item" size="mini" type="warning" icon="el-icon-refresh-left" plain
+                                       @click="reset">
                                 重置
                             </el-button>
                         </div>
 
                         <el-divider/>
-                        <div style="display: flex;flex-wrap: wrap;">
 
-                            <div class="excel-view-item excel-list-add">
-                                <a @click="createExcel">
-                                    <i class="el-icon-plus" style="font-size:20px; padding-bottom: 5px;"></i>
-                                    <p style="letter-spacing: 2px;font-size: 14px;">新建报表</p>
-                                </a>
+                        <div v-loading="pageInfo.pageLoading" style="display: flex;flex-wrap: wrap;">
+
+                            <div class="excel-view-item excel-list-add" @click="createReport">
+                                <i class="el-icon-plus excel-list-add-icon"></i>
                             </div>
 
 
-                            <div v-for="(item,index) in reportList"
+                            <div v-for="(item,index) in pageInfo.records"
                                  :key="index"
                                  class="excel-view-item"
                                  @mouseover="item.editable=true"
@@ -40,8 +41,8 @@
                                 <!--缩略图-->
                                 <div class="thumb">
                                     <img src="../../../assets/images/excel.jpg"/>
-                                    <div class="excel-edit-container" v-show="item.editable">
-                                        <a :href="getExcelEditUrl(item)" target="_blank">
+                                    <div v-loading="itemLoading" class="excel-edit-container" v-show="item.editable">
+                                        <a @click="updateReport(item)">
                                             修改
                                         </a>
                                     </div>
@@ -99,13 +100,15 @@
                 v-model="drawer"
                 direction="rtl"
                 destroy-on-close>
-            <editor />
+            <editor v-bind:value="report"/>
         </el-drawer>
 
     </el-container>
 </template>
 
 <script>
+
+    import {page, get} from './api'
 
     import editor from './editor'
 
@@ -125,15 +128,24 @@
                     records: [],
                 },
                 drawer: false,
-                reportList: [{
-                    editable: false,
-                    name: 'test'
-                }],
+                report: {},
+                itemLoading: false
             }
+        },
+        created() {
+            this.$nextTick(() => {
+                this.query();
+            })
         },
         methods: {
             query() {
-
+                this.pageInfo.pageLoading = true
+                page(this.pageInfo).then(res => {
+                    this.pageInfo.pageLoading = false
+                    this.pageInfo = res.data;
+                }).catch(() => {
+                    this.pageInfo.pageLoading = false
+                })
             },
             reset() {
                 this.pageInfo.entity.name = '';
@@ -147,11 +159,27 @@
                 this.pageInfo.current = e;
                 this.query()
             },
-            createExcel() {
+            createReport() {
                 this.drawer = true;
+                this.report = {
+                    id: '',
+                    name: '',
+                    type: 1,
+                    columnHeader: '',
+                    querySql: '',
+                    dsId: {},
+                    status: {},
+                    templateType: {},
+                    params: [],
+                }
             },
-            getExcelEditUrl() {
-
+            updateReport(item) {
+                this.itemLoading = true;
+                get(item.id).then(res => {
+                    this.itemLoading = false;
+                    this.report = res.data;
+                    this.drawer = true;
+                })
             },
             getExcelViewUrl() {
             }
@@ -159,8 +187,7 @@
     }
 </script>
 
-<style>
-
+<style scoped>
     .page {
         display: flex;
         justify-content: center;
@@ -178,17 +205,13 @@
         cursor: pointer;
     }
 
-    .excel-list-add a {
+    .excel-list-add-icon {
         height: 100%;
         color: black;
         flex-direction: column;
         display: flex;
         justify-content: center;
         align-items: center;
-    }
-
-    .excel-list-add a:hover {
-        color: #d5a1b2;
     }
 
     .excel-view-item {

@@ -10,4 +10,20 @@ import lombok.Data;
 @Data
 public class ReportParamDto {
 
+    Integer id;
+
+    Integer seq;
+
+    Integer reportId;
+
+    String name;
+
+    String field;
+
+    String relation;
+
+    String type;
+
+    String dictCode;
+
 }

@@ -31,7 +31,7 @@ public interface BaseService<T> {
      * @param key 主键
      * @return
      */
-    Object getById(Object key);
+    T getById(Object key);
 
     /**
      * 创建
