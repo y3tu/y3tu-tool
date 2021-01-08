@@ -34,8 +34,8 @@ public class DictData extends BaseEntity {
     @Column(columnDefinition = "varchar(100) comment '字典值'")
     String value;
 
-    @Column(columnDefinition = "varchar(3) comment '状态'")
-    Integer status;
+    @Column(columnDefinition = "varchar(3) comment '状态 00A:有效 00X:失效'")
+    String status;
 
     @Column(columnDefinition = "int comment '排序'")
     Integer seq;

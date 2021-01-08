@@ -41,6 +41,12 @@ public class DataSourceController {
         return R.success(dataSourceService.getByName(name));
     }
 
+    @GetMapping("getAll")
+    public R getAll() {
+        DataSource dataSource = new DataSource();
+        return R.success(dataSourceService.getAll(dataSource));
+    }
+
     @PostMapping("create")
     public R create(@RequestBody DataSource dataSource) {
         dataSource.setCreateTime(new Date());

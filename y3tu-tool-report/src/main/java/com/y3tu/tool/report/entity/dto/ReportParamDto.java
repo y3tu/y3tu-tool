@@ -22,7 +22,7 @@ public class ReportParamDto {
 
     String relation;
 
-    String type;
+    Integer type;
 
     String dictCode;
 

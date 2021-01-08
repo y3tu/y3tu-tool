@@ -16,5 +16,5 @@ public interface DictDataRepository extends BaseRepository<DictData> {
      * @param status
      * @return
      */
-    List<DictData> findAllByDictIdAndStatus(int dictId, int status);
+    List<DictData> findAllByDictIdAndStatus(int dictId, String status);
 }

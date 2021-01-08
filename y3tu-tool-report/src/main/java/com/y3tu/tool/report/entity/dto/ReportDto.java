@@ -24,11 +24,11 @@ public class ReportDto {
     /**
      * 状态
      */
-    Integer status;
+    String status;
     /**
      * 报表类型
      */
-    Integer type;
+    String type;
     /**
      * 数据源ID
      */

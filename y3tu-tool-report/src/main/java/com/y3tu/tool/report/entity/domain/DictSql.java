@@ -29,8 +29,8 @@ public class DictSql extends BaseEntity {
     @Column(name = "ds_id", columnDefinition = "int comment '数据源ID'")
     Integer dsId;
 
-    @Column(columnDefinition = "varchar(3) comment '状态'")
-    Integer status;
+    @Column(columnDefinition = "varchar(3) comment '状态 有效:00A 失效:00X '")
+    String status;
 
     @Column(columnDefinition = "varchar(500) comment '备注'")
     String remarks;

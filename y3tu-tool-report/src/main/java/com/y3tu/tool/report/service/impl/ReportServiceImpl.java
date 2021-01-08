@@ -35,9 +35,9 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
         Report report = new Report();
         BeanUtils.copyProperties(reportDto, report);
         report.setCreateTime(new Date());
-        this.create(report);
+        report = this.create(report);
         //报表参数
-        createReportParam(reportDto);
+        createReportParam(reportDto, report.getId());
     }
 
     @Override
@@ -50,7 +50,7 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
         this.update(report);
         //报表参数 先删除旧参数数据再新增
         reportParamService.deleteByReportId(reportDto.getId());
-        createReportParam(reportDto);
+        createReportParam(reportDto, reportDto.getId());
     }
 
     @Override
@@ -61,11 +61,11 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
         this.delete(reportDto.getId());
     }
 
-    private void createReportParam(ReportDto reportDto) {
+    private void createReportParam(ReportDto reportDto, int reportId) {
         for (int i = 0; i < reportDto.getParams().size(); i++) {
             ReportParam param = new ReportParam();
             BeanUtils.copyProperties(reportDto.getParams().get(i), param);
-            param.setReportId(reportDto.getId());
+            param.setReportId(reportId);
             param.setSeq(i);
             param.setCreateTime(new Date());
             reportParamService.create(param);

@@ -35,6 +35,6 @@ public class ReportAttachment extends BaseEntity {
     @Column(columnDefinition = "int comment '附件类型:1:数据模板;2:柱状图模板;3:折线图模板;4:饼图模板'")
     Integer type;
 
-    @Column(columnDefinition = "varchar(3) comment '状态：0:有效;1:失效'")
-    Integer status;
+    @Column(columnDefinition = "varchar(3) comment '状态：00A:有效;00X:失效'")
+    String status;
 }

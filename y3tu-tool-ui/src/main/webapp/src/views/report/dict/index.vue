@@ -5,9 +5,14 @@
                 <el-card>
                     <template v-slot:header>
                         <span>字典列表</span>
-                        <el-button class="form-item" style="float: right;" size="mini" type="primary" icon="el-icon-plus" circle @click="doAdd"/>
-                        <el-button class="form-item" size="mini" type="success" icon="el-icon-search" plain @click="query">查询</el-button>
-                        <el-button class="form-item" size="mini" type="warning" icon="el-icon-refresh-left" plain @click="reset">重置</el-button>
+                        <el-button class="form-item" style="float: right;" size="mini" type="primary"
+                                   icon="el-icon-plus" circle @click="doAdd"/>
+                        <el-button class="form-item" size="mini" type="success" icon="el-icon-search" plain
+                                   @click="query">查询
+                        </el-button>
+                        <el-button class="form-item" size="mini" type="warning" icon="el-icon-refresh-left" plain
+                                   @click="reset">重置
+                        </el-button>
                     </template>
 
                     <div class="head-container">
@@ -42,27 +47,28 @@
                                     </el-option>
                                 </el-select>
                             </el-form-item>
-
                         </el-form>
-
                     </div>
 
                     <!--表格渲染-->
-                    <el-table v-loading="pageInfo.pageLoading" :data="pageInfo.records" size="small" highlight-current-row
+                    <el-table v-loading="pageInfo.pageLoading" :data="pageInfo.records" size="small"
+                              highlight-current-row
                               style="width: 100%;"
                               @current-change="handleCurrentChange">
                         <el-table-column :show-overflow-tooltip="true" prop="name" label="名称"/>
                         <el-table-column :show-overflow-tooltip="true" prop="code" label="编码"/>
                         <el-table-column prop="type" label="类型">
                             <template #default="scope">
-                                <span>{{ scope.row.type===0?'普通字典':'SQL字典' }}</span>
+                                <span>{{ scope.row.type==='common'?'普通字典':'SQL字典' }}</span>
                             </template>
                         </el-table-column>
                         <el-table-column :show-overflow-tooltip="true" prop="remarks" label="描述"/>
                         <el-table-column label="操作" width="130px" align="center">
                             <template #default="scope">
-                                <i class="el-icon-setting table-operation" style="color: #2db7f5;" @click="edit(scope.row)"/>
-                                <i class="el-icon-delete table-operation" style="color: #f50;" @click="del(scope.row.id)"/>
+                                <i class="el-icon-setting table-operation" style="color: #2db7f5;"
+                                   @click="edit(scope.row)"/>
+                                <i class="el-icon-delete table-operation" style="color: #f50;"
+                                   @click="del(scope.row.id)"/>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -116,7 +122,7 @@
 </template>
 
 <script>
-    import {dictPage, createDict, updateDict, deleteDict,getDictSql} from './api.js'
+    import {dictPage, createDict, updateDict, deleteDict, getDictSql} from './api.js'
 
     import dictData from './dictData'
     import dictSql from './dictSql'
@@ -127,10 +133,10 @@
         data() {
             return {
                 typeArr: [{
-                    value: 0,
+                    value: 'common',
                     label: '普通字典'
                 }, {
-                    value: 1,
+                    value: 'sql',
                     label: 'SQL字典'
                 }],
                 pageInfo: {
@@ -199,7 +205,7 @@
             },
             handleCurrentChange(val) {
                 if (val) {
-                    if (val.type === 0) {
+                    if (val.type === 'common') {
                         this.isDictSql = false;
                         this.$refs.dictData.dictName = val.name;
                         this.$refs.dictData.pageInfo.entity.dictId = val.id;
@@ -207,7 +213,18 @@
                     } else {
                         this.isDictSql = false;
                         getDictSql(val.id).then(res => {
-                            this.dictSql = res.data;
+                            if (res.data) {
+                                this.dictSql = res.data;
+                            } else {
+                                this.dictSql = {
+                                    dictId: val.id,
+                                    dsId: '',
+                                    querySql: '',
+                                    whereColumn: '',
+                                    remarks: '',
+                                    status: ''
+                                }
+                            }
                             this.isDictSql = true;
                         })
                     }
@@ -280,7 +297,7 @@
                 this.search()
             },
             pageChange(e) {
-                this.pageInfo.current = e;
+                this.pageInfo.current = e - 1;
                 this.search()
             }
         }

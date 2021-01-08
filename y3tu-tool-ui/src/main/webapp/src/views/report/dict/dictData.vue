@@ -28,7 +28,7 @@
                 <el-table-column prop="seq" label="排序"/>
                 <el-table-column prop="status" label="状态">
                     <template #default="scope">
-                        <span>{{ scope.row.status===0?'启用':'禁用' }}</span>
+                        <span>{{ scope.row.status==='00A'?'启用':'禁用' }}</span>
                     </template>
                 </el-table-column>
 
@@ -98,10 +98,10 @@
         data() {
             return {
                 statusArr: [{
-                    value: 0,
+                    value: '00A',
                     label: '正常'
                 }, {
-                    value: 1,
+                    value: '00X',
                     label: '禁用'
                 }],
 
@@ -234,7 +234,7 @@
                 this.search()
             },
             pageChange(e) {
-                this.pageInfo.current = e;
+                this.pageInfo.current = e - 1;
                 this.search()
             }
 

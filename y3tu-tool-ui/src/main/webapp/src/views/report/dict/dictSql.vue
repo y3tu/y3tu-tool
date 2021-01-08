@@ -15,10 +15,7 @@
             <el-form-item label="数据源" prop="dsId">
                 <el-select v-model="form.dsId"
                            filterable
-                           remote
-                           placeholder="请输入关键词"
-                           :remote-method="remoteMethod"
-                           :loading="selectLoading">
+                           placeholder="请输入关键词">
                     <el-option v-for="item in dataSourceList"
                                :key="item.id"
                                :label="item.name"
@@ -42,8 +39,8 @@
                         placeholder="请选择"
                         clearable
                         style="width: 110px">
-                    <el-option :value="0" label="正常"/>
-                    <el-option :value="1" label="禁用"/>
+                    <el-option value="00A" label="正常"/>
+                    <el-option value="00X" label="禁用"/>
                 </el-select>
             </el-form-item>
         </el-form>
@@ -53,8 +50,7 @@
 <script>
     import CodeEditor from '@/components/CodeEditor/index'
 
-    import {saveDictSql} from './api'
-    import {getDataSourceByName} from "./api";
+    import {saveDictSql, getAllDataSource} from './api'
 
     export default {
         // 数据字典
@@ -68,12 +64,10 @@
         data() {
             return {
                 saveLoading: false,
-                selectLoading: false,
                 dataSourceList: [],
                 rules: {
-                    dsId: [
-                        {required: true, message: '数据源不能为空', trigger: 'blur'}
-                    ]
+                    dsId: {required: true, message: '数据源不能为空', trigger: 'blur'},
+                    status: {required: true, message: '状态不能为空', trigger: 'blur'}
                 }
             }
         },
@@ -81,6 +75,17 @@
             form() {
                 return this.dictSql;
             }
+        },
+        created() {
+            this.$nextTick(() => {
+                getAllDataSource().then(res => {
+                    if (res.data && res.data.length > 0) {
+                        this.dataSourceList = res.data;
+                    } else {
+                        this.dataSourceList = [];
+                    }
+                })
+            })
         },
         methods: {
             doSave() {
@@ -102,22 +107,7 @@
             },
             querySqlChange(value) {
                 this.form.querySql = value;
-            },
-            remoteMethod(name) {
-                if (name !== '') {
-                    this.selectLoading = true;
-                    getDataSourceByName(name).then(res => {
-                        this.selectLoading = false;
-                        if (res.data && res.data.length > 0) {
-                            this.dataSourceList = res.data;
-                        } else {
-                            this.dataSourceList = [];
-                        }
-                    })
-                } else {
-                    this.dataSourceList = [];
-                }
-            },
+            }
         }
     }
 </script>

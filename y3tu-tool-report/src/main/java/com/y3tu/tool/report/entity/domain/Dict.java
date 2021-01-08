@@ -33,8 +33,8 @@ public class Dict extends BaseEntity {
     String code;
 
     @Query(propName = "type", type = Query.Type.EQUAL)
-    @Column(columnDefinition = "int comment '字典类型 0:普通字典 1:SQL字典'")
-    Integer type;
+    @Column(columnDefinition = "varchar(10) comment '字典类型 common:普通字典 sql:SQL字典'")
+    String type;
 
     @Column(columnDefinition = "varchar(500) comment '备注'")
     String remarks;
@@ -43,19 +43,19 @@ public class Dict extends BaseEntity {
         /**
          * 普通字典
          */
-        DATA(0),
+        COMMON("common"),
         /**
          * SQL字典
          */
-        SQL(1);
+        SQL("sql");
 
-        private int value;
+        private String value;
 
-        DictType(int value) {
+        DictType(String value) {
             this.value = value;
         }
 
-        public int getValue() {
+        public String getValue() {
             return value;
         }
     }

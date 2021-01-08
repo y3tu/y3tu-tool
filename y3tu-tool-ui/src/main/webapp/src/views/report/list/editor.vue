@@ -5,17 +5,17 @@
         </el-form-item>
         <el-form-item label="报表类型" prop="type">
             <el-select v-model="report.type" placeholder="请选择">
-                <el-option :value="1" label="通用报表"/>
-                <el-option :value="2" label="Jasper报表"/>
+                <el-option value="common" label="通用报表"/>
+                <el-option value="jasper" label="Jasper报表"/>
             </el-select>
         </el-form-item>
-        <el-form-item v-show="report.type===1" label="列头" prop="columnHeader">
+        <el-form-item v-show="report.type==='common'" label="列头" prop="columnHeader">
             <el-input v-model="report.columnHeader"/>
         </el-form-item>
-        <el-form-item v-show="report.type===1" label="查询SQL" prop="querySql">
+        <el-form-item v-if="report.type==='common'" label="查询SQL" prop="querySql">
             <code-editor :value="report.querySql" height="250px" code-type="text/x-sql" @change="querySqlChange"/>
         </el-form-item>
-        <el-form-item v-show="report.type===2" label="上传模板">
+        <el-form-item v-show="report.type==='jasper'" label="上传模板">
             <el-select v-model="report.templateType" placeholder="请选择">
                 <el-option :value="1" label="主数据模板"/>
                 <el-option :value="2" label="子数据模板"/>
@@ -28,12 +28,7 @@
             </el-upload>
         </el-form-item>
         <el-form-item label="数据源" prop="dsId">
-            <el-select v-model="report.dsId"
-                       filterable
-                       remote
-                       placeholder="请输入关键词"
-                       :remote-method="remoteMethod"
-                       :loading="selectLoading">
+            <el-select v-model="report.dsId" filterable>
                 <el-option v-for="item in dataSourceList"
                            :key="item.id"
                            :label="item.name"
@@ -43,8 +38,8 @@
         </el-form-item>
         <el-form-item label="报表状态" prop="status">
             <el-select v-model="report.status" placeholder="请选择">
-                <el-option :value="0" label="启用"/>
-                <el-option :value="1" label="禁用"/>
+                <el-option value="00A" label="启用"/>
+                <el-option value="00X" label="禁用"/>
             </el-select>
         </el-form-item>
 
@@ -52,17 +47,15 @@
             <query-param ref="params" :params="report.params"/>
         </el-form-item>
 
-
         <el-row type="flex" justify="end">
             <el-col :span="3">
                 <el-tooltip effect="dark" content="保存" placement="top">
-                    <el-button :loading="buttonLoading" @click="submitForm" type="primary" icon="el-icon-check">保存</el-button>
+                    <el-button :loading="buttonLoading" @click="submitForm" type="primary" icon="el-icon-check">保存
+                    </el-button>
                 </el-tooltip>
             </el-col>
         </el-row>
-
     </el-form>
-
 
 </template>
 
@@ -70,7 +63,7 @@
 
     import CodeEditor from '@/components/CodeEditor'
     import QueryParam from './queryParam'
-    import {create, update, getDataSourceByName} from "./api";
+    import {create, update, getAllDataSource} from "./api";
 
     export default {
         name: 'editor',
@@ -87,7 +80,6 @@
                     name: {required: true, message: "报表名称不能为空", trigger: 'blur'},
                     type: {required: true, message: "报表类型不能为空", trigger: 'blur'}
                 },
-                selectLoading: false,
                 buttonLoading: false,
             }
         },
@@ -97,41 +89,22 @@
             }
         },
         created() {
+            this.$nextTick(() => {
+                getAllDataSource().then(res => {
+                    if (res.data && res.data.length > 0) {
+                        this.dataSourceList = res.data;
+                    } else {
+                        this.dataSourceList = [];
+                    }
+                })
+            })
         },
         methods: {
-            initReport() {
-                return {
-                    id: '',
-                    name: '',
-                    type: 1,
-                    columnHeader: '',
-                    querySql: '',
-                    dsId: '',
-                    status: '',
-                    templateType: '',
-                    params: [],
-                }
-            },
             setReport(val) {
                 this.report = {...val}
             },
             querySqlChange(val) {
                 this.report.querySql = val;
-            },
-            remoteMethod(name) {
-                if (name !== '') {
-                    this.selectLoading = true;
-                    getDataSourceByName(name).then(res => {
-                        this.selectLoading = false;
-                        if (res.data && res.data.length > 0) {
-                            this.dataSourceList = res.data;
-                        } else {
-                            this.dataSourceList = [];
-                        }
-                    })
-                } else {
-                    this.dataSourceList = [];
-                }
             },
             submitForm() {
                 this.$refs.form.validate((valid) => {

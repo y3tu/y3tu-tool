@@ -12,15 +12,15 @@
         </el-form-item>
         <el-form-item label="类型">
             <el-select v-model="param.type" size="mini" placeholder="参数取值">
-                <el-option label="输入取值" value="1"></el-option>
-                <el-option label="字典下拉" value="2"></el-option>
-                <el-option label="字典下拉多选" value="3"></el-option>
-                <el-option label="月份" value="4"></el-option>
-                <el-option label="日期" value="5"></el-option>
-                <el-option label="时间" value="6"></el-option>
+                <el-option label="输入取值" :value="1"></el-option>
+                <el-option label="字典下拉" :value="2"></el-option>
+                <el-option label="字典下拉多选" :value="3"></el-option>
+                <el-option label="月份" :value="4"></el-option>
+                <el-option label="日期" :value="5"></el-option>
+                <el-option label="时间" :value="6"></el-option>
             </el-select>
         </el-form-item>
-        <el-form-item v-show="param.type==='2'||param.type==='3'" label="字典编码">
+        <el-form-item v-show="param.type===2||param.type===3" label="字典编码">
             <el-select size="mini" v-model="param.dictCode"
                        filterable
                        remote

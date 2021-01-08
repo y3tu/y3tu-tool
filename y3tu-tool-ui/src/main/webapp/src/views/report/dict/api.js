@@ -114,14 +114,12 @@ export function getDictSql(dictId) {
     })
 }
 
-
 /**
- * 根据数据源名称获取所有数据源
- * @param name
+ * 获取所有数据源
  */
-export function getDataSourceByName(name) {
+export function getAllDataSource() {
     return service({
-        url: `y3tu-tool-report/dataSource/getByName/${name}`,
+        url: `y3tu-tool-report/dataSource/getAll`,
         method: 'get',
     })
 }

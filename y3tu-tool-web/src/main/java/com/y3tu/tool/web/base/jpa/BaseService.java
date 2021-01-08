@@ -38,14 +38,14 @@ public interface BaseService<T> {
      *
      * @param entity 实体
      */
-    void create(T entity);
+    T create(T entity);
 
     /**
      * 编辑
      *
      * @param
      */
-    void update(T entity);
+    T update(T entity);
 
     /**
      * 删除

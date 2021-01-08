@@ -3,6 +3,7 @@
         <el-main>
             <el-tabs>
                 <el-tab-pane>
+
                     <template #label>
                         <span><i class="el-icon-edit" style="padding-right: 5px"/>报表列表</span>
                     </template>
@@ -30,7 +31,6 @@
                             <div class="excel-view-item excel-list-add" @click="createReport">
                                 <i class="el-icon-plus excel-list-add-icon"></i>
                             </div>
-
 
                             <div v-for="(item,index) in pageInfo.records"
                                  :key="index"
@@ -100,7 +100,7 @@
                 v-model="drawer"
                 direction="rtl"
                 destroy-on-close>
-            <editor v-bind:value="report"/>
+            <editor v-bind:value="report" @success="editorSuccess"/>
         </el-drawer>
 
     </el-container>
@@ -156,7 +156,7 @@
                 this.query()
             },
             pageChange(e) {
-                this.pageInfo.current = e;
+                this.pageInfo.current = e - 1;
                 this.query()
             },
             createReport() {
@@ -164,12 +164,12 @@
                 this.report = {
                     id: '',
                     name: '',
-                    type: 1,
+                    type: '',
                     columnHeader: '',
                     querySql: '',
-                    dsId: {},
-                    status: {},
-                    templateType: {},
+                    dsId: '',
+                    status: '',
+                    templateType: '',
                     params: [],
                 }
             },
@@ -180,6 +180,10 @@
                     this.report = res.data;
                     this.drawer = true;
                 })
+            },
+            editorSuccess() {
+                this.drawer = false;
+                this.query()
             },
             getExcelViewUrl() {
             }

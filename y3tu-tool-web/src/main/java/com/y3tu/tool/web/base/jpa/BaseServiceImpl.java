@@ -59,15 +59,15 @@ public class BaseServiceImpl<R extends BaseRepository, T> implements BaseService
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void create(T entity) {
-        repository.save(entity);
+    public T create(T entity) {
+        return (T) repository.save(entity);
     }
 
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void update(T entity) {
-        repository.save(entity);
+    public T update(T entity) {
+        return (T) repository.save(entity);
     }
 
     @Override

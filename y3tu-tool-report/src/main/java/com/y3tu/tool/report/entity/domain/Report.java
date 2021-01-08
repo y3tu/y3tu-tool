@@ -27,17 +27,17 @@ public class Report extends BaseEntity {
     @Column(columnDefinition = "varchar(1000) comment '备注'")
     String remarks;
 
-    @Column(columnDefinition = "varchar(10) comment '状态 0:正常 1：禁用'")
-    Integer status;
+    @Column(columnDefinition = "varchar(10) comment '状态 00A:正常 00X：禁用'")
+    String status;
 
-    @Column(columnDefinition = "int comment '类型 1:通用报表 2:个性化报表 '")
-    Integer type;
+    @Column(columnDefinition = "varchar(10) comment '类型 common:通用报表 jasper:Jasper报表 '")
+    String type;
 
     @Column(name = "ds_id", columnDefinition = "int(10) comment '数据源ID'")
     Integer dsId;
 
     @Column(name = "column_header", columnDefinition = "varchar(500) comment '列表头'")
-    private String columnHeader;
+    String columnHeader;
 
     @Column(name = "query_sql", columnDefinition = "varchar(2000) comment '报表查询sql'")
     String querySql;
