@@ -1,6 +1,7 @@
 package com.y3tu.tool.web.file.sftp;
 
 import com.jcraft.jsch.ChannelSftp;
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.web.file.properties.SftpProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.pool2.impl.GenericObjectPool;
@@ -31,12 +32,17 @@ public class SftpPool {
      * @return
      */
     public ChannelSftp getChannelSftp() {
+        ChannelSftp channelSftp = null;
         try {
-            return pool.borrowObject();
+            channelSftp = pool.borrowObject();
         } catch (Exception e) {
             log.error("获取SFTP连接异常：", e);
-            return null;
+            throw new ToolException("获取SFTP连接异常:" + e.getMessage());
         }
+        if (channelSftp == null) {
+            throw new ToolException("当前还没有空闲的SFTP连接，请稍后再试！");
+        }
+        return channelSftp;
     }
 
     /**

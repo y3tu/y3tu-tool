@@ -1,4 +1,4 @@
-import service from '@/plugin/axios'
+import {service, download} from '@/plugin/axios'
 
 /**
  * 获取报表列表
@@ -41,6 +41,23 @@ export function update(params) {
         method: 'post',
         data: params
     })
+}
+
+/**
+ * 删除报表
+ */
+export function del(id) {
+    return service({
+        url: `y3tu-tool-report/report/delete/${id}`,
+        method: 'get',
+    })
+}
+
+/**
+ * 下载
+ */
+export function downloadFile(id, fileName) {
+    download(`y3tu-tool-report/report/download/${id}`, fileName);
 }
 
 /**

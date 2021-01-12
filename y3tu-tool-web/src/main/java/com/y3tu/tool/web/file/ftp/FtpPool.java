@@ -1,5 +1,6 @@
 package com.y3tu.tool.web.file.ftp;
 
+import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.web.file.properties.FtpProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.ftp.FTPClient;
@@ -32,12 +33,17 @@ public class FtpPool {
      * @return
      */
     public FTPClient getFTPClient() {
+        FTPClient ftpClient = null;
         try {
-            return pool.borrowObject();
+            ftpClient = pool.borrowObject();
         } catch (Exception e) {
             log.error("获取FTP连接异常：", e);
-            return null;
+            throw new ToolException("获取FTP连接异常:" + e.getMessage());
         }
+        if (ftpClient == null) {
+            throw new ToolException("当前还没有空闲的FTP连接，请稍后再试！");
+        }
+        return ftpClient;
     }
 
     /**

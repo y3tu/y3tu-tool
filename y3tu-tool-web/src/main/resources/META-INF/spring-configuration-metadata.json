@@ -18,6 +18,12 @@
   ],
   "properties": [
     {
+      "name": "y3tu.tool.web.ftp.enable",
+      "type": "java.lang.Boolean",
+      "description": "是否开启FTP",
+      "sourceType": "com.y3tu.tool.web.file.properties.FtpProperties"
+    },
+    {
       "name": "y3tu.tool.web.ftp.host",
       "type": "java.lang.String",
       "description": "FTP主机地址",
@@ -51,13 +57,21 @@
       "name": "y3tu.tool.web.ftp.maxTotal",
       "type": "java.lang.Integer",
       "description": "ftp池中最大连接",
-      "sourceType": "com.y3tu.tool.web.file.properties.FtpProperties"
+      "sourceType": "com.y3tu.tool.web.file.properties.FtpProperties",
+      "defaultValue": 20
     },
     {
       "name": "y3tu.tool.web.ftp.maxWaitMillis",
       "type": "java.lang.Integer",
       "description": "ftp连接最长等待时间 单位毫秒",
-      "sourceType": "com.y3tu.tool.web.file.properties.FtpProperties"
+      "sourceType": "com.y3tu.tool.web.file.properties.FtpProperties",
+      "defaultValue": 30000
+    },
+    {
+      "name": "y3tu.tool.web.sftp.enable",
+      "type": "java.lang.Boolean",
+      "description": "是否开启SFTP",
+      "sourceType": "com.y3tu.tool.web.file.properties.SftpProperties"
     },
     {
       "name": "y3tu.tool.web.sftp.host",
@@ -93,13 +107,15 @@
       "name": "y3tu.tool.web.sftp.maxTotal",
       "type": "java.lang.Integer",
       "description": "sftp池中最大连接",
-      "sourceType": "com.y3tu.tool.web.file.properties.SftpProperties"
+      "sourceType": "com.y3tu.tool.web.file.properties.SftpProperties",
+      "defaultValue": 20
     },
     {
       "name": "y3tu.tool.web.sftp.maxWaitMillis",
       "type": "java.lang.Integer",
       "description": "sftp连接最长等待时间 单位毫秒",
-      "sourceType": "com.y3tu.tool.web.file.properties.SftpProperties"
+      "sourceType": "com.y3tu.tool.web.file.properties.SftpProperties",
+      "defaultValue": 30000
     }
   ],
   "hints": []

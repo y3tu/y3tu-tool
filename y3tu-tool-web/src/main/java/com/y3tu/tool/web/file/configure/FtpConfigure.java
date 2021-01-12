@@ -4,6 +4,7 @@ import com.y3tu.tool.web.file.ftp.FtpHelper;
 import com.y3tu.tool.web.file.ftp.FtpPool;
 import com.y3tu.tool.web.file.ftp.FtpFactory;
 import com.y3tu.tool.web.file.properties.FtpProperties;
+import com.y3tu.tool.web.file.service.RemoteFileHelper;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
  * @author y3tu
  */
 @Configuration
-@ConditionalOnProperty("y3tu.tool.web.ftp")
+@ConditionalOnProperty(value = "y3tu.tool.web.ftp.enable",havingValue = "true")
 @EnableConfigurationProperties({FtpProperties.class})
 public class FtpConfigure {
 
@@ -41,7 +42,7 @@ public class FtpConfigure {
     }
 
     @Bean
-    FtpHelper ftpHelper(FtpPool ftpPool) {
+    RemoteFileHelper ftpHelper(FtpPool ftpPool) {
         return new FtpHelper(ftpPool);
     }
 }

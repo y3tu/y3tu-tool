@@ -1,8 +1,12 @@
 package com.y3tu.tool.report.service;
 
+import com.y3tu.tool.core.pojo.R;
 import com.y3tu.tool.report.entity.domain.Report;
 import com.y3tu.tool.report.entity.dto.ReportDto;
 import com.y3tu.tool.web.base.jpa.BaseService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author y3tu
@@ -24,7 +28,13 @@ public interface ReportService extends BaseService<Report> {
 
     /**
      * 删除报表
-     * @param reportDto
+     *
+     * @param reportId
      */
-    void deleteReport(ReportDto reportDto);
+    void deleteReport(int reportId);
+
+    /**
+     * 下载报表附件
+     */
+    void download(int reportId, HttpServletRequest request, HttpServletResponse response);
 }

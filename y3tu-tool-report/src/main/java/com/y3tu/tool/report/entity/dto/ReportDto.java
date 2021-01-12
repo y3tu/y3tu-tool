@@ -41,6 +41,18 @@ public class ReportDto {
      * 查询sql
      */
     String querySql;
-
+    /**
+     * 报表参数
+     */
     List<ReportParamDto> params;
+
+    /**
+     * 附件名称
+     */
+    String fileName;
+    /**
+     * 附件临时名称前缀
+     */
+    String fileTempPrefix;
+
 }

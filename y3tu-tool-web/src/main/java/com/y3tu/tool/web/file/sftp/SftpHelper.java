@@ -10,6 +10,7 @@ import java.util.Vector;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.SftpException;
 import com.y3tu.tool.core.io.FileUtil;
+import com.y3tu.tool.web.file.service.RemoteFileHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author y3tu
  */
 @Slf4j
-public class SftpHelper {
+public class SftpHelper implements RemoteFileHelper {
 
     private SftpPool sftpPool;
 
@@ -30,6 +31,23 @@ public class SftpHelper {
         this.sftpPool = sftpPool;
     }
 
+    @Override
+    public boolean upload(String remotePath, String fileName, InputStream input) {
+        ChannelSftp channelSftp = sftpPool.getChannelSftp();
+        try {
+            mkDirs(remotePath);
+            channelSftp.cd(remotePath);
+            channelSftp.put(input, remotePath + File.separator + fileName);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return false;
+        } finally {
+            if (channelSftp != null) {
+                sftpPool.returnChannelSftp(channelSftp);
+            }
+        }
+        return true;
+    }
 
     /**
      * 上传文件
@@ -39,19 +57,22 @@ public class SftpHelper {
      * @param file       浏览器上传的文件
      * @return 成功返回true，否则返回false
      */
+    @Override
     public boolean upload(String remotePath, String fileName, MultipartFile file) {
         InputStream inputStream = null;
         ChannelSftp channelSftp = sftpPool.getChannelSftp();
         boolean result = false;
         try {
             inputStream = file.getInputStream();
-            mkdir(remotePath);
-            channelSftp.put(inputStream, remotePath + fileName, new SftpProgressMonitor());
+            mkDirs(remotePath);
+            channelSftp.put(inputStream, remotePath + File.separator + fileName, new SftpProgressMonitor());
             result = true;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         } finally {
-            sftpPool.returnChannelSftp(channelSftp);
+            if (channelSftp != null) {
+                sftpPool.returnChannelSftp(channelSftp);
+            }
             try {
                 inputStream.close();
             } catch (IOException e) {
@@ -64,41 +85,27 @@ public class SftpHelper {
     /**
      * 上传文件
      *
-     * @param remoteDir 远程服务器上文件路径
-     * @param srcFile   本地文件路径全路径
-     * @param fileName  保存文件名
+     * @param remotePath 远程服务器上文件路径
+     * @param fileName   保存文件名
+     * @param srcFile    本地文件路径全路径
      * @return 成功返回true，否则返回false
      */
-    private boolean upload(String remoteDir, String srcFile, final String fileName) {
+    @Override
+    public boolean upload(String remotePath, final String fileName, String srcFile) {
         ChannelSftp channelSftp = sftpPool.getChannelSftp();
         try {
-            mkdir(remoteDir);
-            channelSftp.cd(remoteDir);
-            channelSftp.put(srcFile, fileName);
+            mkDirs(remotePath);
+            channelSftp.cd(remotePath);
+            channelSftp.put(srcFile, remotePath + File.separator + fileName);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             return false;
         } finally {
-            sftpPool.returnChannelSftp(channelSftp);
+            if (channelSftp != null) {
+                sftpPool.returnChannelSftp(channelSftp);
+            }
         }
         return true;
-    }
-
-
-    /**
-     * 上传文件
-     *
-     * @param remoteDir 远程服务器上文件路径
-     * @param srcFile   本地文件路径全路径 源文件路径，/xxx/xx.yy 或 x:/xxx/xxx.yy
-     * @return 上传成功与否
-     */
-    public boolean upload(String remoteDir, String srcFile) {
-        File file = new File(srcFile);
-        if (file.exists()) {
-            List<String> list = formatPath(remoteDir);
-            return upload(srcFile, list.get(0), list.get(1));
-        }
-        return false;
     }
 
 
@@ -109,6 +116,7 @@ public class SftpHelper {
      * @param saveFile     存在本地的路径
      * @return 成功返回true，否则返回false
      */
+    @Override
     public boolean download(String downloadFile, String saveFile) {
         boolean result = false;
         ChannelSftp channelSftp = sftpPool.getChannelSftp();
@@ -129,7 +137,9 @@ public class SftpHelper {
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         } finally {
-            sftpPool.returnChannelSftp(channelSftp);
+            if (channelSftp != null) {
+                sftpPool.returnChannelSftp(channelSftp);
+            }
             try {
                 os.close();
             } catch (IOException e) {
@@ -138,6 +148,7 @@ public class SftpHelper {
         }
         return result;
     }
+
 
     /**
      * 浏览器从远程服务器上下载文件
@@ -149,11 +160,12 @@ public class SftpHelper {
      * @param response     响应
      * @return
      */
+    @Override
     public File download(String remotePath, String fileName, boolean deleteOnExit, HttpServletRequest request, HttpServletResponse response) {
         File destFile = null;
         ChannelSftp channelSftp = sftpPool.getChannelSftp();
         try {
-            destFile = new File(FileUtil.SYS_TEM_DIR);
+            destFile = new File(FileUtil.SYS_TEM_DIR + File.separator + fileName);
             // 检测是否存在目录
             if (!destFile.getParentFile().exists()) {
                 if (!destFile.getParentFile().mkdirs()) {
@@ -171,7 +183,9 @@ public class SftpHelper {
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         } finally {
-            sftpPool.returnChannelSftp(channelSftp);
+            if (channelSftp != null) {
+                sftpPool.returnChannelSftp(channelSftp);
+            }
         }
         return destFile;
     }
@@ -213,7 +227,9 @@ public class SftpHelper {
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         } finally {
-            sftpPool.returnChannelSftp(channelSftp);
+            if (channelSftp != null) {
+                sftpPool.returnChannelSftp(channelSftp);
+            }
         }
     }
 
@@ -274,7 +290,9 @@ public class SftpHelper {
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         } finally {
-            sftpPool.returnChannelSftp(channelSftp);
+            if (channelSftp != null) {
+                sftpPool.returnChannelSftp(channelSftp);
+            }
         }
     }
 
@@ -284,15 +302,22 @@ public class SftpHelper {
      * @param path 远程服务器上文件路径
      * @return
      */
+    @Override
     public boolean remove(String path) {
         ChannelSftp channelSftp = sftpPool.getChannelSftp();
         try {
             channelSftp.rm(path);
             return true;
         } catch (SftpException e) {
+            if (e.getMessage().indexOf("No such file") >= 0) {
+                //如果文件不存在 直接返回true
+                return true;
+            }
             return false;
         } finally {
-            sftpPool.returnChannelSftp(channelSftp);
+            if (channelSftp != null) {
+                sftpPool.returnChannelSftp(channelSftp);
+            }
         }
     }
 
@@ -302,7 +327,8 @@ public class SftpHelper {
      *
      * @param dir 路径 必须是 /xxx/xxx/ 不能就单独一个/
      */
-    public boolean mkdir(String dir) {
+    @Override
+    public boolean mkDir(String dir) {
         if (dir == null && dir.length() == 0) {
             return false;
         }
@@ -310,16 +336,17 @@ public class SftpHelper {
         if (md.indexOf("/") != 0 || md.length() == 1) {
             return false;
         }
-        return mkdirs(md);
+        return mkDirs(md);
     }
 
     /**
-     * 递归创建文件夹.
+     * 递归创建文件夹
      *
      * @param dir 路径
      * @return 是否创建成功
      */
-    private boolean mkdirs(String dir) {
+    @Override
+    public boolean mkDirs(String dir) {
         ChannelSftp channelSftp = sftpPool.getChannelSftp();
         try {
             String dirs = dir.substring(1, dir.length() - 1);
@@ -337,7 +364,9 @@ public class SftpHelper {
             log.error(e.getMessage(), e);
             return false;
         } finally {
-            sftpPool.returnChannelSftp(channelSftp);
+            if (channelSftp != null) {
+                sftpPool.returnChannelSftp(channelSftp);
+            }
         }
         return true;
     }
@@ -361,7 +390,9 @@ public class SftpHelper {
             log.error(e.getMessage(), e);
             return false;
         } finally {
-            sftpPool.returnChannelSftp(channelSftp);
+            if (channelSftp != null) {
+                sftpPool.returnChannelSftp(channelSftp);
+            }
         }
     }
 

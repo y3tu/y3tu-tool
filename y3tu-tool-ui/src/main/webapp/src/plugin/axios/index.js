@@ -38,7 +38,6 @@ service.interceptors.request.use(
 
 //响应拦截
 service.interceptors.response.use(response => {
-
     if (response.data !== undefined && response.data !== null && response.data !== '') {
         let status = response.data.status;
         if (status !== undefined && status === "ERROR") {
@@ -93,5 +92,33 @@ service.interceptors.response.use(response => {
     }
     return Promise.reject(error)
 });
+
+export function download(url, fileName) {
+    return service.get(url, {
+        responseType: 'blob',
+        timeout: 600000,
+    }).then((response) => {
+        //处理返回的文件流
+        let blob = new Blob([response], {type: 'application/octet-stream'});
+        if (window.navigator.msSaveOrOpenBlob) {// 兼容IE10
+            navigator.msSaveBlob(blob, fileName);
+        } else {// 其他非IE内核支持H5的浏览器
+            let url = window.URL.createObjectURL(blob);
+            let link = document.createElement('a');
+            link.style.display = 'none';
+            link.href = url;
+            link.setAttribute('download', fileName);
+            document.body.appendChild(link);
+            link.click()
+        }
+    }).catch((r) => {
+        console.error(r);
+        this.$message({
+            message: '下载失败,文件已删除或移动到其他位置，请检查！',
+            type: 'error',
+            duration: messageDuration
+        })
+    })
+}
 
 export default service

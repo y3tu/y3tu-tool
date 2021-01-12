@@ -11,6 +11,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 @ConfigurationProperties(prefix = "y3tu.tool.web.sftp")
 public class SftpProperties {
+
+    /**
+     * 是否启动
+     */
+    private boolean enable = false;
     /**
      * 用户名
      */
@@ -36,11 +41,11 @@ public class SftpProperties {
      */
     private String uploadPath;
     /**
-     * 池中最多数量的sftp连接
+     * 池中最多数量的sftp连接 默认20
      */
-    private int maxTotal;
+    private int maxTotal = 20;
     /**
-     * 连接最长等待时间
+     * 连接最长等待时间 默认30秒
      */
-    private int maxWaitMillis;
+    private int maxWaitMillis = 30000;
 }

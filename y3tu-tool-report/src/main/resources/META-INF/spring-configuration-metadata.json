@@ -20,6 +20,13 @@
       "description": "请求接口访问前缀",
       "sourceType": "com.y3tu.tool.report.configure.ToolReportProperties",
       "defaultValue": "y3tu-tool-report"
+    },
+    {
+      "name": "y3tu.tool.report.remotePath",
+      "type": "java.lang.String",
+      "description": "远程服务器存放模板附件路径",
+      "sourceType": "com.y3tu.tool.report.configure.ToolReportProperties",
+      "defaultValue": "/y3tu/report/"
     }
   ],
   "hints": []

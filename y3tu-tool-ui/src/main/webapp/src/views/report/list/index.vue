@@ -59,7 +59,8 @@
                                         </a>
                                         <a class="opt-show">
                                             <el-tooltip content="删除报表" placement="top">
-                                                <i class="el-icon-delete" style="font-size: 16px"></i>
+                                                <i @click="del(item)" class="el-icon-delete"
+                                                   style="font-size: 16px"></i>
                                             </el-tooltip>
                                         </a>
                                         <a class="opt-show">
@@ -108,7 +109,7 @@
 
 <script>
 
-    import {page, get} from './api'
+    import {page, get, del} from './api'
 
     import editor from './editor'
 
@@ -184,6 +185,18 @@
             editorSuccess() {
                 this.drawer = false;
                 this.query()
+            },
+            del(item) {
+                this.$confirm('选中数据将被永久删除, 是否继续？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    del(item.id).then(() => {
+                        this.$toast('删除成功', 'success', 3000);
+                        this.query()
+                    })
+                })
             },
             getExcelViewUrl() {
             }

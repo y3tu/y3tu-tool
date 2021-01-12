@@ -1,6 +1,7 @@
 package com.y3tu.tool.web.file.configure;
 
 import com.y3tu.tool.web.file.properties.SftpProperties;
+import com.y3tu.tool.web.file.service.RemoteFileHelper;
 import com.y3tu.tool.web.file.sftp.SftpFactory;
 import com.y3tu.tool.web.file.sftp.SftpHelper;
 import com.y3tu.tool.web.file.sftp.SftpPool;
@@ -15,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
  * @author y3tu
  */
 @Configuration
-@ConditionalOnProperty("y3tu.tool.web.sftp")
+@ConditionalOnProperty(value = "y3tu.tool.web.sftp.enable",havingValue = "true")
 @EnableConfigurationProperties({SftpProperties.class})
 public class SftpConfigure {
 
@@ -41,7 +42,7 @@ public class SftpConfigure {
     }
 
     @Bean
-    SftpHelper sftpHelper(SftpPool sftpPool) {
+    RemoteFileHelper sftpHelper(SftpPool sftpPool) {
         return new SftpHelper(sftpPool);
     }
 

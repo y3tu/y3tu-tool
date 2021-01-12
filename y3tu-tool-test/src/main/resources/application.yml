@@ -64,6 +64,14 @@ y3tu:
       stats: true
     ui:
       urlPattern: /tool/*
+    web:
+      sftp:
+        enable: true
+        host: 132.232.11.210
+        port: 22
+        username: root
+        password: Yxy46262966
+
 
 
 

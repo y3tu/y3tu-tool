@@ -34,7 +34,7 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
      *       linux: /temp
      * </pre>
      */
-    public static final String SYS_TEM_DIR = System.getProperty("java.io.tmpdir") + File.separator;
+    public static final String SYS_TEM_DIR = System.getProperty("java.io.tmpdir");
 
     /**
      * 定义GB的计算常量

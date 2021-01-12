@@ -22,8 +22,14 @@
             </el-select>
             <el-upload
                     ref="upload"
-                    action="https://jsonplaceholder.typicode.com/posts/"
-                    :auto-upload="false">
+                    accept=".jrxml"
+                    :action="uploadAction"
+                    :file-list="fileList"
+                    :multiple="false"
+                    :limit="1"
+                    :on-preview="download"
+                    :on-error="uploadError"
+                    :before-upload="beforeUpload">
                 <el-button size="small" type="primary">选取文件</el-button>
             </el-upload>
         </el-form-item>
@@ -63,7 +69,8 @@
 
     import CodeEditor from '@/components/CodeEditor'
     import QueryParam from './queryParam'
-    import {create, update, getAllDataSource} from "./api";
+    import {createUUID} from '@/utils'
+    import {create, update, getAllDataSource, downloadFile} from "./api";
 
     export default {
         name: 'editor',
@@ -75,10 +82,14 @@
         components: {CodeEditor, QueryParam},
         data() {
             return {
+                fileList: [],
+                uploadAction: process.env.VUE_APP_BASE_API + '/y3tu-tool-report/report/upload',
                 dataSourceList: [],
                 rules: {
                     name: {required: true, message: "报表名称不能为空", trigger: 'blur'},
-                    type: {required: true, message: "报表类型不能为空", trigger: 'blur'}
+                    type: {required: true, message: "报表类型不能为空", trigger: 'blur'},
+                    dsId: {required: true, message: "数据源不能为空", trigger: 'blur'},
+                    status: {required: true, message: "状态不能为空", trigger: 'blur'},
                 },
                 buttonLoading: false,
             }
@@ -90,6 +101,11 @@
         },
         created() {
             this.$nextTick(() => {
+
+                if(this.report.fileName){
+                    this.fileList.push({name: this.report.fileName});
+                }
+
                 getAllDataSource().then(res => {
                     if (res.data && res.data.length > 0) {
                         this.dataSourceList = res.data;
@@ -106,14 +122,37 @@
             querySqlChange(val) {
                 this.report.querySql = val;
             },
+            beforeUpload(file) {
+                let limit = true;
+                limit = file.size / 1024 / 1024 < 100;
+                if (!limit) {
+                    this.loading = false;
+                    this.$message.error('上传文件大小不能超过 100MB!')
+                }
+                return new Promise((resolve, reject) => {
+                    this.$nextTick(() => {
+                        //给文件创建随机uuid文件名前缀
+                        let fileTempPrefix = createUUID();
+                        this.report.fileTempPrefix = fileTempPrefix
+                        this.report.fileName = file.name;
+                        this.uploadAction = this.uploadAction + '?fileTempPrefix=' + fileTempPrefix
+                        resolve()
+                    });
+                });
+                return limit
+            },
+            uploadError(err) {
+                this.$toast(JSON.parse(err.message).message, 'error', 3000);
+            },
+            download(file) {
+                downloadFile(this.report.id, file.name);
+            },
             submitForm() {
                 this.$refs.form.validate((valid) => {
                     if (valid) {
                         this.buttonLoading = true;
-
                         //获取参数列表的值
                         this.report.params = this.$refs.params.getParams();
-
                         if (!this.report.id) {
                             // create
                             create(this.report).then(() => {

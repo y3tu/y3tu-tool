@@ -17,4 +17,5 @@ public class FileConfigure {
     @Autowired
     FileProperties properties;
 
+
 }
