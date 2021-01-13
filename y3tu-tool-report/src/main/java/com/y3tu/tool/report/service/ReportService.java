@@ -35,6 +35,18 @@ public interface ReportService extends BaseService<Report> {
 
     /**
      * 下载报表附件
+     *
+     * @param reportId 报表id
+     * @param request
+     * @param response
      */
     void download(int reportId, HttpServletRequest request, HttpServletResponse response);
+
+    /**
+     * 预览
+     *
+     * @param reportId
+     * @return
+     */
+    R preview(int reportId);
 }

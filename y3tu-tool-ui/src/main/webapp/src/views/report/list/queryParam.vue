@@ -23,10 +23,7 @@
         <el-form-item v-show="param.type===2||param.type===3" label="字典编码">
             <el-select size="mini" v-model="param.dictCode"
                        filterable
-                       remote
-                       placeholder="请输入关键词"
-                       :remote-method="remoteMethod"
-                       :loading="selectLoading">
+                       placeholder="请输入关键词">
                 <el-option v-for="item in dictList"
                            :key="item.id"
                            :label="item.name"
@@ -36,15 +33,17 @@
         </el-form-item>
         <el-form-item>
             <el-button class="form-item" size="mini" type="danger" icon="el-icon-delete" circle @click="del(index)"/>
-            <el-button v-if="index !==0" class="form-item" size="mini" type="primary" icon="el-icon-arrow-up" circle @click="up(index)"/>
-            <el-button v-if="index !==paramArr.length-1" class="form-item" size="mini" type="primary" icon="el-icon-arrow-down" circle @click="down(index)"/>
+            <el-button v-if="index !==0" class="form-item" size="mini" type="primary" icon="el-icon-arrow-up" circle
+                       @click="up(index)"/>
+            <el-button v-if="index !==paramArr.length-1" class="form-item" size="mini" type="primary"
+                       icon="el-icon-arrow-down" circle @click="down(index)"/>
         </el-form-item>
     </el-form>
 </template>
 
 <script>
     import {swap} from '@/utils'
-    import {getDictByNameOrCode} from "./api";
+    import {getAllDict} from "./api";
 
     export default {
         props: {
@@ -58,6 +57,17 @@
                 selectLoading: false,
                 dictList: []
             }
+        },
+        created() {
+            this.$nextTick(() => {
+                getAllDict().then(res => {
+                    if (res.data && res.data.length > 0) {
+                        this.dictList = res.data;
+                    } else {
+                        this.dictList = [];
+                    }
+                })
+            })
         },
         computed: {
             paramArr() {
@@ -85,22 +95,7 @@
             },
             getParams() {
                 return this.paramArr;
-            },
-            remoteMethod(name) {
-                if (name !== '') {
-                    this.selectLoading = true;
-                    getDictByNameOrCode(name).then(res => {
-                        this.selectLoading = false;
-                        if (res.data && res.data.length > 0) {
-                            this.dictList = res.data;
-                        } else {
-                            this.dictList = [];
-                        }
-                    })
-                } else {
-                    this.dictList = [];
-                }
-            },
+            }
         }
     }
 </script>

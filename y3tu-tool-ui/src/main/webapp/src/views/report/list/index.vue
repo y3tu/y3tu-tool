@@ -52,9 +52,10 @@
                                 <div class="item-footer">
                                     <span class="item-name">{{ item.name }}</span>
                                     <div style="margin-left: 20%;">
-                                        <a class="opt-show" :href="getExcelViewUrl(item)" target="_blank">
+                                        <a class="opt-show">
                                             <el-tooltip content="预览报表" placement="top">
-                                                <i class="el-icon-view" style="font-size: 16px"></i>
+                                                <i @click="preview(item)" class="el-icon-view"
+                                                   style="font-size: 16px"></i>
                                             </el-tooltip>
                                         </a>
                                         <a class="opt-show">
@@ -104,6 +105,15 @@
             <editor v-bind:value="report" @success="editorSuccess"/>
         </el-drawer>
 
+
+        <el-dialog
+                v-model="previewDialog"
+                width="80%"
+                destroy-on-close
+                center>
+            <preview v-bind:value="report"/>
+        </el-dialog>
+
     </el-container>
 </template>
 
@@ -112,10 +122,11 @@
     import {page, get, del} from './api'
 
     import editor from './editor'
+    import preview from "./preview";
 
     export default {
         name: 'reportList',
-        components: {editor},
+        components: {editor, preview},
         data() {
             return {
                 pageInfo: {
@@ -129,6 +140,7 @@
                     records: [],
                 },
                 drawer: false,
+                previewDialog: false,
                 report: {},
                 itemLoading: false
             }
@@ -198,13 +210,20 @@
                     })
                 })
             },
-            getExcelViewUrl() {
+            preview(item) {
+                this.itemLoading = true;
+                get(item.id).then(res => {
+                    this.itemLoading = false;
+                    this.report = res.data;
+                    this.previewDialog = true;
+                })
+
             }
         }
     }
 </script>
 
-<style scoped>
+<style>
     .page {
         display: flex;
         justify-content: center;

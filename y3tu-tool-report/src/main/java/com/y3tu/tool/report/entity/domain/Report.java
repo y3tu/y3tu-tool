@@ -15,6 +15,14 @@ import javax.persistence.*;
 @Table(name = "report")
 @Data
 public class Report extends BaseEntity {
+    /**
+     * 通用报表
+     */
+    public static final String TYPE_COMMON = "common";
+    /**
+     * Jasper报表
+     */
+    public static final String TYPE_JASPER = "jasper";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -51,4 +59,5 @@ public class Report extends BaseEntity {
      */
     @Transient
     String test;
+
 }

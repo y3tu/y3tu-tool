@@ -20,7 +20,7 @@ public class DataSourceUtil {
      * @param dsId
      * @return
      */
-    public static javax.sql.DataSource getDataSourceByDsId(long dsId) {
+    public static javax.sql.DataSource getDataSourceByDsId(int dsId) {
         DataSourceService dataSourceService = (DataSourceService) SpringContextUtil.getBean(DataSourceService.class);
         DataSource dataSource = (DataSource) dataSourceService.getById(dsId);
         return getDataSource(dataSource);

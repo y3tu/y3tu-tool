@@ -102,7 +102,7 @@
         created() {
             this.$nextTick(() => {
 
-                if(this.report.fileName){
+                if (this.report.fileName) {
                     this.fileList.push({name: this.report.fileName});
                 }
 
@@ -129,7 +129,7 @@
                     this.loading = false;
                     this.$message.error('上传文件大小不能超过 100MB!')
                 }
-                return new Promise((resolve, reject) => {
+                new Promise((resolve) => {
                     this.$nextTick(() => {
                         //给文件创建随机uuid文件名前缀
                         let fileTempPrefix = createUUID();

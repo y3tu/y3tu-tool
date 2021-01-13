@@ -51,8 +51,8 @@ public class DictController {
         return R.success(dictSql);
     }
 
-    @GetMapping("/getDictData/{code}")
-    public R getDictData(@PathVariable String code) {
+    @GetMapping("/getDictDataByCode/{code}")
+    public R getDictDataByCode(@PathVariable String code) {
         Dict dict = dictService.getByCode(code);
         if (dict == null) {
             return R.error(String.format("字典编码[%s]不存在", code));
@@ -67,6 +67,12 @@ public class DictController {
             return R.error(String.format("字典名称[%s]不存在", name));
         }
         return R.success(dictService.getDictData(dict.get(0).getCode()));
+    }
+
+    @GetMapping("/getAllDict")
+    public R getAllDict() {
+        Dict dict = new Dict();
+        return R.success(dictService.getAll(dict));
     }
 
     @GetMapping("/getDictByNameOrCode/{param}")

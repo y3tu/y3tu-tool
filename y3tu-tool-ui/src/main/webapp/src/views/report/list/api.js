@@ -71,12 +71,12 @@ export function getAllDataSource() {
 }
 
 /**
- * 根据名称和编码获取字典
+ * 获取所有字典
  * @param data
  */
-export function getDictByNameOrCode(data) {
+export function getAllDict() {
     return service({
-        url: `y3tu-tool-report/dict/getDictByNameOrCode/${data}`,
+        url: `y3tu-tool-report/dict/getAllDict`,
         method: 'get',
     })
 }

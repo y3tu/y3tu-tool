@@ -87,7 +87,7 @@ public class ReportController {
 
     @GetMapping("preview/{id}")
     public R preview(@PathVariable int id) {
-
+        reportService.preview(id);
         return R.success();
     }
 

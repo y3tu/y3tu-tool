@@ -15,6 +15,9 @@
       color: #606266;
       line-height: 30.5px;
       padding: 0 7px 0 7px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
 
     .form-item {

@@ -23,6 +23,17 @@ export function dictDataPage(params) {
 }
 
 /**
+ * 根据字典code获取字典数据
+ */
+export function getDictDataByCode(code) {
+    return service({
+        url: `y3tu-tool-report/dict/getDictDataByCode/${code}`,
+        method: 'get',
+    })
+}
+
+
+/**
  * 新增字典
  * @param params
  * @returns {*}

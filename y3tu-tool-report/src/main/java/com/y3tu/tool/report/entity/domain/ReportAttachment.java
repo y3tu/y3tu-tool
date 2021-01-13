@@ -29,8 +29,11 @@ public class ReportAttachment extends BaseEntity {
     @Column(columnDefinition = "varchar(100) comment '附件名称'")
     String name;
 
-    @Column(columnDefinition = "varchar(200) comment '附件路径'")
-    String path;
+    @Column(name = "temp_file_name", columnDefinition = "varchar(100) comment '附件保存在远程服务器上的真实名称'")
+    String tempFileName;
+
+    @Column(name = "remote_file_path", columnDefinition = "varchar(200) comment '附件保存在远程服务器上的全路径'")
+    String remoteFilePath;
 
     @Column(columnDefinition = "int comment '附件类型:1:数据模板;2:柱状图模板;3:折线图模板;4:饼图模板'")
     Integer type;

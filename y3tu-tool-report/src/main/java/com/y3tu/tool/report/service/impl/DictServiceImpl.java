@@ -60,7 +60,7 @@ public class DictServiceImpl extends BaseServiceImpl<DictRepository, Dict> imple
             throw new ReportException(String.format("字典编码[s]不存在", code));
         }
 
-        if (DictType.COMMON.getValue() == dict.getType()) {
+        if (DictType.COMMON.getValue().equals(dict.getType())) {
             //普通字典
             List<DictData> dictDataList = dictDataRepository.findAllByDictIdAndStatus(dict.getId(), DataStatusEnum.NORMAL.getValue());
 
@@ -75,7 +75,7 @@ public class DictServiceImpl extends BaseServiceImpl<DictRepository, Dict> imple
             } else {
                 return dictDataList;
             }
-        } else if (DictType.SQL.getValue() == dict.getType()) {
+        } else if (DictType.SQL.getValue().equals(dict.getType())) {
             //sql字典
             DictSql dictSql = dictSqlRepository.findByDictId(dict.getId());
             if (dictSql == null) {
