@@ -4,15 +4,18 @@ import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.pojo.R;
 import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.report.configure.ToolReportProperties;
+import com.y3tu.tool.report.entity.domain.DataSource;
 import com.y3tu.tool.report.entity.domain.Report;
 import com.y3tu.tool.report.entity.domain.ReportAttachment;
 import com.y3tu.tool.report.entity.domain.ReportParam;
 import com.y3tu.tool.report.entity.dto.ReportDto;
 import com.y3tu.tool.report.exception.ReportException;
 import com.y3tu.tool.report.repository.ReportRepository;
+import com.y3tu.tool.report.service.DataSourceService;
 import com.y3tu.tool.report.service.ReportAttachmentService;
 import com.y3tu.tool.report.service.ReportParamService;
 import com.y3tu.tool.report.service.ReportService;
+import com.y3tu.tool.report.util.DataSourceUtil;
 import com.y3tu.tool.report.util.JasperReportsUtil;
 import com.y3tu.tool.web.base.jpa.BaseServiceImpl;
 import com.y3tu.tool.web.file.service.RemoteFileHelper;
@@ -26,6 +29,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +51,8 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
     ReportParamService reportParamService;
     @Autowired
     ReportAttachmentService reportAttachmentService;
+    @Autowired
+    DataSourceService dataSourceService;
     @Autowired
     RemoteFileHelper remoteFileHelper;
     @Autowired
@@ -155,6 +165,34 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
             Map<String, Object> filePathResult = getJasperTemplate(reportId);
         }
         return null;
+    }
+
+    @Override
+    public R parseSql(String sql, int dsId) {
+        DataSource dataSource = dataSourceService.getById(dsId);
+        //获取数据源
+        javax.sql.DataSource ds = DataSourceUtil.getDataSource(dataSource);
+        try {
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+            Connection connection = ds.getConnection();
+            ps = connection.prepareStatement(sql);
+            rs = ps.executeQuery();
+            ResultSetMetaData metaData = rs.getMetaData();
+            int count = metaData.getColumnCount();
+            List<Map<String, String>> fieldNameList = new ArrayList<>();
+            for (int i = 1; i <= count; i++) {
+                String fieldName = metaData.getColumnName(i);
+                Map<String, String> fieldNameMap = new HashMap<>();
+                fieldNameMap.put("field", fieldName);
+                fieldNameMap.put("label", fieldName);
+                fieldNameList.add(fieldNameMap);
+            }
+            return R.success(fieldNameList);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ReportException("解析SQL异常:" + e.getMessage());
+        }
     }
 
     private Map<String, Object> getJasperTemplate(int reportId) {

@@ -1,6 +1,5 @@
 package com.y3tu.tool.core.db;
 
-
 import cn.hutool.core.convert.Convert;
 import cn.hutool.db.DbRuntimeException;
 import cn.hutool.db.Entity;

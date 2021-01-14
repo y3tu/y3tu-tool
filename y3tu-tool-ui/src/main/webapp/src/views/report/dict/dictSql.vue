@@ -24,7 +24,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="SQL" prop="querySql">
-                <code-editor :value="form.querySql" height="250px" code-type="text/x-sql" @change="querySqlChange"/>
+                <code-editor :value="form.querySql" height="250px" mode="text/x-sql" @change="querySqlChange"/>
             </el-form-item>
             <el-form-item label="条件字段" prop="whereColumn">
                 <el-input v-model="form.whereColumn" style="width: 40%"/>

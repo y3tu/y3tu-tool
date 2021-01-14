@@ -9,11 +9,28 @@
                 <el-option value="jasper" label="Jasper报表"/>
             </el-select>
         </el-form-item>
-        <el-form-item v-show="report.type==='common'" label="列头" prop="columnHeader">
-            <el-input v-model="report.columnHeader"/>
+        <el-form-item label="数据源" prop="dsId">
+            <el-select v-model="report.dsId" filterable clearable>
+                <el-option v-for="item in dataSourceList"
+                           :key="item.id"
+                           :label="item.name"
+                           :value="item.id">
+                </el-option>
+            </el-select>
         </el-form-item>
         <el-form-item v-if="report.type==='common'" label="查询SQL" prop="querySql">
-            <code-editor :value="report.querySql" height="250px" code-type="text/x-sql" @change="querySqlChange"/>
+            <code-editor :value="report.querySql" height="250px" mode="text/x-sql" @change="querySqlChange"/>
+            <el-button @click="parseSql" type="primary" size="mini" icon="el-icon-video-play">解析SQL生成表头数据</el-button>
+            <el-button type="warning" size="mini" icon="el-icon-view" @click="tableHeaderDrawer = true">表头设计
+            </el-button>
+            <el-drawer
+                    title="表头设计"
+                    direction="ltr"
+                    size="30%"
+                    :append-to-body="true"
+                    v-model="tableHeaderDrawer">
+                <table-header :value="report.tableHeader" @change="tableHeaderChange"/>
+            </el-drawer>
         </el-form-item>
         <el-form-item v-show="report.type==='jasper'" label="上传模板">
             <el-select v-model="report.templateType" placeholder="请选择">
@@ -32,15 +49,6 @@
                     :before-upload="beforeUpload">
                 <el-button size="small" type="primary">选取文件</el-button>
             </el-upload>
-        </el-form-item>
-        <el-form-item label="数据源" prop="dsId">
-            <el-select v-model="report.dsId" filterable>
-                <el-option v-for="item in dataSourceList"
-                           :key="item.id"
-                           :label="item.name"
-                           :value="item.id">
-                </el-option>
-            </el-select>
         </el-form-item>
         <el-form-item label="报表状态" prop="status">
             <el-select v-model="report.status" placeholder="请选择">
@@ -69,8 +77,9 @@
 
     import CodeEditor from '@/components/CodeEditor'
     import QueryParam from './queryParam'
+    import TableHeader from './tableHeader'
     import {createUUID} from '@/utils'
-    import {create, update, getAllDataSource, downloadFile} from "./api";
+    import {create, update, getAllDataSource, downloadFile, parseSql} from "./api";
 
     export default {
         name: 'editor',
@@ -79,7 +88,7 @@
                 type: Object
             },
         },
-        components: {CodeEditor, QueryParam},
+        components: {CodeEditor, QueryParam, TableHeader},
         data() {
             return {
                 fileList: [],
@@ -90,8 +99,10 @@
                     type: {required: true, message: "报表类型不能为空", trigger: 'blur'},
                     dsId: {required: true, message: "数据源不能为空", trigger: 'blur'},
                     status: {required: true, message: "状态不能为空", trigger: 'blur'},
+                    tableHeader: {required: true, message: "表格头不能为空", trigger: 'blur'},
                 },
                 buttonLoading: false,
+                tableHeaderDrawer: false
             }
         },
         computed: {
@@ -146,6 +157,22 @@
             },
             download(file) {
                 downloadFile(this.report.id, file.name);
+            },
+            //解析sql生成表头数据
+            parseSql() {
+                if (this.$isEmpty(this.report.dsId)) {
+                    this.$toast('请选择数据源', 'warning', 3000);
+                } else {
+                    parseSql(this.report).then((res) => {
+                        if (res.data) {
+                            this.report.tableHeader = JSON.stringify(res.data, null, 2);
+                        }
+                        this.$toast('解析SQL成功', 'success', 3000);
+                    });
+                }
+            },
+            tableHeaderChange(value) {
+                this.report.tableHeader = value;
             },
             submitForm() {
                 this.$refs.form.validate((valid) => {

@@ -8,13 +8,14 @@
     // 替换主题这里需修改名称
     import 'codemirror/theme/idea.css'
     import 'codemirror/theme/rubyblue.css'
-
     import 'codemirror/mode/sql/sql.js'
 
     //代码补全提示
     import 'codemirror/addon/hint/show-hint.css';
     import 'codemirror/addon/hint/show-hint.js';
     import 'codemirror/addon/hint/sql-hint.js';
+    import 'codemirror/addon/lint/json-lint.js'
+
 
     export default {
         props: {
@@ -23,10 +24,9 @@
                 required: true
             },
             height: {
-                type: String,
-                required: true
+                type: String
             },
-            codeType: {
+            mode: {
                 type: String,
                 required: true
             },
@@ -53,7 +53,7 @@
         created() {
             this.$nextTick(() => {
                     this.editor = CodeMirror.fromTextArea(this.$refs.textarea, {
-                        mode: this.codeType,
+                        mode: this.mode,
                         lineNumbers: true,
                         matchBrackets: true,
                         styleActiveLine: true,
@@ -73,10 +73,13 @@
                         this.$emit('change', cm.getValue())
                         this.$emit('input', cm.getValue())
                     })
-
-
                 }
             )
+        },
+        methods: {
+            forceUpdate() {
+                this.$forceUpdate();
+            }
         }
     }
 </script>

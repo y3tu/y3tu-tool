@@ -49,4 +49,13 @@ public interface ReportService extends BaseService<Report> {
      * @return
      */
     R preview(int reportId);
+
+    /**
+     * 解析sql
+     *
+     * @param sql  sql
+     * @param dsId 数据源
+     * @return
+     */
+    R parseSql(String sql, int dsId);
 }

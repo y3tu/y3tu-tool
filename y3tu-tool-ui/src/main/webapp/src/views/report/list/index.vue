@@ -178,7 +178,7 @@
                     id: '',
                     name: '',
                     type: '',
-                    columnHeader: '',
+                    tableHeader: '',
                     querySql: '',
                     dsId: '',
                     status: '',

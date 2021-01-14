@@ -95,4 +95,15 @@ public class ReportController {
     public void download(@PathVariable int id, HttpServletRequest request, HttpServletResponse response) {
         reportService.download(id, request, response);
     }
+
+    /**
+     * 解析SQL获取表头信息
+     *
+     * @param reportDto
+     * @return
+     */
+    @PostMapping("parseSql")
+    public R parseSql(@RequestBody ReportDto reportDto) {
+        return reportService.parseSql(reportDto.getQuerySql(), reportDto.getDsId());
+    }
 }

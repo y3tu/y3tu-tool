@@ -36,7 +36,7 @@ public class ReportDto {
     /**
      * 表头
      */
-    String columnHeader;
+    String tableHeader;
     /**
      * 查询sql
      */

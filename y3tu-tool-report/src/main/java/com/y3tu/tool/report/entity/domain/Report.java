@@ -44,10 +44,10 @@ public class Report extends BaseEntity {
     @Column(name = "ds_id", columnDefinition = "int(10) comment '数据源ID'")
     Integer dsId;
 
-    @Column(name = "column_header", columnDefinition = "varchar(500) comment '列表头'")
-    String columnHeader;
+    @Column(name = "table_header", columnDefinition = "varchar(5000) comment '表格头'")
+    String tableHeader;
 
-    @Column(name = "query_sql", columnDefinition = "varchar(2000) comment '报表查询sql'")
+    @Column(name = "query_sql", columnDefinition = "varchar(5000) comment '报表查询sql'")
     String querySql;
 
     @Column(name = "view_count", columnDefinition = "int(15) default 0 comment '浏览次数' ")
