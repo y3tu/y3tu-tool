@@ -6,8 +6,9 @@
                 class="form-item"
                 multiple
                 collapse-tags
-                v-model="value"
+                v-model="values"
                 filterable
+                @change="valueChange"
                 placeholder="请输入关键词">
             <el-option
                     v-for="item in options"
@@ -20,9 +21,10 @@
                 v-if="mode==='single'"
                 :style="style"
                 class="form-item"
-                v-model="value"
+                v-model="values"
                 filterable
                 remote
+                @change="valueChange"
                 placeholder="请输入关键词">
             <el-option
                     v-for="item in options"
@@ -41,10 +43,16 @@
     export default {
         name: 'dictSelect',
         props: {
+            value: {
+                type: [Array, Object],
+                default: () => {
+                    return []
+                },
+            },
             dictCode: {
                 type: String
             },
-            style:{
+            style: {
                 type: String
             },
             mode: {
@@ -52,10 +60,11 @@
                 default: "single"
             }
         },
+        emits:['update:value'],
         data() {
             return {
                 options: [],
-                value:[],
+                values: []
             }
         },
         created() {
@@ -70,7 +79,11 @@
         mounted() {
 
         },
-        methods: {}
+        methods: {
+            valueChange(value) {
+                this.$emit('update:value', value);
+            }
+        }
     }
 </script>
 

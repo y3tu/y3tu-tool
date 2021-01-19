@@ -106,4 +106,9 @@ public class ReportController {
     public R parseSql(@RequestBody ReportDto reportDto) {
         return reportService.parseSql(reportDto.getQuerySql(), reportDto.getDsId());
     }
+
+    @PostMapping("queryTableData")
+    public R queryTableData(@RequestBody ReportDto reportDto) {
+        return reportService.queryTableData(reportDto.getQuerySql(), reportDto.getDsId(), reportDto.getParams());
+    }
 }

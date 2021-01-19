@@ -15,6 +15,11 @@ import javax.persistence.*;
 @Table(name = "report_data_source")
 @Data
 public class DataSource extends BaseEntity {
+
+
+    public static final String TYPE_MYSQL = "mysql";
+    public static final String TYPE_ORACLE = "oracle";
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

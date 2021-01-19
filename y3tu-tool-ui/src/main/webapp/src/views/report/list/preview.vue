@@ -13,10 +13,10 @@
                                   class="form-item"
                                   @keyup.enter="query"/>
                         <dict-select v-if="param.type===2||param.type===3"
-                                     :mode="param.type===3?'single':'multiple'"
+                                     :mode="param.type===2?'single':'multiple'"
                                      :style="'width:53%'"
                                      :dict-code="param.dictCode"
-                                     v-model="param.value"/>
+                                     v-model:value="param.value"/>
                         <el-date-picker
                                 v-if="param.type===4"
                                 v-model="param.value"
@@ -58,21 +58,20 @@
 
         <el-divider/>
 
-        <el-table ref="table" size="small" style="width: 100%;">
-
-        </el-table>
-
+        <merge-header-table :header="JSON.parse(report.tableHeader)"/>
 
     </div>
 </template>
 
 <script>
 
+    import {queryTableData} from './api'
     import dictSelect from "../dict/dictSelect";
+    import mergeHeaderTable from './mergeHeaderTable'
 
     export default {
         name: "preview",
-        components: {dictSelect},
+        components: {dictSelect, mergeHeaderTable},
         props: {
             value: {
                 type: Object
@@ -88,11 +87,15 @@
         },
         methods: {
             query() {
-
+                queryTableData(this.report).then(res => {
+                    if(res){
+                    }
+                });
             },
             reset() {
 
-            }
+            },
+
         }
     }
 </script>

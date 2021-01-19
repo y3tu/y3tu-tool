@@ -83,11 +83,21 @@ export function getAllDataSource() {
 
 /**
  * 获取所有字典
- * @param data
  */
 export function getAllDict() {
     return service({
         url: `y3tu-tool-report/dict/getAllDict`,
         method: 'get',
+    })
+}
+
+/**
+ * 查询报表数据
+ */
+export function queryTableData(params) {
+    return service({
+        url: `y3tu-tool-report/report/queryTableData`,
+        method: 'post',
+        data:params
     })
 }

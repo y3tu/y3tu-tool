@@ -3,10 +3,12 @@ package com.y3tu.tool.report.service;
 import com.y3tu.tool.core.pojo.R;
 import com.y3tu.tool.report.entity.domain.Report;
 import com.y3tu.tool.report.entity.dto.ReportDto;
+import com.y3tu.tool.report.entity.dto.ReportParamDto;
 import com.y3tu.tool.web.base.jpa.BaseService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @author y3tu
@@ -58,4 +60,14 @@ public interface ReportService extends BaseService<Report> {
      * @return
      */
     R parseSql(String sql, int dsId);
+
+    /**
+     * 查询报表数据
+     *
+     * @param sql
+     * @param dsId
+     * @param params
+     * @return
+     */
+    R queryTableData(String sql, int dsId, List<ReportParamDto> params);
 }

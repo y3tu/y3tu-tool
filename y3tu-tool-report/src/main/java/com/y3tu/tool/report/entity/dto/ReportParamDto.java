@@ -26,4 +26,9 @@ public class ReportParamDto {
 
     String dictCode;
 
+    /**
+     * 前台输入的参数值
+     */
+    Object value;
+
 }

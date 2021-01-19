@@ -9,6 +9,7 @@ import com.y3tu.tool.report.entity.domain.Report;
 import com.y3tu.tool.report.entity.domain.ReportAttachment;
 import com.y3tu.tool.report.entity.domain.ReportParam;
 import com.y3tu.tool.report.entity.dto.ReportDto;
+import com.y3tu.tool.report.entity.dto.ReportParamDto;
 import com.y3tu.tool.report.exception.ReportException;
 import com.y3tu.tool.report.repository.ReportRepository;
 import com.y3tu.tool.report.service.DataSourceService;
@@ -16,16 +17,17 @@ import com.y3tu.tool.report.service.ReportAttachmentService;
 import com.y3tu.tool.report.service.ReportParamService;
 import com.y3tu.tool.report.service.ReportService;
 import com.y3tu.tool.report.util.DataSourceUtil;
-import com.y3tu.tool.report.util.JasperReportsUtil;
 import com.y3tu.tool.web.base.jpa.BaseServiceImpl;
 import com.y3tu.tool.web.file.service.RemoteFileHelper;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -186,6 +188,8 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
                 Map<String, String> fieldNameMap = new HashMap<>();
                 fieldNameMap.put("field", fieldName);
                 fieldNameMap.put("label", fieldName);
+                //默认宽度100
+                fieldNameMap.put("width", "100");
                 fieldNameList.add(fieldNameMap);
             }
             return R.success(fieldNameList);
@@ -193,6 +197,52 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
             log.error(e.getMessage(), e);
             throw new ReportException("解析SQL异常:" + e.getMessage());
         }
+    }
+
+    @Override
+    public R queryTableData(String sql, int dsId, List<ReportParamDto> params) {
+        DataSource dataSource = dataSourceService.getById(dsId);
+        javax.sql.DataSource ds = DataSourceUtil.getDataSourceByDsId(dsId);
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+        //替换sql参数
+        for (ReportParamDto param : params) {
+            String field = param.getField();
+            String $field = "${" + field + "}";
+            Object value = param.getValue();
+            String result = "";
+            if (value instanceof List) {
+                //如果参数值是数组或者集合需要转换为字符串已逗号分隔
+                List<String> valueList = (List<String>) value;
+                result = result + "(";
+                for (String val : valueList) {
+                    result = result + val + ",";
+                }
+                result = result.substring(result.length()-1,result.length());
+                result = result + ")";
+            } else {
+                result = value.toString();
+            }
+
+            //处理$ifnull[]，如果参数值为空，删除$ifnull[]包含的内容
+            String[] ifnulls = StrUtil.subBetweenAll(sql,"$ifnull[","]");
+            for(String ifnull:ifnulls){
+               if(StrUtil.isEmpty(result)){
+                   //如果参数值为空,删除$ifnull[]包含的内容
+
+               }
+            }
+
+            sql = sql.replace("${" + field + "}", result);
+
+        }
+        if (dataSource.getDbType().equals(DataSource.TYPE_MYSQL)) {
+            //mysql
+
+        } else if (dataSource.getDbType().equals(DataSource.TYPE_ORACLE)) {
+            //oracle
+
+        }
+        return null;
     }
 
     private Map<String, Object> getJasperTemplate(int reportId) {
