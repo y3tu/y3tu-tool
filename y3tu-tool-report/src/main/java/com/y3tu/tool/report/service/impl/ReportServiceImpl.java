@@ -1,5 +1,6 @@
 package com.y3tu.tool.report.service.impl;
 
+import com.y3tu.tool.core.db.SqlTypeEnum;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.pojo.R;
 import com.y3tu.tool.core.util.StrUtil;
@@ -19,6 +20,7 @@ import com.y3tu.tool.report.service.ReportService;
 import com.y3tu.tool.report.util.DataSourceUtil;
 import com.y3tu.tool.web.base.jpa.BaseServiceImpl;
 import com.y3tu.tool.web.file.service.RemoteFileHelper;
+import com.y3tu.tool.web.util.PageUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import org.springframework.beans.BeanUtils;
@@ -209,6 +211,7 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
             String field = param.getField();
             String $field = "${" + field + "}";
             Object value = param.getValue();
+            //最终参数值
             String result = "";
             if (value instanceof List) {
                 //如果参数值是数组或者集合需要转换为字符串已逗号分隔
@@ -217,19 +220,21 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
                 for (String val : valueList) {
                     result = result + val + ",";
                 }
-                result = result.substring(result.length()-1,result.length());
+                result = result.substring(0, result.length() - 1);
                 result = result + ")";
             } else {
                 result = value.toString();
             }
 
             //处理$ifnull[]，如果参数值为空，删除$ifnull[]包含的内容
-            String[] ifnulls = StrUtil.subBetweenAll(sql,"$ifnull[","]");
-            for(String ifnull:ifnulls){
-               if(StrUtil.isEmpty(result)){
-                   //如果参数值为空,删除$ifnull[]包含的内容
-
-               }
+            String[] ifnulls = StrUtil.subBetweenAll(sql, "$ifnull[", "]");
+            for (String ifnull : ifnulls) {
+                if (StrUtil.containsIgnoreCase(ifnull, $field) && StrUtil.isEmpty(result)) {
+                    //如果参数值为空,删除$ifnull[]包含的内容
+                    sql = sql.replace("$ifnull[" + ifnull + "]", "");
+                } else {
+                    sql = sql.replace("$ifnull[" + ifnull + "]", ifnull);
+                }
             }
 
             sql = sql.replace("${" + field + "}", result);
