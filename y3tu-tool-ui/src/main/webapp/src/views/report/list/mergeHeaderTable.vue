@@ -15,6 +15,12 @@
                     return []
                 },
             },
+            loading: {
+                type: Boolean,
+                default: () => {
+                    return false
+                }
+            }
         },
         data() {
             return {}
@@ -31,7 +37,7 @@
                                 </el-table-column>
                             )
                         } else {
-                            return this.createElTableColumn(item.prop, item.label, item.width)
+                            return this.createElTableColumn(item.field, item.label, item.width)
                         }
                     })
                 }
@@ -45,6 +51,7 @@
             return (
                 <el-table
                     border
+                    v-loading={this.loading}
                     data={this.tableData}
                     style="width: 100%"
                     style="width: 100%;margin: 20px 0;"

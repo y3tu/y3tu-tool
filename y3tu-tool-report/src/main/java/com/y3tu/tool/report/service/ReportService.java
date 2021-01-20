@@ -5,6 +5,7 @@ import com.y3tu.tool.report.entity.domain.Report;
 import com.y3tu.tool.report.entity.dto.ReportDto;
 import com.y3tu.tool.report.entity.dto.ReportParamDto;
 import com.y3tu.tool.web.base.jpa.BaseService;
+import com.y3tu.tool.web.base.jpa.PageInfo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -64,10 +65,11 @@ public interface ReportService extends BaseService<Report> {
     /**
      * 查询报表数据
      *
-     * @param sql
-     * @param dsId
-     * @param params
+     * @param sql      查询sql
+     * @param dsId     数据源
+     * @param params   查询参数
+     * @param pageInfo 分页信息
      * @return
      */
-    R queryTableData(String sql, int dsId, List<ReportParamDto> params);
+    R queryTableData(String sql, int dsId, List<ReportParamDto> params, PageInfo pageInfo);
 }

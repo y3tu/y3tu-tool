@@ -58,7 +58,19 @@
 
         <el-divider/>
 
-        <merge-header-table :header="JSON.parse(report.tableHeader)"/>
+        <merge-header-table :header="JSON.parse(report.tableHeader)"
+                            :loading="pageInfo.pageLoading"
+                            :table-data="pageInfo.records"/>
+
+        <!--分页组件-->
+        <el-pagination
+                :total="pageInfo.total"
+                :page-size="pageInfo.pageSize"
+                :current-page="pageInfo.current"
+                style="margin-top: 8px;"
+                layout="total, sizes, prev, pager, next, jumper"
+                @size-change="sizeChange"
+                @current-change="pageChange"/>
 
     </div>
 </template>
@@ -78,7 +90,15 @@
             },
         },
         data() {
-            return {}
+            return {
+                pageInfo: {
+                    pageLoading: false,
+                    current: 1,
+                    total: 0,
+                    pageSize: 10,
+                    records: [],
+                },
+            }
         },
         computed: {
             report() {
@@ -87,14 +107,30 @@
         },
         methods: {
             query() {
+                this.report.pageInfo = this.pageInfo;
+                this.pageInfo.pageLoading = true;
                 queryTableData(this.report).then(res => {
-                    if(res){
+                    if (res) {
+                        this.pageInfo.records = res.data.records;
+                        this.pageInfo.total = res.data.total;
+                        this.pageInfo.pageLoading = false;
                     }
-                });
+                }).catch(() => {
+                    this.pageInfo.pageLoading = false;
+                })
             },
             reset() {
 
             },
+            sizeChange(e) {
+                this.pageInfo.current = 0;
+                this.pageInfo.size = e;
+                this.query()
+            },
+            pageChange(e) {
+                this.pageInfo.current = e;
+                this.query()
+            }
 
         }
     }

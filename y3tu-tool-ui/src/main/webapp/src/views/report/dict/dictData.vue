@@ -110,7 +110,7 @@
                         dictId: ''
                     },
                     pageLoading: false,
-                    current: 0,
+                    current: 1,
                     total: 0,
                     pageSize: 10,
                     records: [],
@@ -234,7 +234,7 @@
                 this.search()
             },
             pageChange(e) {
-                this.pageInfo.current = e - 1;
+                this.pageInfo.current = e;
                 this.search()
             }
 

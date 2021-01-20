@@ -1,6 +1,5 @@
 package com.y3tu.tool.report.service.impl;
 
-import com.y3tu.tool.core.db.SqlTypeEnum;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.pojo.R;
 import com.y3tu.tool.core.util.StrUtil;
@@ -19,17 +18,20 @@ import com.y3tu.tool.report.service.ReportParamService;
 import com.y3tu.tool.report.service.ReportService;
 import com.y3tu.tool.report.util.DataSourceUtil;
 import com.y3tu.tool.web.base.jpa.BaseServiceImpl;
+import com.y3tu.tool.web.base.jpa.PageInfo;
 import com.y3tu.tool.web.file.service.RemoteFileHelper;
+import com.y3tu.tool.web.sql.DataSourceType;
+import com.y3tu.tool.web.sql.SqlUtil;
 import com.y3tu.tool.web.util.PageUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JasperCompileManager;
+import org.exolab.castor.mapping.xml.Sql;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -202,7 +204,7 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
     }
 
     @Override
-    public R queryTableData(String sql, int dsId, List<ReportParamDto> params) {
+    public R queryTableData(String sql, int dsId, List<ReportParamDto> params, PageInfo pageInfo) {
         DataSource dataSource = dataSourceService.getById(dsId);
         javax.sql.DataSource ds = DataSourceUtil.getDataSourceByDsId(dsId);
         JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
@@ -216,38 +218,58 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
             if (value instanceof List) {
                 //如果参数值是数组或者集合需要转换为字符串已逗号分隔
                 List<String> valueList = (List<String>) value;
-                result = result + "(";
-                for (String val : valueList) {
-                    result = result + val + ",";
+                if (valueList.size() > 0) {
+                    result = result + "(";
+                    for (String val : valueList) {
+                        result = result + val + ",";
+                    }
+                    result = result.substring(0, result.length() - 1);
+                    result = result + ")";
                 }
-                result = result.substring(0, result.length() - 1);
-                result = result + ")";
             } else {
-                result = value.toString();
+                if (value != null) {
+                    result = value.toString();
+                }
             }
 
             //处理$ifnull[]，如果参数值为空，删除$ifnull[]包含的内容
             String[] ifnulls = StrUtil.subBetweenAll(sql, "$ifnull[", "]");
             for (String ifnull : ifnulls) {
-                if (StrUtil.containsIgnoreCase(ifnull, $field) && StrUtil.isEmpty(result)) {
-                    //如果参数值为空,删除$ifnull[]包含的内容
-                    sql = sql.replace("$ifnull[" + ifnull + "]", "");
-                } else {
-                    sql = sql.replace("$ifnull[" + ifnull + "]", ifnull);
+                if (StrUtil.containsIgnoreCase(ifnull, $field)) {
+                    if (StrUtil.isEmpty(result)) {
+                        //如果参数值为空,删除$ifnull[]包含的内容
+                        sql = sql.replace("$ifnull[" + ifnull + "]", "");
+                    } else {
+                        sql = sql.replace("$ifnull[" + ifnull + "]", ifnull);
+                    }
                 }
             }
 
             sql = sql.replace("${" + field + "}", result);
 
         }
-        if (dataSource.getDbType().equals(DataSource.TYPE_MYSQL)) {
-            //mysql
 
-        } else if (dataSource.getDbType().equals(DataSource.TYPE_ORACLE)) {
-            //oracle
+        //首选查询数据总数
+        int count = SqlUtil.count(sql, jdbcTemplate);
+        pageInfo.setTotal(count);
+        if (count > 0) {
+            //如果有数据再分页查询
+            if (dataSource.getDbType().equals(DataSource.TYPE_MYSQL)) {
+                //mysql
+                sql = SqlUtil.buildPageSql(DataSourceType.MYSQL, sql, pageInfo.getCurrent() - 1, pageInfo.getSize());
+            } else if (dataSource.getDbType().equals(DataSource.TYPE_ORACLE)) {
+                //oracle
+                sql = SqlUtil.buildPageSql(DataSourceType.ORACLE, sql, pageInfo.getCurrent() - 1, pageInfo.getSize());
+            }
 
+            List<Map<String, Object>> list = SqlUtil.queryList(sql, null, jdbcTemplate);
+
+            pageInfo.setRecords(list);
+        } else {
+            pageInfo.setRecords(null);
         }
-        return null;
+
+        return R.success(pageInfo);
     }
 
     private Map<String, Object> getJasperTemplate(int reportId) {

@@ -37,7 +37,8 @@ public class BaseServiceImpl<R extends BaseRepository, T> implements BaseService
                 orderList.add(order);
             }
         }
-        PageRequest pageable = PageRequest.of(pageInfo.getCurrent(), pageInfo.getSize(), Sort.by(orderList));
+        //前台传入current是从1开始的，后台是从0开始的，需要减1
+        PageRequest pageable = PageRequest.of(pageInfo.getCurrent() - 1, pageInfo.getSize(), Sort.by(orderList));
         Page<T> page = repository.findAll((root, criteriaQuery, criteriaBuilder)
                 -> QueryHelp.getPredicate(root, pageInfo.entity, criteriaBuilder), pageable);
         pageInfo.setRecords(page.getContent());

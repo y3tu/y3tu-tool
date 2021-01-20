@@ -2,7 +2,8 @@
     <div class="main-container">
         <div class="head-container">
             <label class="form-item-label">数据源名称</label>
-            <el-input clearable v-model="pageInfo.entity.name" placeholder="请输入数据源名称" style="width:200px" class="form-item"
+            <el-input clearable v-model="pageInfo.entity.name" placeholder="请输入数据源名称" style="width:200px"
+                      class="form-item"
                       @keyup.enter="query"/>
             <el-button class="form-item" size="mini" type="success" icon="el-icon-search" plain @click="query">
                 查询
@@ -111,7 +112,7 @@
                         name: ''
                     },
                     pageLoading: false,
-                    current: 0,
+                    current: 1,
                     total: 0,
                     pageSize: 10,
                     records: [],

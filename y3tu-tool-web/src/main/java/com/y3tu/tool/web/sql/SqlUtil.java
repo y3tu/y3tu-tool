@@ -4,6 +4,7 @@ import com.y3tu.tool.core.exception.ToolException;
 import com.y3tu.tool.core.thread.ThreadUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -166,9 +167,20 @@ public class SqlUtil {
      * @return
      */
     public static int count(String sql, String dsName) {
+        return count(sql, JdbcTemplateContainer.getJdbcTemplate(dsName));
+    }
+
+    /**
+     * 计算数据量
+     *
+     * @param sql
+     * @param jdbcTemplate
+     * @return
+     */
+    public static int count(String sql, JdbcTemplate jdbcTemplate) {
         StringBuilder countSql = new StringBuilder();
         countSql.append("select count(*) as count from (").append(sql).append(") countTable ");
-        Map<String, Object> data = JdbcTemplateContainer.getJdbcTemplate(dsName).queryForMap(countSql.toString());
+        Map<String, Object> data = jdbcTemplate.queryForMap(countSql.toString());
         log.info(countSql.toString());
         if (data.get("count") != null) {
             int count = Integer.parseInt(data.get("count").toString());
@@ -176,7 +188,6 @@ public class SqlUtil {
         }
         return 0;
     }
-
 
     /**
      * 查询数据集合
@@ -186,14 +197,26 @@ public class SqlUtil {
      * @param dsName 数据源名
      * @return
      */
-    public static List<Map<String, Object>> queryList(String sql, Map<Integer, Object> params, String dsName) {
+    public static List<Map<String, Object>> queryList(String sql, Map<String, Object> params, String dsName) {
+        return queryList(sql, params, JdbcTemplateContainer.getJdbcTemplate(dsName));
+    }
+
+    /**
+     * 查询数据集合
+     *
+     * @param sql          查询sql
+     * @param params       参数参数
+     * @param jdbcTemplate
+     * @return
+     */
+    public static List<Map<String, Object>> queryList(String sql, Map<String, Object> params, JdbcTemplate jdbcTemplate) {
         List<Object> paramList = new ArrayList<>();
         if (params != null) {
-            for (int key : params.keySet()) {
+            for (String key : params.keySet()) {
                 paramList.add(params.get(key));
             }
         }
-        List<Map<String, Object>> dataList = JdbcTemplateContainer.getJdbcTemplate(dsName).queryForList(sql, paramList.toArray());
+        List<Map<String, Object>> dataList = jdbcTemplate.queryForList(sql, paramList.toArray());
         return dataList;
     }
 
@@ -206,15 +229,52 @@ public class SqlUtil {
      * @param dsName 数据源名
      * @return
      */
-    public static List queryList(String sql, Map<Integer, Object> params, Class clazz, String dsName) {
+    public static List queryList(String sql, Map<String, Object> params, Class clazz, String dsName) {
+        return queryList(sql, params, clazz, JdbcTemplateContainer.getJdbcTemplate(dsName));
+    }
+
+    /**
+     * 查询数据集合
+     *
+     * @param sql          查询sql
+     * @param params       参数参数
+     * @param clazz        数据对应实体
+     * @param jdbcTemplate
+     * @return
+     */
+    public static List queryList(String sql, Map<String, Object> params, Class clazz, JdbcTemplate jdbcTemplate) {
         List<Object> paramList = new ArrayList<>();
         if (params != null) {
-            for (int key : params.keySet()) {
+            for (String key : params.keySet()) {
                 paramList.add(params.get(key));
             }
         }
-        List dataList = JdbcTemplateContainer.getJdbcTemplate(dsName).query(sql, new BeanPropertyRowMapper<>(clazz), paramList.toArray());
+        List dataList = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(clazz), paramList.toArray());
         return dataList;
+    }
+
+    /**
+     * 拼接sql分页语句
+     * current从0开始
+     *
+     * @param type 数据源类型
+     * @param sql  查询sql
+     * @return
+     */
+    public static String buildPageSql(DataSourceType type, String sql, int current, int pageSize) {
+        StringBuilder pageSql = new StringBuilder();
+        int startIndex = current * pageSize;
+        int endIndex = current * pageSize + pageSize;
+        if (type == DataSourceType.MYSQL) {
+            //mysql
+            pageSql.append(sql).append("limit ").append(startIndex).append(",").append(pageSize);
+        } else if (type == DataSourceType.ORACLE) {
+            //oracle
+            pageSql.append("SELECT * FROM ( SELECT row_.*, rownum rownum_ from (").append(sql)
+                    .append(" ) row_ where rownum <=").append(endIndex).append(") table_alias where table_alias.rownum_ >")
+                    .append(startIndex);
+        }
+        return pageSql.toString();
     }
 
 

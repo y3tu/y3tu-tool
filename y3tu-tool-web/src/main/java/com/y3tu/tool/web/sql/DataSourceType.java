@@ -1,4 +1,4 @@
-package com.y3tu.tool.report.emums;
+package com.y3tu.tool.web.sql;
 
 /**
  * 数据源类型枚举
@@ -9,19 +9,19 @@ public enum DataSourceType {
     /**
      * mysql
      */
-    MYSQL(0),
+    MYSQL("mysql"),
     /**
      * oracle
      */
-    ORACLE(1);
+    ORACLE("oracle");
 
-    private int value;
+    private String value;
 
-    private DataSourceType(int value) {
+    DataSourceType(String value) {
         this.value = value;
     }
 
-    public int getValue() {
+    public String getValue() {
         return value;
     }
 }

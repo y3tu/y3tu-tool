@@ -1,5 +1,6 @@
 package com.y3tu.tool.report.entity.dto;
 
+import com.y3tu.tool.web.base.jpa.PageInfo;
 import lombok.Data;
 
 import java.util.List;
@@ -55,4 +56,8 @@ public class ReportDto {
      */
     String fileTempPrefix;
 
+    /**
+     * 查询分页参数
+     */
+    PageInfo pageInfo;
 }
