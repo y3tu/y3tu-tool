@@ -171,7 +171,7 @@
                 })
             },
             sizeChange(e) {
-                this.pageInfo.current = 0;
+                this.pageInfo.current = 1;
                 this.pageInfo.size = e;
                 this.query()
             },
