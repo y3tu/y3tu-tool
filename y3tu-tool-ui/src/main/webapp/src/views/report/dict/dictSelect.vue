@@ -5,6 +5,7 @@
                 :style="style"
                 class="form-item"
                 multiple
+                size="small"
                 collapse-tags
                 v-model="values"
                 filterable

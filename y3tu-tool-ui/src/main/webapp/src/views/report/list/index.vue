@@ -97,7 +97,7 @@
         </el-main>
 
         <el-drawer
-                size="70%"
+                size="100%"
                 title="报表配置"
                 v-model="drawer"
                 direction="rtl"

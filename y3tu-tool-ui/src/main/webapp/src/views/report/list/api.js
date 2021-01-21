@@ -1,4 +1,4 @@
-import {service, download} from '@/plugin/axios'
+import {service, download,downloadPost} from '@/plugin/axios'
 
 /**
  * 获取报表列表
@@ -100,4 +100,11 @@ export function queryTableData(params) {
         method: 'post',
         data:params
     })
+}
+
+/**
+ * 导出报表数据excel
+ */
+export function exportData(params,fileName) {
+    return downloadPost('y3tu-tool-report/report/export',params,fileName)
 }

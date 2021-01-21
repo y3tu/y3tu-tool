@@ -72,14 +72,20 @@ public class ExcelUtil extends EasyExcel {
      *
      * @param fileName      文件名
      * @param clazz         导出的实体类型
+     * @param header        自定义表格头
      * @param excelTypeEnum excel文件类型
      * @param response      浏览器响应
      * @return
      */
-    public static ExcelWriter buildExcelWriter(String fileName, Class clazz, ExcelTypeEnum excelTypeEnum, HttpServletResponse response) {
+    public static ExcelWriter buildExcelWriter(String fileName, Class clazz, List<List<String>> header, ExcelTypeEnum excelTypeEnum, HttpServletResponse response) {
         try {
             ExcelUtil.decorateResponse(fileName, excelTypeEnum, response);
-            ExcelWriterBuilder excelWriterBuilder = EasyExcel.write(response.getOutputStream(), clazz).autoCloseStream(true);
+            ExcelWriterBuilder excelWriterBuilder = null;
+            if (clazz != null) {
+                excelWriterBuilder = EasyExcel.write(response.getOutputStream()).head(header).autoCloseStream(true);
+            } else {
+                excelWriterBuilder = EasyExcel.write(response.getOutputStream(), clazz).head(header).autoCloseStream(true);
+            }
             ExcelWriter excelWriter = excelWriterBuilder.build();
             return excelWriter;
         } catch (Exception e) {
@@ -88,19 +94,21 @@ public class ExcelUtil extends EasyExcel {
         }
     }
 
+
     /**
      * 单线程分页查询、写数据,避免导出大数据量时OOM
      *
      * @param fileName      文件名
      * @param sheetName     sheet页名称
      * @param clazz         导出的实体类型
+     * @param header        自定义表格头
      * @param excelTypeEnum 导出文件后缀
      * @param excelPageData 执行分页查询的方法
      * @param response      响应信息
      */
-    public static void downExcelByPage(String fileName, String sheetName, Class clazz, ExcelTypeEnum excelTypeEnum, ExcelPageData excelPageData, HttpServletResponse response) {
+    public static void downExcelByPage(String fileName, String sheetName, Class clazz, List<List<String>> header, ExcelTypeEnum excelTypeEnum, ExcelPageData excelPageData, HttpServletResponse response) {
         try {
-            ExcelWriter excelWriter = buildExcelWriter(fileName, clazz, excelTypeEnum, response);
+            ExcelWriter excelWriter = buildExcelWriter(fileName, clazz, header, excelTypeEnum, response);
             //使用默认的 xlsx, page size 10000, sheet max row 1000000
             int pageSize = XLSX_PAGE_SIZE;
             int sheetMaxRow = XLSX_SHEET_MAX_ROW;
@@ -154,11 +162,12 @@ public class ExcelUtil extends EasyExcel {
      * @param fileName      文件名
      * @param sheetName     sheet页名称
      * @param clazz         导出的实体类型
+     * @param header        自定义表格头
      * @param excelTypeEnum 导出文件后缀
      * @param excelPageData 执行分页查询的方法
      * @param response      响应信息
      */
-    public static void downExcelByThreadAndPage(int poolSize, String fileName, String sheetName, Class clazz, ExcelTypeEnum excelTypeEnum, ExcelPageData excelPageData, HttpServletResponse response) {
+    public static void downExcelByThreadAndPage(int poolSize, String fileName, String sheetName, Class clazz, List<List<String>> header, ExcelTypeEnum excelTypeEnum, ExcelPageData excelPageData, HttpServletResponse response) {
         try {
             // 根据数据读写速度来调整，一般来说读的逻辑复杂，比较慢，如果读比写快，这里设为1
             int N = 4;
@@ -168,7 +177,7 @@ public class ExcelUtil extends EasyExcel {
             AtomicInteger start = new AtomicInteger(0);
             ThreadFactory threadFactory = ThreadUtil.newNamedThreadFactory("多线程分页查询导出", true);
             ExecutorService executorService = ThreadUtil.newFixedExecutor(poolSize, threadFactory);
-            ExcelWriter excelWriter = buildExcelWriter(fileName, clazz, excelTypeEnum, response);
+            ExcelWriter excelWriter = buildExcelWriter(fileName, clazz, header, excelTypeEnum, response);
             //默认分页大小1000条
             int pageSize = XLSX_PAGE_SIZE;
             int sheetMaxRow = XLSX_SHEET_MAX_ROW;
@@ -265,13 +274,14 @@ public class ExcelUtil extends EasyExcel {
      * @param sheetName sheet页名称
      * @param list      导出的数据
      * @param clazz     导出的实体类型
+     * @param header    自定义表格头
      * @param excelType excel文件类型
      * @param response  响应请求
      */
-    public static void downExcel(String fileName, String sheetName, List<?> list, Class clazz, ExcelTypeEnum excelType, HttpServletResponse response) {
+    public static void downExcel(String fileName, String sheetName, List<?> list, Class clazz, List<List<String>> header, ExcelTypeEnum excelType, HttpServletResponse response) {
         try {
             decorateResponse(fileName, excelType, response);
-            EasyExcel.write(response.getOutputStream(), clazz).sheet(sheetName).doWrite(list);
+            EasyExcel.write(response.getOutputStream(), clazz).head(header).sheet(sheetName).doWrite(list);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new ToolException("导出excel文件异常:" + e.getMessage());

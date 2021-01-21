@@ -72,4 +72,11 @@ public interface ReportService extends BaseService<Report> {
      * @return
      */
     R queryTableData(String sql, int dsId, List<ReportParamDto> params, PageInfo pageInfo);
+
+    /**
+     * 导出报表数据
+     * @param reportDto
+     * @return
+     */
+    void export(ReportDto reportDto,HttpServletResponse response);
 }

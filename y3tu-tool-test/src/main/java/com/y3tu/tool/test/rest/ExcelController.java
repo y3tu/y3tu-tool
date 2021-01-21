@@ -28,7 +28,7 @@ public class ExcelController {
 
     @GetMapping("downPage")
     public void downPage(HttpServletResponse response) {
-        ExcelUtil.downExcelByThreadAndPage(20, "测试", "测试", UserDto.class, ExcelTypeEnum.XLSX, new ExcelPageData<UserDto>() {
+        ExcelUtil.downExcelByThreadAndPage(20, "测试", "测试", UserDto.class,null, ExcelTypeEnum.XLSX, new ExcelPageData<UserDto>() {
             @Override
             public List<UserDto> queryDataByPage(int startNum, int pageSize) {
                 String selectSql = "select id,name,age from user limit ?,? ";

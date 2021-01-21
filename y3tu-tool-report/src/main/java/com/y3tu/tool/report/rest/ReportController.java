@@ -111,4 +111,13 @@ public class ReportController {
     public R queryTableData(@RequestBody ReportDto reportDto) {
         return reportService.queryTableData(reportDto.getQuerySql(), reportDto.getDsId(), reportDto.getParams(), reportDto.getPageInfo());
     }
+
+    /**
+     * 导出报表excel数据
+     * @return
+     */
+    @PostMapping("export")
+    public void export(@RequestBody ReportDto reportDto,HttpServletResponse response){
+        reportService.export(reportDto,response);
+    }
 }

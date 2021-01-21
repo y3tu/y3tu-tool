@@ -30,7 +30,7 @@
             recursion(arrs) {
                 if (arrs != undefined) {
                     return arrs.map((item) => {
-                        if (!!item.children) {
+                        if (!!item.children&&item.children.length>0) {
                             return (
                                 <el-table-column label={item.label}>
                                     {this.recursion(item.children)}
