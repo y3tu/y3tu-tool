@@ -136,7 +136,7 @@
                 call.then(() => {
                     this.exportLoading = false;
                 })
-                this.$toast('正在生成导出文件，请稍后！', 'success', '5000')
+                this.$toast('正在生成导出文件，请稍后！', 'success', 5000)
             },
             sizeChange(e) {
                 this.pageInfo.current = 1;
