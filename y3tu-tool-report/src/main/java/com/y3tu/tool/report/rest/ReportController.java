@@ -6,6 +6,7 @@ import com.y3tu.tool.report.entity.domain.ReportAttachment;
 import com.y3tu.tool.report.entity.domain.ReportParam;
 import com.y3tu.tool.report.entity.dto.ReportDto;
 import com.y3tu.tool.report.entity.dto.ReportParamDto;
+import com.y3tu.tool.report.service.CommonReportService;
 import com.y3tu.tool.report.service.ReportAttachmentService;
 import com.y3tu.tool.report.service.ReportParamService;
 import com.y3tu.tool.report.service.ReportService;
@@ -33,6 +34,8 @@ public class ReportController {
     ReportParamService reportParamService;
     @Autowired
     ReportAttachmentService reportAttachmentService;
+    @Autowired
+    CommonReportService commonReportService;
 
     @PostMapping("page")
     public R page(@RequestBody PageInfo<Report> pageInfo) {
@@ -104,12 +107,12 @@ public class ReportController {
      */
     @PostMapping("parseSql")
     public R parseSql(@RequestBody ReportDto reportDto) {
-        return reportService.parseSql(reportDto.getQuerySql(), reportDto.getDsId());
+        return commonReportService.parseSql(reportDto.getQuerySql(), reportDto.getDsId());
     }
 
     @PostMapping("queryTableData")
     public R queryTableData(@RequestBody ReportDto reportDto) {
-        return reportService.queryTableData(reportDto.getQuerySql(), reportDto.getDsId(), reportDto.getParams(), reportDto.getPageInfo());
+        return commonReportService.queryTableData(reportDto.getQuerySql(), reportDto.getDsId(), reportDto.getParams(), reportDto.getPageInfo());
     }
 
     /**
@@ -118,6 +121,6 @@ public class ReportController {
      */
     @PostMapping("export")
     public void export(@RequestBody ReportDto reportDto,HttpServletResponse response){
-        reportService.export(reportDto,response);
+        commonReportService.export(reportDto,response);
     }
 }

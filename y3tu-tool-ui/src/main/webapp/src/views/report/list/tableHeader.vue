@@ -39,7 +39,7 @@ export default {
   emits: ["change"],
   computed: {
     jsonData() {
-      let result = new Object();
+      let result = {};
       try {
         result = JSON.parse(this.value);
       } catch (e) {

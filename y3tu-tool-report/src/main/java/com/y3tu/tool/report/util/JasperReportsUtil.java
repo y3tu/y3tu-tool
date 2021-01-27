@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,7 +90,7 @@ public class JasperReportsUtil {
      * @param templatePath 报表模板路径
      * @return JasperReport
      */
-    public static JasperReport getJasperReport(String templateName,String templatePath) throws JRException {
+    public static JasperReport getJasperReport(String templateName, String templatePath) throws JRException {
         if (REPORT_MAP.get(templateName) != null) {
             return REPORT_MAP.get(templateName);
         }
@@ -107,7 +108,7 @@ public class JasperReportsUtil {
      * @param templateFile 报表文件
      * @return JasperReport
      */
-    public static JasperReport getJasperReport(String templateName,File templateFile) throws JRException {
+    public static JasperReport getJasperReport(String templateName, File templateFile) throws JRException {
         if (REPORT_MAP.get(templateName) != null) {
             return REPORT_MAP.get(templateName);
         }
@@ -119,7 +120,6 @@ public class JasperReportsUtil {
     }
 
 
-
     /**
      * 报表输出到前端
      *
@@ -129,10 +129,9 @@ public class JasperReportsUtil {
      * @param extraSourceNameList 报表额外数据源名称
      * @param reportType          输出报表格式
      * @param fileName            输出文件名称
-     * @param request             请求
      * @param response            响应
      */
-    public static String exportReport(List<?> beanList, JasperReport jasperReport, List<List<?>> extraBeanList, List<String> extraSourceNameList, REPORT_TYPE reportType, String fileName, HttpServletRequest request, HttpServletResponse response) {
+    public static String outputReport(List<?> beanList, JasperReport jasperReport, List<List<?>> extraBeanList, List<String> extraSourceNameList, REPORT_TYPE reportType, String fileName, HttpServletResponse response) {
         String reportStr = "";
         // 用beanList填充数据源
         JRDataSource dataSource = new JRBeanCollectionDataSource(beanList);
@@ -140,7 +139,7 @@ public class JasperReportsUtil {
 
             Map<String, Object> reportParameterMap = new HashMap<>();
             // 根据名字设置额外数据源 作为参数
-            if(extraSourceNameList!=null&&extraBeanList!=null){
+            if (extraSourceNameList != null && extraBeanList != null) {
                 for (int i = 0; i < extraSourceNameList.size(); i++) {
                     // 封装beanList为数据源
                     JRDataSource extraDataSource = new JRBeanCollectionDataSource(extraBeanList.get(i));
@@ -206,5 +205,65 @@ public class JasperReportsUtil {
         return reportStr;
     }
 
+    public static String outputReport(JasperReport jasperReport, Connection connection,Map parameters, REPORT_TYPE reportType, String fileName, HttpServletResponse response){
+        String reportStr = "";
+        try {
+            // 填充报表
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, connection);
+            if (REPORT_TYPE.PDF == reportType) {
+                response.setCharacterEncoding("utf-8");
+                response.setHeader("Content-Disposition", "attachment;" + "filename=" + new String(fileName.getBytes(), "ISO-8859-1"));
+                response.setContentType("application/pdf;charset=utf-8");
+                //输出pdf
+                JasperExportManager.exportReportToPdfStream(jasperPrint, response.getOutputStream());
+            } else if (REPORT_TYPE.EXCEL == reportType) {
+                //导出Excel
+                response.setCharacterEncoding("utf-8");
+                response.setHeader("Content-Disposition", "attachment;" + "filename=" + new String(fileName.getBytes(), "ISO-8859-1"));
+                response.setContentType("application/vnd.ms-excel");
+
+                //设置导出时参数
+                SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
+                configuration.setWhitePageBackground(false);
+                configuration.setAutoFitPageHeight(true);
+                configuration.setDetectCellType(true);
+                JRXlsxExporter exporter = new JRXlsxExporter();
+                exporter.setConfiguration(configuration);
+                //设置输入项
+                ExporterInput exporterInput = new SimpleExporterInput(jasperPrint);
+                exporter.setExporterInput(exporterInput);
+                //设置输出项
+                OutputStreamExporterOutput exporterOutput = new SimpleOutputStreamExporterOutput(response.getOutputStream());
+                exporter.setExporterOutput(exporterOutput);
+
+                exporter.exportReport();
+            } else if (REPORT_TYPE.HTML == reportType) {
+                //输出html
+                HtmlExporter exporter = new HtmlExporter();
+                exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+                ByteArrayOutputStream tempOStream = new ByteArrayOutputStream();
+                SimpleHtmlExporterOutput exporterOutput = new SimpleHtmlExporterOutput(tempOStream);
+                exporterOutput.setImageHandler(new HtmlResourceHandler() {
+                    Map<String, String> images = new HashMap<>();
+
+                    @Override
+                    public void handleResource(String id, byte[] data) {
+                        images.put(id, "data:image/jpg;base64," + Base64.encodeBytes(data));
+                    }
+
+                    @Override
+                    public String getResourcePath(String id) {
+                        return images.get(id);
+                    }
+                });
+                exporter.setExporterOutput(exporterOutput);
+                exporter.exportReport();
+                reportStr = new String(tempOStream.toByteArray(), "UTF-8");
+            }
+        } catch (Exception e) {
+            log.error("生成jasper报表失败", e);
+        }
+        return reportStr;
+    }
 
 }

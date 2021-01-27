@@ -40,8 +40,8 @@ public class JasperReportsController {
             List<Map> list = new ArrayList<>();
             Map map = new HashMap();
             map.put("test1", "测试");
-            result = JasperReportsUtil.exportReport(list, jasperReport, null, null,
-                    JasperReportsUtil.REPORT_TYPE.HTML, "TEST.pdf", request, response);
+            result = JasperReportsUtil.outputReport(list, jasperReport, null, null,
+                    JasperReportsUtil.REPORT_TYPE.HTML, "TEST.pdf", response);
         } catch (Exception e) {
             log.error("预览报表失败", e);
         }

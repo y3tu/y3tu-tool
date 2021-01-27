@@ -3,13 +3,10 @@ package com.y3tu.tool.report.service;
 import com.y3tu.tool.core.pojo.R;
 import com.y3tu.tool.report.entity.domain.Report;
 import com.y3tu.tool.report.entity.dto.ReportDto;
-import com.y3tu.tool.report.entity.dto.ReportParamDto;
 import com.y3tu.tool.web.base.jpa.BaseService;
-import com.y3tu.tool.web.base.jpa.PageInfo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * @author y3tu
@@ -53,30 +50,4 @@ public interface ReportService extends BaseService<Report> {
      */
     R preview(int reportId);
 
-    /**
-     * 解析sql
-     *
-     * @param sql  sql
-     * @param dsId 数据源
-     * @return
-     */
-    R parseSql(String sql, int dsId);
-
-    /**
-     * 查询报表数据
-     *
-     * @param sql      查询sql
-     * @param dsId     数据源
-     * @param params   查询参数
-     * @param pageInfo 分页信息
-     * @return
-     */
-    R queryTableData(String sql, int dsId, List<ReportParamDto> params, PageInfo pageInfo);
-
-    /**
-     * 导出报表数据
-     * @param reportDto
-     * @return
-     */
-    void export(ReportDto reportDto,HttpServletResponse response);
 }
