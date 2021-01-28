@@ -88,10 +88,9 @@ public class ReportController {
         return R.success();
     }
 
-    @GetMapping("preview/{id}")
-    public R preview(@PathVariable int id) {
-        reportService.preview(id);
-        return R.success();
+    @PostMapping("queryReportData")
+    public R queryReportData(@RequestBody ReportDto reportDto,HttpServletResponse response) {
+        return reportService.queryReportData(reportDto,response);
     }
 
     @GetMapping("download/{id}")
@@ -110,17 +109,13 @@ public class ReportController {
         return commonReportService.parseSql(reportDto.getQuerySql(), reportDto.getDsId());
     }
 
-    @PostMapping("queryTableData")
-    public R queryTableData(@RequestBody ReportDto reportDto) {
-        return commonReportService.queryTableData(reportDto.getQuerySql(), reportDto.getDsId(), reportDto.getParams(), reportDto.getPageInfo());
-    }
-
     /**
      * 导出报表excel数据
+     *
      * @return
      */
     @PostMapping("export")
-    public void export(@RequestBody ReportDto reportDto,HttpServletResponse response){
-        commonReportService.export(reportDto,response);
+    public void export(@RequestBody ReportDto reportDto, HttpServletResponse response) {
+        commonReportService.export(reportDto, response);
     }
 }

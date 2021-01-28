@@ -94,9 +94,9 @@ export function getAllDict() {
 /**
  * 查询报表数据
  */
-export function queryTableData(params) {
+export function queryReportData(params) {
     return service({
-        url: `y3tu-tool-report/report/queryTableData`,
+        url: `y3tu-tool-report/report/queryReportData`,
         method: 'post',
         data:params
     })

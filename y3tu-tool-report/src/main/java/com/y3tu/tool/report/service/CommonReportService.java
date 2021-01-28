@@ -26,16 +26,14 @@ public interface CommonReportService {
     /**
      * 查询报表数据
      *
-     * @param sql      查询sql
-     * @param dsId     数据源
-     * @param params   查询参数
-     * @param pageInfo 分页信息
+     * @param reportDto
      * @return
      */
-    R queryTableData(String sql, int dsId, List<ReportParamDto> params, PageInfo pageInfo);
+    R queryReportData(ReportDto reportDto);
 
     /**
      * 导出报表数据
+     *
      * @param reportDto
      * @return
      */

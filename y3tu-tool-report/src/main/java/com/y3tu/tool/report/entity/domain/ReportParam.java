@@ -35,9 +35,6 @@ public class ReportParam extends BaseEntity {
     @Column(columnDefinition = "varchar(100) comment '查询字段'")
     String field;
 
-    @Column(columnDefinition = "int comment '关联关系 1:等于,2:不等于,3:大于,4:小于,5:大于等于,6:小于等于,7:in,8:like,9:not in,10: not like'")
-    String relation;
-
     @Column(name = "type", columnDefinition = "int comment '取值类型 1:输入取值；2:字典下拉; 3:字典下拉取多值; 4:月份; 5:日期; 6:时间 '")
     Integer type;
 

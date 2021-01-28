@@ -70,6 +70,10 @@
         :loading="pageInfo.pageLoading"
         :table-data="pageInfo.records"/>
 
+    <div v-if="report.type==='jasper'" v-html="jasperHtml">
+
+    </div>
+
     <!--分页组件-->
     <el-pagination
         :total="pageInfo.total"
@@ -85,7 +89,7 @@
 
 <script>
 
-import {queryTableData, exportData} from './api'
+import {queryReportData, exportData} from './api'
 import dictSelect from "../dict/dictSelect";
 import mergeHeaderTable from './mergeHeaderTable'
 
@@ -106,6 +110,7 @@ export default {
         pageSize: 10,
         records: [],
       },
+      jasperHtml: '',
       exportLoading: false
     }
   },
@@ -118,11 +123,15 @@ export default {
     query() {
       this.report.pageInfo = this.pageInfo;
       this.pageInfo.pageLoading = true;
-      queryTableData(this.report).then(res => {
+      queryReportData(this.report).then(res => {
         if (res) {
-          this.pageInfo.records = res.data.records;
-          this.pageInfo.total = res.data.total;
-          this.pageInfo.pageLoading = false;
+          if (this.report.type === 'common') {
+            this.pageInfo.records = res.data.records;
+            this.pageInfo.total = res.data.total;
+            this.pageInfo.pageLoading = false;
+          } else if (this.report.type === 'jasper') {
+            this.jasperHtml = res.data;
+          }
         }
       }).catch(() => {
         this.pageInfo.pageLoading = false;

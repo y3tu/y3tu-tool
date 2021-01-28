@@ -73,7 +73,11 @@ public class CommonReportServiceImpl implements CommonReportService {
     }
 
     @Override
-    public R queryTableData(String sql, int dsId, List<ReportParamDto> params, PageInfo pageInfo) {
+    public R queryReportData(ReportDto reportDto) {
+        int dsId = reportDto.getDsId();
+        String sql = reportDto.getQuerySql();
+        List<ReportParamDto> params = reportDto.getParams();
+        PageInfo pageInfo = reportDto.getPageInfo();
         DataSource dataSource = dataSourceService.getById(dsId);
         javax.sql.DataSource ds = DataSourceUtil.getDataSourceByDsId(dsId);
         JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);

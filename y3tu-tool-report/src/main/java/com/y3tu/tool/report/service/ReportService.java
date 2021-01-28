@@ -43,11 +43,11 @@ public interface ReportService extends BaseService<Report> {
     void download(int reportId, HttpServletRequest request, HttpServletResponse response);
 
     /**
-     * 预览
+     * 查询报表数据
      *
-     * @param reportId
+     * @param reportDto
      * @return
      */
-    R preview(int reportId);
+    R queryReportData(ReportDto reportDto,HttpServletResponse response);
 
 }

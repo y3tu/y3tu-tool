@@ -130,7 +130,7 @@ export default {
       this.report.querySql = val;
     },
     beforeUpload(file) {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         let limit = true;
         limit = file.size / 1024 / 1024 < 100;
         if (!limit) {

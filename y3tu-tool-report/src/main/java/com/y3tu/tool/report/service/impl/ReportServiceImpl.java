@@ -8,15 +8,20 @@ import com.y3tu.tool.report.entity.domain.Report;
 import com.y3tu.tool.report.entity.domain.ReportAttachment;
 import com.y3tu.tool.report.entity.domain.ReportParam;
 import com.y3tu.tool.report.entity.dto.ReportDto;
+import com.y3tu.tool.report.entity.dto.ReportParamDto;
 import com.y3tu.tool.report.exception.ReportException;
 import com.y3tu.tool.report.repository.ReportRepository;
+import com.y3tu.tool.report.service.CommonReportService;
 import com.y3tu.tool.report.service.ReportAttachmentService;
 import com.y3tu.tool.report.service.ReportParamService;
 import com.y3tu.tool.report.service.ReportService;
+import com.y3tu.tool.report.util.DataSourceUtil;
+import com.y3tu.tool.report.util.JasperReportsUtil;
 import com.y3tu.tool.web.base.jpa.BaseServiceImpl;
 import com.y3tu.tool.web.file.service.RemoteFileHelper;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperPrint;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,7 +44,8 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
     ReportParamService reportParamService;
     @Autowired
     ReportAttachmentService reportAttachmentService;
-
+    @Autowired
+    CommonReportService commonReportService;
     @Autowired
     RemoteFileHelper remoteFileHelper;
     @Autowired
@@ -116,8 +122,8 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
                     for (ReportAttachment reportAttachment : reportAttachmentList) {
                         String oldPath = reportAttachment.getRemoteFilePath();
                         reportAttachment.setName(reportDto.getFileName());
-                        reportAttachment.setTempFileName(tempFilePath);
-                        reportAttachment.setRemoteFilePath(properties.getRemotePath() + tempFilePath);
+                        reportAttachment.setTempFileName(tempFileName);
+                        reportAttachment.setRemoteFilePath(properties.getRemotePath() + tempFileName);
                         reportAttachment.setUpdateTime(new Date());
                         reportAttachmentService.update(reportAttachment);
                         //删除老附件
@@ -157,16 +163,33 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
     }
 
     @Override
-    public R preview(int reportId) {
-        Report report = this.getById(reportId);
-        if (Report.TYPE_COMMON.equals(report.getType())) {
-            //通用报表 todo
-        } else if (Report.TYPE_JASPER.equals(report.getType())) {
-            Map<String, Object> filePathResult = getJasperTemplate(reportId);
+    public R queryReportData(ReportDto reportDto,HttpServletResponse response) {
+        try {
+            if (Report.TYPE_COMMON.equals(reportDto.getType())) {
+                //通用报表
+                return commonReportService.queryReportData(reportDto);
+            } else if (Report.TYPE_JASPER.equals(reportDto.getType())) {
+                //Jasper报表
+                //获取jasper模板文件地址
+                Map<String, Object> filePathResult = getJasperTemplate(reportDto.getId());
+                //获取报表配置的数据源连接
+                javax.sql.DataSource dataSource = DataSourceUtil.getDataSourceByDsId(reportDto.getDsId());
+                //报参数转换成map
+                Map<String, Object> paramMap = new HashMap<>();
+                List<ReportParamDto> params = reportDto.getParams();
+                for (ReportParamDto paramDto : params) {
+                    paramMap.put(paramDto.getField(), paramDto.getValue());
+                }
+                JasperPrint jasperPrint = JasperReportsUtil.getJasperPrint(filePathResult.get("jasperFilePath").toString(), dataSource.getConnection(), paramMap);
+                String html = JasperReportsUtil.handlerHtmlExporter(jasperPrint);
+                return R.success(html);
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ReportException("预览报表异常:" + e.getMessage());
         }
-        return null;
+        return R.success();
     }
-
 
 
     private Map<String, Object> getJasperTemplate(int reportId) {
