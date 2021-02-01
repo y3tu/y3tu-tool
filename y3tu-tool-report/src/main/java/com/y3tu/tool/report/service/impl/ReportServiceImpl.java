@@ -16,12 +16,15 @@ import com.y3tu.tool.report.service.ReportAttachmentService;
 import com.y3tu.tool.report.service.ReportParamService;
 import com.y3tu.tool.report.service.ReportService;
 import com.y3tu.tool.report.util.DataSourceUtil;
-import com.y3tu.tool.report.util.JasperReportsUtil;
+import com.y3tu.tool.report.util.JasperReportUtil;
 import com.y3tu.tool.web.base.jpa.BaseServiceImpl;
 import com.y3tu.tool.web.file.service.RemoteFileHelper;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.jasperreports.engine.JRPrintElement;
+import net.sf.jasperreports.engine.JRPrintPage;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.base.JRBasePrintPage;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -163,7 +166,7 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
     }
 
     @Override
-    public R queryReportData(ReportDto reportDto,HttpServletResponse response) {
+    public R queryReportData(ReportDto reportDto, HttpServletResponse response) {
         try {
             if (Report.TYPE_COMMON.equals(reportDto.getType())) {
                 //通用报表
@@ -180,8 +183,18 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
                 for (ReportParamDto paramDto : params) {
                     paramMap.put(paramDto.getField(), paramDto.getValue());
                 }
-                JasperPrint jasperPrint = JasperReportsUtil.getJasperPrint(filePathResult.get("jasperFilePath").toString(), dataSource.getConnection(), paramMap);
-                String html = JasperReportsUtil.handlerHtmlExporter(jasperPrint);
+                paramMap.put("PAGE_NUMBER",1);
+                paramMap.put("PAGE_COUNT",20);
+                JasperPrint jasperPrint = JasperReportUtil.getJasperPrint(filePathResult.get("jasperFilePath").toString(), dataSource.getConnection(), paramMap);
+                //删除最后空白页
+                int pageCount = jasperPrint.getPages().size() - 1;
+                if (pageCount >= 0) {
+                    if (jasperPrint.getPages().get(pageCount).getElements().size() == 0) {
+                        jasperPrint.removePage(pageCount);
+                    }
+                }
+
+                String html = JasperReportUtil.exportToHtml(jasperPrint);
                 return R.success(html);
             }
         } catch (Exception e) {

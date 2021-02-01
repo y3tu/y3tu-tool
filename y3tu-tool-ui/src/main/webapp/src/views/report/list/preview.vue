@@ -63,17 +63,6 @@
 
     <el-divider/>
 
-    <!--通用报表才展示报表头-->
-    <merge-header-table
-        v-if="report.type==='common'"
-        :header="JSON.parse(report.tableHeader)"
-        :loading="pageInfo.pageLoading"
-        :table-data="pageInfo.records"/>
-
-    <div v-if="report.type==='jasper'" v-html="jasperHtml">
-
-    </div>
-
     <!--分页组件-->
     <el-pagination
         :total="pageInfo.total"
@@ -83,6 +72,19 @@
         layout="total, sizes, prev, pager, next, jumper"
         @size-change="sizeChange"
         @current-change="pageChange"/>
+
+    <el-divider/>
+
+    <!--通用报表才展示报表头-->
+    <merge-header-table
+        v-if="report.type==='common'"
+        :header="JSON.parse(report.tableHeader)"
+        :loading="pageInfo.pageLoading"
+        :table-data="pageInfo.records"/>
+
+    <div v-if="report.type==='jasper'" v-html="jasperHtml" style="width: 100%;overflow-x: auto">
+
+    </div>
 
   </div>
 </template>
