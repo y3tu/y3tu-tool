@@ -4,6 +4,7 @@ import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.pojo.R;
 import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.report.configure.ToolReportProperties;
+import com.y3tu.tool.report.entity.domain.DataSource;
 import com.y3tu.tool.report.entity.domain.Report;
 import com.y3tu.tool.report.entity.domain.ReportAttachment;
 import com.y3tu.tool.report.entity.domain.ReportParam;
@@ -12,6 +13,7 @@ import com.y3tu.tool.report.entity.dto.ReportParamDto;
 import com.y3tu.tool.report.exception.ReportException;
 import com.y3tu.tool.report.repository.ReportRepository;
 import com.y3tu.tool.report.service.CommonReportService;
+import com.y3tu.tool.report.service.DataSourceService;
 import com.y3tu.tool.report.service.ReportAttachmentService;
 import com.y3tu.tool.report.service.ReportParamService;
 import com.y3tu.tool.report.service.ReportService;
@@ -20,15 +22,14 @@ import com.y3tu.tool.report.util.JasperReportUtil;
 import com.y3tu.tool.web.base.jpa.BaseServiceImpl;
 import com.y3tu.tool.web.base.jpa.PageInfo;
 import com.y3tu.tool.web.file.service.RemoteFileHelper;
+import com.y3tu.tool.web.sql.SqlUtil;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.jasperreports.engine.JRPrintElement;
-import net.sf.jasperreports.engine.JRPrintPage;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.base.JRBasePrintPage;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,6 +52,8 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
     ReportAttachmentService reportAttachmentService;
     @Autowired
     CommonReportService commonReportService;
+    @Autowired
+    DataSourceService dataSourceService;
     @Autowired
     RemoteFileHelper remoteFileHelper;
     @Autowired
@@ -223,8 +226,14 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
                 //获取模板中的sql查询语句
                 JasperReport jasperReport = JasperReportUtil.getJasperReport(filePathResult.get("jrxmlFilePath").toString());
                 String sql = jasperReport.getQuery().getText();
-                reportDto.setQuerySql(sql);
 
+                int dsId = reportDto.getDsId();
+                DataSource dataSource = dataSourceService.getById(dsId);
+                javax.sql.DataSource ds = DataSourceUtil.getDataSourceByDsId(dsId);
+                JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+                List<Map<String, Object>> dataList = SqlUtil.queryList(sql+" limit 0,1000", null, jdbcTemplate);
+                JasperPrint jasperPrint = JasperReportUtil.getJasperPrint(jasperReport,paramMap, dataList);
+                JasperReportUtil.exportToExcel(jasperPrint,reportDto.getName()+".xls",response);
             }
         }catch (Exception e){
             log.error(e.getMessage(), e);

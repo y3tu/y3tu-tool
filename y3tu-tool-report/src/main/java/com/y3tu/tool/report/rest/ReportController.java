@@ -116,6 +116,6 @@ public class ReportController {
      */
     @PostMapping("export")
     public void export(@RequestBody ReportDto reportDto, HttpServletResponse response) {
-        commonReportService.export(reportDto, response);
+        reportService.export(reportDto, response);
     }
 }

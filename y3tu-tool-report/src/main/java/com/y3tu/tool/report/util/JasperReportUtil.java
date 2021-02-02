@@ -13,7 +13,6 @@ import net.sf.jasperreports.export.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.util.HashMap;
@@ -233,9 +232,6 @@ public class JasperReportUtil {
                 return images.get(id);
             }
         });
-//        SimpleHtmlReportConfiguration configuration = new SimpleHtmlReportConfiguration();
-//        configuration.setPageIndex(1);
-//        exporter.setConfiguration(configuration);
         exporter.setExporterOutput(exporterOutput);
         exporter.exportReport();
 
