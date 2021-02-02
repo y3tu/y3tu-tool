@@ -82,7 +82,7 @@
         :loading="pageInfo.pageLoading"
         :table-data="pageInfo.records"/>
 
-    <div v-if="report.type==='jasper'" v-html="jasperHtml" style="width: 100%;overflow-x: auto">
+    <div v-loading="pageInfo.pageLoading" v-if="report.type==='jasper'" v-html="jasperHtml" style="width: 100%;overflow-x: auto">
 
     </div>
 
@@ -132,7 +132,9 @@ export default {
             this.pageInfo.total = res.data.total;
             this.pageInfo.pageLoading = false;
           } else if (this.report.type === 'jasper') {
-            this.jasperHtml = res.data;
+            this.jasperHtml = res.data.html;
+            this.pageInfo.total = res.data.pageInfo.total;
+            this.pageInfo.pageLoading = false;
           }
         }
       }).catch(() => {

@@ -18,12 +18,14 @@ import com.y3tu.tool.report.service.ReportService;
 import com.y3tu.tool.report.util.DataSourceUtil;
 import com.y3tu.tool.report.util.JasperReportUtil;
 import com.y3tu.tool.web.base.jpa.BaseServiceImpl;
+import com.y3tu.tool.web.base.jpa.PageInfo;
 import com.y3tu.tool.web.file.service.RemoteFileHelper;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JRPrintElement;
 import net.sf.jasperreports.engine.JRPrintPage;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.base.JRBasePrintPage;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -170,32 +172,32 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
         try {
             if (Report.TYPE_COMMON.equals(reportDto.getType())) {
                 //通用报表
-                return commonReportService.queryReportData(reportDto);
+                PageInfo pageInfo = commonReportService.queryReportData(reportDto);
+                return R.success(pageInfo);
             } else if (Report.TYPE_JASPER.equals(reportDto.getType())) {
                 //Jasper报表
                 //获取jasper模板文件地址
                 Map<String, Object> filePathResult = getJasperTemplate(reportDto.getId());
-                //获取报表配置的数据源连接
-                javax.sql.DataSource dataSource = DataSourceUtil.getDataSourceByDsId(reportDto.getDsId());
                 //报参数转换成map
                 Map<String, Object> paramMap = new HashMap<>();
                 List<ReportParamDto> params = reportDto.getParams();
                 for (ReportParamDto paramDto : params) {
                     paramMap.put(paramDto.getField(), paramDto.getValue());
                 }
-                paramMap.put("PAGE_NUMBER",1);
-                paramMap.put("PAGE_COUNT",20);
-                JasperPrint jasperPrint = JasperReportUtil.getJasperPrint(filePathResult.get("jasperFilePath").toString(), dataSource.getConnection(), paramMap);
-                //删除最后空白页
-                int pageCount = jasperPrint.getPages().size() - 1;
-                if (pageCount >= 0) {
-                    if (jasperPrint.getPages().get(pageCount).getElements().size() == 0) {
-                        jasperPrint.removePage(pageCount);
-                    }
-                }
+                //获取模板中的sql查询语句
+                JasperReport jasperReport = JasperReportUtil.getJasperReport(filePathResult.get("jrxmlFilePath").toString());
+                String sql = jasperReport.getQuery().getText();
+                reportDto.setQuerySql(sql);
+                //查询数据
+                PageInfo pageInfo = commonReportService.queryReportData(reportDto);
+
+                JasperPrint jasperPrint = JasperReportUtil.getJasperPrint(jasperReport,paramMap, pageInfo.getRecords());
 
                 String html = JasperReportUtil.exportToHtml(jasperPrint);
-                return R.success(html);
+                Map result = new HashMap();
+                result.put("html",html);
+                result.put("pageInfo",pageInfo);
+                return R.success(result);
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -204,6 +206,31 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
         return R.success();
     }
 
+    @Override
+    public void export(ReportDto reportDto, HttpServletResponse response) {
+        try {
+            if (Report.TYPE_COMMON.equals(reportDto.getType())) {
+                commonReportService.export(reportDto, response);
+            } else if (Report.TYPE_JASPER.equals(reportDto.getType())) {
+                //获取jasper模板文件地址
+                Map<String, Object> filePathResult = getJasperTemplate(reportDto.getId());
+                //报参数转换成map
+                Map<String, Object> paramMap = new HashMap<>();
+                List<ReportParamDto> params = reportDto.getParams();
+                for (ReportParamDto paramDto : params) {
+                    paramMap.put(paramDto.getField(), paramDto.getValue());
+                }
+                //获取模板中的sql查询语句
+                JasperReport jasperReport = JasperReportUtil.getJasperReport(filePathResult.get("jrxmlFilePath").toString());
+                String sql = jasperReport.getQuery().getText();
+                reportDto.setQuerySql(sql);
+
+            }
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
+            throw new ReportException("报表导出excel异常:" + e.getMessage());
+        }
+    }
 
     private Map<String, Object> getJasperTemplate(int reportId) {
         Map<String, Object> result = new HashMap<>();

@@ -73,7 +73,7 @@ public class CommonReportServiceImpl implements CommonReportService {
     }
 
     @Override
-    public R queryReportData(ReportDto reportDto) {
+    public PageInfo queryReportData(ReportDto reportDto) {
         int dsId = reportDto.getDsId();
         String sql = reportDto.getQuerySql();
         List<ReportParamDto> params = reportDto.getParams();
@@ -102,7 +102,7 @@ public class CommonReportServiceImpl implements CommonReportService {
             pageInfo.setRecords(null);
         }
 
-        return R.success(pageInfo);
+        return pageInfo;
     }
 
     @Override

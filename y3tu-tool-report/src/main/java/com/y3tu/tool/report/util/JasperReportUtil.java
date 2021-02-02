@@ -4,13 +4,16 @@ import com.lowagie.text.pdf.codec.Base64;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.export.HtmlExporter;
 import net.sf.jasperreports.engine.export.HtmlResourceHandler;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.export.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.util.HashMap;
@@ -91,14 +94,27 @@ public class JasperReportUtil {
     }
 
     /**
+     * 获取报表对象
+     *
+     * @param templatePath 报表模板路径
+     * @return JasperReport
+     */
+    public static JasperReport getJasperReport(String templatePath) throws JRException {
+        JasperDesign design = JRXmlLoader.load(templatePath);
+        // 编译
+        return JasperCompileManager.compileReport(design);
+    }
+
+    /**
      * 生成报表内容
      *
-     * @param jasperFilePath 报表模板文件路径
-     * @param beanList       数据
+     * @param jasperReport 报表模板
+     * @param parameters   参数
+     * @param beanList     数据
      * @return
      * @throws JRException
      */
-    public static JasperPrint getJasperPrint(String jasperFilePath, List<?> beanList) throws JRException {
+    public static JasperPrint getJasperPrint(JasperReport jasperReport, Map parameters, List<?> beanList) throws JRException {
         // 用beanList填充数据源
         JRDataSource dataSource = null;
         if (null == beanList || beanList.size() == 0) {
@@ -107,25 +123,25 @@ public class JasperReportUtil {
             dataSource = new JRBeanCollectionDataSource(beanList);
         }
         // 填充报表
-        return JasperFillManager.fillReport(jasperFilePath, null, dataSource);
+        return JasperFillManager.fillReport(jasperReport, parameters, dataSource);
     }
 
     /**
      * 生成报表内容
      *
-     * @param jasperFilePath 报表模板文件路径
-     * @param connection     报表内部的数据源连接
-     * @param parameters     参数
+     * @param jasperReport 报表模板
+     * @param parameters   参数
+     * @param connection   报表内部的数据源连接
      * @return
      * @throws JRException
      */
-    public static JasperPrint getJasperPrint(String jasperFilePath, Connection connection, Map parameters) throws JRException {
+    public static JasperPrint getJasperPrint(JasperReport jasperReport, Map parameters, Connection connection) throws JRException {
         // 填充报表
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperFilePath, parameters, connection);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, connection);
         if (jasperPrint.getPages().isEmpty()) {
             //如何为空，手动定义一个空源数据
             JRDataSource dataSource = new JREmptyDataSource();
-            jasperPrint = JasperFillManager.fillReport(jasperFilePath, parameters, dataSource);
+            jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
         }
         return jasperPrint;
     }
@@ -217,6 +233,9 @@ public class JasperReportUtil {
                 return images.get(id);
             }
         });
+//        SimpleHtmlReportConfiguration configuration = new SimpleHtmlReportConfiguration();
+//        configuration.setPageIndex(1);
+//        exporter.setConfiguration(configuration);
         exporter.setExporterOutput(exporterOutput);
         exporter.exportReport();
 

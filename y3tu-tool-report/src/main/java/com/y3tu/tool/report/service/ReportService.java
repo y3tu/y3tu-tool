@@ -50,4 +50,12 @@ public interface ReportService extends BaseService<Report> {
      */
     R queryReportData(ReportDto reportDto,HttpServletResponse response);
 
+    /**
+     * 导出报表数据
+     *
+     * @param reportDto
+     * @return
+     */
+    void export(ReportDto reportDto, HttpServletResponse response);
+
 }

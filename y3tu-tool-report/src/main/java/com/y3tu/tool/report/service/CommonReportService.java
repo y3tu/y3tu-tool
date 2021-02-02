@@ -2,11 +2,9 @@ package com.y3tu.tool.report.service;
 
 import com.y3tu.tool.core.pojo.R;
 import com.y3tu.tool.report.entity.dto.ReportDto;
-import com.y3tu.tool.report.entity.dto.ReportParamDto;
 import com.y3tu.tool.web.base.jpa.PageInfo;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * 通用报表服务
@@ -29,7 +27,7 @@ public interface CommonReportService {
      * @param reportDto
      * @return
      */
-    R queryReportData(ReportDto reportDto);
+    PageInfo queryReportData(ReportDto reportDto);
 
     /**
      * 导出报表数据

@@ -267,7 +267,7 @@ public class SqlUtil {
         int endIndex = current * pageSize + pageSize;
         if (type == DataSourceType.MYSQL) {
             //mysql
-            pageSql.append(sql).append("limit ").append(startIndex).append(",").append(pageSize);
+            pageSql.append(sql).append(" limit ").append(startIndex).append(",").append(pageSize);
         } else if (type == DataSourceType.ORACLE) {
             //oracle
             pageSql.append("SELECT * FROM ( SELECT row_.*, rownum rownum_ from (").append(sql)
