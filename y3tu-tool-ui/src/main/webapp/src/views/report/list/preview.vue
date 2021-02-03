@@ -91,7 +91,7 @@
 
 <script>
 
-import {queryReportData, exportData} from './api'
+import {reportHtml, exportExcel} from './api'
 import dictSelect from "../dict/dictSelect";
 import mergeHeaderTable from './mergeHeaderTable'
 
@@ -125,7 +125,7 @@ export default {
     query() {
       this.report.pageInfo = this.pageInfo;
       this.pageInfo.pageLoading = true;
-      queryReportData(this.report).then(res => {
+      reportHtml(this.report).then(res => {
         if (res) {
           if (this.report.type === 'common') {
             this.pageInfo.records = res.data.records;
@@ -148,7 +148,7 @@ export default {
     },
     exportData() {
       this.exportLoading = true;
-      let call = exportData(this.report, this.report.name + ".xls");
+      let call = exportExcel(this.report, this.report.name + ".xls");
       call.then(() => {
         this.exportLoading = false;
       })

@@ -15,10 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 /**
  * JasperReports报表工具类
@@ -58,6 +58,24 @@ public class JasperReportUtil {
         TRANS_MAP.put("byte", "java.lang.Byte");
 
     }
+
+    /**
+     * xlsx分页大小
+     */
+    public static final int XLSX_PAGE_SIZE = 5000;
+    /**
+     * xlsx每个sheet页最大数据条数
+     */
+    public static final int XLSX_SHEET_MAX_ROW = 1000000;
+    /**
+     * xls分页大小
+     */
+    public static final int XLS_PAGE_SIZE = 5000;
+    /**
+     * xls每个sheet页最大数据条数
+     */
+    public static final int XLS_SHEET_MAX_ROW = 60000;
+
 
     private static String getContentType(ReportType type) {
         String contentType;
@@ -239,7 +257,33 @@ public class JasperReportUtil {
         return reportStr;
     }
 
-    public static void exportToExcel(JasperPrint jasperPrint, String fileName, HttpServletResponse response) throws Exception {
+    /**
+     * 导出单sheet页excel
+     *
+     * @param jasperPrint
+     * @param sheetName
+     * @param fileName
+     * @param response
+     * @throws Exception
+     */
+    public static void exportToExcel(JasperPrint jasperPrint, String sheetName, String fileName, HttpServletResponse response) throws Exception {
+        List<JasperPrint> jasperPrintList = new ArrayList<>();
+        jasperPrintList.add(jasperPrint);
+        List<String> sheetNameList = new ArrayList<>();
+        sheetNameList.add(sheetName);
+        exportToExcel(jasperPrintList, sheetNameList.toArray(new String[0]), fileName, response);
+    }
+
+    /**
+     * 导出多sheet页excel
+     *
+     * @param jasperPrintList
+     * @param sheetNames
+     * @param fileName
+     * @param response
+     * @throws Exception
+     */
+    public static void exportToExcel(List<JasperPrint> jasperPrintList, String[] sheetNames, String fileName, HttpServletResponse response) throws Exception {
         //导出Excel
         response.setCharacterEncoding("utf-8");
         response.setHeader("Content-Disposition", "attachment;" + "filename=" + new String(fileName.getBytes(), StandardCharsets.UTF_8));
@@ -247,12 +291,16 @@ public class JasperReportUtil {
         //设置导出时参数
         SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
         configuration.setWhitePageBackground(false);
+        configuration.setOnePagePerSheet(false);
+        configuration.setIgnorePageMargins(true);
         configuration.setAutoFitPageHeight(true);
         configuration.setDetectCellType(true);
+        //设置sheet名字
+        configuration.setSheetNames(sheetNames);
         JRXlsxExporter exporter = new JRXlsxExporter();
         exporter.setConfiguration(configuration);
         //设置输入项
-        ExporterInput exporterInput = new SimpleExporterInput(jasperPrint);
+        ExporterInput exporterInput = SimpleExporterInput.getInstance(jasperPrintList);
         exporter.setExporterInput(exporterInput);
         //设置输出项
         OutputStreamExporterOutput exporterOutput = new SimpleOutputStreamExporterOutput(response.getOutputStream());

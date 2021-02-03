@@ -4,7 +4,6 @@ import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.y3tu.tool.core.pojo.R;
-import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.report.entity.domain.DataSource;
 import com.y3tu.tool.report.entity.dto.ReportDto;
 import com.y3tu.tool.report.entity.dto.ReportParamDto;
@@ -43,7 +42,7 @@ public class CommonReportServiceImpl implements CommonReportService {
     DataSourceService dataSourceService;
 
     @Override
-    public R parseSql(String sql, int dsId) {
+    public R parseSqlForHeader(String sql, int dsId) {
         DataSource dataSource = dataSourceService.getById(dsId);
         //获取数据源
         javax.sql.DataSource ds = DataSourceUtil.getDataSource(dataSource);
@@ -73,15 +72,13 @@ public class CommonReportServiceImpl implements CommonReportService {
     }
 
     @Override
-    public PageInfo queryReportData(ReportDto reportDto) {
+    public PageInfo reportHtml(ReportDto reportDto) {
         int dsId = reportDto.getDsId();
         String sql = reportDto.getQuerySql();
-        List<ReportParamDto> params = reportDto.getParams();
         PageInfo pageInfo = reportDto.getPageInfo();
         DataSource dataSource = dataSourceService.getById(dsId);
         javax.sql.DataSource ds = DataSourceUtil.getDataSourceByDsId(dsId);
         JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-        sql = replaceParamSql(sql, params);
         //首选查询数据总数
         int count = SqlUtil.count(sql, jdbcTemplate);
         pageInfo.setTotal(count);
@@ -106,16 +103,14 @@ public class CommonReportServiceImpl implements CommonReportService {
     }
 
     @Override
-    public void export(ReportDto reportDto, HttpServletResponse response) {
+    public void exportExcel(ReportDto reportDto, HttpServletResponse response) {
         //组装excel表头数据
         String tableHeader = reportDto.getTableHeader();
         String sql = reportDto.getQuerySql();
         int dsId = reportDto.getDsId();
-        List<ReportParamDto> params = reportDto.getParams();
         Map<String, Object> headerMap = getHeader(JSONObject.parseArray(tableHeader));
         List<List<String>> headerList = (List<List<String>>) headerMap.get("headerList");
         List<String> fieldList = (List<String>) headerMap.get("fieldList");
-        final String querySql = replaceParamSql(sql, params);
 
         DataSource dataSource = dataSourceService.getById(dsId);
         javax.sql.DataSource ds = DataSourceUtil.getDataSourceByDsId(dsId);
@@ -127,7 +122,7 @@ public class CommonReportServiceImpl implements CommonReportService {
                 StringBuilder selectSql = new StringBuilder();
                 if (dataSource.getDbType().equals(DataSource.TYPE_MYSQL)) {
                     //mysql
-                    selectSql.append(querySql + " limit ?,? ");
+                    selectSql.append(sql + " limit ?,? ");
                 } else if (dataSource.getDbType().equals(DataSource.TYPE_ORACLE)) {
                     //oracle
                     selectSql.append("SELECT * FROM ( SELECT row_.*, rownum rownum_ from (").append(sql)
@@ -151,57 +146,6 @@ public class CommonReportServiceImpl implements CommonReportService {
                 return resultList;
             }
         }, response);
-    }
-
-    /**
-     * 把参数值替换进sql配置语句中获取到真正执行的sql
-     *
-     * @param sql
-     * @param params
-     * @return
-     */
-    private String replaceParamSql(String sql, List<ReportParamDto> params) {
-        //替换sql参数
-        for (ReportParamDto param : params) {
-            String field = param.getField();
-            String $field = "${" + field + "}";
-            Object value = param.getValue();
-            //最终参数值
-            String result = "";
-            if (value instanceof List) {
-                //如果参数值是数组或者集合需要转换为字符串已逗号分隔
-                List<String> valueList = (List<String>) value;
-                if (valueList.size() > 0) {
-                    result = result + "(";
-                    for (String val : valueList) {
-                        result = result + val + ",";
-                    }
-                    result = result.substring(0, result.length() - 1);
-                    result = result + ")";
-                }
-            } else {
-                if (value != null) {
-                    result = value.toString();
-                }
-            }
-
-            //处理$ifnull[]，如果参数值为空，删除$ifnull[]包含的内容
-            String[] ifnulls = StrUtil.subBetweenAll(sql, "$ifnull[", "]");
-            for (String ifnull : ifnulls) {
-                if (StrUtil.containsIgnoreCase(ifnull, $field)) {
-                    if (StrUtil.isEmpty(result)) {
-                        //如果参数值为空,删除$ifnull[]包含的内容
-                        sql = sql.replace("$ifnull[" + ifnull + "]", "");
-                    } else {
-                        sql = sql.replace("$ifnull[" + ifnull + "]", ifnull);
-                    }
-                }
-            }
-
-            sql = sql.replace("${" + field + "}", result);
-
-        }
-        return sql;
     }
 
     /**

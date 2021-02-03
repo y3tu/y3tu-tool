@@ -88,11 +88,13 @@ public class ReportController {
         return R.success();
     }
 
-    @PostMapping("queryReportData")
-    public R queryReportData(@RequestBody ReportDto reportDto,HttpServletResponse response) {
-        return reportService.queryReportData(reportDto,response);
-    }
-
+    /**
+     * 下载报表附件
+     *
+     * @param id
+     * @param request
+     * @param response
+     */
     @GetMapping("download/{id}")
     public void download(@PathVariable int id, HttpServletRequest request, HttpServletResponse response) {
         reportService.download(id, request, response);
@@ -104,9 +106,21 @@ public class ReportController {
      * @param reportDto
      * @return
      */
-    @PostMapping("parseSql")
-    public R parseSql(@RequestBody ReportDto reportDto) {
-        return commonReportService.parseSql(reportDto.getQuerySql(), reportDto.getDsId());
+    @PostMapping("parseSqlForHeader")
+    public R parseSqlForHeader(@RequestBody ReportDto reportDto) {
+        return commonReportService.parseSqlForHeader(reportDto.getQuerySql(), reportDto.getDsId());
+    }
+
+    /**
+     * 获取报表html
+     *
+     * @param reportDto
+     * @param response
+     * @return
+     */
+    @PostMapping("reportHtml")
+    public R reportHtml(@RequestBody ReportDto reportDto, HttpServletResponse response) {
+        return reportService.reportHtml(reportDto, response);
     }
 
     /**
@@ -114,8 +128,8 @@ public class ReportController {
      *
      * @return
      */
-    @PostMapping("export")
-    public void export(@RequestBody ReportDto reportDto, HttpServletResponse response) {
-        reportService.export(reportDto, response);
+    @PostMapping("exportExcel")
+    public void exportExcel(@RequestBody ReportDto reportDto, HttpServletResponse response) {
+        reportService.exportExcel(reportDto, response);
     }
 }

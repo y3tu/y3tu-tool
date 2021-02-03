@@ -4,7 +4,6 @@ import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.pojo.R;
 import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.report.configure.ToolReportProperties;
-import com.y3tu.tool.report.entity.domain.DataSource;
 import com.y3tu.tool.report.entity.domain.Report;
 import com.y3tu.tool.report.entity.domain.ReportAttachment;
 import com.y3tu.tool.report.entity.domain.ReportParam;
@@ -14,25 +13,23 @@ import com.y3tu.tool.report.exception.ReportException;
 import com.y3tu.tool.report.repository.ReportRepository;
 import com.y3tu.tool.report.service.CommonReportService;
 import com.y3tu.tool.report.service.DataSourceService;
+import com.y3tu.tool.report.service.JasperReportService;
 import com.y3tu.tool.report.service.ReportAttachmentService;
 import com.y3tu.tool.report.service.ReportParamService;
 import com.y3tu.tool.report.service.ReportService;
-import com.y3tu.tool.report.util.DataSourceUtil;
 import com.y3tu.tool.report.util.JasperReportUtil;
 import com.y3tu.tool.web.base.jpa.BaseServiceImpl;
 import com.y3tu.tool.web.base.jpa.PageInfo;
 import com.y3tu.tool.web.file.service.RemoteFileHelper;
-import com.y3tu.tool.web.sql.SqlUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,6 +49,8 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
     ReportAttachmentService reportAttachmentService;
     @Autowired
     CommonReportService commonReportService;
+    @Autowired
+    JasperReportService jasperReportService;
     @Autowired
     DataSourceService dataSourceService;
     @Autowired
@@ -171,35 +170,27 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
     }
 
     @Override
-    public R queryReportData(ReportDto reportDto, HttpServletResponse response) {
+    public R reportHtml(ReportDto reportDto, HttpServletResponse response) {
         try {
             if (Report.TYPE_COMMON.equals(reportDto.getType())) {
                 //通用报表
-                PageInfo pageInfo = commonReportService.queryReportData(reportDto);
+                //替换sql参数
+                reportDto.setQuerySql(replaceParamSql(reportDto.getQuerySql(), reportDto.getParams()));
+                PageInfo pageInfo = commonReportService.reportHtml(reportDto);
                 return R.success(pageInfo);
             } else if (Report.TYPE_JASPER.equals(reportDto.getType())) {
                 //Jasper报表
                 //获取jasper模板文件地址
                 Map<String, Object> filePathResult = getJasperTemplate(reportDto.getId());
-                //报参数转换成map
-                Map<String, Object> paramMap = new HashMap<>();
-                List<ReportParamDto> params = reportDto.getParams();
-                for (ReportParamDto paramDto : params) {
-                    paramMap.put(paramDto.getField(), paramDto.getValue());
-                }
-                //获取模板中的sql查询语句
-                JasperReport jasperReport = JasperReportUtil.getJasperReport(filePathResult.get("jrxmlFilePath").toString());
-                String sql = jasperReport.getQuery().getText();
-                reportDto.setQuerySql(sql);
-                //查询数据
-                PageInfo pageInfo = commonReportService.queryReportData(reportDto);
-
-                JasperPrint jasperPrint = JasperReportUtil.getJasperPrint(jasperReport,paramMap, pageInfo.getRecords());
-
-                String html = JasperReportUtil.exportToHtml(jasperPrint);
+                String jrxmlFilePath = filePathResult.get("jrxmlFilePath").toString();
+                JasperReport jasperReport = JasperReportUtil.getJasperReport(jrxmlFilePath);
+                String querySql = jasperReport.getQuery().getText();
+                reportDto.setQuerySql(replaceParamSql(querySql, reportDto.getParams()));
+                PageInfo pageInfo = commonReportService.reportHtml(reportDto);
+                String html = jasperReportService.reportHtml(reportDto, pageInfo.getRecords(), jasperReport);
                 Map result = new HashMap();
-                result.put("html",html);
-                result.put("pageInfo",pageInfo);
+                result.put("html", html);
+                result.put("pageInfo", pageInfo);
                 return R.success(result);
             }
         } catch (Exception e) {
@@ -210,32 +201,19 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
     }
 
     @Override
-    public void export(ReportDto reportDto, HttpServletResponse response) {
+    public void exportExcel(ReportDto reportDto, HttpServletResponse response) {
         try {
+            //替换sql参数
+            reportDto.setQuerySql(replaceParamSql(reportDto.getQuerySql(), reportDto.getParams()));
             if (Report.TYPE_COMMON.equals(reportDto.getType())) {
-                commonReportService.export(reportDto, response);
+                commonReportService.exportExcel(reportDto, response);
             } else if (Report.TYPE_JASPER.equals(reportDto.getType())) {
                 //获取jasper模板文件地址
                 Map<String, Object> filePathResult = getJasperTemplate(reportDto.getId());
-                //报参数转换成map
-                Map<String, Object> paramMap = new HashMap<>();
-                List<ReportParamDto> params = reportDto.getParams();
-                for (ReportParamDto paramDto : params) {
-                    paramMap.put(paramDto.getField(), paramDto.getValue());
-                }
-                //获取模板中的sql查询语句
-                JasperReport jasperReport = JasperReportUtil.getJasperReport(filePathResult.get("jrxmlFilePath").toString());
-                String sql = jasperReport.getQuery().getText();
-
-                int dsId = reportDto.getDsId();
-                DataSource dataSource = dataSourceService.getById(dsId);
-                javax.sql.DataSource ds = DataSourceUtil.getDataSourceByDsId(dsId);
-                JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-                List<Map<String, Object>> dataList = SqlUtil.queryList(sql+" limit 0,1000", null, jdbcTemplate);
-                JasperPrint jasperPrint = JasperReportUtil.getJasperPrint(jasperReport,paramMap, dataList);
-                JasperReportUtil.exportToExcel(jasperPrint,reportDto.getName()+".xls",response);
+                String jrxmlFilePath = filePathResult.get("jrxmlFilePath").toString();
+                jasperReportService.exportExcel(reportDto, jrxmlFilePath, response);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new ReportException("报表导出excel异常:" + e.getMessage());
         }
@@ -274,4 +252,75 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
         }
     }
 
+    /**
+     * 把参数值替换进sql配置语句中获取到真正执行的sql
+     *
+     * @param sql
+     * @param params
+     * @return
+     */
+    private String replaceParamSql(String sql, List<ReportParamDto> params) {
+        //替换sql参数
+        for (ReportParamDto param : params) {
+            String field = param.getField();
+            String $field = "${" + field + "}";
+            Object value = param.getValue();
+            //最终参数值
+            String result = "";
+            if (value instanceof List) {
+                //如果参数值是数组或者集合需要转换为字符串已逗号分隔
+                List<String> valueList = (List<String>) value;
+                if (valueList.size() > 0) {
+                    result = result + "(";
+                    for (String val : valueList) {
+                        result = result + val + ",";
+                    }
+                    result = result.substring(0, result.length() - 1);
+                    result = result + ")";
+                }
+            } else {
+                if (value != null) {
+                    result = value.toString();
+                }
+            }
+
+            //处理$ifnull[]，如果参数值为空，删除$ifnull[]包含的内容
+            String[] ifnulls = StrUtil.subBetweenAll(sql, "$ifnull[", "]");
+            for (String ifnull : ifnulls) {
+                if (StrUtil.containsIgnoreCase(ifnull, $field)) {
+                    if (StrUtil.isEmpty(result)) {
+                        //如果参数值为空,删除$ifnull[]包含的内容
+                        sql = sql.replace("$ifnull[" + ifnull + "]", "");
+                    } else {
+                        sql = sql.replace("$ifnull[" + ifnull + "]", ifnull);
+                    }
+                }
+            }
+
+            sql = sql.replace("${" + field + "}", result);
+
+            parseParam(sql, param.getField(), result);
+        }
+        return sql;
+    }
+
+    /**
+     * 替换jasper报表参数
+     *
+     * @param text
+     * @param key
+     * @param value
+     * @return
+     */
+    public static String parseParam(String text, String key, String value) {
+        String param = "$P!{" + key + "}";
+        text = StringUtils.replace(text, param, value);
+        String paramLower = "$p!{" + key + "}";
+        text = StringUtils.replace(text, paramLower, value);
+        String paramNo = "$P{" + key + "}";
+        text = StringUtils.replace(text, paramNo, value);
+        String paramNOLower = "$p{" + key + "}";
+        text = StringUtils.replace(text, paramNOLower, value);
+        return text;
+    }
 }

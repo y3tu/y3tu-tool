@@ -63,9 +63,9 @@ export function downloadFile(id, fileName) {
 /**
  * 解析SQL语句
  */
-export function parseSql(params) {
+export function parseSqlForHeader(params) {
     return service({
-        url: 'y3tu-tool-report/report/parseSql',
+        url: 'y3tu-tool-report/report/parseSqlForHeader',
         method: 'post',
         data: params
     })
@@ -94,9 +94,9 @@ export function getAllDict() {
 /**
  * 查询报表数据
  */
-export function queryReportData(params) {
+export function reportHtml(params) {
     return service({
-        url: `y3tu-tool-report/report/queryReportData`,
+        url: `y3tu-tool-report/report/reportHtml`,
         method: 'post',
         data:params
     })
@@ -105,6 +105,6 @@ export function queryReportData(params) {
 /**
  * 导出报表数据excel
  */
-export function exportData(params,fileName) {
-    return downloadPost('y3tu-tool-report/report/export',params,fileName)
+export function exportExcel(params,fileName) {
+    return downloadPost('y3tu-tool-report/report/exportExcel',params,fileName)
 }

@@ -43,12 +43,12 @@ public interface ReportService extends BaseService<Report> {
     void download(int reportId, HttpServletRequest request, HttpServletResponse response);
 
     /**
-     * 查询报表数据
+     * 获取报表html
      *
      * @param reportDto
      * @return
      */
-    R queryReportData(ReportDto reportDto,HttpServletResponse response);
+    R reportHtml(ReportDto reportDto,HttpServletResponse response);
 
     /**
      * 导出报表数据
@@ -56,6 +56,6 @@ public interface ReportService extends BaseService<Report> {
      * @param reportDto
      * @return
      */
-    void export(ReportDto reportDto, HttpServletResponse response);
+    void exportExcel(ReportDto reportDto, HttpServletResponse response);
 
 }

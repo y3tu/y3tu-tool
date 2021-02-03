@@ -19,7 +19,7 @@ public interface CommonReportService {
      * @param dsId 数据源
      * @return
      */
-    R parseSql(String sql, int dsId);
+    R parseSqlForHeader(String sql, int dsId);
 
     /**
      * 查询报表数据
@@ -27,7 +27,7 @@ public interface CommonReportService {
      * @param reportDto
      * @return
      */
-    PageInfo queryReportData(ReportDto reportDto);
+    PageInfo reportHtml(ReportDto reportDto);
 
     /**
      * 导出报表数据
@@ -35,5 +35,5 @@ public interface CommonReportService {
      * @param reportDto
      * @return
      */
-    void export(ReportDto reportDto, HttpServletResponse response);
+    void exportExcel(ReportDto reportDto, HttpServletResponse response);
 }

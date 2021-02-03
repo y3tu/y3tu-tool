@@ -75,7 +75,7 @@ import CodeEditor from '@/components/CodeEditor'
 import QueryParam from './queryParam'
 import TableHeader from './tableHeader'
 import {createUUID} from '@/utils'
-import {create, update, getAllDataSource, downloadFile, parseSql} from "./api";
+import {create, update, getAllDataSource, downloadFile, parseSqlForHeader} from "./api";
 
 export default {
   name: 'editor',
@@ -157,7 +157,7 @@ export default {
       if (this.$isEmpty(this.report.dsId)) {
         this.$toast('请选择数据源', 'warning', 3000);
       } else {
-        parseSql(this.report).then((res) => {
+        parseSqlForHeader(this.report).then((res) => {
           if (res.data) {
             this.report.tableHeader = JSON.stringify(res.data, null, 2);
           }
