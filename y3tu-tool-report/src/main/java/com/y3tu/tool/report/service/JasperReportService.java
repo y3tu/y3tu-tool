@@ -23,8 +23,7 @@ public interface JasperReportService {
     /**
      * 报表数据导出
      * @param reportDto
-     * @param jrxmlFilePath
      * @param response
      */
-    void exportExcel(ReportDto reportDto, String jrxmlFilePath, HttpServletResponse response);
+    void exportExcel(ReportDto reportDto, JasperReport jasperReport,HttpServletResponse response);
 }

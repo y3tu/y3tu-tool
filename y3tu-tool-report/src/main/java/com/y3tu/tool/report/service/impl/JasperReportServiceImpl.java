@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,8 +50,7 @@ public class JasperReportServiceImpl implements JasperReportService {
     }
 
     @Override
-    public void exportExcel(ReportDto reportDto, String jrxmlFilePath, HttpServletResponse response) {
-
+    public void exportExcel(ReportDto reportDto, JasperReport jasperReport, HttpServletResponse response) {
         try {
             //报参数转换成map
             Map<String, Object> paramMap = new HashMap<>();
@@ -58,19 +58,16 @@ public class JasperReportServiceImpl implements JasperReportService {
             for (ReportParamDto paramDto : params) {
                 paramMap.put(paramDto.getField(), paramDto.getValue());
             }
-            //获取模板中的sql查询语句
-            JasperReport jasperReport = JasperReportUtil.getJasperReport(jrxmlFilePath);
-
             int dsId = reportDto.getDsId();
             javax.sql.DataSource ds = DataSourceUtil.getDataSourceByDsId(dsId);
-            JasperPrint jasperPrint = JasperReportUtil.getJasperPrint(jasperReport, paramMap, ds.getConnection());
+            JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+            List<Map<String, Object>> data = jdbcTemplate.queryForList(reportDto.getQuerySql());
+            JasperPrint jasperPrint = JasperReportUtil.getJasperPrint(jasperReport, paramMap, data);
             JasperReportUtil.exportToExcel(jasperPrint, reportDto.getName(), reportDto.getName(), response);
-
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new ReportException("导出jasper报表失败！" + e.getMessage());
         }
     }
-
 
 }

@@ -27,7 +27,7 @@
                         title: '首页'
                     },
                     {
-                        route: '/report/list',
+                        route: '/report/home',
                         title: '报表'
                     },
                     {

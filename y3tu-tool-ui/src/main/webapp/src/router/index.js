@@ -8,13 +8,13 @@ const routes = [
     {
         path: '/report',
         name: 'layout',
-        redirect: '/report/list',
+        redirect: '/report/home',
         component: () => import('@/views/layout/index.vue'),
         children: [
             {
-                path: '/report/list',
-                name: 'list',
-                component: () => import('@/views/report/list/index.vue'),
+                path: '/report/home',
+                name: 'home',
+                component: () => import('@/views/report/home/index.vue'),
                 meta: {
                     keepAlive: true,
                 }
@@ -36,6 +36,14 @@ const routes = [
                 }
             }
         ]
+    },
+    {
+        path: '/report/publish',
+        name: 'publish',
+        component: () => import('@/views/report/home/publish.vue'),
+        meta: {
+            keepAlive: false,
+        }
     },
     {
         path: '/cache',

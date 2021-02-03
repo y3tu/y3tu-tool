@@ -22,6 +22,16 @@ export function get(id) {
 }
 
 /**
+ * 根据id获取report
+ */
+export function getByName(name) {
+    return service({
+        url: `y3tu-tool-report/report/getByName/${name}`,
+        method: 'get',
+    })
+}
+
+/**
  * 新增报表
  */
 export function create(params) {

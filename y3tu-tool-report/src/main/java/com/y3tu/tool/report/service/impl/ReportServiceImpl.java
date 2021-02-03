@@ -162,6 +162,11 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
     }
 
     @Override
+    public Report getByName(String name) {
+        return this.repository.getByName(name);
+    }
+
+    @Override
     public void download(int reportId, HttpServletRequest request, HttpServletResponse response) {
         List<ReportAttachment> reportAttachmentList = reportAttachmentService.getByReportId(reportId);
         for (ReportAttachment reportAttachment : reportAttachmentList) {
@@ -204,14 +209,17 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
     public void exportExcel(ReportDto reportDto, HttpServletResponse response) {
         try {
             //替换sql参数
-            reportDto.setQuerySql(replaceParamSql(reportDto.getQuerySql(), reportDto.getParams()));
             if (Report.TYPE_COMMON.equals(reportDto.getType())) {
+                reportDto.setQuerySql(replaceParamSql(reportDto.getQuerySql(), reportDto.getParams()));
                 commonReportService.exportExcel(reportDto, response);
             } else if (Report.TYPE_JASPER.equals(reportDto.getType())) {
                 //获取jasper模板文件地址
                 Map<String, Object> filePathResult = getJasperTemplate(reportDto.getId());
                 String jrxmlFilePath = filePathResult.get("jrxmlFilePath").toString();
-                jasperReportService.exportExcel(reportDto, jrxmlFilePath, response);
+                JasperReport jasperReport = JasperReportUtil.getJasperReport(jrxmlFilePath);
+                String querySql = jasperReport.getQuery().getText();
+                reportDto.setQuerySql(replaceParamSql(querySql, reportDto.getParams()));
+                jasperReportService.exportExcel(reportDto, jasperReport, response);
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);

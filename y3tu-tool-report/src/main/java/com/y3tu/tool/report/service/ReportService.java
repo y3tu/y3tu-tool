@@ -34,6 +34,14 @@ public interface ReportService extends BaseService<Report> {
     void deleteReport(int reportId);
 
     /**
+     * 根据报表名称获取报表
+     *
+     * @param name
+     * @return
+     */
+    Report getByName(String name);
+
+    /**
      * 下载报表附件
      *
      * @param reportId 报表id
@@ -48,7 +56,7 @@ public interface ReportService extends BaseService<Report> {
      * @param reportDto
      * @return
      */
-    R reportHtml(ReportDto reportDto,HttpServletResponse response);
+    R reportHtml(ReportDto reportDto, HttpServletResponse response);
 
     /**
      * 导出报表数据

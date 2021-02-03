@@ -28,7 +28,7 @@ public class Report extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(columnDefinition = "varchar(50) comment '名称'")
+    @Column(unique = true,columnDefinition = "varchar(50) comment '名称'")
     @Query(type = Query.Type.INNER_LIKE)
     String name;
 

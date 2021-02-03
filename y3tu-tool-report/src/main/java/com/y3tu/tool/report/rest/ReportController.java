@@ -45,7 +45,17 @@ public class ReportController {
     @GetMapping("get/{id}")
     public R get(@PathVariable int id) {
         Report report = reportService.getById(id);
-        List<ReportParam> params = reportParamService.getByReportId(id);
+        return R.success(buildReportDto(report));
+    }
+
+    @GetMapping("getByName/{name}")
+    public R getByName(@PathVariable String name) {
+        Report report = reportService.getByName(name);
+        return R.success(buildReportDto(report));
+    }
+
+    private ReportDto buildReportDto(Report report) {
+        List<ReportParam> params = reportParamService.getByReportId(report.getId());
         ReportDto reportDto = new ReportDto();
         BeanUtils.copyProperties(report, reportDto);
         //报表参数
@@ -57,11 +67,11 @@ public class ReportController {
         }
         reportDto.setParams(paramDtoList);
         //报表附件信息
-        List<ReportAttachment> reportAttachmentList = reportAttachmentService.getByReportId(id);
+        List<ReportAttachment> reportAttachmentList = reportAttachmentService.getByReportId(report.getId());
         for (ReportAttachment reportAttachment : reportAttachmentList) {
             reportDto.setFileName(reportAttachment.getName());
         }
-        return R.success(reportDto);
+        return reportDto;
     }
 
     @PostMapping("create")
