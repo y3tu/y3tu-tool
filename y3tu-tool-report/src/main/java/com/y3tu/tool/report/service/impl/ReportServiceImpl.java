@@ -190,9 +190,15 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
                 String jrxmlFilePath = filePathResult.get("jrxmlFilePath").toString();
                 JasperReport jasperReport = JasperReportUtil.getJasperReport(jrxmlFilePath);
                 String querySql = jasperReport.getQuery().getText();
-                reportDto.setQuerySql(replaceParamSql(querySql, reportDto.getParams()));
-                PageInfo pageInfo = commonReportService.reportHtml(reportDto);
-                String html = jasperReportService.reportHtml(reportDto, pageInfo.getRecords(), jasperReport);
+                String html = "";
+                PageInfo pageInfo = null;
+                if (StrUtil.isNotEmpty(querySql)) {
+                    reportDto.setQuerySql(replaceParamSql(querySql, reportDto.getParams()));
+                    pageInfo = commonReportService.reportHtml(reportDto);
+                    html = jasperReportService.reportHtml(reportDto, pageInfo.getRecords(), jasperReport);
+                } else {
+                    html = jasperReportService.reportHtml(reportDto, null, jasperReport);
+                }
                 Map result = new HashMap();
                 result.put("html", html);
                 result.put("pageInfo", pageInfo);
