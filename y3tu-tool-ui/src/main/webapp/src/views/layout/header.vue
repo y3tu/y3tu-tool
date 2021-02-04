@@ -38,6 +38,10 @@
                         route: '/report/dict',
                         title: '字典'
                     },
+                    {
+                        route: '/report/storage',
+                        title: '存储配置'
+                    },
                 ],
                 logo,
                 searchContent: ''

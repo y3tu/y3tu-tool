@@ -1,6 +1,6 @@
 package com.y3tu.tool.report.entity.domain;
 
-import com.y3tu.tool.web.base.jpa.BaseEntity;
+import  com.y3tu.tool.web.base.jpa.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -28,4 +28,7 @@ public class Storage extends BaseEntity {
 
     @Column(name = "config_json", columnDefinition = "varchar(1000) COMMENT '连接配置Json字符串'")
     String configJson;
+
+    @Column(columnDefinition = "varchar(1000) COMMENT '备注'")
+    String remarks;
 }

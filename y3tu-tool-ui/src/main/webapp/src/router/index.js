@@ -34,6 +34,14 @@ const routes = [
                 meta: {
                     keepAlive: false,
                 }
+            },
+            {
+                path: '/report/storage',
+                name: 'storage',
+                component: () => import('@/views/report/storage/index.vue'),
+                meta: {
+                    keepAlive: false,
+                }
             }
         ]
     },
