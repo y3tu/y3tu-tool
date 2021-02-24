@@ -69,6 +69,11 @@
                                                 <i class="el-icon-copy-document" style="font-size: 16px"></i>
                                             </el-tooltip>
                                         </a>
+                                        <a class="opt-show">
+                                          <el-tooltip content="报表链接" placement="top">
+                                            <i class="el-icon-s-promotion" style="font-size: 16px"></i>
+                                          </el-tooltip>
+                                        </a>
                                     </div>
                                 </div>
 
@@ -217,6 +222,8 @@
                     this.report = res.data;
                     this.previewDialog = true;
                 })
+            },
+            goPublish(item){
 
             }
         }

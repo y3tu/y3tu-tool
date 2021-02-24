@@ -97,7 +97,7 @@
     import mergeHeaderTable from './mergeHeaderTable'
 
     export default {
-        name: "preview",
+        name: "publish",
         components: {dictSelect, mergeHeaderTable},
         data() {
             return {
