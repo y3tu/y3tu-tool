@@ -51,7 +51,7 @@
                                 <!--底部-->
                                 <div class="item-footer">
                                     <span class="item-name">{{ item.name }}</span>
-                                    <div style="margin-left: 20%;">
+                                    <div style="margin-left: 10%;">
                                         <a class="opt-show">
                                             <el-tooltip content="预览报表" placement="top">
                                                 <i @click="preview(item)" class="el-icon-view"
@@ -65,14 +65,14 @@
                                             </el-tooltip>
                                         </a>
                                         <a class="opt-show">
-                                            <el-tooltip content="复制报表" placement="top">
-                                                <i class="el-icon-copy-document" style="font-size: 16px"></i>
-                                            </el-tooltip>
+                                          <el-tooltip content="报表跳转" placement="top">
+                                            <i @click="goPublish(item)" class="el-icon-s-promotion" style="font-size: 16px"></i>
+                                          </el-tooltip>
                                         </a>
                                         <a class="opt-show">
-                                          <el-tooltip content="报表链接" placement="top">
-                                            <i class="el-icon-s-promotion" style="font-size: 16px"></i>
-                                          </el-tooltip>
+                                            <el-tooltip content="复制链接" placement="top">
+                                                <i @click="copyLink(item)" class="el-icon-copy-document" style="font-size: 16px"></i>
+                                            </el-tooltip>
                                         </a>
                                     </div>
                                 </div>
@@ -224,7 +224,29 @@
                 })
             },
             goPublish(item){
-
+              let url = window.location.href
+              let index = url.indexOf('report');
+              let prefix  = url.substr(0,index);
+              let to = prefix +"report/publish?name="+item.name;
+              window.open(to, "_blank");
+            },
+            copyLink(item){
+              let _this = this;
+              let url = window.location.href
+              let index = url.indexOf('report');
+              let prefix  = url.substr(0,index);
+              let to = prefix +"report/publish?name="+item.name;
+              this.$copyText(to).then(function () {
+                _this.$notify({
+                  title: '复制成功',
+                  type: 'success'
+                });
+              }, function () {
+                _this.$notify({
+                  title: '复制失败',
+                  type: 'warning'
+                });
+              })
             }
         }
     }
