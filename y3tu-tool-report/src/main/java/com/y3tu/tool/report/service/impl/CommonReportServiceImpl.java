@@ -4,9 +4,9 @@ import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.y3tu.tool.core.pojo.R;
+import com.y3tu.tool.core.util.StrUtil;
 import com.y3tu.tool.report.entity.domain.DataSource;
 import com.y3tu.tool.report.entity.dto.ReportDto;
-import com.y3tu.tool.report.entity.dto.ReportParamDto;
 import com.y3tu.tool.report.exception.ReportException;
 import com.y3tu.tool.report.service.CommonReportService;
 import com.y3tu.tool.report.service.DataSourceService;
@@ -50,9 +50,15 @@ public class CommonReportServiceImpl implements CommonReportService {
             PreparedStatement ps = null;
             ResultSet rs = null;
             Connection connection = ds.getConnection();
+
+            //如果sql包含where条件，需要截取
+            int index = StrUtil.indexOfIgnoreCase(sql, "where");
+            if (index > 0) {
+                sql = sql.substring(0, index);
+            }
+
             ps = connection.prepareStatement(sql);
-            rs = ps.executeQuery();
-            ResultSetMetaData metaData = rs.getMetaData();
+            ResultSetMetaData metaData = ps.getMetaData();
             int count = metaData.getColumnCount();
             List<Map<String, String>> fieldNameList = new ArrayList<>();
             for (int i = 1; i <= count; i++) {
