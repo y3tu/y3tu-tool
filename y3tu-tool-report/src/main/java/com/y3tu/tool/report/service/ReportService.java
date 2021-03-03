@@ -59,6 +59,12 @@ public interface ReportService extends BaseService<Report> {
     R reportHtml(ReportDto reportDto, HttpServletResponse response);
 
     /**
+     * 判断是否是大数据量报表
+     * @param reportDto
+     * @return
+     */
+    boolean isBigData(ReportDto reportDto);
+    /**
      * 导出报表数据
      *
      * @param reportDto

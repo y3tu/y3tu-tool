@@ -186,7 +186,7 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
             } else if (Report.TYPE_JASPER.equals(reportDto.getType())) {
                 //Jasper报表
                 //获取jasper模板文件地址
-                Map<String, Object> filePathResult = getJasperTemplate(reportDto.getId());
+                Map<String, Object> filePathResult = jasperReportService.getJasperTemplate(reportDto.getId());
                 String jrxmlFilePath = filePathResult.get("jrxmlFilePath").toString();
                 JasperReport jasperReport = JasperReportUtil.getJasperReport(jrxmlFilePath);
                 String querySql = jasperReport.getQuery().getText();
@@ -212,46 +212,26 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
     }
 
     @Override
+    public boolean isBigData(ReportDto reportDto) {
+
+        return false;
+    }
+
+    @Override
     public void exportExcel(ReportDto reportDto, HttpServletResponse response) {
         try {
+            handleSql(reportDto);
             //替换sql参数
             if (Report.TYPE_COMMON.equals(reportDto.getType())) {
-                reportDto.setQuerySql(replaceParamSql(reportDto.getQuerySql(), reportDto.getParams()));
                 commonReportService.exportExcel(reportDto, response);
             } else if (Report.TYPE_JASPER.equals(reportDto.getType())) {
                 //获取jasper模板文件地址
-                Map<String, Object> filePathResult = getJasperTemplate(reportDto.getId());
-                String jrxmlFilePath = filePathResult.get("jrxmlFilePath").toString();
-                JasperReport jasperReport = JasperReportUtil.getJasperReport(jrxmlFilePath);
-                String querySql = jasperReport.getQuery().getText();
-                reportDto.setQuerySql(replaceParamSql(querySql, reportDto.getParams()));
-                jasperReportService.exportExcel(reportDto, jasperReport, response);
+                jasperReportService.exportExcel(reportDto, response);
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new ReportException("报表导出excel异常:" + e.getMessage());
         }
-    }
-
-    private Map<String, Object> getJasperTemplate(int reportId) {
-        Map<String, Object> result = new HashMap<>();
-        try {
-            List<ReportAttachment> reportAttachmentList = reportAttachmentService.getByReportId(reportId);
-            for (ReportAttachment reportAttachment : reportAttachmentList) {
-                //先判断临时文件夹下是否已经有模板文件,如果不存在就从远程服务器中获取到报表template
-                String jasperFilePath = FileUtil.SYS_TEM_DIR + FileUtil.getFileNameNoEx(reportAttachment.getTempFileName()) + ".jasper";
-                String jrxmlFilePath = FileUtil.SYS_TEM_DIR + reportAttachment.getTempFileName();
-                if (!FileUtil.exist(jrxmlFilePath)) {
-                    remoteFileHelper.download(reportAttachment.getRemoteFilePath(), jrxmlFilePath);
-                }
-                JasperCompileManager.compileReportToFile(jrxmlFilePath, jasperFilePath);
-                result.put("jasperFilePath", jasperFilePath);
-                result.put("jrxmlFilePath", jrxmlFilePath);
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-        }
-        return result;
     }
 
 
@@ -263,6 +243,25 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
             param.setSeq(i);
             param.setCreateTime(new Date());
             reportParamService.create(param);
+        }
+    }
+
+
+    private void handleSql(ReportDto reportDto) {
+        try {
+            if (Report.TYPE_COMMON.equals(reportDto.getType())) {
+                reportDto.setQuerySql(replaceParamSql(reportDto.getQuerySql(), reportDto.getParams()));
+            } else if (Report.TYPE_JASPER.equals(reportDto.getType())) {
+                //获取jasper模板文件地址
+                Map<String, Object> filePathResult = jasperReportService.getJasperTemplate(reportDto.getId());
+                String jrxmlFilePath = filePathResult.get("jrxmlFilePath").toString();
+                JasperReport jasperReport = JasperReportUtil.getJasperReport(jrxmlFilePath);
+                String querySql = jasperReport.getQuery().getText();
+                reportDto.setQuerySql(replaceParamSql(querySql, reportDto.getParams()));
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ReportException("处理报表sql异常:" + e.getMessage());
         }
     }
 

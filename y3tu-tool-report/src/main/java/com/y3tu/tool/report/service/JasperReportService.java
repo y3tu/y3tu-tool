@@ -6,6 +6,7 @@ import net.sf.jasperreports.engine.JasperReport;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author y3tu
@@ -22,8 +23,17 @@ public interface JasperReportService {
 
     /**
      * 报表数据导出
+     *
      * @param reportDto
      * @param response
      */
-    void exportExcel(ReportDto reportDto, JasperReport jasperReport,HttpServletResponse response);
+    void exportExcel(ReportDto reportDto, HttpServletResponse response);
+
+    /**
+     * 获取jasper报表模板
+     *
+     * @param reportId
+     * @return
+     */
+    Map<String, Object> getJasperTemplate(int reportId);
 }

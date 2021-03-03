@@ -133,6 +133,14 @@ public class ReportController {
         return reportService.reportHtml(reportDto, response);
     }
 
+
+    /**
+     * 判断报表是否是大数据量报表
+     */
+    public void isBigData(@RequestBody ReportDto reportDto){
+
+    }
+
     /**
      * 导出报表excel数据
      *
