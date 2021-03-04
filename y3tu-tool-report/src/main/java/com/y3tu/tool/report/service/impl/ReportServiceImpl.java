@@ -17,15 +17,17 @@ import com.y3tu.tool.report.service.JasperReportService;
 import com.y3tu.tool.report.service.ReportAttachmentService;
 import com.y3tu.tool.report.service.ReportParamService;
 import com.y3tu.tool.report.service.ReportService;
+import com.y3tu.tool.report.util.DataSourceUtil;
 import com.y3tu.tool.report.util.JasperReportUtil;
 import com.y3tu.tool.web.base.jpa.BaseServiceImpl;
 import com.y3tu.tool.web.base.jpa.PageInfo;
 import com.y3tu.tool.web.file.service.RemoteFileHelper;
+import com.y3tu.tool.web.sql.SqlUtil;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperReport;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -213,7 +215,15 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
 
     @Override
     public boolean isBigData(ReportDto reportDto) {
-
+        handleSql(reportDto);
+        int dsId = reportDto.getDsId();
+        javax.sql.DataSource ds = DataSourceUtil.getDataSourceByDsId(dsId);
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+        int count = SqlUtil.count(reportDto.getQuerySql(), jdbcTemplate);
+        if (count > 100000) {
+            //如果报表数据量大于10w，表示此报表是大数据量报表
+            return true;
+        }
         return false;
     }
 

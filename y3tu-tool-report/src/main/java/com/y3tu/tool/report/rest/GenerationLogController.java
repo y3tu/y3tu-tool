@@ -26,4 +26,5 @@ public class GenerationLogController {
         return R.success(generationLogService.page(pageInfo));
     }
 
+
 }

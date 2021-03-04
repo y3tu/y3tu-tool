@@ -137,8 +137,8 @@ public class ReportController {
     /**
      * 判断报表是否是大数据量报表
      */
-    public void isBigData(@RequestBody ReportDto reportDto){
-
+    public R isBigData(@RequestBody ReportDto reportDto){
+        return R.success(reportService.isBigData(reportDto));
     }
 
     /**
