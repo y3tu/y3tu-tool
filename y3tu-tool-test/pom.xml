@@ -19,7 +19,7 @@
 
         <dependency>
             <groupId>com.y3tu</groupId>
-            <artifactId>y3tu-tool-report</artifactId>
+            <artifactId>y3tu-tool-serv</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
