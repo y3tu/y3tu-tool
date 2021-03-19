@@ -1,0 +1,45 @@
+{
+  "groups": [
+    {
+      "name": "y3tu.tool.report",
+      "type": "com.y3tu.tool.serv.report.configure.ToolReportProperties",
+      "sourceType": "com.y3tu.tool.serv.report.configure.ToolReportProperties"
+    },
+    {
+      "name": "y3tu.tool.ui",
+      "type": "com.y3tu.tool.serv.ui.configure.UiProperties",
+      "sourceType": "com.y3tu.tool.ui.configure.UiProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "y3tu.tool.report.enable",
+      "type": "java.lang.Boolean",
+      "description": "是否开启",
+      "sourceType": "com.y3tu.tool.serv.report.configure.ToolReportProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "y3tu.tool.report.urlPattern",
+      "type": "java.lang.String",
+      "description": "请求接口访问前缀",
+      "sourceType": "com.y3tu.tool.serv.report.configure.ToolReportProperties",
+      "defaultValue": "y3tu-tool-report"
+    },
+    {
+      "name": "y3tu.tool.report.remotePath",
+      "type": "java.lang.String",
+      "description": "远程服务器存放模板附件路径",
+      "sourceType": "com.y3tu.tool.serv.report.configure.ToolReportProperties",
+      "defaultValue": "/y3tu/report/"
+    },
+    {
+      "name": "y3tu.tool.ui.urlPattern",
+      "type": "java.lang.String",
+      "description": "访问ui的url",
+      "sourceType": "com.y3tu.tool.ui.configure.UiProperties",
+      "defaultValue": "/y3tu-tool-ui/*"
+    }
+  ],
+  "hints": []
+}
