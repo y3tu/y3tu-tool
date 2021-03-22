@@ -2,7 +2,6 @@ package com.y3tu.tool.serv.report.configure;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
@@ -12,9 +11,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * @author y3tu
  */
 @Configuration
-@ComponentScan("com.y3tu.tool.report")
-@EntityScan(basePackages = {"com.y3tu.tool.report"})
-@EnableJpaRepositories(basePackages = {"com.y3tu.tool.report"})
-@EnableConfigurationProperties(ToolReportProperties.class)
-public class ToolReportConfigure {
+@EntityScan(basePackages = {"com.y3tu.tool.serv.report"})
+@EnableJpaRepositories(basePackages = {"com.y3tu.tool.serv.report"})
+@EnableConfigurationProperties(ReportProperties.class)
+public class ReportConfigure {
 }

@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.y3tu.tool.serv.report.configure.ToolReportConfigure
+com.y3tu.tool.serv.configure.ServConfigure

@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Data
 @ConfigurationProperties(prefix = "y3tu.tool.report")
-public class ToolReportProperties {
+public class ReportProperties {
     /**
      * 远程服务器存放模板附件路径
      */

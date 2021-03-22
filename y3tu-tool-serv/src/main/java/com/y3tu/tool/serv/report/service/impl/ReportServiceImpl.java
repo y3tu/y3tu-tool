@@ -3,7 +3,7 @@ package com.y3tu.tool.serv.report.service.impl;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.pojo.R;
 import com.y3tu.tool.core.util.StrUtil;
-import com.y3tu.tool.serv.report.configure.ToolReportProperties;
+import com.y3tu.tool.serv.report.configure.ReportProperties;
 import com.y3tu.tool.serv.report.entity.domain.Report;
 import com.y3tu.tool.serv.report.entity.domain.ReportAttachment;
 import com.y3tu.tool.serv.report.entity.domain.ReportParam;
@@ -58,7 +58,7 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
     @Autowired
     RemoteFileHelper remoteFileHelper;
     @Autowired
-    ToolReportProperties properties;
+    ReportProperties properties;
 
     @Override
     @Transactional(rollbackFor = Exception.class)

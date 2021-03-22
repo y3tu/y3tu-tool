@@ -40,7 +40,7 @@
 
                                 <!--缩略图-->
                                 <div class="thumb">
-                                    <img src="src/assets/images/excel.jpg"/>
+                                    <img :src="excelImg"/>
                                     <div v-loading="itemLoading" class="excel-edit-container" v-show="item.editable">
                                         <a @click="updateReport(item)">
                                             修改
@@ -128,12 +128,14 @@
 
     import editor from './editor'
     import preview from "./preview";
+    import excelImg from '@/assets/images/excel.jpg'
 
     export default {
         name: 'reportList',
         components: {editor, preview},
         data() {
             return {
+                excelImg:excelImg,
                 pageInfo: {
                     entity: {
                         name: ''
