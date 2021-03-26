@@ -73,7 +73,7 @@
     import {page} from './api'
 
     export default {
-        name: 'dataSource',
+        name: 'download',
         data() {
             return {
                 pageInfo: {

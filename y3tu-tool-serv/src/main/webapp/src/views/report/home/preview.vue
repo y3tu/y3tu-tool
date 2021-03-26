@@ -92,7 +92,7 @@
 
 <script>
 
-    import {reportHtml, exportExcel} from './api'
+    import {reportHtml, isBigData,exportExcel} from './api'
     import dictSelect from "../dict/dictSelect";
     import mergeHeaderTable from './mergeHeaderTable'
 
@@ -148,12 +148,21 @@
                 })
             },
             exportData() {
-                this.exportLoading = true;
-                let call = exportExcel(this.report, this.report.name + ".xls");
-                call.then(() => {
-                    this.exportLoading = false;
+
+                isBigData(this.report).then(res=>{
+                  if(res){
+                    //大数据量报表写入报表生成日志
+                    //todo 如果报表已经生成好，直接获取到报表下载链接开始下载报表；如果未生成好，跳转到报表下载页面
+                  }else {
+                    this.exportLoading = true;
+                    let call = exportExcel(this.report, this.report.name + ".xls");
+                    call.then(() => {
+                      this.exportLoading = false;
+                    })
+                    this.$toast('正在生成导出文件，请稍后！', 'success', 5000)
+                  }
                 })
-                this.$toast('正在生成导出文件，请稍后！', 'success', 5000)
+
             },
             sizeChange(e) {
                 this.pageInfo.current = 1;

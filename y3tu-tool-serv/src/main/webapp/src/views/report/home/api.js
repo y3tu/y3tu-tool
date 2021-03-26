@@ -113,6 +113,18 @@ export function reportHtml(params) {
 }
 
 /**
+ * 判断是否是大数据量报表
+ */
+export function isBigData(params){
+    return service({
+        url: `y3tu-tool-report/report/isBigData`,
+        method: 'post',
+        data:params
+    })
+}
+
+
+/**
  * 导出报表数据excel
  */
 export function exportExcel(params,fileName) {

@@ -24,11 +24,14 @@ public class Report extends BaseEntity {
      */
     public static final String TYPE_JASPER = "jasper";
 
+    public static final String STATUS_NORMAL = "00A";
+    public static final String STATUS_DISABLE= "00X";
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(unique = true,columnDefinition = "varchar(50) comment '名称'")
+    @Column(unique = true, columnDefinition = "varchar(50) comment '名称'")
     @Query(type = Query.Type.INNER_LIKE)
     String name;
 

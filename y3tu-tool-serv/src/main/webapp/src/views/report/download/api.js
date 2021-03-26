@@ -5,7 +5,7 @@ import service from '@/plugin/axios'
  */
 export function page(params) {
     return service({
-        url: 'y3tu-tool-report/generationLog/page',
+        url: 'y3tu-tool-report/reportDownload/page',
         method: 'post',
         data: params
     })

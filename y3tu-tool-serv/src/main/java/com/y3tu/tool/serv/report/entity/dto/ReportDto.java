@@ -3,6 +3,7 @@ package com.y3tu.tool.serv.report.entity.dto;
 import com.y3tu.tool.web.base.jpa.PageInfo;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ import java.util.List;
  * @author y3tu
  */
 @Data
-public class ReportDto {
+public class ReportDto implements Serializable {
 
     Integer id;
     /**

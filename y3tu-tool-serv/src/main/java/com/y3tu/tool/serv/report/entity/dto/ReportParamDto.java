@@ -2,13 +2,15 @@ package com.y3tu.tool.serv.report.entity.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 参数实体
  *
  * @author y3tu
  */
 @Data
-public class ReportParamDto {
+public class ReportParamDto implements Serializable {
 
     Integer id;
 

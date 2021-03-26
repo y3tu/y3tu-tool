@@ -38,7 +38,7 @@ const routes = [
             {
                 path: '/report/generationLog',
                 name: 'generationLog',
-                component: () => import('@/views/report/generationLog/index.vue'),
+                component: () => import('@/views/report/download/index.vue'),
                 meta: {
                     keepAlive: false,
                 }

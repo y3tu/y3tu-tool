@@ -21,7 +21,7 @@ public class PageInfo<T> {
     /**
      * 查询条件参数
      */
-    Map params;
+    Map<String,Object> params;
 
     /**
      * 查询数据列表
