@@ -3,7 +3,7 @@
 
         <div class="head-container">
             <label class="form-item-label">报表名称</label>
-            <el-input clearable v-model="pageInfo.entity.name" placeholder="请输入名称" style="width:200px"
+            <el-input clearable v-model="pageInfo.params.reportName" placeholder="请输入名称" style="width:200px"
                       class="form-item"
                       @keyup.enter="query"/>
             <label class="form-item-label">创建时间</label>
@@ -34,22 +34,27 @@
                 style="width: 100%;">
             <el-table-column label="报表名称" prop="name" align="center" show-overflow-tooltip min-width="120px">
                 <template #default="scope">
-                    <span>{{ scope.row.name }}</span>
+                    <span>{{ scope.row.reportName }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="生成状态" :show-overflow-tooltip="true" align="center" min-width="150px">
                 <template #default="scope">
-                    <span>{{ scope.row.type }}</span>
+                    <span>{{ scope.row.status }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="生成结果" align="center" min-width="80px">
+            <el-table-column label="查询参数" align="center" show-overflow-tooltip min-width="200px">
                 <template #default="scope">
-                    <span>{{ scope.row.dbType }}</span>
+                    <span>{{ scope.row.paramJson }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="创建时间" align="center" show-overflow-tooltip min-width="200px">
+            <el-table-column label="下载次数" align="center" min-width="100px">
                 <template #default="scope">
-                    <span>{{ scope.row.dbUrl }}</span>
+                    <span>{{ scope.row.downloadTimes }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="错误描述" align="center" min-width="100px">
+                <template #default="scope">
+                    <span>{{ scope.row.errMsg }}</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -77,10 +82,8 @@
         data() {
             return {
                 pageInfo: {
-                    entity: {
-                        name: ''
-                    },
                     params: {
+                        reportName: '',
                         createTimes: []
                     },
                     pageLoading: false,
@@ -107,7 +110,10 @@
                 })
             },
             reset() {
-
+                this.pageInfo.params = {
+                    reportName: '',
+                    createTimes: []
+                }
             },
             sizeChange(e) {
                 this.pageInfo.current = 1;

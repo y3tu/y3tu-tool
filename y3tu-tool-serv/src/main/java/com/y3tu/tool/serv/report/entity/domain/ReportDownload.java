@@ -22,7 +22,7 @@ import javax.persistence.Table;
 @Data
 public class ReportDownload extends BaseEntity {
 
-    public static final String STATUS_WAITING = "00W";
+    public static final String STATUS_WAIT = "00W";
     public static final String STATUS_NORMAL = "00A";
     public static final String STATUS_DISABLE = "00X";
     public static final String STATUS_ERROR = "00E";
@@ -38,7 +38,7 @@ public class ReportDownload extends BaseEntity {
     @Query(type = Query.Type.EQUAL)
     private Integer reportId;
 
-    @Column(columnDefinition = "varchar(3) comment '报表生成状态 00W:报表生成中 ;00A:报表生成完成，可下载 ;00X:报表下载失效';00E:报表生成失败")
+    @Column(columnDefinition = "varchar(3) comment '报表生成状态 00W:报表待生成 ;00A:报表生成完成，可下载 ;00X:报表下载失效;00E:报表生成失败'")
     private String status;
 
     @Column(name = "download_url", columnDefinition = "varchar(100) comment '报表下载路径'")

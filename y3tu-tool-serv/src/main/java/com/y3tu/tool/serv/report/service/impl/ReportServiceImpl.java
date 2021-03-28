@@ -282,7 +282,7 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
      * @param params
      * @return
      */
-    private String replaceParamSql(String sql, List<ReportParamDto> params) {
+    public static String replaceParamSql(String sql, List<ReportParamDto> params) {
         //替换sql参数
         for (ReportParamDto param : params) {
             String field = param.getField();

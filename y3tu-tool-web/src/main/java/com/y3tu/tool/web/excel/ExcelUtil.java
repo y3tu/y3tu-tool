@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.List;
@@ -74,17 +75,16 @@ public class ExcelUtil extends EasyExcel {
      * @param clazz         导出的实体类型
      * @param header        自定义表格头
      * @param excelTypeEnum excel文件类型
-     * @param response      浏览器响应
+     * @param outputStream  输出流
      * @return
      */
-    public static ExcelWriter buildExcelWriter(String fileName, Class clazz, List<List<String>> header, ExcelTypeEnum excelTypeEnum, HttpServletResponse response) {
+    public static ExcelWriter buildExcelWriter(String fileName, Class clazz, List<List<String>> header, ExcelTypeEnum excelTypeEnum, OutputStream outputStream) {
         try {
-            ExcelUtil.decorateResponse(fileName, excelTypeEnum, response);
             ExcelWriterBuilder excelWriterBuilder = null;
             if (clazz != null) {
-                excelWriterBuilder = EasyExcel.write(response.getOutputStream()).head(header).autoCloseStream(true);
+                excelWriterBuilder = EasyExcel.write(outputStream).head(header).autoCloseStream(true);
             } else {
-                excelWriterBuilder = EasyExcel.write(response.getOutputStream(), clazz).head(header).autoCloseStream(true);
+                excelWriterBuilder = EasyExcel.write(outputStream, clazz).head(header).autoCloseStream(true);
             }
             ExcelWriter excelWriter = excelWriterBuilder.build();
             return excelWriter;
@@ -96,6 +96,27 @@ public class ExcelUtil extends EasyExcel {
 
 
     /**
+     * 浏览器导出文件
+     *
+     * @param fileName
+     * @param sheetName
+     * @param clazz
+     * @param header
+     * @param excelTypeEnum
+     * @param excelPageData
+     * @param response
+     */
+    public static void downExcelByPage(String fileName, String sheetName, Class clazz, List<List<String>> header, ExcelTypeEnum excelTypeEnum, ExcelPageData excelPageData, HttpServletResponse response) {
+        try {
+            response = decorateResponse(fileName, excelTypeEnum, response);
+            downExcelByPage(fileName, sheetName, clazz, header, excelTypeEnum, excelPageData, response.getOutputStream());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ToolException("导出excel文件异常:" + e.getMessage());
+        }
+    }
+
+    /**
      * 单线程分页查询、写数据,避免导出大数据量时OOM
      *
      * @param fileName      文件名
@@ -104,11 +125,11 @@ public class ExcelUtil extends EasyExcel {
      * @param header        自定义表格头
      * @param excelTypeEnum 导出文件后缀
      * @param excelPageData 执行分页查询的方法
-     * @param response      响应信息
+     * @param outputStream  输出流
      */
-    public static void downExcelByPage(String fileName, String sheetName, Class clazz, List<List<String>> header, ExcelTypeEnum excelTypeEnum, ExcelPageData excelPageData, HttpServletResponse response) {
+    public static void downExcelByPage(String fileName, String sheetName, Class clazz, List<List<String>> header, ExcelTypeEnum excelTypeEnum, ExcelPageData excelPageData, OutputStream outputStream) {
         try {
-            ExcelWriter excelWriter = buildExcelWriter(fileName, clazz, header, excelTypeEnum, response);
+            ExcelWriter excelWriter = buildExcelWriter(fileName, clazz, header, excelTypeEnum, outputStream);
             //使用默认的 xlsx, page size 10000, sheet max row 1000000
             int pageSize = XLSX_PAGE_SIZE;
             int sheetMaxRow = XLSX_SHEET_MAX_ROW;
@@ -156,6 +177,28 @@ public class ExcelUtil extends EasyExcel {
     }
 
     /**
+     * 多线程分页查询，单线程写数据浏览器导出
+     *
+     * @param poolSize      多线程线程池大小
+     * @param fileName      文件名
+     * @param sheetName     sheet页名称
+     * @param clazz         导出的实体类型
+     * @param header        自定义表格头
+     * @param excelTypeEnum 导出文件后缀
+     * @param excelPageData 执行分页查询的方法
+     * @param response      响应
+     */
+    public static void downExcelByThreadAndPage(int poolSize, String fileName, String sheetName, Class clazz, List<List<String>> header, ExcelTypeEnum excelTypeEnum, ExcelPageData excelPageData, HttpServletResponse response) {
+        try {
+            response = decorateResponse(fileName, excelTypeEnum, response);
+            downExcelByThreadAndPage(poolSize, fileName, sheetName, clazz, header, excelTypeEnum, excelPageData, response.getOutputStream());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ToolException("导出excel文件异常:" + e.getMessage());
+        }
+    }
+
+    /**
      * 多线程分页查询，单线程写数据到文件
      *
      * @param poolSize      多线程线程池大小
@@ -165,9 +208,9 @@ public class ExcelUtil extends EasyExcel {
      * @param header        自定义表格头
      * @param excelTypeEnum 导出文件后缀
      * @param excelPageData 执行分页查询的方法
-     * @param response      响应信息
+     * @param outputStream  输出流
      */
-    public static void downExcelByThreadAndPage(int poolSize, String fileName, String sheetName, Class clazz, List<List<String>> header, ExcelTypeEnum excelTypeEnum, ExcelPageData excelPageData, HttpServletResponse response) {
+    public static void downExcelByThreadAndPage(int poolSize, String fileName, String sheetName, Class clazz, List<List<String>> header, ExcelTypeEnum excelTypeEnum, ExcelPageData excelPageData, OutputStream outputStream) {
         try {
             // 根据数据读写速度来调整，一般来说读的逻辑复杂，比较慢，如果读比写快，这里设为1
             int N = 4;
@@ -177,7 +220,7 @@ public class ExcelUtil extends EasyExcel {
             AtomicInteger start = new AtomicInteger(0);
             ThreadFactory threadFactory = ThreadUtil.newNamedThreadFactory("多线程分页查询导出", true);
             ExecutorService executorService = ThreadUtil.newFixedExecutor(poolSize, threadFactory);
-            ExcelWriter excelWriter = buildExcelWriter(fileName, clazz, header, excelTypeEnum, response);
+            ExcelWriter excelWriter = buildExcelWriter(fileName, clazz, header, excelTypeEnum, outputStream);
             //默认分页大小1000条
             int pageSize = XLSX_PAGE_SIZE;
             int sheetMaxRow = XLSX_SHEET_MAX_ROW;

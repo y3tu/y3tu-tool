@@ -16,4 +16,12 @@ public interface ReportDownloadService extends BaseService<ReportDownload> {
      */
     List<ReportDownload> getByReportId(int reportId);
 
+    /**
+     * 获取所有待处理的报表下载
+     * @return
+     */
+    List<ReportDownload> getWaitData();
+
+    void handleDownload(ReportDownload reportDownload);
+
 }

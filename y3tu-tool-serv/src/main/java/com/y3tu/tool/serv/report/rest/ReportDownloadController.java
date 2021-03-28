@@ -34,10 +34,15 @@ public class ReportDownloadController {
 
     @PostMapping("page")
     public R page(@RequestBody PageInfo<ReportDownload> pageInfo) {
-        String reportName = pageInfo.getParams().getOrDefault("reportName","").toString();
-        if(StrUtil.isNotEmpty(reportName)){
-            Report report =  reportService.getByName(reportName);
-            pageInfo.getEntity().setReportId(report.getId());
+        String reportName = pageInfo.getParams().getOrDefault("reportName", "").toString();
+        if (StrUtil.isNotEmpty(reportName)) {
+            Report report = reportService.getByName(reportName);
+            if (report != null) {
+                if (pageInfo.getEntity() == null) {
+                    pageInfo.setEntity(new ReportDownload());
+                }
+                pageInfo.getEntity().setReportId(report.getId());
+            }
         }
         return R.success(reportDownloadService.page(pageInfo));
     }
@@ -45,33 +50,34 @@ public class ReportDownloadController {
     @PostMapping("create")
     public R create(@RequestBody ReportDto reportDto) {
         //首先判断此报表是否已经存在
-        List<ReportDownload> reportDownloadList =  reportDownloadService.getByReportId(reportDto.getId());
+        List<ReportDownload> reportDownloadList = reportDownloadService.getByReportId(reportDto.getId());
         boolean createFlag = false;
-        if(reportDownloadList.isEmpty()){
+        if (reportDownloadList.isEmpty()) {
             //生成下载记录
             createFlag = true;
-        }else {
+        } else {
             //如果存在此报表的下载记录，再判断查询参数是否相同
             ReportDownload reportDownload = reportDownloadList.get(0);
             String paramJson = reportDownload.getParamJson();
             List<ReportParamDto> params = reportDto.getParams();
-            if(paramJson.equals(JsonUtil.toJson(params))){
+            if (paramJson.equals(JsonUtil.toJson(params))) {
                 //参数也相同，不需要再生成下载记录
                 createFlag = false;
-            }else {
+            } else {
                 //参数不同，需要生成下载记录
                 createFlag = true;
             }
         }
-        if(createFlag){
+        if (createFlag) {
             ReportDownload reportDownload = new ReportDownload();
             reportDownload.setReportId(reportDto.getId());
             reportDownload.setDownloadTimes(0);
             reportDownload.setCreateTime(new Date());
-            reportDownload.setParamJson("00W");
+            reportDownload.setParamJson(JsonUtil.toJson(reportDto.getParams()));
+            reportDownload.setStatus("00W");
             reportDownloadService.create(reportDownload);
             return R.success(reportDownload);
-        }else {
+        } else {
             return R.success(reportDownloadList.get(0));
         }
     }

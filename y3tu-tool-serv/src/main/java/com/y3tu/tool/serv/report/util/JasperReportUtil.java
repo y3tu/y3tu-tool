@@ -13,6 +13,7 @@ import net.sf.jasperreports.export.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -178,6 +179,10 @@ public class JasperReportUtil {
         JasperExportManager.exportReportToPdfStream(jasperPrint, response.getOutputStream());
     }
 
+    public static void exportToPdf(JasperPrint jasperPrint, String fileName, OutputStream outputStream) throws Exception {
+        JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+    }
+
     /**
      * 导出报表到xml文件
      *
@@ -193,20 +198,22 @@ public class JasperReportUtil {
         JasperExportManager.exportReportToXmlStream(jasperPrint, response.getOutputStream());
     }
 
+    public static void exportToXml(JasperPrint jasperPrint, String fileName, OutputStream outputStream) throws Exception {
+        JasperExportManager.exportReportToXmlStream(jasperPrint, outputStream);
+    }
+
     /**
      * 导出报表返回html
      *
      * @param jasperPrint
-     * @param response
+     * @param outputStream
      * @throws Exception
      */
-    public static void exportToHtml(JasperPrint jasperPrint, HttpServletResponse response) throws Exception {
-        response.setCharacterEncoding("utf-8");
-        response.setHeader("Content-type", "text/html;charset=utf-8");
-        response.setContentType(getContentType(ReportType.HTML));
+    public static void exportToHtml(JasperPrint jasperPrint, OutputStream outputStream) throws Exception {
+
         HtmlExporter exporter = new HtmlExporter();
         exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-        SimpleHtmlExporterOutput exporterOutput = new SimpleHtmlExporterOutput(response.getOutputStream());
+        SimpleHtmlExporterOutput exporterOutput = new SimpleHtmlExporterOutput(outputStream);
         exporterOutput.setImageHandler(new HtmlResourceHandler() {
             Map<String, String> images = new HashMap<>();
 
@@ -222,6 +229,13 @@ public class JasperReportUtil {
         });
         exporter.setExporterOutput(exporterOutput);
         exporter.exportReport();
+    }
+
+    public static void exportToHtml(JasperPrint jasperPrint, HttpServletResponse response) throws Exception {
+        response.setCharacterEncoding("utf-8");
+        response.setHeader("Content-type", "text/html;charset=utf-8");
+        response.setContentType(getContentType(ReportType.HTML));
+        exportToHtml(jasperPrint, response.getOutputStream());
     }
 
     /**
@@ -267,11 +281,22 @@ public class JasperReportUtil {
      * @throws Exception
      */
     public static void exportToExcel(JasperPrint jasperPrint, String sheetName, String fileName, HttpServletResponse response) throws Exception {
+        exportToExcel(jasperPrint, sheetName, fileName, response.getOutputStream());
+    }
+
+    public static void exportToExcel(JasperPrint jasperPrint, String sheetName, String fileName, OutputStream outputStream) throws Exception {
         List<JasperPrint> jasperPrintList = new ArrayList<>();
         jasperPrintList.add(jasperPrint);
         List<String> sheetNameList = new ArrayList<>();
         sheetNameList.add(sheetName);
-        exportToExcel(jasperPrintList, sheetNameList.toArray(new String[0]), fileName, response);
+        exportToExcel(jasperPrintList, sheetNameList.toArray(new String[0]), fileName, outputStream);
+    }
+
+    public static void exportToExcel(List<JasperPrint> jasperPrintList, String[] sheetNames, String fileName, HttpServletResponse response) throws Exception {
+        response.setCharacterEncoding("utf-8");
+        response.setHeader("Content-Disposition", "attachment;" + "filename=" + new String(fileName.getBytes(), StandardCharsets.UTF_8));
+        response.setContentType("application/vnd.ms-excel");
+        exportToExcel(jasperPrintList, sheetNames, fileName, response.getOutputStream());
     }
 
     /**
@@ -280,14 +305,12 @@ public class JasperReportUtil {
      * @param jasperPrintList
      * @param sheetNames
      * @param fileName
-     * @param response
+     * @param outputStream
      * @throws Exception
      */
-    public static void exportToExcel(List<JasperPrint> jasperPrintList, String[] sheetNames, String fileName, HttpServletResponse response) throws Exception {
+    public static void exportToExcel(List<JasperPrint> jasperPrintList, String[] sheetNames, String fileName, OutputStream outputStream) throws Exception {
         //导出Excel
-        response.setCharacterEncoding("utf-8");
-        response.setHeader("Content-Disposition", "attachment;" + "filename=" + new String(fileName.getBytes(), StandardCharsets.UTF_8));
-        response.setContentType("application/vnd.ms-excel");
+
         //设置导出时参数
         SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
         configuration.setWhitePageBackground(false);
@@ -303,7 +326,7 @@ public class JasperReportUtil {
         ExporterInput exporterInput = SimpleExporterInput.getInstance(jasperPrintList);
         exporter.setExporterInput(exporterInput);
         //设置输出项
-        OutputStreamExporterOutput exporterOutput = new SimpleOutputStreamExporterOutput(response.getOutputStream());
+        OutputStreamExporterOutput exporterOutput = new SimpleOutputStreamExporterOutput(outputStream);
         exporter.setExporterOutput(exporterOutput);
         exporter.exportReport();
     }

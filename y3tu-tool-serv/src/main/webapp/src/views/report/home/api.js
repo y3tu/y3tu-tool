@@ -1,4 +1,4 @@
-import {service, download,downloadPost} from '@/plugin/axios'
+import {service, download, downloadPost} from '@/plugin/axios'
 
 /**
  * 获取报表列表
@@ -108,25 +108,37 @@ export function reportHtml(params) {
     return service({
         url: `y3tu-tool-report/report/reportHtml`,
         method: 'post',
-        data:params
+        data: params
     })
 }
 
 /**
  * 判断是否是大数据量报表
  */
-export function isBigData(params){
+export function isBigData(params) {
     return service({
         url: `y3tu-tool-report/report/isBigData`,
         method: 'post',
-        data:params
+        data: params
     })
 }
 
+/**
+ * 创建报表下载记录
+ * @param params
+ * @returns {*}
+ */
+export function createReportDownload(params) {
+    return service({
+        url: `y3tu-tool-report/reportDownload/create`,
+        method: 'post',
+        data: params
+    })
+}
 
 /**
  * 导出报表数据excel
  */
-export function exportExcel(params,fileName) {
-    return downloadPost('y3tu-tool-report/report/exportExcel',params,fileName)
+export function exportExcel(params, fileName) {
+    return downloadPost('y3tu-tool-report/report/exportExcel', params, fileName)
 }

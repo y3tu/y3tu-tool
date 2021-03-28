@@ -1,7 +1,6 @@
 package com.y3tu.tool.serv.report.service.impl;
 
 import com.y3tu.tool.serv.report.entity.domain.ReportDownload;
-import com.y3tu.tool.serv.report.entity.dto.ReportDownloadDto;
 import com.y3tu.tool.serv.report.repository.ReportDownloadRepository;
 import com.y3tu.tool.serv.report.service.ReportDownloadService;
 import com.y3tu.tool.web.base.jpa.BaseServiceImpl;
@@ -16,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author y3tu
@@ -27,7 +27,7 @@ public class ReportDownloadServiceImpl extends BaseServiceImpl<ReportDownloadRep
 
     @Override
     public PageInfo page(PageInfo pageInfo) {
-        String reportName = pageInfo.getParams().getOrDefault("reportName","").toString();
+        String reportName = pageInfo.getParams().getOrDefault("reportName", "").toString();
         //排序
         List<String> ascArr = pageInfo.getAsc();
         List<String> descArr = pageInfo.getDesc();
@@ -46,7 +46,7 @@ public class ReportDownloadServiceImpl extends BaseServiceImpl<ReportDownloadRep
         }
         //前台传入current是从1开始的，后台是从0开始的，需要减1
         PageRequest pageable = PageRequest.of(pageInfo.getCurrent() - 1, pageInfo.getSize(), Sort.by(orderList));
-        Page<ReportDownloadDto> page = repository.getReportDownloadByPage(reportName,pageable);
+        Page<List<Map<String, Object>>> page = repository.getReportDownloadByPage(reportName, pageable);
         pageInfo.setRecords(page.getContent());
         pageInfo.setTotal(page.getTotalElements());
         return pageInfo;
@@ -56,7 +56,18 @@ public class ReportDownloadServiceImpl extends BaseServiceImpl<ReportDownloadRep
     public List<ReportDownload> getByReportId(int reportId) {
         List<String> statusList = new ArrayList<>();
         statusList.add(ReportDownload.STATUS_NORMAL);
-        statusList.add(ReportDownload.STATUS_WAITING);
-        return repository.getByReportIdAndStatusIsIn(reportId,statusList);
+        statusList.add(ReportDownload.STATUS_WAIT);
+        return repository.getByReportIdAndStatusIsIn(reportId, statusList);
+    }
+
+    @Override
+    public List<ReportDownload> getWaitData() {
+        return repository.getWaitData();
+    }
+
+    @Override
+    public void handleDownload(ReportDownload reportDownload) {
+        int reportId = reportDownload.getReportId();
+
     }
 }

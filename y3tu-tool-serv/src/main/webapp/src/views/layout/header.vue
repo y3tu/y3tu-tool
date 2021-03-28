@@ -39,8 +39,8 @@
                         title: '字典'
                     },
                     {
-                        route: '/report/generationLog',
-                        title: '生成记录'
+                        route: '/report/reportDownload',
+                        title: '报表下载'
                     },
                 ],
                 logo,
