@@ -33,11 +33,11 @@ public interface ReportDownloadRepository extends BaseRepository<ReportDownload>
     @Query(value = "select a.id," +
             "a.report_id as reportId, " +
             "a.status," +
-            "a.download_url as downloadUrl," +
+            "a.remote_file_path as remoteFilePath," +
             "a.download_times as downloadTimes," +
             "a.param_json as paramJson," +
             "a.err_msg as errMsg, " +
-            "b.name as reportName from report_download a,report b where if(:reportName !='', b.name like %:reportName%,1=1)  ", nativeQuery = true)
+            "b.name as reportName from report_download a,report b where if(:reportName !='',  b.name like %:reportName%, 1=1) and a.report_id = b.id ", nativeQuery = true)
     Page<List<Map<String, Object>>> getReportDownloadByPage(@Param("reportName") String reportName, Pageable pageable);
 
 
@@ -46,7 +46,8 @@ public interface ReportDownloadRepository extends BaseRepository<ReportDownload>
      *
      * @return
      */
-    @Query(value="select * from report_download where status = '00W' ",nativeQuery = true)
+    @Query(value="select * from report_download where status = '00W' for update",nativeQuery = true)
     List<ReportDownload> getWaitData();
+
 }
 

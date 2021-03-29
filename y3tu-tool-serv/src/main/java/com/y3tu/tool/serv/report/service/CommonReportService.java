@@ -5,6 +5,7 @@ import com.y3tu.tool.serv.report.entity.dto.ReportDto;
 import com.y3tu.tool.web.base.jpa.PageInfo;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
 
 /**
  * 通用报表服务
@@ -30,10 +31,18 @@ public interface CommonReportService {
     PageInfo reportHtml(ReportDto reportDto);
 
     /**
-     * 导出报表数据
+     * 导出报表数据到浏览器
      *
      * @param reportDto
      * @return
      */
     void exportExcel(ReportDto reportDto, HttpServletResponse response);
+
+    /**
+     * 导出报表数据到流
+     *
+     * @param reportDto
+     * @param outputStream
+     */
+    void exportExcel(ReportDto reportDto, OutputStream outputStream);
 }

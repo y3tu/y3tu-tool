@@ -26,6 +26,7 @@ public class ReportDownload extends BaseEntity {
     public static final String STATUS_NORMAL = "00A";
     public static final String STATUS_DISABLE = "00X";
     public static final String STATUS_ERROR = "00E";
+    public static final String STATUS_BUILDING = "00B";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,11 +39,14 @@ public class ReportDownload extends BaseEntity {
     @Query(type = Query.Type.EQUAL)
     private Integer reportId;
 
-    @Column(columnDefinition = "varchar(3) comment '报表生成状态 00W:报表待生成 ;00A:报表生成完成，可下载 ;00X:报表下载失效;00E:报表生成失败'")
+    @Column(columnDefinition = "varchar(3) comment '报表生成状态 00W:报表待生成 ;00B:正在生成中;00A:报表生成完成，可下载 ;00X:报表下载失效;00E:报表生成失败'")
     private String status;
 
-    @Column(name = "download_url", columnDefinition = "varchar(100) comment '报表下载路径'")
-    private String downloadUrl;
+    @Column(name = "real_file_name", columnDefinition = "varchar(100) comment '报表保存在远程服务器上的真实名称'")
+    String realFileName;
+
+    @Column(name = "remote_file_path", columnDefinition = "varchar(200) comment '报表保存在远程服务器上的全路径'")
+    String remoteFilePath;
 
     @Column(name = "download_times", columnDefinition = "int comment '下载次数'")
     private int downloadTimes;

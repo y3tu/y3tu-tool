@@ -4,6 +4,7 @@ import com.y3tu.tool.serv.report.entity.dto.ReportDto;
 import net.sf.jasperreports.engine.JasperReport;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,14 @@ public interface JasperReportService {
      * @param response
      */
     void exportExcel(ReportDto reportDto, HttpServletResponse response);
+
+    /**
+     * 报表数据导出到流
+     *
+     * @param reportDto
+     * @param outputStream
+     */
+    void exportExcel(ReportDto reportDto, OutputStream outputStream);
 
     /**
      * 获取jasper报表模板

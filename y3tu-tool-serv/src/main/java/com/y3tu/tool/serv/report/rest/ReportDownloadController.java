@@ -11,11 +11,15 @@ import com.y3tu.tool.serv.report.service.ReportDownloadService;
 import com.y3tu.tool.serv.report.service.ReportService;
 import com.y3tu.tool.web.base.jpa.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
 
@@ -80,6 +84,18 @@ public class ReportDownloadController {
         } else {
             return R.success(reportDownloadList.get(0));
         }
+    }
+
+    /**
+     * 下载报表
+     *
+     * @param id
+     * @param request
+     * @param response
+     */
+    @GetMapping("download/{id}")
+    public void download(@PathVariable int id, HttpServletRequest request, HttpServletResponse response) {
+        reportDownloadService.download(id, request, response);
     }
 
 }

@@ -7,6 +7,7 @@ import com.y3tu.tool.web.base.jpa.BaseService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
 
 /**
  * @author y3tu
@@ -71,5 +72,12 @@ public interface ReportService extends BaseService<Report> {
      * @return
      */
     void exportExcel(ReportDto reportDto, HttpServletResponse response);
+
+    /**
+     * 导出报表数据到流
+     * @param reportDto
+     * @param outputStream
+     */
+    void exportExcel(ReportDto reportDto, OutputStream outputStream);
 
 }

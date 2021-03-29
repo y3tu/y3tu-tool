@@ -1,4 +1,4 @@
-import service from '@/plugin/axios'
+import {service, download} from '@/plugin/axios'
 
 /**
  * 获取报表生成列表
@@ -10,6 +10,11 @@ export function page(params) {
         data: params
     })
 }
+
+export function downloadFile(id, fileName) {
+    download(`y3tu-tool-report/reportDownload/download/${id}`, fileName);
+}
+
 
 
 

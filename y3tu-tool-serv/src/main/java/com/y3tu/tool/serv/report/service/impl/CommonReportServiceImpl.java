@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -110,6 +111,22 @@ public class CommonReportServiceImpl implements CommonReportService {
 
     @Override
     public void exportExcel(ReportDto reportDto, HttpServletResponse response) {
+        Map<String, Object> map = buildExcel(reportDto);
+        List<List<String>> headerList = (List<List<String>>) map.get("headerList");
+        ExcelPageData excelPageData = (ExcelPageData) map.get("excelPageData");
+        ExcelUtil.downExcelByThreadAndPage(20, reportDto.getName(), reportDto.getName(), null, headerList, ExcelTypeEnum.XLSX, excelPageData, response);
+    }
+
+
+    @Override
+    public void exportExcel(ReportDto reportDto, OutputStream outputStream) {
+        Map<String, Object> map = buildExcel(reportDto);
+        List<List<String>> headerList = (List<List<String>>) map.get("headerList");
+        ExcelPageData excelPageData = (ExcelPageData) map.get("excelPageData");
+        ExcelUtil.downExcelByThreadAndPage(20, reportDto.getName(), reportDto.getName(), null, headerList, ExcelTypeEnum.XLSX, excelPageData, outputStream);
+    }
+
+    private Map<String, Object> buildExcel(ReportDto reportDto) {
         //组装excel表头数据
         String tableHeader = reportDto.getTableHeader();
         String sql = reportDto.getQuerySql();
@@ -121,37 +138,38 @@ public class CommonReportServiceImpl implements CommonReportService {
         DataSource dataSource = dataSourceService.getById(dsId);
         javax.sql.DataSource ds = DataSourceUtil.getDataSourceByDsId(dsId);
         JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-
-        ExcelUtil.downExcelByThreadAndPage(20, reportDto.getName(), reportDto.getName(), null, headerList, ExcelTypeEnum.XLSX, new ExcelPageData<List<Object>>() {
-            @Override
-            public List<List<Object>> queryDataByPage(int startNum, int pageSize) {
-                StringBuilder selectSql = new StringBuilder();
-                if (dataSource.getDbType().equals(DataSource.TYPE_MYSQL)) {
-                    //mysql
-                    selectSql.append(sql + " limit ?,? ");
-                } else if (dataSource.getDbType().equals(DataSource.TYPE_ORACLE)) {
-                    //oracle
-                    selectSql.append("SELECT * FROM ( SELECT row_.*, rownum rownum_ from (").append(sql)
-                            .append(" ) row_ where rownum <=").append(startNum + pageSize).append(") table_alias where table_alias.rownum_ >")
-                            .append(startNum);
-                }
-
-                Map<String, Object> paramMap = new LinkedHashMap(2);
-                paramMap.put("startNum", startNum);
-                paramMap.put("pageSize", pageSize);
-                List<Map<String, Object>> dataList = SqlUtil.queryList(selectSql.toString(), paramMap, jdbcTemplate);
-
-                List<List<Object>> resultList = new ArrayList<>();
-                for (Map<String, Object> data : dataList) {
-                    List<Object> result = new ArrayList<>();
-                    for (String field : fieldList) {
-                        result.add(data.get(field));
-                    }
-                    resultList.add(result);
-                }
-                return resultList;
+        ExcelPageData excelPageData = (ExcelPageData<List<Object>>) (startNum, pageSize) -> {
+            StringBuilder selectSql = new StringBuilder();
+            if (dataSource.getDbType().equals(DataSource.TYPE_MYSQL)) {
+                //mysql
+                selectSql.append(sql + " limit ?,? ");
+            } else if (dataSource.getDbType().equals(DataSource.TYPE_ORACLE)) {
+                //oracle
+                selectSql.append("SELECT * FROM ( SELECT row_.*, rownum rownum_ from (").append(sql)
+                        .append(" ) row_ where rownum <=").append(startNum + pageSize).append(") table_alias where table_alias.rownum_ >")
+                        .append(startNum);
             }
-        }, response);
+
+            Map<String, Object> paramMap = new LinkedHashMap(2);
+            paramMap.put("startNum", startNum);
+            paramMap.put("pageSize", pageSize);
+            List<Map<String, Object>> dataList = SqlUtil.queryList(selectSql.toString(), paramMap, jdbcTemplate);
+
+            List<List<Object>> resultList = new ArrayList<>();
+            for (Map<String, Object> data : dataList) {
+                List<Object> result = new ArrayList<>();
+                for (String field : fieldList) {
+                    result.add(data.get(field));
+                }
+                resultList.add(result);
+            }
+            return resultList;
+        };
+
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("headerList", headerList);
+        resultMap.put("excelPageData", excelPageData);
+        return resultMap;
     }
 
     /**

@@ -35,6 +35,7 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
 import java.util.*;
 
 /**
@@ -84,7 +85,7 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
                 reportAttachment.setReportId(report.getId());
                 reportAttachment.setStatus("00A");
                 reportAttachment.setName(reportDto.getFileName());
-                reportAttachment.setTempFileName(tempFileName);
+                reportAttachment.setRealFileName(tempFileName);
                 reportAttachment.setRemoteFilePath(properties.getRemotePath() + tempFileName);
                 reportAttachment.setCreateTime(new Date());
                 reportAttachmentService.create(reportAttachment);
@@ -123,7 +124,7 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
                     reportAttachment.setReportId(report.getId());
                     reportAttachment.setStatus("00A");
                     reportAttachment.setName(reportDto.getFileName());
-                    reportAttachment.setTempFileName(tempFileName);
+                    reportAttachment.setRealFileName(tempFileName);
                     reportAttachment.setRemoteFilePath(properties.getRemotePath() + tempFileName);
                     reportAttachment.setCreateTime(new Date());
                     reportAttachmentService.create(reportAttachment);
@@ -131,7 +132,7 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
                     for (ReportAttachment reportAttachment : reportAttachmentList) {
                         String oldPath = reportAttachment.getRemoteFilePath();
                         reportAttachment.setName(reportDto.getFileName());
-                        reportAttachment.setTempFileName(tempFileName);
+                        reportAttachment.setRealFileName(tempFileName);
                         reportAttachment.setRemoteFilePath(properties.getRemotePath() + tempFileName);
                         reportAttachment.setUpdateTime(new Date());
                         reportAttachmentService.update(reportAttachment);
@@ -244,6 +245,22 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
         }
     }
 
+    @Override
+    public void exportExcel(ReportDto reportDto, OutputStream outputStream) {
+        try {
+            handleSql(reportDto);
+            //替换sql参数
+            if (Report.TYPE_COMMON.equals(reportDto.getType())) {
+                commonReportService.exportExcel(reportDto, outputStream);
+            } else if (Report.TYPE_JASPER.equals(reportDto.getType())) {
+                //获取jasper模板文件地址
+                jasperReportService.exportExcel(reportDto, outputStream);
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ReportException("报表导出excel异常:" + e.getMessage());
+        }
+    }
 
     private void createReportParam(ReportDto reportDto, int reportId) {
         for (int i = 0; i < reportDto.getParams().size(); i++) {
