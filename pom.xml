@@ -16,7 +16,7 @@
         <module>y3tu-tool-core</module>
         <module>y3tu-tool-web</module>
         <module>y3tu-tool-cache</module>
-        <module>y3tu-tool-serv</module>
+        <module>y3tu-tool-server</module>
         <module>y3tu-tool-test</module>
         <module>y3tu-tool-all</module>
     </modules>

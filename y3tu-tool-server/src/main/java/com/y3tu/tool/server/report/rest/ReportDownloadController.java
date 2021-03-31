@@ -9,6 +9,7 @@ import com.y3tu.tool.server.report.entity.dto.ReportDto;
 import com.y3tu.tool.server.report.entity.dto.ReportParamDto;
 import com.y3tu.tool.server.report.service.ReportDownloadService;
 import com.y3tu.tool.server.report.service.ReportService;
+import com.y3tu.tool.server.websocket.MessageEndPoint;
 import com.y3tu.tool.web.base.jpa.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +36,8 @@ public class ReportDownloadController {
     ReportDownloadService reportDownloadService;
     @Autowired
     ReportService reportService;
+    @Autowired
+    MessageEndPoint messageEndPoint;
 
     @PostMapping("page")
     public R page(@RequestBody PageInfo<ReportDownload> pageInfo) {

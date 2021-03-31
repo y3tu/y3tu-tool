@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * @author y3tu
  */
 @Configuration
-@EntityScan(basePackages = {"com.y3tu.tool.serv.common"})
+@EntityScan(basePackages = {"com.y3tu.tool.server.common"})
 @EnableJpaRepositories(basePackages = {"com.y3tu.tool.server.common"})
 public class CommonConfigure {
 }

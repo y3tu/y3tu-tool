@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * @author y3tu
  */
 @Configuration
-@EntityScan(basePackages = {"com.y3tu.tool.serv.report"})
+@EntityScan(basePackages = {"com.y3tu.tool.server.report"})
 @EnableJpaRepositories(basePackages = {"com.y3tu.tool.server.report"})
 @EnableConfigurationProperties(ReportProperties.class)
 public class ReportConfigure {

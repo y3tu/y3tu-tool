@@ -60,8 +60,8 @@ public class ReportDownloadRunner implements ApplicationRunner {
                 } catch (Exception e) {
                     log.error(e.getMessage(), e);
                 }
-                //休眠60秒
-                Thread.sleep(60000);
+                //休眠20秒
+                Thread.sleep(20000);
             }
         }
     }

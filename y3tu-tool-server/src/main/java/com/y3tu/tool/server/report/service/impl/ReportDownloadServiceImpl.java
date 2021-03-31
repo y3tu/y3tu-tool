@@ -11,6 +11,7 @@ import com.y3tu.tool.server.report.exception.ReportException;
 import com.y3tu.tool.server.report.repository.ReportDownloadRepository;
 import com.y3tu.tool.server.report.service.ReportDownloadService;
 import com.y3tu.tool.server.report.service.ReportService;
+import com.y3tu.tool.server.websocket.MessageEndPoint;
 import com.y3tu.tool.web.base.jpa.BaseServiceImpl;
 import com.y3tu.tool.web.base.jpa.PageInfo;
 import com.y3tu.tool.web.file.service.RemoteFileHelper;
@@ -48,6 +49,8 @@ public class ReportDownloadServiceImpl extends BaseServiceImpl<ReportDownloadRep
     RemoteFileHelper remoteFileHelper;
     @Autowired
     ReportProperties properties;
+    @Autowired
+    MessageEndPoint messageEndPoint;
 
     @Override
     public PageInfo page(PageInfo pageInfo) {
@@ -117,7 +120,7 @@ public class ReportDownloadServiceImpl extends BaseServiceImpl<ReportDownloadRep
             reportDownload.setStatus(ReportDownload.STATUS_NORMAL);
             reportDownload.setUpdateTime(new Date());
             this.update(reportDownload);
-
+            messageEndPoint.sendAllMessage("报表" + reportDto.getName() + "生成完成！");
         } catch (Exception e) {
             reportDownload.setErrMsg(e.getMessage());
             reportDownload.setStatus(ReportDownload.STATUS_ERROR);

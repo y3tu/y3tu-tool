@@ -7,27 +7,31 @@
             <div v-bind:style="{minHeight: Height+'px'}">
                 <router-view v-slot="{ Component }" v-if="$route.meta.keepAlive">
                     <keep-alive>
-                        <component :is="Component" />
+                        <component :is="Component"/>
                     </keep-alive>
                 </router-view>
                 <router-view v-slot="{ Component }" v-if="!$route.meta.keepAlive">
                     <keep-alive>
-                        <component :is="Component" />
+                        <component :is="Component"/>
                     </keep-alive>
                 </router-view>
             </div>
         </el-main>
+
+        <message-web-socket></message-web-socket>
     </el-container>
 </template>
 
 <script>
+    import messageWebSocket from "../websocket/messageWebSocket";
     import Header from './header'
     import Headroom from 'headroom.js'
 
     export default {
         name: 'Home',
         components: {
-            Header
+            Header,
+            messageWebSocket
         },
         created() {
             this.$nextTick(() => {
