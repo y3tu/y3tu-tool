@@ -79,7 +79,7 @@
 <script>
 
 
-    import {page, downloadFile,test} from './api'
+    import {page, downloadFile} from './api'
 
     export default {
         name: 'download',
