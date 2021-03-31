@@ -21,7 +21,9 @@
         },
         methods: {
             initWebSocket() {
-                let url = 'ws://localhost:8080/websocket/message/test'
+                console.log(process.env)
+                let api = process.env.MSG_SOCKET_API;
+                let url = `${api}/websocket/message/all`
                 this.websocket = new WebSocket(url)
                 // 连接错误
                 this.websocket.onerror = this.setErrorMessage
