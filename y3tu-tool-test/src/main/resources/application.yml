@@ -28,26 +28,21 @@ spring:
       datasource:
         support:
           username: root
-          password: yxy46262966
+          password: root
           driver-class-name: com.mysql.jdbc.Driver
-          url: jdbc:mysql://cdb-plx1fn42.cd.tencentcdb.com:10149/yao-support??allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+          url: jdbc:mysql://localhost:3306/yao-support??allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
         report:
           username: root
-          password: yxy46262966
+          password: root
           driver-class-name: com.mysql.jdbc.Driver
-          url: jdbc:mysql://cdb-plx1fn42.cd.tencentcdb.com:10149/yao-report??allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
-        blog:
-          username: root
-          password: yxy46262966
-          driver-class-name: com.mysql.jdbc.Driver
-          url: jdbc:mysql://cdb-plx1fn42.cd.tencentcdb.com:10149/yao-blog??allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+          url: jdbc:mysql://localhost:3306/yao-report??allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
       primary: support
 
   redis:
     database: 0
-    host: 132.232.11.210
+    host: 127.0.0.1
     port: 6379
-    password: y3tu
+    password:
     lettuce:
       pool:
         min-idle: 8
@@ -67,10 +62,10 @@ y3tu:
     web:
       sftp:
         enable: true
-        host: 132.232.11.210
+        host: 127.0.0.1
         port: 22
         username: root
-        password: Yxy46262966
+        password: root
 
 
 
