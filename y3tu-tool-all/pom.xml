@@ -37,7 +37,7 @@
 
         <dependency>
             <groupId>com.y3tu</groupId>
-            <artifactId>y3tu-tool-serv</artifactId>
+            <artifactId>y3tu-tool-server</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 

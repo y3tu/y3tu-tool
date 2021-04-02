@@ -11,7 +11,7 @@
         <version>2.2.3</version>
     </parent>
 
-    <artifactId>y3tu-tool-serv</artifactId>
+    <artifactId>y3tu-tool-server</artifactId>
 
     <name>${project.artifactId}</name>
     <description>相关服务</description>
