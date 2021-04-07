@@ -6,6 +6,7 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.y3tu.tool.web.exception.UpDownLoadException;
 import com.y3tu.tool.web.file.properties.SftpProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.PooledObjectFactory;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
@@ -17,6 +18,7 @@ import java.util.Properties;
  *
  * @author y3tu
  */
+@Slf4j
 public class SftpFactory implements PooledObjectFactory<ChannelSftp> {
 
     /**
@@ -41,6 +43,7 @@ public class SftpFactory implements PooledObjectFactory<ChannelSftp> {
             sshSession.connect();
             ChannelSftp channelSftp = (ChannelSftp) sshSession.openChannel("sftp");
             channelSftp.connect();
+            log.info("新建sftp连接！");
             return new DefaultPooledObject<>(channelSftp);
         } catch (JSchException e) {
             throw new UpDownLoadException("连接sftp失败", e);
@@ -55,18 +58,25 @@ public class SftpFactory implements PooledObjectFactory<ChannelSftp> {
 
     @Override
     public boolean validateObject(PooledObject<ChannelSftp> pooledObject) {
-        ChannelSftp channelSftp = pooledObject.getObject();
-        return channelSftp.isConnected();
+        try {
+            ChannelSftp channelSftp = pooledObject.getObject();
+            channelSftp.pwd();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
     public void activateObject(PooledObject<ChannelSftp> pooledObject) throws Exception {
-
+        ChannelSftp channelSftp = pooledObject.getObject();
+        channelSftp.pwd();
     }
 
     @Override
     public void passivateObject(PooledObject<ChannelSftp> pooledObject) throws Exception {
-
+        ChannelSftp channelSftp = pooledObject.getObject();
+        channelSftp.pwd();
     }
 
     public SftpProperties getSftpProperties() {

@@ -101,4 +101,17 @@ public class ReportDownloadController {
         reportDownloadService.download(id, request, response);
     }
 
+    /**
+     * 重新处理报表
+     * @param id
+     */
+    @GetMapping("handleAgain/{id}")
+    public void handleAgain(@PathVariable int id){
+        ReportDownload reportDownload = reportDownloadService.getById(id);
+        reportDownload.setStatus(ReportDownload.STATUS_WAIT);
+        reportDownload.setUpdateTime(new Date());
+        reportDownload.setErrMsg("");
+        reportDownloadService.update(reportDownload);
+    }
+
 }

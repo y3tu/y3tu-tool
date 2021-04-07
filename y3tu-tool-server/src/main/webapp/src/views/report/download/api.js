@@ -11,9 +11,17 @@ export function page(params) {
     })
 }
 
+export function handleAgain(id) {
+    return service({
+        url: `y3tu-tool-report/reportDownload/handleAgain/${id}`,
+        method: 'get',
+    })
+}
+
 export function downloadFile(id, fileName) {
     download(`y3tu-tool-report/reportDownload/download/${id}`, fileName);
 }
+
 
 
 

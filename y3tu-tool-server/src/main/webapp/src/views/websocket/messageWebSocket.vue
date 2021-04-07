@@ -21,8 +21,7 @@
         },
         methods: {
             initWebSocket() {
-                console.log(process.env)
-                let api = process.env.MSG_SOCKET_API;
+                let api = process.env.VUE_APP_MSG_SOCKET_API;
                 let url = `${api}/websocket/message/all`
                 this.websocket = new WebSocket(url)
                 // 连接错误
@@ -90,17 +89,17 @@
             setErrorMessage() {
                 //重连
                 this.reconnect();
-                console.log("WebSocket连接发生错误" + '   状态码：' + this.websocket.readyState)
+                //console.log("WebSocket连接发生错误" + '   状态码：' + this.websocket.readyState)
             },
             setOnopenMessage() {
                 //开启心跳
                 this.start();
-                console.log("WebSocket连接成功" + '   状态码：' + this.websocket.readyState)
+                //console.log("WebSocket连接成功" + '   状态码：' + this.websocket.readyState)
             },
             setOncloseMessage() {
                 //重连
                 this.reconnect();
-                console.log("WebSocket连接关闭" + '   状态码：' + this.websocket.readyState)
+                //console.log("WebSocket连接关闭" + '   状态码：' + this.websocket.readyState)
             },
             onbeforeunload() {
                 this.closeWebSocket();

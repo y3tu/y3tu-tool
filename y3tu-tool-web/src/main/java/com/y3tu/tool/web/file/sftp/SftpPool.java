@@ -23,6 +23,9 @@ public class SftpPool {
         poolConfig.setMaxTotal(sftpProperties.getMaxTotal());
         // 不设置默认无限等待
         poolConfig.setMaxWaitMillis(sftpProperties.getMaxWaitMillis());
+        // 借出时开启校验
+        poolConfig.setTestOnBorrow(true);
+        poolConfig.setTestOnReturn(true);
         this.pool = new GenericObjectPool<ChannelSftp>(factory, poolConfig);
     }
 

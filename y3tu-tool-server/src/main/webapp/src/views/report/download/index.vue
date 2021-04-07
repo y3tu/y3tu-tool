@@ -59,6 +59,8 @@
                 <template #default="scope">
                     <i class="el-icon-download table-operation" style="color: #2db7f5;"
                        @click="download(scope.row)"/>
+                    <i class="el-icon-refresh table-operation" style="color: #2db7f5;"
+                       @click="handleAgain(scope.row)"/>
                 </template>
             </el-table-column>
         </el-table>
@@ -79,7 +81,7 @@
 <script>
 
 
-    import {page, downloadFile} from './api'
+    import {page, downloadFile, handleAgain} from './api'
 
     export default {
         name: 'download',
@@ -147,8 +149,16 @@
             download(row) {
                 if (row.status != '00A') {
                     this.$toast('报表还不能下载，请稍后再试！', 'warning', 3000);
+                    return
                 }
+                this.$toast('开始下载，请稍后！', '', 3000);
                 downloadFile(row.id, row.reportName + ".xlsx");
+            },
+            handleAgain(row) {
+                this.$toast('重新生成报表！', '', 3000);
+                handleAgain(row.id).then(()=>{
+                    this.query()
+                });
             }
         }
     }

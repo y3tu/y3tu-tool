@@ -1,5 +1,6 @@
 package com.y3tu.tool.server.report.service.impl;
 
+import cn.hutool.core.util.ZipUtil;
 import com.y3tu.tool.core.io.FileUtil;
 import com.y3tu.tool.core.util.JsonUtil;
 import com.y3tu.tool.server.report.configure.ReportProperties;
@@ -29,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -104,23 +106,35 @@ public class ReportDownloadServiceImpl extends BaseServiceImpl<ReportDownloadRep
             reportDto.setParams(params);
 
             //在服务器临时目录上生成报表文件
-            String tempFileName = UUID.randomUUID().toString() + ".xlsx";
-            String tempFilePath = FileUtil.SYS_TEM_DIR + File.separator + tempFileName;
-            File file = new File(tempFilePath);
+            String tempFileName = UUID.randomUUID().toString();
+            String tempFileNameExcel = tempFileName + ".xlsx";
+            String tempFileNameZip = tempFileName + ".zip";
+            String tempFilePathExcel = FileUtil.SYS_TEM_DIR + File.separator + tempFileNameExcel;
+            String tempFilePathZip = FileUtil.SYS_TEM_DIR + File.separator + tempFileNameZip;
+            File file = new File(tempFilePathExcel);
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             //生成报表文件
             reportService.exportExcel(reportDto, fileOutputStream);
+            //压缩报表文件
+            ZipUtil.zip(tempFilePathExcel, tempFilePathZip, StandardCharsets.UTF_8, false);
             //上传到远程服务器上
-            boolean flag = remoteFileHelper.upload(properties.getRemotePath(), tempFileName, tempFilePath);
+            boolean flag = remoteFileHelper.upload(properties.getRemotePath(), tempFileNameZip, tempFilePathZip);
             //更新report_download表状态
             if (flag) {
-                reportDownload.setRemoteFilePath(properties.getRemotePath() + tempFileName);
+                //删除本地服务器报表压缩文件
+                FileUtil.del(tempFilePathZip);
+                reportDownload.setRemoteFilePath(properties.getRemotePath() + tempFileNameZip);
+                reportDownload.setRealFileName(tempFileName);
+                reportDownload.setStatus(ReportDownload.STATUS_NORMAL);
+                reportDownload.setUpdateTime(new Date());
+                this.update(reportDownload);
+                messageEndPoint.sendAllMessage("报表" + reportDto.getName() + "生成完成！");
+            } else {
+                reportDownload.setStatus(ReportDownload.STATUS_ERROR);
+                reportDownload.setErrMsg("上传远程服务器失败！");
+                reportDownload.setUpdateTime(new Date());
+                this.update(reportDownload);
             }
-            reportDownload.setRealFileName(tempFileName);
-            reportDownload.setStatus(ReportDownload.STATUS_NORMAL);
-            reportDownload.setUpdateTime(new Date());
-            this.update(reportDownload);
-            messageEndPoint.sendAllMessage("报表" + reportDto.getName() + "生成完成！");
         } catch (Exception e) {
             reportDownload.setErrMsg(e.getMessage());
             reportDownload.setStatus(ReportDownload.STATUS_ERROR);
@@ -140,16 +154,28 @@ public class ReportDownloadServiceImpl extends BaseServiceImpl<ReportDownloadRep
             throw new ReportException("报表还未生成好，请稍后下载！");
         }
         //先判断报表文件是否已经在服务器临时目录
-        String filePath = FileUtil.SYS_TEM_DIR + File.separator + reportDownload.getRealFileName();
+        String filePath = FileUtil.SYS_TEM_DIR + File.separator + reportDownload.getRealFileName() + ".xlsx";
         File file = new File(filePath);
         if (!FileUtil.exist(file)) {
-            boolean flag = remoteFileHelper.download(reportDownload.getRemoteFilePath(), filePath);
+            //如果不在服务器临时目录，从远处服务器中下载
+            String filePathZip = FileUtil.SYS_TEM_DIR + File.separator + reportDownload.getRealFileName() + ".zip";
+            boolean flag = remoteFileHelper.download(reportDownload.getRemoteFilePath(), filePathZip);
             if (flag) {
+                //解压报表文件
+                ZipUtil.unzip(filePathZip, FileUtil.SYS_TEM_DIR + File.separator, StandardCharsets.UTF_8);
+                //删除压缩文件
+                FileUtil.del(filePathZip);
+                //更新下载次数
                 reportDownload.setDownloadTimes(reportDownload.getDownloadTimes() + 1);
                 this.update(reportDownload);
+                //下载文件到浏览器
                 FileUtil.downloadFile(file, report.getName(), false, request, response);
             } else {
-                throw new ReportException("远程下载报表文件异常");
+                reportDownload.setErrMsg("远程下载报表文件异常!");
+                reportDownload.setUpdateTime(new Date());
+                reportDownload.setStatus(ReportDownload.STATUS_ERROR);
+                this.update(reportDownload);
+                throw new ReportException("远程下载报表文件异常!");
             }
         } else {
             reportDownload.setDownloadTimes(reportDownload.getDownloadTimes() + 1);

@@ -113,11 +113,7 @@ export function downloadPost(url,data,fileName){
         }
     }).catch((r) => {
         console.error(r);
-        this.$message({
-            message: '下载失败,文件已删除或移动到其他位置，请检查！',
-            type: 'error',
-            duration: messageDuration
-        })
+        toast('下载失败,文件已删除或移动到其他位置，请检查!', 'error',messageDuration)
     })
 }
 
@@ -141,11 +137,7 @@ export function download(url, fileName) {
         }
     }).catch((r) => {
         console.error(r);
-        this.$message({
-            message: '下载失败,文件已删除或移动到其他位置，请检查！',
-            type: 'error',
-            duration: messageDuration
-        })
+        toast('下载失败,文件已删除或移动到其他位置，请检查!', 'error',messageDuration)
     })
 }
 
