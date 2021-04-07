@@ -53,14 +53,19 @@ public class SftpFactory implements PooledObjectFactory<ChannelSftp> {
     @Override
     public void destroyObject(PooledObject<ChannelSftp> pooledObject) throws Exception {
         ChannelSftp channelSftp = pooledObject.getObject();
+        Session session = channelSftp.getSession();
         channelSftp.disconnect();
+        //断开sftp连接之后，再断开session连接
+        if (session != null) {
+            session.disconnect();
+        }
     }
 
     @Override
     public boolean validateObject(PooledObject<ChannelSftp> pooledObject) {
         try {
             ChannelSftp channelSftp = pooledObject.getObject();
-            channelSftp.pwd();
+            channelSftp.cd("/");
             return true;
         } catch (Exception e) {
             return false;
@@ -70,13 +75,13 @@ public class SftpFactory implements PooledObjectFactory<ChannelSftp> {
     @Override
     public void activateObject(PooledObject<ChannelSftp> pooledObject) throws Exception {
         ChannelSftp channelSftp = pooledObject.getObject();
-        channelSftp.pwd();
+        channelSftp.cd("/");
     }
 
     @Override
     public void passivateObject(PooledObject<ChannelSftp> pooledObject) throws Exception {
         ChannelSftp channelSftp = pooledObject.getObject();
-        channelSftp.pwd();
+        channelSftp.cd("/");
     }
 
     public SftpProperties getSftpProperties() {
