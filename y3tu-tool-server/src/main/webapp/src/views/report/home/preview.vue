@@ -148,13 +148,14 @@
                 })
             },
             exportData() {
-
                 isBigData(this.report).then(res => {
                     if (res.data) {
+                        this.exportLoading = true;
                         //大数据量报表写入报表生成日志
                         // 如果报表已经生成好，直接获取到报表下载链接开始下载报表；如果未生成好，跳转到报表下载页面
-                        createReportDownload(this.report).then(res => {
-
+                        createReportDownload(this.report).then(() => {
+                          this.exportLoading = false;
+                          this.$toast('正在生成导出文件，请稍后在报表下载页面查看报表生成情况并下载！', 'success', 5000)
                         })
                     } else {
                         this.exportLoading = true;
@@ -165,7 +166,6 @@
                         this.$toast('正在生成导出文件，请稍后！', 'success', 5000)
                     }
                 })
-
             },
             sizeChange(e) {
                 this.pageInfo.current = 1;
