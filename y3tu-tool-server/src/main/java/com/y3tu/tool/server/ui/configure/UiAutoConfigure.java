@@ -1,5 +1,6 @@
 package com.y3tu.tool.server.ui.configure;
 
+import com.y3tu.tool.core.exception.ServerException;
 import com.y3tu.tool.server.ui.web.UiViewServlet;
 import com.y3tu.tool.server.ui.web.filter.UiFilter;
 import org.springframework.beans.factory.annotation.Value;
@@ -58,6 +59,11 @@ public class UiAutoConfigure {
 
     @Bean
     public FilterRegistrationBean cacheFilterRegistration() {
+
+        if (uiUrlPattern.equals(serverUrlPattern)) {
+            //如果用户配置的url和服务url相同，会影响url解析，应限制用户配置的url不能合serverUrlPattern相同
+            throw new ServerException("用户配置的url不能为y3tu-tool-server,请更换！");
+        }
 
         FilterRegistrationBean registration = new FilterRegistrationBean();
         UiFilter uiFilter = new UiFilter();
