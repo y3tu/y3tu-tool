@@ -23,10 +23,9 @@ public class UiAutoConfigure {
     @Value("${y3tu.tool.cache.url-pattern:/y3tu-tool-cache/*}")
     private String cacheUrlPattern;
 
-    @Value("${y3tu.tool.report.url-pattern:/y3tu-tool-report/*}")
-    private String reportUrlPattern;
+    private String serverUrlPattern = "/y3tu-tool-server/*";
 
-    @Value("${y3tu.tool.ui.url-pattern:/y3tu-tool-ui/*}")
+    @Value("${y3tu.tool.server.ui.url-pattern:/tool-server-ui/*}")
     private String uiUrlPattern;
 
 
@@ -40,7 +39,7 @@ public class UiAutoConfigure {
         ServletRegistrationBean registrationBean = new ServletRegistrationBean();
         //设置需要拦截的url
         registrationBean.setServlet(new UiViewServlet());
-        registrationBean.addUrlMappings(properties.getUrlPattern() != null ? properties.getUrlPattern() : "/y3tu-tool-ui/*");
+        registrationBean.addUrlMappings(properties.getUrlPattern() != null ? properties.getUrlPattern() : "/tool-server-ui/*");
 
         if (properties.getAllow() != null) {
             registrationBean.addInitParameter("allow", properties.getAllow());
@@ -64,7 +63,7 @@ public class UiAutoConfigure {
         UiFilter uiFilter = new UiFilter();
         uiFilter.setCacheUrlPattern(cacheUrlPattern);
         uiFilter.setUiUrlPattern(uiUrlPattern);
-        uiFilter.setReportUrlPattern(reportUrlPattern);
+        uiFilter.setServerUrlPattern(serverUrlPattern);
         registration.setFilter(uiFilter);
         registration.addUrlPatterns(uiUrlPattern);
         registration.setName("uiFilter");

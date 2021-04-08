@@ -22,7 +22,7 @@
       "type": "java.lang.String",
       "description": "访问ui的url",
       "sourceType": "com.y3tu.tool.server.ui.configure.UiProperties",
-      "defaultValue": "/y3tu-tool-ui/*"
+      "defaultValue": "/tool-server-ui/*"
     },
     {
       "name": "y3tu.tool.server.remote.remoteMode",

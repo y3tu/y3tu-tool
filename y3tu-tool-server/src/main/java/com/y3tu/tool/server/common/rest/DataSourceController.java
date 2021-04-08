@@ -20,7 +20,7 @@ import java.util.Date;
  * @author y3tu
  */
 @RestController
-@RequestMapping("${y3tu.tool.server.ui.urlPattern:y3tu-tool-server}/dataSource")
+@RequestMapping("y3tu-tool-server/dataSource")
 public class DataSourceController {
 
     @Autowired

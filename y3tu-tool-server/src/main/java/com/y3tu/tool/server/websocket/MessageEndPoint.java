@@ -19,7 +19,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  *
  * @author y3tu
  */
-@ServerEndpoint("/websocket/message/{openId}")
+@ServerEndpoint("/y3tu-tool-server/websocket/message/{openId}")
 @Component
 @Slf4j
 public class MessageEndPoint {

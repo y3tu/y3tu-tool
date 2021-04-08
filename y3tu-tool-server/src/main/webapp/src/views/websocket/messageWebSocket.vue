@@ -22,7 +22,7 @@
         methods: {
             initWebSocket() {
                 let api = process.env.VUE_APP_MSG_SOCKET_API;
-                let url = `${api}/websocket/message/all`
+                let url = `${api}/y3tu-tool-server/websocket/message/all`
                 this.websocket = new WebSocket(url)
                 // 连接错误
                 this.websocket.onerror = this.setErrorMessage
