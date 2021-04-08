@@ -123,6 +123,7 @@ public class JasperReportServiceImpl implements JasperReportService {
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
+            throw new ReportException("获取Jasper模板文件异常,请检查文件！");
         }
         return result;
     }

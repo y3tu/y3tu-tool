@@ -111,12 +111,14 @@ public class FtpFactory implements PooledObjectFactory<FTPClient> {
 
     @Override
     public void activateObject(PooledObject<FTPClient> pooledObject) throws Exception {
-
+        FTPClient ftpClient = pooledObject.getObject();
+        ftpClient.sendNoOp();
     }
 
     @Override
     public void passivateObject(PooledObject<FTPClient> pooledObject) throws Exception {
-
+        FTPClient ftpClient = pooledObject.getObject();
+        ftpClient.sendNoOp();
     }
 
     public FtpProperties getFtpProperties() {

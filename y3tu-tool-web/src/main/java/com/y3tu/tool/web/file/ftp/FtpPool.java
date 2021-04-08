@@ -24,6 +24,10 @@ public class FtpPool {
         poolConfig.setMaxTotal(ftpProperties.getMaxTotal());
         // 不设置默认无限等待
         poolConfig.setMaxWaitMillis(ftpProperties.getMaxWaitMillis());
+        // 借出时开启校验
+        poolConfig.setTestOnBorrow(true);
+        // 返还时开启校验
+        poolConfig.setTestOnReturn(true);
         this.pool = new GenericObjectPool<FTPClient>(factory, poolConfig);
     }
 

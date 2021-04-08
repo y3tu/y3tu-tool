@@ -7,7 +7,7 @@
 
     <groupId>com.y3tu</groupId>
     <artifactId>y3tu-tool</artifactId>
-    <version>2.2.3</version>
+    <version>${y3tu-tool.version}</version>
     <name>y3tu-tool</name>
     <description>常用工具集合</description>
     <url>https://github.com/y3tu/y3tu-tool</url>
@@ -25,6 +25,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <y3tu-tool.version>2.2.3</y3tu-tool.version>
         <lombok-version>1.16.18</lombok-version>
         <junit-version>4.12</junit-version>
         <assertj.version>2.6.0</assertj.version>
