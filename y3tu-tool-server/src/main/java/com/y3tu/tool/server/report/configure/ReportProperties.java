@@ -7,10 +7,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author y3tu
  */
 @Data
-@ConfigurationProperties(prefix = "y3tu.tool.report")
+@ConfigurationProperties(prefix = "y3tu.tool.server.report")
 public class ReportProperties {
     /**
      * 远程服务器存放模板附件路径
      */
-    String remotePath = "/y3tu/report/";
+    String templateRemotePath = "/y3tu/report/";
+    /**
+     * 远程服务器存放报表路径
+     */
+    String reportRemotePath = "/y3tu/report/";
 }

@@ -88,7 +88,7 @@ export default {
   data() {
     return {
       fileList: [],
-      uploadAction: process.env.VUE_APP_BASE_API + '/y3tu-tool-report/report/upload',
+      uploadAction: process.env.VUE_APP_BASE_API + '/y3tu-tool-server/report/upload',
       dataSourceList: [],
       rules: {
         name: {required: true, message: "报表名称不能为空", trigger: 'blur'},

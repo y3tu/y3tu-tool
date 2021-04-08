@@ -76,7 +76,7 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
             //附件上传到远程服务器
             String tempFileName = reportDto.getFileTempPrefix() + ".jrxml";
             String tempFilePath = FileUtil.SYS_TEM_DIR + tempFileName;
-            boolean flag = remoteFileHelper.upload(properties.getRemotePath(), tempFileName, tempFilePath);
+            boolean flag = remoteFileHelper.upload(properties.getTemplateRemotePath(), tempFileName, tempFilePath);
             //删除临时目录文件
             FileUtil.del(tempFilePath);
             if (flag) {
@@ -86,7 +86,7 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
                 reportAttachment.setStatus("00A");
                 reportAttachment.setName(reportDto.getFileName());
                 reportAttachment.setRealFileName(tempFileName);
-                reportAttachment.setRemoteFilePath(properties.getRemotePath() + tempFileName);
+                reportAttachment.setRemoteFilePath(properties.getTemplateRemotePath() + tempFileName);
                 reportAttachment.setCreateTime(new Date());
                 reportAttachmentService.create(reportAttachment);
             } else {
@@ -112,7 +112,7 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
             //附件上传到远程服务器
             String tempFileName = reportDto.getFileTempPrefix() + ".jrxml";
             String tempFilePath = FileUtil.SYS_TEM_DIR + tempFileName;
-            boolean flag = remoteFileHelper.upload(properties.getRemotePath(), tempFileName, tempFilePath);
+            boolean flag = remoteFileHelper.upload(properties.getTemplateRemotePath(), tempFileName, tempFilePath);
             //删除临时目录文件
             FileUtil.del(tempFilePath);
             if (flag) {
@@ -125,7 +125,7 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
                     reportAttachment.setStatus("00A");
                     reportAttachment.setName(reportDto.getFileName());
                     reportAttachment.setRealFileName(tempFileName);
-                    reportAttachment.setRemoteFilePath(properties.getRemotePath() + tempFileName);
+                    reportAttachment.setRemoteFilePath(properties.getTemplateRemotePath() + tempFileName);
                     reportAttachment.setCreateTime(new Date());
                     reportAttachmentService.create(reportAttachment);
                 } else {
@@ -133,7 +133,7 @@ public class ReportServiceImpl extends BaseServiceImpl<ReportRepository, Report>
                         String oldPath = reportAttachment.getRemoteFilePath();
                         reportAttachment.setName(reportDto.getFileName());
                         reportAttachment.setRealFileName(tempFileName);
-                        reportAttachment.setRemoteFilePath(properties.getRemotePath() + tempFileName);
+                        reportAttachment.setRemoteFilePath(properties.getTemplateRemotePath() + tempFileName);
                         reportAttachment.setUpdateTime(new Date());
                         reportAttachmentService.update(reportAttachment);
                         //删除老附件

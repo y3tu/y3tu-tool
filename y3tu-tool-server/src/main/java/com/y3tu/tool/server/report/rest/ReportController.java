@@ -25,7 +25,7 @@ import java.util.List;
  * @author y3tu
  */
 @RestController
-@RequestMapping("${y3tu.tool.report.urlPattern:y3tu-tool-report}/report")
+@RequestMapping("${y3tu.tool.server.ui.urlPattern:y3tu-tool-server}/report")
 public class ReportController {
 
     @Autowired

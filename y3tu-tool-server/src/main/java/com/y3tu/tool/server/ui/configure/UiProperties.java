@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  *
  * @author y3tu
  */
-@ConfigurationProperties(prefix = "y3tu.tool.ui")
+@ConfigurationProperties(prefix = "y3tu.tool.server.ui")
 @Data
 public class UiProperties {
 

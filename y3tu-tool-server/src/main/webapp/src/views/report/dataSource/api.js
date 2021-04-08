@@ -5,7 +5,7 @@ import service from '@/plugin/axios'
  */
 export function page(params) {
     return service({
-        url: 'y3tu-tool-report/dataSource/page',
+        url: 'y3tu-tool-server/dataSource/page',
         method: 'post',
         data: params
     })
@@ -16,7 +16,7 @@ export function page(params) {
  */
 export function create(params) {
     return service({
-        url: 'y3tu-tool-report/dataSource/create',
+        url: 'y3tu-tool-server/dataSource/create',
         method: 'post',
         data: params
     })
@@ -27,7 +27,7 @@ export function create(params) {
  */
 export function update(params) {
     return service({
-        url: 'y3tu-tool-report/dataSource/update',
+        url: 'y3tu-tool-server/dataSource/update',
         method: 'post',
         data: params
     })
@@ -38,7 +38,7 @@ export function update(params) {
  */
 export function del(id) {
     return service({
-        url: `y3tu-tool-report/dataSource/del/${id}`,
+        url: `y3tu-tool-server/dataSource/del/${id}`,
         method: 'get',
     })
 }
@@ -48,7 +48,7 @@ export function del(id) {
  */
 export function testConnect(id) {
     return service({
-        url: `y3tu-tool-report/dataSource/testConnect/${id}`,
+        url: `y3tu-tool-server/dataSource/testConnect/${id}`,
         method: 'get',
     })
 }

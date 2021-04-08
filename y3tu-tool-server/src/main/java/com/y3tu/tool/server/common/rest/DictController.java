@@ -23,7 +23,7 @@ import java.util.List;
  * @author y3tu
  */
 @RestController
-@RequestMapping("${y3tu.tool.report.urlPattern:y3tu-tool-report}/dict")
+@RequestMapping("${y3tu.tool.server.ui.urlPattern:y3tu-tool-server}/dict")
 public class DictController {
 
     @Autowired

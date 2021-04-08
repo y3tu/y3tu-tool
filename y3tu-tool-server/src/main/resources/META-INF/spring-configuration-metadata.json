@@ -1,44 +1,86 @@
 {
   "groups": [
     {
-      "name": "y3tu.tool.report",
+      "name": "y3tu.tool.server.ui",
+      "type": "com.y3tu.tool.server.ui.configure.UiProperties",
+      "sourceType": "com.y3tu.tool.ui.configure.UiProperties"
+    },
+    {
+      "name": "y3tu.tool.server.report",
       "type": "com.y3tu.tool.server.report.configure.ReportProperties",
       "sourceType": "com.y3tu.tool.server.report.configure.ReportProperties"
     },
     {
-      "name": "y3tu.tool.ui",
-      "type": "com.y3tu.tool.server.ui.configure.UiProperties",
-      "sourceType": "com.y3tu.tool.ui.configure.UiProperties"
+      "name": "y3tu.tool.server.report.remote",
+      "type": "com.y3tu.tool.server.configure.RemoteProperties",
+      "sourceType": "com.y3tu.tool.server.configure.RemoteProperties"
     }
   ],
   "properties": [
     {
-      "name": "y3tu.tool.report.enable",
-      "type": "java.lang.Boolean",
-      "description": "是否开启",
-      "sourceType": "com.y3tu.tool.server.report.configure.ReportProperties",
-      "defaultValue": true
-    },
-    {
-      "name": "y3tu.tool.report.urlPattern",
+      "name": "y3tu.tool.server.ui.urlPattern",
       "type": "java.lang.String",
-      "description": "请求接口访问前缀",
-      "sourceType": "com.y3tu.tool.server.report.configure.ReportProperties",
-      "defaultValue": "y3tu-tool-report"
+      "description": "访问ui的url",
+      "sourceType": "com.y3tu.tool.server.ui.configure.UiProperties",
+      "defaultValue": "/y3tu-tool-ui/*"
     },
     {
-      "name": "y3tu.tool.report.remotePath",
+      "name": "y3tu.tool.server.remote.remoteMode",
+      "type": "com.y3tu.tool.server.report.entity.constant.RemoteMode",
+      "description": "远程服务模式",
+      "sourceType": "com.y3tu.tool.server.configure.RemoteProperties"
+    },
+    {
+      "name": "y3tu.tool.server.remote.host",
+      "type": "java.lang.String",
+      "description": "远程主机地址",
+      "sourceType": "com.y3tu.tool.server.configure.RemoteProperties"
+    },
+    {
+      "name": "y3tu.tool.server.remote.port",
+      "type": "java.lang.String",
+      "description": "端口",
+      "sourceType": "com.y3tu.tool.server.configure.RemoteProperties"
+    },
+    {
+      "name": "y3tu.tool.server.remote.username",
+      "type": "java.lang.String",
+      "description": "用户名",
+      "sourceType": "com.y3tu.tool.server.configure.RemoteProperties"
+    },
+    {
+      "name": "y3tu.tool.server.remote.password",
+      "type": "java.lang.String",
+      "description": "密码",
+      "sourceType": "com.y3tu.tool.server.configure.RemoteProperties"
+    },
+    {
+      "name": "y3tu.tool.server.remote.maxTotal",
+      "type": "java.lang.Integer",
+      "description": "连接池池中最大连接",
+      "sourceType": "com.y3tu.tool.server.configure.RemoteProperties",
+      "defaultValue": 20
+    },
+    {
+      "name": "y3tu.tool.server.remote.maxWaitMillis",
+      "type": "java.lang.Integer",
+      "description": "ftp连接最长等待时间 单位毫秒",
+      "sourceType": "com.y3tu.tool.server.configure.RemoteProperties",
+      "defaultValue": 30000
+    },
+    {
+      "name": "y3tu.tool.server.report.templateRemotePath",
       "type": "java.lang.String",
       "description": "远程服务器存放模板附件路径",
-      "sourceType": "com.y3tu.tool.server.report.configure.ReportProperties",
+      "sourceType": "com.y3tu.tool.server.configure.RemoteProperties",
       "defaultValue": "/y3tu/report/"
     },
     {
-      "name": "y3tu.tool.ui.urlPattern",
+      "name": "y3tu.tool.server.report.reportRemotePath",
       "type": "java.lang.String",
-      "description": "访问ui的url",
-      "sourceType": "com.y3tu.tool.ui.configure.UiProperties",
-      "defaultValue": "/y3tu-tool-ui/*"
+      "description": "远程服务器存放报表路径",
+      "sourceType": "com.y3tu.tool.server.configure.RemoteProperties",
+      "defaultValue": "/y3tu/report/"
     }
   ],
   "hints": []

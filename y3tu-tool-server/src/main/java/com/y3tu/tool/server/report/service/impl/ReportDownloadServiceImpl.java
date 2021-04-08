@@ -118,12 +118,12 @@ public class ReportDownloadServiceImpl extends BaseServiceImpl<ReportDownloadRep
             //压缩报表文件
             ZipUtil.zip(tempFilePathExcel, tempFilePathZip, StandardCharsets.UTF_8, false);
             //上传到远程服务器上
-            boolean flag = remoteFileHelper.upload(properties.getRemotePath(), tempFileNameZip, tempFilePathZip);
+            boolean flag = remoteFileHelper.upload(properties.getReportRemotePath(), tempFileNameZip, tempFilePathZip);
             //更新report_download表状态
             if (flag) {
                 //删除本地服务器报表压缩文件
                 FileUtil.del(tempFilePathZip);
-                reportDownload.setRemoteFilePath(properties.getRemotePath() + tempFileNameZip);
+                reportDownload.setRemoteFilePath(properties.getReportRemotePath() + tempFileNameZip);
                 reportDownload.setRealFileName(tempFileName);
                 reportDownload.setStatus(ReportDownload.STATUS_NORMAL);
                 reportDownload.setUpdateTime(new Date());

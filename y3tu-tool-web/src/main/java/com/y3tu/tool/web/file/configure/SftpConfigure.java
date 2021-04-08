@@ -1,7 +1,6 @@
 package com.y3tu.tool.web.file.configure;
 
 import com.y3tu.tool.web.file.properties.SftpProperties;
-import com.y3tu.tool.web.file.service.RemoteFileHelper;
 import com.y3tu.tool.web.file.sftp.SftpFactory;
 import com.y3tu.tool.web.file.sftp.SftpHelper;
 import com.y3tu.tool.web.file.sftp.SftpPool;
@@ -42,7 +41,7 @@ public class SftpConfigure {
     }
 
     @Bean
-    RemoteFileHelper sftpHelper(SftpPool sftpPool) {
+    SftpHelper sftpHelper(SftpPool sftpPool) {
         return new SftpHelper(sftpPool);
     }
 

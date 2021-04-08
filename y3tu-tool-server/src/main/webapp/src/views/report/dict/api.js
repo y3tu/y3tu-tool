@@ -5,7 +5,7 @@ import service from '@/plugin/axios'
  */
 export function dictPage(params) {
     return service({
-        url: 'y3tu-tool-report/dict/dictPage',
+        url: 'y3tu-tool-server/dict/dictPage',
         method: 'post',
         data: params
     })
@@ -16,7 +16,7 @@ export function dictPage(params) {
  */
 export function dictDataPage(params) {
     return service({
-        url: 'y3tu-tool-report/dict/dictDataPage',
+        url: 'y3tu-tool-server/dict/dictDataPage',
         method: 'post',
         data: params
     })
@@ -27,7 +27,7 @@ export function dictDataPage(params) {
  */
 export function getDictDataByCode(code) {
     return service({
-        url: `y3tu-tool-report/dict/getDictDataByCode/${code}`,
+        url: `y3tu-tool-server/dict/getDictDataByCode/${code}`,
         method: 'get',
     })
 }
@@ -40,7 +40,7 @@ export function getDictDataByCode(code) {
  */
 export function createDict(params) {
     return service({
-        url: 'y3tu-tool-report/dict/createDict',
+        url: 'y3tu-tool-server/dict/createDict',
         method: 'post',
         data: params
     })
@@ -53,7 +53,7 @@ export function createDict(params) {
  */
 export function updateDict(params) {
     return service({
-        url: 'y3tu-tool-report/dict/updateDict',
+        url: 'y3tu-tool-server/dict/updateDict',
         method: 'post',
         data: params
     })
@@ -65,7 +65,7 @@ export function updateDict(params) {
  */
 export function deleteDict(id) {
     return service({
-        url: `y3tu-tool-report/dict/deleteDict/${id}`,
+        url: `y3tu-tool-server/dict/deleteDict/${id}`,
         method: 'get',
     })
 }
@@ -76,7 +76,7 @@ export function deleteDict(id) {
  */
 export function createDictData(params) {
     return service({
-        url: 'y3tu-tool-report/dict/createDictData',
+        url: 'y3tu-tool-server/dict/createDictData',
         method: 'post',
         data: params
     })
@@ -89,7 +89,7 @@ export function createDictData(params) {
  */
 export function updateDictData(params) {
     return service({
-        url: 'y3tu-tool-report/dict/updateDictData',
+        url: 'y3tu-tool-server/dict/updateDictData',
         method: 'post',
         data: params
     })
@@ -101,14 +101,14 @@ export function updateDictData(params) {
  */
 export function deleteDictData(id) {
     return service({
-        url: `y3tu-tool-report/dict/deleteDictData/${id}`,
+        url: `y3tu-tool-server/dict/deleteDictData/${id}`,
         method: 'get',
     })
 }
 
 export function saveDictSql(params) {
     return service({
-        url: 'y3tu-tool-report/dict/saveDictSql',
+        url: 'y3tu-tool-server/dict/saveDictSql',
         method: 'post',
         data: params
     })
@@ -120,7 +120,7 @@ export function saveDictSql(params) {
  */
 export function getDictSql(dictId) {
     return service({
-        url: `y3tu-tool-report/dict/getDictSql/${dictId}`,
+        url: `y3tu-tool-server/dict/getDictSql/${dictId}`,
         method: 'get',
     })
 }
@@ -130,7 +130,7 @@ export function getDictSql(dictId) {
  */
 export function getAllDataSource() {
     return service({
-        url: `y3tu-tool-report/dataSource/getAll`,
+        url: `y3tu-tool-server/dataSource/getAll`,
         method: 'get',
     })
 }

@@ -1,4 +1,4 @@
-package com.y3tu.tool.server.common.emums;
+package com.y3tu.tool.server.common.entity.constant;
 
 /**
  * 数据状态枚举

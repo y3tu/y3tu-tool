@@ -5,7 +5,7 @@ import {service, download, downloadPost} from '@/plugin/axios'
  */
 export function page(params) {
     return service({
-        url: 'y3tu-tool-report/report/page',
+        url: 'y3tu-tool-server/report/page',
         method: 'post',
         data: params
     })
@@ -16,7 +16,7 @@ export function page(params) {
  */
 export function get(id) {
     return service({
-        url: `y3tu-tool-report/report/get/${id}`,
+        url: `y3tu-tool-server/report/get/${id}`,
         method: 'get',
     })
 }
@@ -26,7 +26,7 @@ export function get(id) {
  */
 export function getByName(name) {
     return service({
-        url: `y3tu-tool-report/report/getByName/${name}`,
+        url: `y3tu-tool-server/report/getByName/${name}`,
         method: 'get',
     })
 }
@@ -36,7 +36,7 @@ export function getByName(name) {
  */
 export function create(params) {
     return service({
-        url: 'y3tu-tool-report/report/create',
+        url: 'y3tu-tool-server/report/create',
         method: 'post',
         data: params
     })
@@ -47,7 +47,7 @@ export function create(params) {
  */
 export function update(params) {
     return service({
-        url: 'y3tu-tool-report/report/update',
+        url: 'y3tu-tool-server/report/update',
         method: 'post',
         data: params
     })
@@ -58,7 +58,7 @@ export function update(params) {
  */
 export function del(id) {
     return service({
-        url: `y3tu-tool-report/report/delete/${id}`,
+        url: `y3tu-tool-server/report/delete/${id}`,
         method: 'get',
     })
 }
@@ -67,7 +67,7 @@ export function del(id) {
  * 下载
  */
 export function downloadFile(id, fileName) {
-    download(`y3tu-tool-report/report/download/${id}`, fileName);
+    download(`y3tu-tool-server/report/download/${id}`, fileName);
 }
 
 /**
@@ -75,7 +75,7 @@ export function downloadFile(id, fileName) {
  */
 export function parseSqlForHeader(params) {
     return service({
-        url: 'y3tu-tool-report/report/parseSqlForHeader',
+        url: 'y3tu-tool-server/report/parseSqlForHeader',
         method: 'post',
         data: params
     })
@@ -86,7 +86,7 @@ export function parseSqlForHeader(params) {
  */
 export function getAllDataSource() {
     return service({
-        url: `y3tu-tool-report/dataSource/getAll`,
+        url: `y3tu-tool-server/dataSource/getAll`,
         method: 'get',
     })
 }
@@ -96,7 +96,7 @@ export function getAllDataSource() {
  */
 export function getAllDict() {
     return service({
-        url: `y3tu-tool-report/dict/getAllDict`,
+        url: `y3tu-tool-server/dict/getAllDict`,
         method: 'get',
     })
 }
@@ -106,7 +106,7 @@ export function getAllDict() {
  */
 export function reportHtml(params) {
     return service({
-        url: `y3tu-tool-report/report/reportHtml`,
+        url: `y3tu-tool-server/report/reportHtml`,
         method: 'post',
         data: params
     })
@@ -117,7 +117,7 @@ export function reportHtml(params) {
  */
 export function isBigData(params) {
     return service({
-        url: `y3tu-tool-report/report/isBigData`,
+        url: `y3tu-tool-server/report/isBigData`,
         method: 'post',
         data: params
     })
@@ -130,7 +130,7 @@ export function isBigData(params) {
  */
 export function createReportDownload(params) {
     return service({
-        url: `y3tu-tool-report/reportDownload/create`,
+        url: `y3tu-tool-server/reportDownload/create`,
         method: 'post',
         data: params
     })
@@ -140,5 +140,5 @@ export function createReportDownload(params) {
  * 导出报表数据excel
  */
 export function exportExcel(params, fileName) {
-    return downloadPost('y3tu-tool-report/report/exportExcel', params, fileName)
+    return downloadPost('y3tu-tool-server/report/exportExcel', params, fileName)
 }
