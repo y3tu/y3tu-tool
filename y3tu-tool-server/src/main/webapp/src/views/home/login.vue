@@ -2,7 +2,7 @@
   <div class="login-container">
     <el-row>
       <el-col :span="16">
-        <day></day>
+
       </el-col>
       <el-col :span="8">
         <el-form ref="loginForm" :model="loginForm" :rules="rules" class="login-form" autocomplete="off" label-position="left">
@@ -43,12 +43,9 @@
 
 <script>
 
-import day from './day'
-import night from './night'
 
 export default {
   name: 'login',
-  components: {day, night},
   data(){
     return{
       loginForm:{

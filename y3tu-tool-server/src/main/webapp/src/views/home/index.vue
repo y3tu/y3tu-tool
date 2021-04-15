@@ -23,14 +23,9 @@
         </nav>
     </div>
 
-    <coding/>
-    <changeText/>
-
 </template>
 
 <script>
-    import coding from './coding'
-    import changeText from './changeText'
     import {onMounted, onBeforeUnmount} from 'vue'
 
     export default {

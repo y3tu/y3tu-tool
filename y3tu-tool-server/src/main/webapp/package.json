@@ -22,7 +22,7 @@
     "vue-router": "^4.0.5",
     "vuex": "^4.0.0",
     "x-data-spreadsheet": "^1.1.8",
-    "gsap": "3.6.1"
+    "vue-lottie": "0.2.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
