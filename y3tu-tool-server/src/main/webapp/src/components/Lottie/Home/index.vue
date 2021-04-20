@@ -8,7 +8,7 @@
  */
 
 import lottie from 'vue-lottie'
-import animationJson from './website-development.json'
+import animationJson from './animation1.json'
 
 export default {
   name: 'lottie-home',
