@@ -1,5 +1,5 @@
 <template>
-  <lottie :options="defaultOptions" :width="400" :height="400" v-on:animCreated="handleAnimation"/>
+  <lottie :options="defaultOptions" :width="600" :height="500" v-on:animCreated="handleAnimation"/>
 </template>
 
 <script>
@@ -8,7 +8,7 @@
  */
 
 import lottie from 'vue-lottie'
-import animationJson from './animation1.json'
+import animationJson from './animation5.json'
 
 export default {
   name: 'lottie-home',

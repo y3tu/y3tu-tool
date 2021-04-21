@@ -1,38 +1,51 @@
 <template>
-  <div class="login-container">
-    <el-row>
-      <el-col :span="16">
-
+  <div>
+    <el-row type="flex" justify="center" :gutter="30">
+      <el-col :span="12">
+        <animation style="position: relative;top:30%"/>
       </el-col>
-      <el-col :span="8">
-        <el-form ref="loginForm" :model="loginForm" :rules="rules" class="login-form" autocomplete="off" label-position="left">
-          <el-form-item prop="username">
-            <el-input
-                ref="username"
-                v-model="loginForm.username"
-                placeholder="用户名"
-                prefix-icon="el-icon-user"
-                name="username"
-                type="text"
-                autocomplete="off"
-                @keyup.enter.native="handleLogin"/>
-          </el-form-item>
-          <el-form-item prop="password">
-            <el-input
-                ref="password"
-                v-model="loginForm.password"
-                prefix-icon="el-icon-key"
-                type="password"
-                placeholder="请输入密码"
-                name="password"
-                autocomplete="off"
-                :show-password="true"
-                @keyup.enter.native="handleLogin"/>
-          </el-form-item>
-          <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:14px;" @click.native.prevent="handleLogin">
-            登录
-          </el-button>
-        </el-form>
+      <el-col :span="6">
+        <el-card style="position: relative;top:50%">
+          <template #header>
+            <div class="card-header">
+              <span class="title">Y3tu Tool UI</span>
+            </div>
+          </template>
+          <el-form ref="loginForm"
+                   :model="loginForm"
+                   :rules="rules"
+                   autocomplete="off"
+                   label-position="left">
+            <el-form-item prop="username">
+              <el-input
+                  ref="username"
+                  v-model="loginForm.username"
+                  placeholder="用户名"
+                  prefix-icon="el-icon-user"
+                  name="username"
+                  type="text"
+                  autocomplete="off"
+                  @keyup.enter="handleLogin"/>
+            </el-form-item>
+            <el-form-item prop="password">
+              <el-input
+                  ref="password"
+                  v-model="loginForm.password"
+                  prefix-icon="el-icon-key"
+                  type="password"
+                  placeholder="请输入密码"
+                  name="password"
+                  autocomplete="off"
+                  :show-password="true"
+                  @keyup.enter="handleLogin"/>
+            </el-form-item>
+            <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:14px;"
+                       @click.prevent="handleLogin">
+              登录
+            </el-button>
+          </el-form>
+        </el-card>
+
       </el-col>
     </el-row>
 
@@ -43,23 +56,61 @@
 
 <script>
 
+import animation from '@/components/Lottie/Home'
+import service from '@/plugin/axios'
 
 export default {
   name: 'login',
-  data(){
-    return{
-      loginForm:{
-        username:'',
-        password:''
-      }
+  components: {animation},
+  data() {
+    return {
+      rules: {
+        username: {required: true, message: '用户名不能为空', trigger: 'blur'},
+        password: {required: true, message: '用户名不能为空', trigger: 'blur'}
+      },
+      loginForm: {
+        username: '',
+        password: ''
+      },
+      loading: false
     }
   },
   mounted() {
 
   },
-  methods:{
-    handleLogin(){
+  methods: {
+    /**
+     * 登录
+     */
+    handleLogin() {
+      let username_c = false;
+      let password_c = false;
+      this.$refs.loginForm.validateField('username', e => {
+        if (!e) {
+          username_c = true
+        }
+      });
+      this.$refs.loginForm.validateField('password', e => {
+        if (!e) {
+          password_c = true
+        }
+      });
 
+      if (username_c && password_c) {
+        this.loading = true;
+        const that = this;
+        service({
+          url: 'y3tu-tool-server/login',
+          method: 'post',
+          data: that.loginForm
+        }).then((res) => {
+
+        }).catch((error) => {
+          console.error(error);
+          that.loading = false;
+
+        })
+      }
     }
   }
 }
@@ -67,49 +118,18 @@ export default {
 </script>
 
 <style lang="scss">
- body{
-   background: #e3f1ff;
- }
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center
+}
 
- $bg: #283443;
- $light_gray: #fff;
- $cursor: #555;
-
- @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
-   .login-container .el-input input {
-     color: $cursor;
-   }
- }
-
- .login-container {
- .el-input {
-   display: inline-block;
-
- input {
-   background: transparent;
-   border: 0;
-   -webkit-appearance: none;
-   border-radius: 0;
-   color: #000000;
-   height: 28px;
-   caret-color: $cursor;
-
- &:-webkit-autofill {
-    box-shadow: 0 0 0 1000px $bg inset !important;
-    -webkit-text-fill-color: $cursor !important;
-  }
- }
- }
-
- .el-form-item {
- //border: 1px solid #dedede;
-   border-radius: 2px;
-   color: #454545;
-   transition: all .3s;
-
- &:hover {
-    border-color: #57a3f3;
-  }
- }
- }
+.title{
+  background-image:-webkit-linear-gradient(bottom,red,#fd8403,yellow);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  margin: auto;
+  font-size: 25px;
+  font-weight:bold;
+}
 </style>

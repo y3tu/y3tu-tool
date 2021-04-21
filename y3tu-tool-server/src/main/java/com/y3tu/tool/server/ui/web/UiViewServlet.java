@@ -84,9 +84,8 @@ public class UiViewServlet extends AbstractResourceServlet {
     @Override
     protected String process(HttpServletRequest request, HttpServletResponse response, String url) {
         try {
-
             //登录
-            if (StrUtil.startWith(url, URLConstant.URL_LOGIN)) {
+            if (StrUtil.startWith(url, UrlConstant.URL_LOGIN)) {
                 if (checkLoginParam(request)) {
                     //登录成功
                     String token = UUID.randomUUID().toString();

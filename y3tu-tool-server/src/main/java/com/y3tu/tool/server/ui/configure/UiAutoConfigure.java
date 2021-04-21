@@ -24,7 +24,7 @@ public class UiAutoConfigure {
     @Value("${y3tu.tool.cache.url-pattern:/y3tu-tool-cache/*}")
     private String cacheUrlPattern;
 
-    private String serverUrlPattern = "/y3tu-tool-server/*";
+    private final String serverUrlPattern = "/y3tu-tool-server/*";
 
     @Value("${y3tu.tool.server.ui.url-pattern:/tool-server-ui/*}")
     private String uiUrlPattern;
