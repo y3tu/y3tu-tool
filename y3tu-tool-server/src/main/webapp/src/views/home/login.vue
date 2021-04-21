@@ -1,5 +1,8 @@
 <template>
   <div>
+    <!--背景粒子效果-->
+    <particles-bg type="circle" num=12 :bg="true" />
+
     <el-row type="flex" justify="center" :gutter="30">
       <el-col :span="12">
         <animation style="position: relative;top:30%"/>
