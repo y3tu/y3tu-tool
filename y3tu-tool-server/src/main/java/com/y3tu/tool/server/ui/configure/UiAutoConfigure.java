@@ -2,7 +2,7 @@ package com.y3tu.tool.server.ui.configure;
 
 import com.y3tu.tool.core.exception.ServerException;
 import com.y3tu.tool.server.ui.web.UiViewServlet;
-import com.y3tu.tool.server.ui.web.filter.UiFilter;
+import com.y3tu.tool.server.ui.web.UiFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -41,19 +41,6 @@ public class UiAutoConfigure {
         //设置需要拦截的url
         registrationBean.setServlet(new UiViewServlet());
         registrationBean.addUrlMappings(properties.getUrlPattern() != null ? properties.getUrlPattern() : "/tool-server-ui/*");
-
-        if (properties.getAllow() != null) {
-            registrationBean.addInitParameter("allow", properties.getAllow());
-        }
-        if (properties.getDeny() != null) {
-            registrationBean.addInitParameter("deny", properties.getDeny());
-        }
-        if (properties.getLoginUsername() != null) {
-            registrationBean.addInitParameter("loginUsername", properties.getLoginUsername());
-        }
-        if (properties.getLoginPassword() != null) {
-            registrationBean.addInitParameter("loginPassword", properties.getLoginPassword());
-        }
         return registrationBean;
     }
 

@@ -20,20 +20,10 @@ public class UiProperties {
     /**
      * 登录用户
      */
-    private String loginUsername;
+    private String username;
     /**
      * 登录密码
      */
-    private String loginPassword;
-    /**
-     * 白名单
-     */
-    private String allow;
-
-    /**
-     * 黑名单
-     */
-    private String deny;
-
+    private String password;
 
 }

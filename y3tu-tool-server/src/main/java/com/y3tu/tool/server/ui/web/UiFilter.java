@@ -1,4 +1,4 @@
-package com.y3tu.tool.server.ui.web.filter;
+package com.y3tu.tool.server.ui.web;
 
 import com.y3tu.tool.core.util.StrUtil;
 import lombok.Data;

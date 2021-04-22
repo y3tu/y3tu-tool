@@ -25,6 +25,20 @@
       "defaultValue": "/tool-server-ui/*"
     },
     {
+      "name": "y3tu.tool.server.ui.username",
+      "type": "java.lang.String",
+      "description": "登录用户名",
+      "sourceType": "com.y3tu.tool.server.ui.configure.UiProperties",
+      "defaultValue": "admin"
+    },
+    {
+      "name": "y3tu.tool.server.ui.password",
+      "type": "java.lang.String",
+      "description": "登录密码",
+      "sourceType": "com.y3tu.tool.server.ui.configure.UiProperties",
+      "defaultValue": "admin"
+    },
+    {
       "name": "y3tu.tool.server.remote.remoteMode",
       "type": "com.y3tu.tool.server.report.entity.constant.RemoteMode",
       "description": "远程服务模式",
