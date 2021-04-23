@@ -20,10 +20,10 @@ public class UiProperties {
     /**
      * 登录用户
      */
-    private String username;
+    private String username = "admin";
     /**
      * 登录密码
      */
-    private String password;
+    private String password = "admin";
 
 }

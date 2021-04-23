@@ -1,3 +1,12 @@
+import db from './util.db'
+import cookies from './util.cookies'
+const util = {
+    db,
+    cookies
+};
+
+export default util
+
 /**
  * 生成uuid方法
  * @returns {string}

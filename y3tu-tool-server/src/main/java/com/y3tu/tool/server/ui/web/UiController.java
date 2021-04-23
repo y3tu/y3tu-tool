@@ -17,14 +17,14 @@ import java.util.UUID;
  * @author y3tu
  */
 @RestController
-@RequestMapping("y3tu-tool-server/login")
+@RequestMapping("y3tu-tool-server/ui")
 @Slf4j
 public class UiController {
 
     @Autowired
     UiProperties uiProperties;
 
-    @PostMapping("/")
+    @PostMapping("/login")
     public R login(@RequestBody Map params) {
         String username = (String) params.get("username");
         String password = (String) params.get("password");

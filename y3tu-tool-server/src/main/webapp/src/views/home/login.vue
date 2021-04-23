@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--背景粒子效果-->
-    <particles-bg type="circle" num=12 :bg="true" />
+    <particles-bg type="circle" num=12 :bg="true"/>
 
     <el-row type="flex" justify="center" :gutter="30">
       <el-col :span="12">
@@ -59,8 +59,9 @@
 
 <script>
 
-import animation from '@/components/Lottie/Home'
+import animation from './animation'
 import service from '@/plugin/axios'
+import util from "@/utils";
 
 export default {
   name: 'login',
@@ -103,11 +104,12 @@ export default {
         this.loading = true;
         const that = this;
         service({
-          url: 'y3tu-tool-server/login',
+          url: 'y3tu-tool-server/ui/login',
           method: 'post',
           data: that.loginForm
         }).then((res) => {
-
+          util.cookies.set('ACCESS_TOKEN', res.data, {expires: 1});
+          this.$router.push({path: '/report'})
         }).catch((error) => {
           console.error(error);
           that.loading = false;
@@ -127,12 +129,12 @@ export default {
   align-items: center
 }
 
-.title{
-  background-image:-webkit-linear-gradient(bottom,red,#fd8403,yellow);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
+.title {
+  background-image: -webkit-linear-gradient(bottom, red, #fd8403, yellow);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin: auto;
   font-size: 25px;
-  font-weight:bold;
+  font-weight: bold;
 }
 </style>

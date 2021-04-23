@@ -1,9 +1,27 @@
 import {createRouter, createWebHashHistory} from 'vue-router';
+import util from "@/utils";
 
 const routes = [
     {
-        path: '/',
+        path: '/login',
+        name: '登录页',
         component: () => import('@/views/home/login.vue'),
+    },
+    {
+        path: '/',
+        name: '首页',
+        redirect: '/home',
+        component: () => import('@/views/layout/index.vue'),
+        children: [
+            {
+                path: '/home',
+                name: 'home',
+                component: () => import('@/views/home/index.vue'),
+                meta: {
+                    keepAlive: true,
+                }
+            }
+        ]
     },
     {
         path: '/report',
@@ -13,7 +31,7 @@ const routes = [
         children: [
             {
                 path: '/report/home',
-                name: 'home',
+                name: 'reportHome',
                 component: () => import('@/views/report/home/index.vue'),
                 meta: {
                     keepAlive: true,
@@ -98,6 +116,39 @@ const routes = [
 let router = createRouter({
     history: createWebHashHistory(process.env.VUE_APP_BASE_API),
     routes,
+});
+
+const whiteList = ['/login','/blog'];
+
+// 导航守卫，渲染动态路由
+router.beforeEach((to, from, next) => {
+    if (to.meta.title) {
+        document.title = to.meta.title
+    }
+
+    let whiteFlag = false;
+
+    whiteList.forEach(function (white) {
+        if (to.path.indexOf(white) !== -1) {
+            //白名单直接放行
+            whiteFlag = true;
+        }
+    });
+
+    if(whiteFlag){
+        next()
+    }else {
+        const token = util.cookies.get('ACCESS_TOKEN');
+        if (token&&token.length) {
+            next()
+        } else {
+            if (to.path === '/login') {
+                next()
+            } else {
+                next('/login')
+            }
+        }
+    }
 });
 
 export default router
