@@ -1,6 +1,6 @@
 <template>
   <div>
-    <animation :type="4" :width="700" height="600"/>
+    <animation :type="4" :width="700" :height="600"/>
   </div>
 </template>
 
