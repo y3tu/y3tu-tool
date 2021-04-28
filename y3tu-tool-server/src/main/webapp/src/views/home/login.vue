@@ -109,7 +109,7 @@ export default {
           data: that.loginForm
         }).then((res) => {
           util.cookies.set('ACCESS_TOKEN', res.data, {expires: 1});
-          this.$router.push({path: '/report'})
+          this.$router.push({path: '/'})
         }).catch((error) => {
           console.error(error);
           that.loading = false;
