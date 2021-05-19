@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 报表下载进程
@@ -30,20 +30,20 @@ public class ReportDownloadRunner implements ApplicationRunner {
     @Autowired
     ReportDownloadService reportDownloadService;
 
-    ExecutorService executor;
+    /**
+     * 带有定时任务的线程池
+     */
+    ScheduledExecutorService executor;
 
     public ReportDownloadRunner() {
-        ThreadFactory factory = ThreadUtil.newNamedThreadFactory("生成报表下载线程池", true);
-        executor = ThreadUtil.newFixedExecutor(20, factory);
+        executor = ThreadUtil.newScheduledExecutor(1, ThreadUtil.newNamedThreadFactory("生成报表下载线程池", true));
     }
-
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
         if (context.isActive()) {
-            //当程序启动后开启报表下载处理线程池
-
-            while (true) {
+            //当程序启动后开启报表下载处理线程池 初始时间间隔是1分
+            executor.scheduleAtFixedRate(()->{
                 //获取待处理的报表下载
                 //目前采用sql for update的方式，后续考虑使用分布式锁处理防止报表下载重处理
                 try {
@@ -53,16 +53,14 @@ public class ReportDownloadRunner implements ApplicationRunner {
                             reportDownload.setStatus(ReportDownload.STATUS_BUILDING);
                             reportDownload.setUpdateTime(new Date());
                             reportDownloadService.update(reportDownload);
-
-                            executor.execute(() -> reportDownloadService.handleDownload(reportDownload));
+                            reportDownloadService.handleDownload(reportDownload);
                         }
                     }
                 } catch (Exception e) {
                     log.error(e.getMessage(), e);
                 }
-                //休眠20秒
-                Thread.sleep(20000);
-            }
+            },1, 1, TimeUnit.MINUTES);
+
         }
     }
 
