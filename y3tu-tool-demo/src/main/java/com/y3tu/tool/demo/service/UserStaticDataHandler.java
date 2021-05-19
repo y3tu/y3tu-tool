@@ -8,7 +8,6 @@ import java.util.List;
 
 /**
  * @author y3tu
- * @date 2020/12/4
  */
 public class UserStaticDataHandler implements StaticDataHandler {
     @Override

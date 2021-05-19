@@ -17,7 +17,7 @@
         <module>y3tu-tool-web</module>
         <module>y3tu-tool-cache</module>
         <module>y3tu-tool-lowcode</module>
-        <module>y3tu-tool-test</module>
+        <module>y3tu-tool-demo</module>
     </modules>
 
     <properties>

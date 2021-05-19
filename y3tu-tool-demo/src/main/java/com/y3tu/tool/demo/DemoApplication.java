@@ -7,10 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(exclude = DruidDataSourceAutoConfigure.class)
 @EnableToolUI
-public class ToolTestApplication {
+public class DemoApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ToolTestApplication.class, args);
+        SpringApplication.run(DemoApplication.class, args);
     }
 
 }

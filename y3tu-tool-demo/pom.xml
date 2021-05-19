@@ -7,8 +7,8 @@
         <artifactId>y3tu-tool</artifactId>
         <version>${y3tu-tool.version}</version>
     </parent>
-    <artifactId>y3tu-tool-test</artifactId>
-    <name>y3tu-tool-test</name>
+    <artifactId>y3tu-tool-demo</artifactId>
+    <name>y3tu-tool-demo</name>
     <description>测试demo</description>
 
     <properties>

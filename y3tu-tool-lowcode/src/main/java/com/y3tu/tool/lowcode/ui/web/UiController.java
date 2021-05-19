@@ -5,11 +5,13 @@ import com.y3tu.tool.core.pojo.R;
 import com.y3tu.tool.lowcode.ui.configure.UiProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.UUID;
 
@@ -33,8 +35,13 @@ public class UiController {
         if (usernameP.equals(username) && passwordP.equals(password)) {
             //登录成功！
             return R.success(UUID.randomUUID());
-        }else {
+        } else {
             throw new ServerException("用户名或者密码错误！");
         }
+    }
+
+    @GetMapping("/getContextPath")
+    public R getContextPath(HttpServletRequest request) {
+        return R.success(request.getContextPath());
     }
 }

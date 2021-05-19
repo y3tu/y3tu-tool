@@ -22,7 +22,7 @@ import java.io.IOException;
 public class UiFilter implements Filter {
 
     private String cacheUrlPattern;
-    private String serverUrlPattern;
+    private String lowCodeUrlPattern;
     private String uiUrlPattern;
 
     @Override
@@ -39,7 +39,9 @@ public class UiFilter implements Filter {
         if (requestUrl.indexOf(formatUrl(cacheUrlPattern)) > 0) {
             requestUrl = StrUtil.replace(requestUrl, formatSuffixUrl(uiUrlPattern), "");
             httpRequest.getRequestDispatcher(requestUrl).forward(httpRequest, httpResponse);
-        } else if (requestUrl.indexOf(formatUrl(serverUrlPattern)) > 0) {
+        } else if (requestUrl.indexOf(formatUrl(lowCodeUrlPattern)) > 0) {
+            int urlIndex =  requestUrl.indexOf(formatSuffixUrl(uiUrlPattern));
+            requestUrl = requestUrl.substring(urlIndex,requestUrl.length());
             requestUrl = StrUtil.replace(requestUrl, formatSuffixUrl(uiUrlPattern), "");
             httpRequest.getRequestDispatcher(requestUrl).forward(httpRequest, httpResponse);
         } else {

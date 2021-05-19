@@ -3,6 +3,8 @@
 </template>
 
 <script>
+    import service from '@/plugin/axios'
+
     export default {
         name: 'messageWebSocket',
         data() {
@@ -13,16 +15,28 @@
                 serverTimeoutObj: null,//心跳倒计时
                 timeoutnum: null,//断开 重连倒计时
                 websocket: null,
+                url: '',
             }
         },
         created() {
             // 初始化websocket
-            this.initWebSocket()
+            if (process.env.NODE_ENV == 'development') {
+                let api = process.env.VUE_APP_MSG_SOCKET_API;
+                this.url = `${api}/y3tu-tool-lowcode/websocket/message/all`;
+                this.initWebSocket(this.url);
+            } else {
+                service({
+                    url: 'y3tu-tool-lowcode/ui/getContextPath',
+                    method: 'get',
+                }).then(res => {
+                    let contextPath = res.data;
+                    this.url = `ws://${location.host + "/" + contextPath}/y3tu-tool-lowcode/websocket/message/all`;
+                    this.initWebSocket(this.url);
+                })
+            }
         },
         methods: {
-            initWebSocket() {
-                let api = process.env.VUE_APP_MSG_SOCKET_API;
-                let url = `${api}/y3tu-tool-lowcode/websocket/message/all`
+            initWebSocket(url) {
                 this.websocket = new WebSocket(url)
                 // 连接错误
                 this.websocket.onerror = this.setErrorMessage
@@ -46,7 +60,7 @@
                 this.timeoutnum && clearTimeout(this.timeoutnum);
                 this.timeoutnum = setTimeout(() => {
                     //新连接
-                    this.initWebSocket();
+                    this.initWebSocket(this.url);
                     this.lockReconnect = false;
                 }, 5000);
             },

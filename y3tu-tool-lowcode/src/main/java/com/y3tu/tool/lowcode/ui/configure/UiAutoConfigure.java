@@ -24,9 +24,9 @@ public class UiAutoConfigure {
     @Value("${y3tu.tool.cache.url-pattern:/y3tu-tool-cache/*}")
     private String cacheUrlPattern;
 
-    private final String serverUrlPattern = "/y3tu-tool-lowcode/*";
+    private final String lowCodeUrlPattern = "/y3tu-tool-lowcode/*";
 
-    @Value("${y3tu.tool.server.ui.url-pattern:/tool-lowcode-ui/*}")
+    @Value("${y3tu.tool.lowcode.ui.url-pattern:/tool-lowcode-ui/*}")
     private String uiUrlPattern;
 
 
@@ -47,7 +47,7 @@ public class UiAutoConfigure {
     @Bean
     public FilterRegistrationBean cacheFilterRegistration() {
 
-        if (uiUrlPattern.equals(serverUrlPattern)) {
+        if (uiUrlPattern.equals(lowCodeUrlPattern)) {
             //如果用户配置的url和服务url相同，会影响url解析，应限制用户配置的url不能合serverUrlPattern相同
             throw new ServerException("用户配置的url不能为y3tu-tool-lowcode,请更换！");
         }
@@ -56,13 +56,12 @@ public class UiAutoConfigure {
         UiFilter uiFilter = new UiFilter();
         uiFilter.setCacheUrlPattern(cacheUrlPattern);
         uiFilter.setUiUrlPattern(uiUrlPattern);
-        uiFilter.setServerUrlPattern(serverUrlPattern);
+        uiFilter.setLowCodeUrlPattern(lowCodeUrlPattern);
         registration.setFilter(uiFilter);
         registration.addUrlPatterns(uiUrlPattern);
         registration.setName("uiFilter");
         registration.setOrder(1);
         return registration;
     }
-
 
 }
