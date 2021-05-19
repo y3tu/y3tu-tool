@@ -1,4 +1,4 @@
-package com.y3tu.tool.test;
+package com.y3tu.tool.demo;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
 import com.y3tu.tool.lowcode.ui.annotation.EnableToolUI;

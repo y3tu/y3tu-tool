@@ -1,4 +1,4 @@
-package com.y3tu.tool.test.concurrent;
+package com.y3tu.tool.demo.concurrent;
 
 import java.util.ArrayList;
 import java.util.Collections;

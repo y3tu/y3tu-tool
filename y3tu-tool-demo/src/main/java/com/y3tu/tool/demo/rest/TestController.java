@@ -1,4 +1,4 @@
-package com.y3tu.tool.test.rest;
+package com.y3tu.tool.demo.rest;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

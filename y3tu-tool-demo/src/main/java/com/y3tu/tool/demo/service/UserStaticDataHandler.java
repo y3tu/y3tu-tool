@@ -1,8 +1,8 @@
-package com.y3tu.tool.test.service;
+package com.y3tu.tool.demo.service;
 
 import com.y3tu.tool.cache.core.cache.Cache;
 import com.y3tu.tool.cache.staticdata.handler.StaticDataHandler;
-import com.y3tu.tool.test.dto.UserDto;
+import com.y3tu.tool.demo.dto.UserDto;
 
 import java.util.List;
 

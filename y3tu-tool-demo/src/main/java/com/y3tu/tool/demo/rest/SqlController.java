@@ -1,4 +1,4 @@
-package com.y3tu.tool.test.rest;
+package com.y3tu.tool.demo.rest;
 
 import com.y3tu.tool.core.pojo.R;
 import com.y3tu.tool.web.sql.DataHandler;

@@ -1,9 +1,9 @@
-package com.y3tu.tool.test.service;
+package com.y3tu.tool.demo.service;
 
 import com.y3tu.tool.cache.annotation.FirstCache;
 import com.y3tu.tool.cache.annotation.SecondaryCache;
 import com.y3tu.tool.cache.annotation.StaticData;
-import com.y3tu.tool.test.dto.UserDto;
+import com.y3tu.tool.demo.dto.UserDto;
 import com.y3tu.tool.web.sql.SqlUtil;
 import org.springframework.stereotype.Service;
 

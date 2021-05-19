@@ -1,4 +1,4 @@
-package com.y3tu.tool.test.rest;
+package com.y3tu.tool.demo.rest;
 
 import com.y3tu.tool.cache.annotation.Cacheable;
 import com.y3tu.tool.cache.annotation.FirstCache;
@@ -6,7 +6,7 @@ import com.y3tu.tool.cache.annotation.SecondaryCache;
 import com.y3tu.tool.cache.service.ToolCacheService;
 import com.y3tu.tool.cache.staticdata.StaticDataService;
 import com.y3tu.tool.core.pojo.R;
-import com.y3tu.tool.test.dto.UserDto;
+import com.y3tu.tool.demo.dto.UserDto;
 import com.y3tu.tool.web.sql.SqlUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
