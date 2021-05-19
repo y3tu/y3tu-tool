@@ -1,0 +1,101 @@
+{
+  "groups": [
+    {
+      "name": "y3tu.tool.lowcode.ui",
+      "type": "com.y3tu.tool.lowcode.ui.configure.UiProperties",
+      "sourceType": "com.y3tu.tool.lowcode.ui.configure.UiProperties"
+    },
+    {
+      "name": "y3tu.tool.lowcode.report",
+      "type": "com.y3tu.tool.lowcode.report.configure.ReportProperties",
+      "sourceType": "com.y3tu.tool.lowcode.report.configure.ReportProperties"
+    },
+    {
+      "name": "y3tu.tool.lowcode.report.remote",
+      "type": "com.y3tu.tool.lowcode.configure.RemoteProperties",
+      "sourceType": "com.y3tu.tool.lowcode.configure.RemoteProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "y3tu.tool.lowcode.ui.urlPattern",
+      "type": "java.lang.String",
+      "description": "访问ui的url",
+      "sourceType": "com.y3tu.tool.lowcode.ui.configure.UiProperties",
+      "defaultValue": "/lowcode-ui/*"
+    },
+    {
+      "name": "y3tu.tool.lowcode.ui.username",
+      "type": "java.lang.String",
+      "description": "登录用户名",
+      "sourceType": "com.y3tu.tool.lowcode.ui.configure.UiProperties",
+      "defaultValue": "admin"
+    },
+    {
+      "name": "y3tu.tool.lowcode.ui.password",
+      "type": "java.lang.String",
+      "description": "登录密码",
+      "sourceType": "com.y3tu.tool.lowcode.ui.configure.UiProperties",
+      "defaultValue": "admin"
+    },
+    {
+      "name": "y3tu.tool.lowcode.remote.remoteMode",
+      "type": "com.y3tu.tool.lowcode.report.entity.constant.RemoteMode",
+      "description": "远程服务模式",
+      "sourceType": "com.y3tu.tool.lowcode.configure.RemoteProperties"
+    },
+    {
+      "name": "y3tu.tool.lowcode.remote.host",
+      "type": "java.lang.String",
+      "description": "远程主机地址",
+      "sourceType": "com.y3tu.tool.lowcode.configure.RemoteProperties"
+    },
+    {
+      "name": "y3tu.tool.lowcode.remote.port",
+      "type": "java.lang.String",
+      "description": "端口",
+      "sourceType": "com.y3tu.tool.lowcode.configure.RemoteProperties"
+    },
+    {
+      "name": "y3tu.tool.lowcode.remote.username",
+      "type": "java.lang.String",
+      "description": "用户名",
+      "sourceType": "com.y3tu.tool.lowcode.configure.RemoteProperties"
+    },
+    {
+      "name": "y3tu.tool.lowcode.remote.password",
+      "type": "java.lang.String",
+      "description": "密码",
+      "sourceType": "com.y3tu.tool.lowcode.configure.RemoteProperties"
+    },
+    {
+      "name": "y3tu.tool.lowcode.remote.maxTotal",
+      "type": "java.lang.Integer",
+      "description": "连接池池中最大连接",
+      "sourceType": "com.y3tu.tool.lowcode.configure.RemoteProperties",
+      "defaultValue": 20
+    },
+    {
+      "name": "y3tu.tool.lowcode.remote.maxWaitMillis",
+      "type": "java.lang.Integer",
+      "description": "ftp连接最长等待时间 单位毫秒",
+      "sourceType": "com.y3tu.tool.lowcode.configure.RemoteProperties",
+      "defaultValue": 30000
+    },
+    {
+      "name": "y3tu.tool.lowcode.report.templateRemotePath",
+      "type": "java.lang.String",
+      "description": "远程服务器存放模板附件路径",
+      "sourceType": "com.y3tu.tool.lowcode.configure.RemoteProperties",
+      "defaultValue": "/y3tu-tool/lowcode/report/"
+    },
+    {
+      "name": "y3tu.tool.lowcode.report.reportRemotePath",
+      "type": "java.lang.String",
+      "description": "远程服务器存放报表路径",
+      "sourceType": "com.y3tu.tool.lowcode.configure.RemoteProperties",
+      "defaultValue": "/y3tu-tool/lowcode/report/"
+    }
+  ],
+  "hints": []
+}

@@ -57,7 +57,7 @@ y3tu:
       enableApi: true
       cacheMode: all
       stats: true
-    server:
+    lowcode:
       ui:
        urlPattern: /tool/*
       remote:
