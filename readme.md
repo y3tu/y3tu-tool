@@ -23,7 +23,19 @@ Java工具类,把平时工作学习中用的技术进行汇总，用于学习使
 * y3tu.tool.lowcode.ui.password = admin   
 定义登录密码，默认admin
 
+#### 功能
+-   [x] 多级缓存
+-   [x] 字典配置
+-   [x] 数据源配置
+-   [x] 基础报表
+-   [x] Jasper报表
+-   [ ] 代码生成
+-   [ ] 可视化定制页面
+-   [ ] 可视化表单定义
+
 ![img](doc/images/login.jpg)
+- - -
+![img](doc/images/report.jpg)
 
 ### Thanks
 代码参考以下优秀的开源项目：
