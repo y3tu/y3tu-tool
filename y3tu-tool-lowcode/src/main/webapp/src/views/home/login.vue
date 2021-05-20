@@ -11,7 +11,10 @@
         <el-card style="position: relative;top:50%">
           <template #header>
             <div class="card-header">
-              <span class="title">Y3tu Tool UI</span>
+              <span class="title">Y3tu Tool Low Code</span>
+            </div>
+            <div class="card-header">
+              <span class="title">低代码工具平台</span>
             </div>
           </template>
           <el-form ref="loginForm"
