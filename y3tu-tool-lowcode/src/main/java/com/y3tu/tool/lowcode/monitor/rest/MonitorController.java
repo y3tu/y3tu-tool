@@ -29,7 +29,7 @@ import java.util.Map;
 @Slf4j
 public class MonitorController {
 
-    @Value("${spring.application.name}")
+    @Value("${spring.application.name:''}")
     private String name;
 
     /**
